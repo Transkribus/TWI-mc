@@ -15,7 +15,7 @@ from apps.utils.utils import t_log
 import settings
 import apps.dashboard.settings
 
-from apps.querystring_parser import parser
+from apps.querystring_parser.querystring_parser import parser
 
 #######################
 # Views for dashboard
