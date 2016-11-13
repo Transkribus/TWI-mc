@@ -9,11 +9,11 @@ import collections
 
 
 #from django.contrib.auth.decorators import login_required #for ajax reponses
-from read.decorators import t_login_required, t_login_required_ajax
-import read.settings
+from apps.utils.decorators import t_login_required, t_login_required_ajax
+from apps.utils.services import *
+from apps.utils.utils import t_log
+import settings
 import dashboard.settings
-from read.services import *
-from read.utils import t_log
 
 from querystring_parser import parser
 
@@ -42,7 +42,6 @@ def index(request):
     if isinstance(action_types,HttpResponse):
         return action_types
 
-    t_log("STATIC_URL %s" % read.settings.STATIC_URL)
 #    oat = collections.OrderedDict(sorted(action_types))
 #    myDic = action_types
 #    sorted_list=sorted(myDic.items(), key=lambda x: x[0])
