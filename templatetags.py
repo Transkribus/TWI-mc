@@ -1,7 +1,7 @@
 from django import template
 from django.template.defaulttags import register
 import datetime
-import read.settings
+import settings
 
 #register = template.Library()
 @register.filter
@@ -45,6 +45,6 @@ def y_for_typewriterline(crop):
 
 @register.filter
 def load_lib(lib):
-    if read.settings.USE_CDNS and lib in read.settings.CDNS:
-        return str(read.settings.CDNS.get(lib).get('cdn'))
-    return str(read.settings.CDNS.get(lib).get('local'))
+    if settings.USE_CDNS and lib in settings.CDNS:
+        return str(settings.CDNS.get(lib).get('cdn'))
+    return str(settings.CDNS.get(lib).get('local'))
