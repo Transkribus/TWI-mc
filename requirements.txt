@@ -1,0 +1,2 @@
+Django=>1.9.5
+#django-bootstrap3 requests xmltodict dicttoxml dateutil django-recaptcha
