@@ -13,7 +13,7 @@ from apps.utils.decorators import t_login_required, t_login_required_ajax
 from apps.utils.services import *
 from apps.utils.utils import t_log
 import settings
-import dashboard.settings
+import apps.dashboard.settings
 
 from querystring_parser import parser
 
