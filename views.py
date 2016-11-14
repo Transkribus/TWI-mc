@@ -21,7 +21,7 @@ from apps.utils.services import *
 #t_collection, t_register,
 
 #Imports from app (library)
-import library.settings
+import settings
 from . import navigation
 from .forms import RegisterForm, IngestMetsUrlForm, MetsFileForm, QuickIngestMetsUrlForm
 
