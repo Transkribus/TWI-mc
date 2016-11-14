@@ -3,6 +3,8 @@ from django.conf.urls import include, url
 from . import views
 
 urlpatterns = [
+    url(r'^$', views.index, name='index'),
+
     url(r'^collections$', views.collections, name='collections'),
     url(r'^collection/([\-0-9]+)$', views.collection, name='collection'),
     url(r'^collection_noaccess/([\-0-9]+)$', views.collection_noaccess, name='collection_noaccess'),
@@ -18,7 +20,6 @@ urlpatterns = [
 
     url(r'^users/([\-0-9]+)/([0-9]+)$', views.users, name='users'),
 #    url(r'^register$', views.register, name='register'),
-    url(r'^$', views.index, name='index'),
 #    url(r'^profile$', views.profile, name='profile'),
 #    url(r'^i18n/', include('django.conf.urls.i18n')),
     #url('^', include('django.contrib.auth.urls')),
