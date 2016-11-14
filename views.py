@@ -14,10 +14,10 @@ from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 
-from read.utils import crop, t_metadata
+from apps.utils.utils import crop, t_metadata
 #Imports pf read modules
-from read.decorators import t_login_required
-from read.services import *
+from apps.utils.decorators import t_login_required
+from apps.utils.services import *
 #t_collection, t_register,
 
 #Imports from app (library)
