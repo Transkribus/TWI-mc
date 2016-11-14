@@ -186,7 +186,7 @@ def d_user(request,username):
 
 # paged_data:
 #       - Handle common parameters for paging and filtering data
-#       - Calls read.services.t_[list_name] requests
+#       - Calls utils.services.t_[list_name] requests
 #       - Some params must be passed in params (eg ids from url, typeId from calling function)
 #       - Some params are set directly from REQUEST, but can be overridden by params (eg nValues)
 
@@ -203,7 +203,7 @@ def paged_data(request,list_name,params=None):#collId=None,docId=None):
 
     #NB dataTables uses length, transkribus nValues
     if 'nValues' not in params :
-        params['nValues'] = int(dt_params.get('length')) if dt_params.get('length') else read.settings.PAGE_SIZE_DEFAULT
+        params['nValues'] = int(dt_params.get('length')) if dt_params.get('length') else settings.PAGE_SIZE_DEFAULT
 
 #    params['sortColumn'] = int(dt_params.get('length')) if dt_params.get('length') else None
 #    params['sortDirection'] = int(dt_params.get('start')) if dt_params.get('start') else None
@@ -279,7 +279,7 @@ def table_ajax(request,list_name,collId=None,docId=None,userId=None) :
     # We cannot request a paged list of pages by docid, so we must manage paging here
     if list_name == 'pages' :
         dt_params = parser.parse(request.GET.urlencode())
-        nValues = int(dt_params.get('length')) if dt_params.get('length') else int(read.settings.PAGE_SIZE_DEFAULT)
+        nValues = int(dt_params.get('length')) if dt_params.get('length') else int(settings.PAGE_SIZE_DEFAULT)
         index = int(dt_params.get('start')) if dt_params.get('start') else 0
         #lame paging for pages for now...
         data_filtered = data_filtered[index:(index+nValues)]
@@ -323,7 +323,7 @@ def top_bar(data,subject,label=None,chart_size=None):
 #    just_userids = list(set(isolate_data(data,'userId')))
 
 #    t_log("JUST_SUBJECT: %s" % just_subject)
-    if chart_size is None : chart_size = read.settings.PAGE_SIZE_DEFAULT
+    if chart_size is None : chart_size = settings.PAGE_SIZE_DEFAULT
     t_log("*subject: %s label: %s" % (subject,label))
 
     actions = {}
