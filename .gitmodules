@@ -1,6 +1,15 @@
-[submodule "mc/apps/TWI-utils"]
-	path = mc/apps/TWI-utils
+[submodule "apps/querystring_parser"]
+	path = apps/querystring_parser
+	url = https://github.com/bernii/querystring-parser.git
+[submodule "apps/utils"]
+	path = apps/utils
 	url = git@github.com:Transkribus/TWI-utils.git
-[submodule "mc/apps/dashboard"]
-	path = mc/apps/dashboard
+[submodule "apps/dashboard"]
+	path = apps/dashboard
 	url = git@github.com:Transkribus/TWI-dashboard.git
+[submodule "apps/library"]
+	path = apps/library
+	url = git@github.com:Transkribus/TWI-library.git
+[submodule "apps/search"]
+	path = apps/search
+	url = git@github.com:Transkribus/TWI-search.git

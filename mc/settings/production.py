@@ -14,6 +14,9 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.abspath(os.path.dirname(BASE_DIR))
+PUBLIC_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, 'public'))
+
 
 with open('/etc/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
@@ -36,12 +39,14 @@ INSTALLED_APPS = [
 #Supporting apps
     'bootstrap3',
     'captcha',
+#project app
+    'mc',
 #READ apps
-    'read',
-    'library',
+    'apps.utils',
+    'apps.library',
 #    'review',
-    'dashboard',
-    'edit',
+    'apps.dashboard',
+#    'edit',
 #    'search'
 ]
 
@@ -64,7 +69,7 @@ ROOT_URLCONF = 'mc.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ os.path.join(BASE_DIR, 'read/templates/read'),  ],
+        'DIRS': [ os.path.join(BASE_DIR, '../templates'),  ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -73,10 +78,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 #Added for READ
-                'read.contexts.appname',
+                'apps.utils.contexts.appname',
+                'apps.utils.contexts.urlname',
             ],
             'libraries' : {
-                'read_tags': 'read.templatetags',
+                'read_tags': 'apps.utils.templatetags',
             },
         },
     },
@@ -93,7 +99,7 @@ WSGI_APPLICATION = 'mc.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, '../tmp/db.sqlite3'),
     }
 }
 
@@ -168,12 +174,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+
+STATIC_ROOT = os.path.join(PUBLIC_ROOT, 'static')
+MEDIA_ROOT = os.path.join(PUBLIC_ROOT, 'media')
+
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 
 ##################### Added for READ ###################
 
 ## Auth backend that logs in to transkribus.eu and extends the django.contrib.auth.User
 AUTHENTICATION_BACKENDS = [
-    'read.backends.TranskribusBackend',
+    'apps.utils.backends.TranskribusBackend',
 ]
 
 #Location of TRP server for transkribus REST services
@@ -208,8 +227,4 @@ CDNS = {'bootstrap_css' : {'local': "/static/css/bootstrap.min.css", 'cdn' : "//
 
 PROFILE_LOG_BASE = '/tmp/'
 
-#LOAD config overrides for development server
-try:
-    from mc.development import *
-except ImportError:
-    pass
+

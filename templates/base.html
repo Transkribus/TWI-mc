@@ -50,6 +50,8 @@
 		var current_userid = "{{ user.tsdata.userId }}";
 	</script>
     <script src="{% static "js/read.js" %}"></script>
+{% comment %}
+<!-- #TODO the modal stuff is dependent on the library app being looaded so this should be executed in an app template or on the condition that the library app is loaded -->
 	<!--- Only needed when logged in -->
 	{% if user.is_authenticated %}
 	    <script>
@@ -60,7 +62,7 @@
  	<!-- //TODO stop this filling up the console.... -->
     	<!-- <script src="{% static "js/jobs.js" %}"></script> -->
 	{% endif %}
-
+{% endcomment %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -84,10 +86,10 @@
 
     <div class="collapse navbar-collapse" id="ts-menu">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">My Collections <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Published collections</a></li>
-        <li><a href="#">Transcription training</a></li>
-        <li><a href="#">Crowd-sourcing</a></li>
+        <li class="active"><a href="/">My Collections <span class="sr-only">(current)</span></a></li>
+        <li><a href="http://127.0.0.1:8004">Published collections</a></li>
+        <li><a href="http://127.0.0.1:8005">Transcription training</a></li>
+        <li><a href="http://127.0.0.1:8006">Crowd-sourcing</a></li>
       </ul>
     </div>	
   </div>

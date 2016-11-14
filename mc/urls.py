@@ -13,19 +13,36 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.generic import RedirectView
+
+import apps.utils.views
+import mc.views
+
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    ##Pass on to app urls.py##
     #this causes various fails for some reason, though it would be nice to pass in app_name to library....
-    # url(r'^library/', include('library.urls', app_name='library', namespace='library')),
-    url(r'^library/', include('library.urls')),
-    url(r'^review/', include('review.urls')),
-    url(r'^dashboard/', include('dashboard.urls', app_name='dashboard', namespace='dashboard')),
-    #url(r'^read/dashboard/', include('dashboard.urls')),
-    url(r'^edit/', include('edit.urls')),
-    url(r'^search/', include('search.urls')),
+#    url(r'^library/', include('library.urls')),
+#    url(r'^review/', include('review.urls')),
+    #index is dashboard for now
+
+    # apps/urls.py ##
+    url(r'^dashboard/', include('apps.dashboard.urls', app_name='dashboard', namespace='dashboard')),
+    url(r'^library/', include('apps.library.urls', app_name='library', namespace='library')),
+    url(r'^search/', include('apps.search.urls', app_name='search', namespace='search')),
+
+    ## Project pages for My collection ##
+    url(r'^$', mc.views.index, name='index'),
+    url(r'^about$', mc.views.about, name='about'),
+    url(r'^user_guide$', mc.views.user_guide, name='user_guide'),
+
+    ## Others ##
+    url(r'^admin/', admin.site.urls),
+    url(r'^register$', apps.utils.views.register, name='register'),
     url('', include('django.contrib.auth.urls')),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
+
 ]
 
