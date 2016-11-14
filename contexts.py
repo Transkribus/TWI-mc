@@ -1,6 +1,6 @@
 def appname(request):
     return {'appname': request.resolver_match.app_name }
 
-def funcname(request):
-    return {'appname': request.resolver_match.func }
+def urlname(request):
+    return {'urlname': request.resolver_match.url_name }
 
