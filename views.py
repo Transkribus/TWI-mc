@@ -23,7 +23,7 @@ from apps.utils.services import *
 #Imports from app (library)
 import settings
 from . import navigation
-from .forms import RegisterForm, IngestMetsUrlForm, MetsFileForm, QuickIngestMetsUrlForm
+#from .forms import RegisterForm, IngestMetsUrlForm, MetsFileForm, QuickIngestMetsUrlForm
 
 #from profiler import profile #profile is a decorator, but things get circular if I include it in decorators.py so...
 
