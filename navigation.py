@@ -3,7 +3,7 @@ import requests
 from django.conf import settings
 import sys
 from . import settings
-from read.utils import t_log
+from apps.utils.utils import t_log
 
 hierarchy = {'word': 'line',
              'line': 'region',
