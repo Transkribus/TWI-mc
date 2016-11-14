@@ -3,6 +3,7 @@ from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
 from captcha.fields import ReCaptchaField
+import settings;
 
 class RegisterForm(forms.Form):
     firstName = forms.CharField(label=_('Given Name'), max_length=100)

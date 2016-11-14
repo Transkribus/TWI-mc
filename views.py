@@ -5,8 +5,8 @@
 #import random
 
 #Imports of django modules
-#from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-#from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 #from django.utils import translation
 #from django.contrib.auth.models import User
 #from django.contrib.auth.decorators import login_required
@@ -23,7 +23,7 @@
 ##Imports from app (library)
 #import library.settings
 #from . import navigation
-#from .forms import RegisterForm, IngestMetsUrlForm, MetsFileForm, QuickIngestMetsUrlForm
+from .forms import RegisterForm
 
 #from profiler import profile #profile is a decorator, but things get circular if I include it in decorators.py so...
 
@@ -32,7 +32,8 @@ def register(request):
 #TODO this is generic guff need to extend form for extra fields, send reg data to transkribus and authticate (which will handle the user creation)
 
     if request.user.is_authenticated(): #shouldn't really happen but...
-        return HttpResponseRedirect(request.build_absolute_uri('/library/'))
+#        return HttpResponseRedirect(request.build_absolute_uri('/library/'))
+        return HttpResponseRedirect(request.build_absolute_uri(request.resolver_match.app_name))
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         sys.stdout.write("### IN t_register \r\n" )
@@ -48,7 +49,7 @@ def register(request):
             # redirect to a new URL:
             try:
                 t_register(request)
-                return HttpResponseRedirect(request.build_absolute_uri('/library/profile'))
+                return HttpResponseRedirect(request.build_absolute_uri(request.resolver_match.app_name))
                 #tried out modal here and it is nice (but not really for registration)
 #               messages.info(request, _('Registration requested please check your email.'))
 #                return HttpResponse(json.dumps({'RESET': 'true', 'MESSAGE': render_to_string('library/message_modal.html', request=request)}), content_type='text/plain')
