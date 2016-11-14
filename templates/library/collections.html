@@ -1,0 +1,23 @@
+{% extends "library/navi_base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- row 1 -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    {% trans "Collections Browse" %}
+                </h1>
+	    </div>
+            <div class="col-md-8">
+	   {% include "library/collections_table.html" with collections=collections %}
+            </div>
+
+        </div>
+     </div>
+{% endblock %}
