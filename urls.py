@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+
     url(r'^([0-9]+)$', views.d_collection, name='d_collection'),
     url(r'^([0-9]+)/([0-9]+)$', views.d_document, name='d_document'),
     url(r'^u/([a-zA-Z0-9_@\.]+)$', views.d_user, name='d_user'), #yuk TODO use userid (Whcih we have) but can't see how to get user data other than via user/findUser
