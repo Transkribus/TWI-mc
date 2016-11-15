@@ -28,7 +28,7 @@
         <li {%ifequal urlname "user_guide" %}class="active"{%endifequal%}>
           <a href="{% url 'user_guide' %}">{% trans "User Guide" %}</a>
         </li>
-         {% if user.is_authenticated %}
+{%comment%}         {% if user.is_authenticated %} {%endcomment%}
           <li {%ifequal appname "dashboard" %}class="active"{%endifequal%}>
             <a href="{% url 'dashboard:index' %}">{% trans "Dashboard"%}</a>
           </li>
@@ -38,6 +38,7 @@
           <li {%ifequal appname "search" %}class="active"{%endifequal%}>
             <a href="{% url 'search:index' %}">{% trans "Search" %}</a>
           </li>
+
 {%comment%}
           <li>
             <a href="{% url 'search' %}">{% trans "Search" %}</a>
@@ -60,9 +61,11 @@
 	  </li>
 
 {%endcomment%}
-	{% endif %}		
+{%comment%}	{% endif %}		{%endcomment%}
        </ul>
        <ul class="nav navbar-nav navbar-right">
+	  {% include "navigation/nav_buttons.html" %}
+
 {%comment%}
 <!-- #TODO work out where set_language is relative to this....
         <li>
