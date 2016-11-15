@@ -3,8 +3,8 @@ from django.conf.urls import include, url
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
 
+    url(r'^$', views.collections, name='index'),
     url(r'^collections$', views.collections, name='collections'),
     url(r'^collection/([\-0-9]+)$', views.collection, name='collection'),
     url(r'^collection_noaccess/([\-0-9]+)$', views.collection_noaccess, name='collection_noaccess'),
