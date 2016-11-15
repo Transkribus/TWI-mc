@@ -1,6 +1,6 @@
 {% extends "navi_base.html" %}
 {% load i18n %}
-
+{%comment%}
 {% block nav_buttons_out %}
 {% include "nav_buttons.html" with out=True %}
 {% endblock %}
@@ -8,7 +8,7 @@
 {% block nav_buttons_in %}
 {% include "nav_buttons.html" with out=False %}
 {% endblock %}
-
+{%endcomment%}
 
 {% block content %}
 

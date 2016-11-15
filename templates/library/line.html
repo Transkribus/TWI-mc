@@ -3,7 +3,7 @@
 
 {% load staticfiles %}
 {% load read_tags %}
-
+{%comment%}
 {% block nav_buttons_out %}
 {% include "nav_buttons.html" with out=True %}
 {% endblock %}
@@ -11,7 +11,7 @@
 {% block nav_buttons_in %}
 {% include "nav_buttons.html" with out=False %}
 {% endblock %}
-
+{%endcomment%}
 {% block content %}
 
 
