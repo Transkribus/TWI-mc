@@ -1,7 +1,7 @@
 {% load i18n %}
 
 {% if nav_up %}
-<li><a href="{{nav_up}}"><span class="glyphicon glyphicon-chevron-up" data-toggle="popover" data-trigger="hover" title="{%trans "Up"%}" data-content="{{nav_up_content}}"></span></a></li>
+<li><a href="/{{nav_up}}"><span class="glyphicon glyphicon-chevron-up" data-toggle="popover" data-trigger="hover" title="{%trans "Up"%}" data-content="{{nav_up_content}}"></span></a></li>
 {% endif %}
 {% if nav_prev %}
     <li><a href="{{nav_prev}}"><span class="glyphicon glyphicon-chevron-left" data-toggle="popover" data-trigger="hover" title="{%trans "Previous"%}"  data-content="{{nav_prev_content}}"></span></a></li>
