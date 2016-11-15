@@ -1,8 +1,8 @@
-{% extends "library/navi_base.html" %}
+{% extends "navi_base.html" %}
 {% load i18n %}
 {% load staticfiles %}
 {% load read_tags %}
-
+{%comment%}
 {% block nav_buttons_out %}
 {% include "nav_buttons.html" with out=True %}
 {% endblock %}
@@ -10,7 +10,7 @@
 {% block nav_buttons_in %}
 {% include "nav_buttons.html" with out=False %}
 {% endblock %}
-
+{%endcomment%}
 {% block content %}
 
 
@@ -31,7 +31,7 @@
 		</dl>
 		<p>This transcript has {{ regions|length }} region{% if regions|length != 1 %}s{% endif %}:</p>
 		{% if regions|length > 0 %}
-		<a href="{% url 'correct' collId docId pageId transcript.tsId %}">{% trans "Correct this transcript." %}</a>(Regardless of the ID, it's the "current transcript" at the moment.)
+		<a href="{% url 'edit:correct' collId docId pageId transcript.tsId %}">{% trans "Correct this transcript." %}</a>(Regardless of the ID, it's the "current transcript" at the moment.)
 		<table class="table table-striped">
 		   <thead>
 			<tr><th>{% trans "ID" %}</th><th>{% trans "TYPE" %}</th><th>{% trans "TEXTLINES" %}</th><th>{% trans "COORDS" %}</th><th>{% trans "TEXT" %}</th><th>{% trans "METADATA" %}</th></tr>
@@ -39,7 +39,7 @@
 		   <tbody>
 		     {% for region in regions %}
 			<tr>
-			<td><a href="{% url 'region' collId docId pageId transcript.tsId region|get_item:"@id" %}">{{region|get_item:"@id"}}</a></td>
+			<td><a href="{% url 'library:region' collId docId pageId transcript.tsId region|get_item:"@id" %}">{{region|get_item:"@id"}}</a></td>
 			<td>{{region|get_item:"@type"}}</td>
 			<td>{{region|get_item:"TextLine"|length}}</td>
 			<td>{% if region|get_item:"Coords" %}<a href="#" title="{{region.Coords|get_item:"@points"}}">{% trans "Yes" %}</a>{%else%}{% trans "No" %}{%endif%}</td>

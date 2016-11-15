@@ -1,6 +1,6 @@
-{% extends "library/navi_base.html" %}
+{% extends "navi_base.html" %}
 {% load i18n %}
-
+{%comment%}
 {% block nav_buttons_out %}
 {% include "nav_buttons.html" with out=True %}
 {% endblock %}
@@ -8,7 +8,7 @@
 {% block nav_buttons_in %}
 {% include "nav_buttons.html" with out=False %}
 {% endblock %}
-
+{%endcomment%}
 {% block content %}
 
 
@@ -32,7 +32,7 @@
      {% endfor %}
 	</ul>
 -->
-	<p>{% trans "This document was uploaded by " %}<a href="{%url 'users' collId metadata.uploaderId %}">{{metadata.uploader}}</a>.</p>
+	<p>{% trans "This document was uploaded by " %}<a href="{%url 'library::users' collId metadata.uploaderId %}">{{metadata.uploader}}</a>.</p>
      {% if metadata.collectionList.colList|length > 1 %}
 	<p>This document is a also a member of the following collection{% if metadata.collectionList.colList|length > 2 %}s{% endif %}</p>
 	<ul>
@@ -51,7 +51,7 @@
 	   </thead>
 	   <tbody>
 	     {% for page in pageList.pages %}
-		<tr><td>{{ page.pageId }}</td><td><a href="{% url 'page' collId metadata.docId page.pageNr %}">{{ page.pageNr }}</a></td><td>{{ page.imgFileName }}</td><td>{{ page.tsList.transcripts|length }}</td></tr>
+		<tr><td>{{ page.pageId }}</td><td><a href="{% url 'library:page' collId metadata.docId page.pageNr %}">{{ page.pageNr }}</a></td><td>{{ page.imgFileName }}</td><td>{{ page.tsList.transcripts|length }}</td></tr>
 	     {% endfor %}
 	   </tbody>
 	</table>
