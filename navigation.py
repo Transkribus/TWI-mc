@@ -34,6 +34,9 @@ def up_next_prev(this_level,this_id, data,parent_ids=None):
             next_promise=True
         last_id = that_id
 
-    return {'up': settings.APP_BASEURL+'/'.join(up),
-                'next':next,
-                'prev':prev}
+    return {'nav_up': settings.APP_BASEURL+'/'.join(up),
+		'nav_up_content': "Up to parent "+up,
+                'nav_next':next,
+		'nav_next_content': "Next "+this_level
+                'nav_prev':prev
+		'nav_prev_content': "Previous "+this_level}
