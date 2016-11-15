@@ -47,7 +47,7 @@ def index(request):
 #    sorted_list=sorted(myDic.items(), key=lambda x: x[0])
 #    myOrdDic = OrderedDict(sorted_list)
 #    return render(request, 'dashboard/homepage.html', {'action_types': myOrdDic, 'up': None, 'next': None, 'prev': None} )
-    return render(request, 'dashboard/homepage.html', {'last_action': last_action, 'action_types': action_types, 'up': None, 'next': None, 'prev': None} )
+    return render(request, 'dashboard/homepage.html', {'last_action': last_action, 'action_types': action_types, 'nav_up': None, 'nav_next': None, 'nav_prev': None} )
 
 
 # dashboard/{colID}
@@ -76,17 +76,22 @@ def d_collection(request,collId):
 
     collection=None
     prev=None
+    prev_content=None
     next=None
+    next_content=None
     stop_next=False
     for col in collections:
         if stop_next:
             next=col.get('colId')
+            next_content=col.get('colName')
             break
         if col.get("colId") == int(collId):
             collection = col
             stop_next=True
         else :
             prev=col.get('colId')
+            prev_content=col.get('colName')
+
     up='/dashboard'
     
 #    t_log("NEXT: %s PREV: %s UP: %s" % (next,prev,up))
@@ -100,9 +105,12 @@ def d_collection(request,collId):
 			'last_action': last_action, 
 			'collection': collection, 
 			'action_types': action_types, 
-			'up': up, 
-			'next': next, 
-			'prev':prev } )
+			'nav_up': up,
+			'nav_up_content': "Up to list of collections",
+			'nav_next': next, 
+			'nav_next_content': next_content,
+			'nav_prev':prev,
+ 			'nav_prev_content': prev_content} )
 #			'app_base_url' : resolve(request.path).app_name  } ) #nb documents only used to display length...
 
 # dashboard/{colID}/{docId}
@@ -142,25 +150,35 @@ def d_document(request,collId,docId):
     for doc in documents:
         if stop_next:
             next=doc.get('docId')
+            next_content=doc.get('title')
             break
         if doc.get("docId") == int(docId):
             document = doc
             stop_next=True
+            for col in doc.get('collectionList').get('colList'):
+                if(col.get('colId') == int(collId)):
+                    up_content=col.get('colName')
+                    break
         else :
             prev=doc.get('docId')
+            prev_content=doc.get('title')
     up='/dashboard/{!s}'.format(collId)
 
 
-    t_log("NEXT: %s PREV: %s UP: %s" % (next,prev,up))
+#    t_log("NEXT: %s PREV: %s UP: %s" % (next,prev,up))
 #    t_log("REQPATH: %s" % (request.path))
 #    t_log("RESOLVED %s" % (resolve(request.path)))
 #    t_log("APP_NAME: %s" % (request.resolver_match.app_name))
 
     return render(request, 'dashboard/document.html', {'document': fulldoc.get('md'),
                                                         'action_types': action_types,
-#                                                       'pages': fulldoc.get('pageList').get('pages')
+							'nav_up': up,
+							'nav_up_content': up_content,
+							'nav_next': next, 
+							'nav_next_content': next_content,
+							'nav_prev':prev,
+							'nav_prev_content': prev_content })
 
-        } )
 
 # dashboard/u/{userId} is the dashboard for that user. Will show actions, collections and metrics for that user, can only be accessed by collection owners (editors?)
 @t_login_required
