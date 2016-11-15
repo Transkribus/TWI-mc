@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from read.decorators import t_login_required
+from apps.utils.decorators import t_login_required
 
 
 # Create your views here.
