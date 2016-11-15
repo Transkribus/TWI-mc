@@ -15,6 +15,7 @@ $(document).ready(function(){
         	top: $('#ts-top-nav').height()
       		}
 	}); 
+    	$('[data-toggle="popover"]').popover(); 
 });
 
 /* globals... */
