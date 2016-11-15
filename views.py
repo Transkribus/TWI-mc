@@ -63,7 +63,7 @@ def collection(request, collId):
         if str(x.get("colId")) == str(collId):
             collection = x
 
-    nav = navigation.up_next_prev("collection",collId,collections)
+    nav = navigation.up_next_prev(request,"collection",collId,collections)
 
     #collection view goes down two levels (ie documents and then pages)
     # data prepared fro fancytree.js representation
@@ -83,9 +83,9 @@ def collection(request, collId):
         'collection': collection,
         'documents': docs,
 #        'documents_json': json.dumps(docs),
-        'up': nav['up'],
-        'next': nav['next'],
-        'prev': nav['prev'],
+        'nav_up': nav['up'],
+        'nav_next': nav['next'],
+        'nav_prev': nav['prev'],
         })
 
 #/library/document/{colId}/{docId}
@@ -100,15 +100,15 @@ def document(request, collId, docId, page=None):
     if isinstance(full_doc,HttpResponse):
         return full_doc
 
-    nav = navigation.up_next_prev("document",docId,collection,[collId])
+    nav = navigation.up_next_prev(request,"document",docId,collection,[collId])
 
     return render(request, 'library/document.html', {
         'metadata': full_doc.get('md'),
         'pageList': full_doc.get('pageList'),
         'collId': int(collId),
-        'up': nav['up'],
-        'next': nav['next'],
-        'prev': nav['prev'],
+        'nav_up': nav['up'],
+        'nav_next': nav['next'],
+        'nav_prev': nav['prev'],
         })
 
 #/library/document/{colId}/{docId}/{page}
@@ -136,14 +136,14 @@ def page(request, collId, docId, page):
 
 #    sys.stdout.write("############## PAGEDATA.TRANSCRIPTS: %s\r\n" % ( transcripts ) )
 
-    nav = navigation.up_next_prev("page",page,full_doc.get("pageList").get("pages"),[collId,docId])
+    nav = navigation.up_next_prev(request,"page",page,full_doc.get("pageList").get("pages"),[collId,docId])
 
     return render(request, 'library/page.html', {
         'pagedata': pagedata,
         'transcripts': transcripts,
-        'up': nav['up'],
-        'next': nav['next'],
-        'prev': nav['prev'],
+        'nav_up': nav['up'],
+        'nav_next': nav['next'],
+        'nav_prev': nav['prev'],
         'collId': collId,
         'docId': docId,
         })
@@ -157,7 +157,7 @@ def transcript(request, collId, docId, page, transcriptId):
     if isinstance(pagedata,HttpResponse):
         return pagedata
 
-    nav = navigation.up_next_prev("transcript",transcriptId,pagedata,[collId,docId,page])
+    nav = navigation.up_next_prev(request,"transcript",transcriptId,pagedata,[collId,docId,page])
 
     pageXML_url = None;
     for x in pagedata:
@@ -187,9 +187,9 @@ def transcript(request, collId, docId, page, transcriptId):
     return render(request, 'library/transcript.html', {
                 'transcript' : transcript,
                 'regions' : regions,
-                'up': nav['up'],
-                'next': nav['next'],
-                'prev': nav['prev'],
+                'nav_up': nav['up'],
+                'nav_next': nav['next'],
+                'nav_prev': nav['prev'],
                 'collId': collId,
                 'docId': docId,
                 'pageId': page, #NB actually the number for now
@@ -246,7 +246,7 @@ def region(request, collId, docId, page, transcriptId, regionId):
     if(region.get("Coords")):
         region['crop'] = crop(region.get("Coords").get("@points"),True)
 
-    nav = navigation.up_next_prev("region",regionId,regions,[collId,docId,page,transcriptId])
+    nav = navigation.up_next_prev(request,"region",regionId,regions,[collId,docId,page,transcriptId])
 
 #    sys.stdout.write("REGION: %s\r\n" % (region) )
 #    sys.stdout.flush()
@@ -262,9 +262,9 @@ def region(request, collId, docId, page, transcriptId, regionId):
     return render(request, 'library/region.html', {
                 'region' : region,
                 'lines' : lines,
-                'up': nav['up'],
-                'next': nav['next'],
-                'prev': nav['prev'],
+                'nav_up': nav['up'],
+                'nav_next': nav['next'],
+                'nav_prev': nav['prev'],
                 'collId': collId,
                 'docId': docId,
                 'pageId': page, #NB actually the number for now
@@ -329,7 +329,7 @@ def line(request, collId, docId, page, transcriptId, regionId, lineId):
         line['crop'] = crop(line.get("Coords").get("@points"),True)
 
 
-    nav = navigation.up_next_prev("line",lineId,lines,[collId,docId,page,transcriptId,regionId])
+    nav = navigation.up_next_prev(request,"line",lineId,lines,[collId,docId,page,transcriptId,regionId])
 
 #    sys.stdout.write("REGION: %s\r\n" % (region) )
 #    sys.stdout.flush()
@@ -345,9 +345,9 @@ def line(request, collId, docId, page, transcriptId, regionId, lineId):
     return render(request, 'library/line.html', {
                 'line' : line,
                 'words' : words,
-                'up': nav['up'],
-                'next': nav['next'],
-                'prev': nav['prev'],
+                'nav_up': nav['up'],
+                'nav_next': nav['next'],
+                'nav_prev': nav['prev'],
                 'collId': collId,
                 'docId': docId,
                 'pageId': page, #NB actually the number for now
@@ -419,13 +419,13 @@ def word(request, collId, docId, page, transcriptId, regionId, lineId, wordId):
     if(word.get("Coords")):
         word['crop'] = crop(word.get("Coords").get("@points"),True)
 
-    nav = navigation.up_next_prev("word",wordId,words,[collId,docId,page,transcriptId,regionId,lineId])
+    nav = navigation.up_next_prev(request,"word",wordId,words,[collId,docId,page,transcriptId,regionId,lineId])
 
     return render(request, 'library/word.html', {
                 'word' : word,
-                'up': nav['up'],
-                'next': nav['next'],
-                'prev': nav['prev'],
+                'nav_up': nav['up'],
+                'nav_next': nav['next'],
+                'nav_prev': nav['prev'],
                 'collId': collId,
                 'docId': docId,
                 'pageId': page, #NB actually the number for now
