@@ -92,7 +92,7 @@ def d_collection(request,collId):
             prev=col.get('colId')
             prev_content=col.get('colName')
 
-    up='/dashboard'
+    up='dashboard'
     
 #    t_log("NEXT: %s PREV: %s UP: %s" % (next,prev,up))
 #    t_log("REQPATH: %s" % (request.path))
@@ -162,7 +162,7 @@ def d_document(request,collId,docId):
         else :
             prev=doc.get('docId')
             prev_content=doc.get('title')
-    up='/dashboard/{!s}'.format(collId)
+    up='dashboard/{!s}'.format(collId)
 
 
 #    t_log("NEXT: %s PREV: %s UP: %s" % (next,prev,up))
