@@ -33,15 +33,15 @@
 		   </thead>
 		   <tbody>
 		     {% for doc in documents %}
-	  		<tr><td>{{ doc.docId }}</td><td><a href="{% url 'document' collId doc.docId%}">{{ doc.title }}</a></td><td>{{ doc.author }}</td><td>{{ doc.children|length }}</td></tr>
+	  		<tr><td>{{ doc.docId }}</td><td><a href="{% url 'library:document' collId doc.docId%}">{{ doc.title }}</a></td><td>{{ doc.author }}</td><td>{{ doc.children|length }}</td></tr>
 		     {% endfor %}
 		   </tbody>
 		</table>
 		<p>From this collection (if available) get a random:</p>
 		<ul>
-			<li><a href="{% url 'rand' collection.colId 'region' %}">{% trans "Region" %}</a></li>
-			<li><a href="{% url 'rand' collection.colId 'line' %}">{% trans "Line" %}</a></li>
-			<li><a href="{% url 'rand' collection.colId 'word' %}">{% trans "Word" %}</a></li>
+			<li><a href="{% url 'library:rand' collection.colId 'region' %}">{% trans "Region" %}</a></li>
+			<li><a href="{% url 'library:rand' collection.colId 'line' %}">{% trans "Line" %}</a></li>
+			<li><a href="{% url 'library:rand' collection.colId 'word' %}">{% trans "Word" %}</a></li>
 		</ul>
 	    </div>
 	</div>
