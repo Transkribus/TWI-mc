@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+{% block body_content %}
+
+<!-- divs for modals.... -->
+<div class="changed-jobs-modal"></div>
+<p>This is the app navi template it should be removed and the navigation managed by the navi_base.html in the project templates</p>
+<nav class="navbar navbar-default subnav" id="ts-dashboard-nav">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ts-app-menu" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">My Collections</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="ts-app-menu">
+       <ul class="nav navbar-nav">
+        <li>
+        <li {%ifequal urlname "about" %}class="active"{%endifequal%}>
+          <a href="{% url 'about' %}">{% trans "About" %}</a>
+        </li>
+        <li {%ifequal urlname "user_guide" %}class="active"{%endifequal%}>
+          <a href="{% url 'user_guide' %}">{% trans "User Guide" %}</a>
+        </li>
+         {% if user.is_authenticated %}
+          <li {%ifequal appname "dashboard" %}class="active"{%endifequal%}>
+            <a href="{% url 'dashboard:index' %}">{% trans "Dashboard"%}</a>
+          </li>
+          <li {%ifequal appname "library" %}class="active"{%endifequal%}>
+            <a href="{% url 'library:index' %}">{% trans "Browse" %}</a>
+          </li>
+          <li {%ifequal appname "search" %}class="active"{%endifequal%}>
+            <a href="{% url 'search:index' %}">{% trans "Search" %}</a>
+          </li>
+{%comment%}
+          <li>
+            <a href="{% url 'search' %}">{% trans "Search" %}</a>
+          </li>
+	  <li role="presentation" class="dropdown">
+	    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+		{% trans "Ingest documents" %} <span class="caret"></span>
+	    </a>
+	    <ul class="dropdown-menu">
+              <li><a href="{% url 'ingest_mets_xml' %}">{% trans "Upload METS XML file" %}</a></li>
+              <li><a href="{% url 'ingest_mets_url' %}">{% trans "Enter URL to METS XML file" %}</a></li>
+	    </ul>
+	  </li>
+	  <li>
+		<div class="alert alert-info job-notification collapse" role="alert">
+			<button type="button" class="close job-notification-close"  aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<strong>{% trans "Job status changed!" %}</strong>
+			<a href="#" class="alert-link job-notification-close"  data-toggle="modal" data-target="#changedJobsModal">{% trans "Details." %}</a>
+		</div>
+	  </li>
+
+{%endcomment%}
+	{% endif %}		
+       </ul>
+       <ul class="nav navbar-nav navbar-right">
+{%comment%}
+<!-- #TODO work out where set_language is relative to this....
+        <li>
+        {% get_current_language as LANGUAGE_CODE %}
+        <form action="{% url 'set_language' %}" method="post" id="language_switcher" style="margin-top: 5px;">
+          <input name="next" type="hidden" value="{{ request.path }}" />
+          {% csrf_token %}
+         {% bootstrap_form language_form %} 
+          <span class="flag-icon flag-icon-{{LANGUAGE_CODE}}" style="position: relative; top: 3px;"></span>
+        </form>
+        </li>
+-->
+	  <li role="presentation" class="dropdown">
+	    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+	     <span class="flag-icon flag-icon-{{LANGUAGE_CODE}}" style="position: relative; top: 3px;"></span> <span class="caret"></span>
+	    </a>
+	    <ul class="dropdown-menu">
+	        <form action="{% url 'set_language' %}" method="post" id="language_switcher" style="margin-top: 5px;">
+	          <input name="next" type="hidden" value="{{ request.path }}" />
+        	  {% csrf_token %}
+	          {% bootstrap_form language_form %} 
+		</span>
+	    </ul>
+	  </li>
+{%endcomment%}
+         {% if user.is_authenticated %}
+	  <li role="presentation" class="dropdown">
+	    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+	     <span class="glyphicon glyphicon-user"></span> <span class="caret"></span>
+	    </a>
+	    <ul class="dropdown-menu">
+	          <li>
+        	    <a href="{% url 'logout' %}?next={{request.path}}">{% trans "Logout" %}</a>
+	          </li>
+	    </ul>
+	  </li>
+         {% else %}
+          <li>
+            <a href="{% url 'login' %}?next={{request.path}}">{% trans "Login" %}</a>
+          </li>
+          <li>
+            <a href="{% url 'register' %}">{% trans "Register" %}</a>
+          </li>
+	 {% endif %}
+      </ul>
+    </div>  
+  </div>
+</nav>
+{%comment%}
+<!--
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav" style="padding-left: 10px; padding-right: 10px;">
+				<li class="sidebar-brand">
+					<a href="http://read.transkribus.eu/"><img src="{% static "images/read.png" %}" /></a>
+				</li>
+				<li class="sidebar-brand">
+					<a href="{% url 'index' %}"><h4>{%trans "Transkribus Dashboard" %}</h4></a>
+				</li>
+				{% if user.is_authenticated %}
+					<li>
+						<a href="{% url 'collections' %}">{% trans "Collections" %}</a>
+					</li>
+					<li>
+						<a href="{% url 'search' %}">{% trans "Search" %}</a>
+					</li>
+					<li>
+						<a href="#" id="ingest" data-toggle="collapse" data-target="#ingestion" aria-expanded="false">{% trans "Ingest documents" %}</a>
+						<ul class="nav collapse" id="ingestion" role="menu" aria-labelledby="ingest">
+							<li><a href="{% url 'ingest_mets_xml' %}">{% trans "Upload METS XML file" %}</a></li>
+							<li><a href="{% url 'ingest_mets_url' %}">{% trans "Enter URL to METS XML file" %}</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="{% url 'profile' %}">{% trans "Profile"%}</a>
+					</li>
+					<li>
+						<a href="{% url 'logout' %}?next={{request.path}}">{% trans "Logout" %}</a>
+					</li>
+				{% else %}
+					<li>
+						<a href="{% url 'login' %}?next={{request.path}}">{% trans "Login" %}</a>
+					</li>
+					<li>
+						<a href="{% url 'register' %}">{% trans "Register" %}</a>
+					</li>
+				{% endif %}
+				<li>
+					<a href="{% url 'about' %}">{% trans "About" %}</a>
+				</li>
+				<li>
+					<a href="{% url 'user_guide' %}">{% trans "User Guide" %}</a>
+				</li>
+				<li>
+				{% get_current_language as LANGUAGE_CODE %}
+				<form action="{% url 'set_language' %}" method="post" id="language_switcher">
+					<input name="next" type="hidden" value="{{ request.path }}" />
+					{% csrf_token %}
+					{% bootstrap_form language_form %}
+					<span class="flag-icon flag-icon-{{LANGUAGE_CODE}}"></span>
+				</form>
+				</li>
+				{% if user.is_authenticated %}
+					<li>
+						<div class="alert alert-info job-notification collapse" role="alert">
+							<button type="button" class="close job-notification-close"  aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<strong>{% trans "Job status changed!" %}</strong>
+							<a href="#" class="alert-link job-notification-close"  data-toggle="modal" data-target="#changedJobsModal">{% trans "Details." %}</a>
+						</div>
+					</li>
+				{% endif %}		
+			</ul>
+			<div class="read_nav read_nav_in pull-right">
+				<ul>
+					<li><a href="#menu-toggle" id="menu-toggle-in" class="menu-toggle btn btn-inverse btn-xs pull-right"><span class="glyphicon glyphicon-chevron-left"><span></a></li>
+				</ul>
+				{% block nav_buttons_in %}{% endblock %}
+			</div>
+		</div> 
+-->
+{%endcomment%}
+		<div id="page-content-wrapper"><!-- Page Content -->
+			<div class="read_nav read_nav_out pull-left">
+				<ul>
+					<li><a href="#menu-toggle" id="menu-toggle-out" class="menu-toggle btn btn-default btn-xs pull-left"><span class="glyphicon glyphicon-chevron-right"><span></a></li>
+					{% block nav_buttons_out %}{% endblock %}
+				</ul>
+			</div>		
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						{% block content %}{% endblock %}
+					</div>
+				</div>
+			</div>
+
+{% endblock body_content %}
