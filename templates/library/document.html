@@ -38,7 +38,7 @@
 	<ul>
 	     {% for alt_col in metadata.collectionList.colList %}
 		{% ifnotequal collId alt_col.colId %}
-		<li><a href="{% url 'collection' alt_col.colId %}">{{alt_col.description}}</a></li>
+		<li><a href="{% url 'library:collection' alt_col.colId %}">{{alt_col.description}}</a></li>
 		{% endifnotequal %}
 	     {% endfor %}
 	</ul>

@@ -2,15 +2,8 @@
 {% load i18n %}
 
 {%comment%} TODO make this conditional on navigation app being present... somehow {%endcomment%}
-{% block nav_buttons_out %}
-{% include "navigation/nav_buttons.html" with out=True %}
-{% endblock %}
-
-{% block nav_buttons_in %}
-{% include "navigation/nav_buttons.html" with out=False %}
-{% endblock %}
-
 {% block content %}
+
 
 
     <!-- Page Content -->
