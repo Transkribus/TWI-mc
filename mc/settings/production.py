@@ -47,7 +47,8 @@ INSTALLED_APPS = [
 #    'review',
     'apps.dashboard',
 #    'edit',
-#    'search'
+    'apps.search',
+    'apps.navigation'
 ]
 
 MIDDLEWARE = [
