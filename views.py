@@ -145,7 +145,10 @@ def d_document(request,collId,docId):
 
     document=None
     prev=None
+    prev_content=None
     next=None
+    next_content=None
+    up_content=None
     stop_next=False
     for doc in documents:
         if stop_next:
