@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'apps.library',
 #    'review',
     'apps.dashboard',
-#    'edit',
+    'apps.edit',
     'apps.search',
     'apps.navigation'
 ]

@@ -16,3 +16,6 @@
 [submodule "apps/navigation"]
 	path = apps/navigation
 	url = git@github.com:Transkribus/TWI-navigation.git
+[submodule "apps/edit"]
+	path = apps/edit
+	url = git@github.com:Transkribus/TWI-edit.git
