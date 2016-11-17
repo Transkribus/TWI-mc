@@ -7,7 +7,6 @@ requests.packages.urllib3.disable_warnings()
 #Possibly check for openssl-devel python-devel libffi-devel (yum)
 
 import xmltodict
-import dicttoxml
 from django.http import HttpResponseRedirect
 from django.conf import settings
 import sys #remove after switching to t_log
