@@ -22,7 +22,7 @@ def up_next_prev(request,this_level,this_id, data,parent_ids=None):
     if parent_ids:
         for id in parent_ids: #TODO work out slicker way to do this
             up.append(id)
-    t_log("##########UPNEXTPREV#############");
+    t_log("########## RORY WOZ ERE #############");
     #assumptions are that we want to traverse by id and do that they will be presented to us in order (can sort data if not)
     next_promise=False
     last_id=None
