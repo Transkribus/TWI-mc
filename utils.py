@@ -7,9 +7,13 @@ import hashlib
 from django.conf import settings
 import logging
 
+def t_log(text):
+    sys.stdout.write("[%s] %s \n" % (datetime.datetime.now(), text))
+    sys.stdout.flush()
+
 # t_log is now a custom logger that does formatting of proper log messages that pay attention to proper LOGGING config item
 # to send a log message user logger.debug("message") or logger.info or logger.warn
-def t_log(name):
+def t_logger(name):
     formatter = logging.Formatter(fmt='[%(asctime)s] - %(levelname)s - %(module)s - %(message)s',datefmt='%d/%b/%Y %H:%M:%S')
 
     handler = logging.StreamHandler()

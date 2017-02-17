@@ -10,8 +10,8 @@ import xmltodict
 from django.http import HttpResponseRedirect
 from django.conf import settings
 import sys #remove after switching to t_log
-from .utils import t_log, t_gen_request_id
-logger = t_log('root')
+from .utils import t_log, t_logger, t_gen_request_id
+logger = t_logger('root')
 import json
 import re
 
@@ -39,7 +39,7 @@ def t_check_cache(request,t_id, url, params=None) :
     if t_id in request.session :
         request_id = t_gen_request_id(url,params)
         if request_id in request.session[t_id] :
-            t_log("HAVE CACHE: %s " % request_id)
+            logger.info("HAVE CACHE: %s " % request_id)
             return request.session[t_id][request_id]
 
     #no data cached for this t_id/url pair, return None
@@ -51,7 +51,7 @@ def t_set_cache_value(request,t_id,data,url,params=None) :
     #Use the t_id as identifer for cached data, Store the url with key "cache_url" (in first element if data is a list)
     request_id = t_gen_request_id(url,params)
 
-    t_log("### [CAHCING] CACHING %s with request_id : %s" % (t_id,request_id) )
+    logger.info("### [CAHCING] CACHING %s with request_id : %s" % (t_id,request_id) )
     if t_id not in request.session : request.session[t_id] = {}
     request.session[t_id][request_id] = data
 
@@ -62,7 +62,7 @@ def t_request(request,t_id,url,params=None,method=None,headers=None,handler_para
     #Check for cached value and return that #TODO override this on some occaisions
     cache_data = t_check_cache(request, t_id, url, params)
     if cache_data :
-        t_log("FROM CACHE: %s" % url)
+        logger.info("FROM CACHE: %s" % url)
         return cache_data
 
     #Add default headers to *possibly* already defined header data
@@ -70,7 +70,7 @@ def t_request(request,t_id,url,params=None,method=None,headers=None,handler_para
     headers = t_set_default_headers(headers)
 
     #Default method is GET
-    t_log("TRANSKRIBUS REQUEST: %s" % url)
+    logger.info("TRANSKRIBUS REQUEST: %s" % url)
     if method == 'POST' :
         r = s.post(url, params=params, verify=False, headers=headers)
     else:
@@ -126,7 +126,7 @@ def t_register(request):
 
     url = settings.TRP_URL+'user/register'
     t_id = "user_data" # note we are using the same t_id as for t_login...
-    t_log("G_CAPTCH_RESPONSE: %s" % request.POST.get('g-recaptcha-response'))
+    logger.info("G_CAPTCH_RESPONSE: %s" % request.POST.get('g-recaptcha-response'))
     params = {'user': request.POST.get('user'),
                 'pw': request.POST.get('pw'),
                 'firstName': request.POST.get('firstName'),
@@ -141,7 +141,7 @@ def t_register(request):
 
 # REG FAIL HANDLER
 def t_register_handler(r,params=None):
-    t_log("400 from register...")
+    logger.info("400 from register...")
     raise ValueError('%s' % (r.text))
 
 def t_login(user, pw):
@@ -219,7 +219,7 @@ def t_collection_recent(request,collId):
     return t_request(request,t_id,url,params,"GET")
 
 def t_collection_recent_handler(r,params=None):
-    #t_log("collection_recent: %s " % r.text)
+    logger.info("collection_recent: %s " % r.text)
     return json.loads(r.text)
 
 #t_collections_count
@@ -239,7 +239,7 @@ def t_collections(request,params=None):
 
 def t_collections_handler(r,params=None):
     t_collections = json.loads(r.text)
-    t_log(str(t_collections))
+    logger.info(str(t_collections))
     #use common param 'key' for ids (may yet drop...)
     for col in t_collections:
         col['key'] = col['colId']
@@ -411,8 +411,7 @@ def t_ingest_mets_xml(collId, mets_file):
     r = s.post(url, files=files, verify=False)
 
     if r.status_code != requests.codes.ok:
-        sys.stdout.write("ERROR CODE: %s%% \r\n ERROR: %s%%" % (r.status_code, r.text) )
-        sys.stdout.flush()
+        logger.info("ERROR CODE: %s%% \r\n ERROR: %s%%" % (r.status_code, r.text) )
         return None
     # TODO What to do when we're successful?'
 
@@ -422,13 +421,11 @@ def t_ingest_mets_url(collId, mets_url):
     params = {'fileName': mets_url}#, 'checkForDuplicateTitle': 'false'}# Perhaps this won't work even for testing! TODO Resolve!
     r = s.post(url, params=params, verify=False)
 
-    sys.stdout.write("Ingesting document from METS XML file URL: %s%% \r\n" % (mets_url) )
-    sys.stdout.flush()
+    logger.info("Ingesting document from METS XML file URL: %s%% \r\n" % (mets_url) )
     if (r.status_code == requests.codes.ok):
         return True
     else:
-        sys.stdout.write("ERROR CODE: %s%% \r\n ERROR: %s%%" % (r.status_code, r.text) )
-        sys.stdout.flush()
+        logger.info("ERROR CODE: %s%% \r\n ERROR: %s%%" % (r.status_code, r.text) )
         return None
 
 def t_create_collection(request, collection_name):
@@ -442,8 +439,7 @@ def t_jobs(status = ''):
     params = {'status': status}
     r = s.get(url, params=params, verify=False)
     if r.status_code != requests.codes.ok:
-        sys.stdout.write("Error getting jobs: %s \r\n ERROR: %s" % (r.status_code, r.text))
-        sys.stdout.flush()
+        logger.info("Error getting jobs: %s \r\n ERROR: %s" % (r.status_code, r.text))
         return None
     jobs_json=r.text
     jobs = json.loads(jobs_json)
@@ -454,8 +450,7 @@ def t_job_count(status = ''):
     params = {'status': status}
     r = s.get(url, params=params, verify=False)
     if r.status_code != requests.codes.ok:
-        sys.stdout.write("Error getting job count: %s \r\n ERROR: %s" % (r.status_code, r.text))
-        sys.stdout.flush()
+        logger.info("Error getting job count: %s \r\n ERROR: %s" % (r.status_code, r.text))
         return None
     count=r.text
     return count
@@ -464,7 +459,6 @@ def t_kill_job(job_id):
     url = settings.TRP_URL + 'jobs/' + job_id + '/kill'
     r = s.post(url, verify=False)
 
-    sys.stdout.write("Response to kill job: %s  \r\n" % (r.status_code) )
-    sys.stdout.flush()
+    logger.info("Response to kill job: %s  \r\n" % (r.status_code) )
 
     return r.status_code == requests.codes.ok
