@@ -5,13 +5,19 @@ import json
 import hashlib
 
 from django.conf import settings
+import logging
 
+# t_log is now a custom logger that does formatting of proper log messages that pay attention to proper LOGGING config item
+# to send a log message user logger.debug("message") or logger.info or logger.warn
+def t_log(name):
+    formatter = logging.Formatter(fmt='[%(asctime)s] - %(levelname)s - %(module)s - %(message)s',datefmt='%d/%b/%Y %H:%M:%S')
 
-# log message
-def t_log(text):
-    if settings.DEBUG and settings.LOG_LEVEL > 1 :
-        sys.stdout.write("[%s] %s \n" % (datetime.datetime.now(), text))
-        sys.stdout.flush()
+    handler = logging.StreamHandler()
+    handler.setFormatter(formatter)
+
+    logger = logging.getLogger(name)
+    logger.addHandler(handler)
+    return logger
 
 def t_gen_request_id(url,params):
     ###### EXCEPTION ######

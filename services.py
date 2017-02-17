@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect
 from django.conf import settings
 import sys #remove after switching to t_log
 from .utils import t_log, t_gen_request_id
+logger = t_log('root')
 import json
 import re
 
@@ -165,6 +166,9 @@ def t_user_data_handler(r,params=None):
 ############## DEPRECATED ########################
 def t_refresh():
     url = settings.TRP_URL+'auth/refresh'
+
+    logger.debug("In t_refresh*")
+    logger.warn("In t_refresh")
 
     t_log("### [POST REQUEST] t_refresh will POST: %s" % (url) )
 
