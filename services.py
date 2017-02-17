@@ -167,14 +167,11 @@ def t_user_data_handler(r,params=None):
 def t_refresh():
     url = settings.TRP_URL+'auth/refresh'
 
-    logger.debug("In t_refresh*")
-    logger.warn("In t_refresh")
-
-    t_log("### [POST REQUEST] t_refresh will POST: %s" % (url) )
+    logger.info("### [POST REQUEST] t_refresh will POST: %s" % (url) )
 
     r = s.post(url, verify=False)
 
-    t_log("### t_refresh response STATUS_CODE: %s" % (r.status_code) )
+    logger.info("### t_refresh response STATUS_CODE: %s" % (r.status_code) )
 
     if r.status_code != requests.codes.ok:
         return False
