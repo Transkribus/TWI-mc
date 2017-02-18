@@ -1,0 +1,6 @@
+*.pyc
+mc/settings/development.py
+mc/settings/local.py
+*__pycache__*
+tmp
+collected_static
