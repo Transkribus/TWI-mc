@@ -23,12 +23,21 @@ with open(os.path.join(PROJECT_ROOT,'secret_key.txt')) as f:
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True #TODO check correct ALLOWED_HOSTS settings for transkribus.eu
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+     'formatters': {
+        'request': {
+            'format':'[%(asctime)s] - %(levelname)s - %(module)s : %(message)s' ,
+	    'datefmt' : '%d/%b/%Y %H:%M:%S'
+
+        },
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'formatter' : 'request',
         },
     },
     'loggers': {
