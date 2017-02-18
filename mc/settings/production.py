@@ -15,12 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(BASE_DIR))
-#PUBLIC_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, 'public'))
-
-
-
-#with open(os.path.join(PROJECT_ROOT,'secret_key.txt')) as f:
-#    SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False #TODO check correct ALLOWED_HOSTS settings for transkribus.eu
