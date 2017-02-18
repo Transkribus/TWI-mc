@@ -19,11 +19,11 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(BASE_DIR))
 
 
 
-with open(os.path.join(PROJECT_ROOT,'secret_key.txt')) as f:
-    SECRET_KEY = f.read().strip()
+#with open(os.path.join(PROJECT_ROOT,'secret_key.txt')) as f:
+#    SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True #TODO check correct ALLOWED_HOSTS settings for transkribus.eu
+DEBUG = False #TODO check correct ALLOWED_HOSTS settings for transkribus.eu
 
 LOGGING = {
     'version': 1,
@@ -199,20 +199,25 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = '/readTest/static/'
-MEDIA_URL = '/media/'
+#### NB this is the static files setting for the production apache server
 
-STATIC_ROOT =  'static'
-MEDIA_ROOT = 'media'
-
-#STATICFILES_DIRS = (
-#    os.path.join(PROJECT_ROOT, 'static'),
-#)
-
+#Step 1: we store static files in project_root/static
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
+#Step 2 we also store static files in static directories in the apps
+# and these finders will find them for us
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
+#Step 3 We run python manage.py collectstatic it will collect the static files from the locations defined above
+# and store them in the location defined by STATIC_ROOT (cannot be the same as any of the STATFILES_DIRS)
+STATIC_ROOT =  'collected_static'
+MEDIA_ROOT = 'media' #not currently used
+#Step 4 Finally we tell django how to serve the static files
+STATIC_URL = '/readTest/static/'
+MEDIA_URL = '/readTest/media/' #not currently used
 
 ##################### Added for READ ###################
 
