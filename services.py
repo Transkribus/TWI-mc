@@ -10,8 +10,8 @@ import xmltodict
 from django.http import HttpResponseRedirect
 from django.conf import settings
 import sys #remove after switching to t_log
-from .utils import t_log, t_logger, t_gen_request_id
-logger = t_logger('root')
+from .utils import t_log, t_gen_request_id
+import logging # only for log levels (ie logging.WARN etc, which is a maybe crap)
 import json
 import re
 
@@ -38,8 +38,9 @@ def t_check_cache(request,t_id, url, params=None) :
     # t_id and url as identifer for cached data, Store with key "cache_url" and in first element if data is a list
     if t_id in request.session :
         request_id = t_gen_request_id(url,params)
+        t_log("CHECK FOR CACHE of %s WITH: %s " % (t_id, request_id), logging.WARN)
         if request_id in request.session[t_id] :
-            logger.info("HAVE CACHE: %s " % request_id)
+            t_log("USING CACHE: %s " % request_id, logging.WARN)
             return request.session[t_id][request_id]
 
     #no data cached for this t_id/url pair, return None
@@ -51,7 +52,7 @@ def t_set_cache_value(request,t_id,data,url,params=None) :
     #Use the t_id as identifer for cached data, Store the url with key "cache_url" (in first element if data is a list)
     request_id = t_gen_request_id(url,params)
 
-    logger.info("### [CAHCING] CACHING %s with request_id : %s" % (t_id,request_id) )
+    t_log("CACHING %s with request_id : %s" % (t_id,request_id), logging.WARN )
     if t_id not in request.session : request.session[t_id] = {}
     request.session[t_id][request_id] = data
 
@@ -62,7 +63,7 @@ def t_request(request,t_id,url,params=None,method=None,headers=None,handler_para
     #Check for cached value and return that #TODO override this on some occaisions
     cache_data = t_check_cache(request, t_id, url, params)
     if cache_data :
-        logger.info("FROM CACHE: %s" % url)
+        t_log("FROM CACHE: %s" % url)
         return cache_data
 
     #Add default headers to *possibly* already defined header data
@@ -70,7 +71,7 @@ def t_request(request,t_id,url,params=None,method=None,headers=None,handler_para
     headers = t_set_default_headers(headers)
 
     #Default method is GET
-    logger.info("TRANSKRIBUS REQUEST: %s" % url)
+    t_log("TRANSKRIBUS REQUEST: %s" % url)
     if method == 'POST' :
         r = s.post(url, params=params, verify=False, headers=headers)
     else:
@@ -126,7 +127,7 @@ def t_register(request):
 
     url = settings.TRP_URL+'user/register'
     t_id = "user_data" # note we are using the same t_id as for t_login...
-    logger.info("G_CAPTCH_RESPONSE: %s" % request.POST.get('g-recaptcha-response'))
+    t_log("G_CAPTCH_RESPONSE: %s" % request.POST.get('g-recaptcha-response'))
     params = {'user': request.POST.get('user'),
                 'pw': request.POST.get('pw'),
                 'firstName': request.POST.get('firstName'),
@@ -141,7 +142,7 @@ def t_register(request):
 
 # REG FAIL HANDLER
 def t_register_handler(r,params=None):
-    logger.info("400 from register...")
+    t_log("400 from register...")
     raise ValueError('%s' % (r.text))
 
 def t_login(user, pw):
@@ -167,11 +168,11 @@ def t_user_data_handler(r,params=None):
 def t_refresh():
     url = settings.TRP_URL+'auth/refresh'
 
-    logger.info("### [POST REQUEST] t_refresh will POST: %s" % (url) )
+    t_log("[POST REQUEST] t_refresh will POST: %s" % (url) )
 
     r = s.post(url, verify=False)
 
-    logger.info("### t_refresh response STATUS_CODE: %s" % (r.status_code) )
+    t_log("### t_refresh response STATUS_CODE: %s" % (r.status_code) )
 
     if r.status_code != requests.codes.ok:
         return False
@@ -219,7 +220,7 @@ def t_collection_recent(request,collId):
     return t_request(request,t_id,url,params,"GET")
 
 def t_collection_recent_handler(r,params=None):
-    logger.info("collection_recent: %s " % r.text)
+    t_log("collection_recent: %s " % r.text)
     return json.loads(r.text)
 
 #t_collections_count
@@ -239,7 +240,7 @@ def t_collections(request,params=None):
 
 def t_collections_handler(r,params=None):
     t_collections = json.loads(r.text)
-    logger.info(str(t_collections))
+    t_log(str(t_collections))
     #use common param 'key' for ids (may yet drop...)
     for col in t_collections:
         col['key'] = col['colId']
@@ -411,7 +412,7 @@ def t_ingest_mets_xml(collId, mets_file):
     r = s.post(url, files=files, verify=False)
 
     if r.status_code != requests.codes.ok:
-        logger.info("ERROR CODE: %s%% \r\n ERROR: %s%%" % (r.status_code, r.text) )
+        t_log("ERROR CODE: %s%% \r\n ERROR: %s%%" % (r.status_code, r.text) )
         return None
     # TODO What to do when we're successful?'
 
@@ -421,11 +422,11 @@ def t_ingest_mets_url(collId, mets_url):
     params = {'fileName': mets_url}#, 'checkForDuplicateTitle': 'false'}# Perhaps this won't work even for testing! TODO Resolve!
     r = s.post(url, params=params, verify=False)
 
-    logger.info("Ingesting document from METS XML file URL: %s%% \r\n" % (mets_url) )
+    t_log("Ingesting document from METS XML file URL: %s%% \r\n" % (mets_url) )
     if (r.status_code == requests.codes.ok):
         return True
     else:
-        logger.info("ERROR CODE: %s%% \r\n ERROR: %s%%" % (r.status_code, r.text) )
+        t_log("ERROR CODE: %s%% \r\n ERROR: %s%%" % (r.status_code, r.text) )
         return None
 
 def t_create_collection(request, collection_name):
@@ -439,7 +440,7 @@ def t_jobs(status = ''):
     params = {'status': status}
     r = s.get(url, params=params, verify=False)
     if r.status_code != requests.codes.ok:
-        logger.info("Error getting jobs: %s \r\n ERROR: %s" % (r.status_code, r.text))
+        t_log("Error getting jobs: %s \r\n ERROR: %s" % (r.status_code, r.text))
         return None
     jobs_json=r.text
     jobs = json.loads(jobs_json)
@@ -450,7 +451,7 @@ def t_job_count(status = ''):
     params = {'status': status}
     r = s.get(url, params=params, verify=False)
     if r.status_code != requests.codes.ok:
-        logger.info("Error getting job count: %s \r\n ERROR: %s" % (r.status_code, r.text))
+        t_log("Error getting job count: %s \r\n ERROR: %s" % (r.status_code, r.text))
         return None
     count=r.text
     return count
@@ -459,6 +460,6 @@ def t_kill_job(job_id):
     url = settings.TRP_URL + 'jobs/' + job_id + '/kill'
     r = s.post(url, verify=False)
 
-    logger.info("Response to kill job: %s  \r\n" % (r.status_code) )
+    t_log("Response to kill job: %s  \r\n" % (r.status_code) )
 
     return r.status_code == requests.codes.ok

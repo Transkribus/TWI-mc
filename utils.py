@@ -7,21 +7,19 @@ import hashlib
 from django.conf import settings
 import logging
 
-def t_log(text):
-    sys.stdout.write("[%s] %s \n" % (datetime.datetime.now(), text))
-    sys.stdout.flush()
+#t_log calls gets logger and calls logger.log, default level is INFO but can be overriden either by importing loggingto use a constant or just passing the appropriate int
 
-# t_log is now a custom logger that does formatting of proper log messages that pay attention to proper LOGGING config item
-# to send a log message user logger.debug("message") or logger.info or logger.warn
-def t_logger(name):
-    formatter = logging.Formatter(fmt='[%(asctime)s] - %(levelname)s - %(module)s - %(message)s',datefmt='%d/%b/%Y %H:%M:%S')
+#CRITICAL 50
+#ERROR	  40
+#WARNING  30
+#INFO     20
+#DEBUG    10
+#NOTSET   0
 
-    handler = logging.StreamHandler()
-    handler.setFormatter(formatter)
+def t_log(text,level=logging.INFO):
 
-    logger = logging.getLogger(name)
-    logger.addHandler(handler)
-    return logger
+    logger = logging.getLogger('django')
+    logger.log(level,text)
 
 def t_gen_request_id(url,params):
     ###### EXCEPTION ######
