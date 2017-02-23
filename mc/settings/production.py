@@ -15,7 +15,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(BASE_DIR))
-PUBLIC_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, 'public'))
+#PUBLIC_ROOT = os.path.abspath(os.path.join(PROJECT_ROOT, 'public'))
+
 
 
 with open(os.path.join(PROJECT_ROOT,'secret_key.txt')) as f:
@@ -48,7 +49,7 @@ LOGGING = {
     },
 }
 
-#ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['transkribus.eu']
 
 
 # Application definition
@@ -198,15 +199,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/readTest/static/'
 MEDIA_URL = '/media/'
 
-STATIC_ROOT = os.path.join(PUBLIC_ROOT, 'static')
-MEDIA_ROOT = os.path.join(PUBLIC_ROOT, 'media')
+STATIC_ROOT =  'static'
+MEDIA_ROOT = 'media'
 
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
-)
+#STATICFILES_DIRS = (
+#    os.path.join(PROJECT_ROOT, 'static'),
+#)
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -236,7 +237,7 @@ PAGE_SIZE_DEFAULT = 5
 ### Manage static resources ###
 
 #Switch to use CDNs or local
-USE_CDNS = False
+USE_CDNS = True
 # Static Resources (js css etc)
 CDNS = {'bootstrap_css' : {'local': "/static/css/bootstrap.min.css", 'cdn' : "//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" },
        'bootstrap_js' : {'local': "/static/js/bootstrap.min.js", 'cdn' : "//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"},
