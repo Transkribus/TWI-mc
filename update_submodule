@@ -1,0 +1,147 @@
+#!/bin/bash
+APPS_DIR=~/APPS
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# A POSIX variable
+OPTIND=1         # Reset in case getopts has been used previously in the shell.
+
+# Initialize our own variables:
+SUBMOD=""
+TEST=0
+
+function usage(){
+	
+cat <<EOF
+
+update_submodule -s submodule_name [-r repo_name] [-n] [-h]
+
+EOF
+}
+
+function show_help(){
+
+usage	
+cat <<EOF
+	-s submodule_name : Supply the name of the module to be updated ( eg apps/dashboard )
+	-r repo_name : By default assumes that repo has been cloned in $APPS_DIR with the submodule_name, however if 
+		       this is not the case the repo_name can be suppoied (eg TWI-dashboard)
+	-n : not-really, just show me what will be copied to $APPS_DIR and what the git diff is
+	-h : help, show this message and exit
+
+EOF
+}
+
+while getopts "h?ns:r:" opt; do
+    case "$opt" in
+    h)
+        show_help
+        exit 0
+        ;;
+    \?)
+	usage
+	exit 0
+	;;
+    n)  TEST=1
+        ;;
+    s)  
+	if [[ $OPTARG = -* ]]; then
+        	((OPTIND--))
+        	continue
+      	fi
+	SUBMOD=$OPTARG
+        ;;
+    r)  
+	if [[ $OPTARG = -* ]]; then
+        	((OPTIND--))
+        	continue
+      	fi
+	REPONAME=$OPTARG
+        ;;
+
+    esac
+done
+
+[[ $SUBMOD == "" ]] && (usage; exit 0)
+
+shift $((OPTIND-1))
+
+[ "$1" = "--" ] && shift
+
+[ -z "$REPONAME" ] && REPONAME=${SUBMOD##*/}
+
+SUB_DIR=$SUBMOD
+#In the APP_DIR we We assume that the repository will be installed to just the app name so apps/dashboard becomes dashboard
+#In case a git clone was done and the default repo name was (eg TWI-dashboard) we provide the -r option
+APP_DIR=$APPS_DIR/$REPONAME
+
+if [ $TEST == 0 ]
+then 
+
+cat <<EOF
+############################################ TWI SUBMODULE UPDATER ################################################
+#
+# Before we get going you must understand the following:
+#    - This script will copy changes from the submodule directory $SUBMOD to the app direcotry $APP_DIR
+#    - This script will then revert the changes in $SUBMOD
+#    - commit and push the changes in $APP_DIR
+#    - It will update the submodule and push that change to the project repository
+#    - All pushes and pulls will be to/from origin master
+#
+####################################################################################################################
+
+This process is for updating submodule repositories only. It is probablly best to commit (or revert) any changes to the project files before you run this just in case.
+
+Is this OK?[Y/N]
+EOF
+
+read response
+
+[ $response != 'Y' ] && exit
+
+fi
+
+#collect files that have changed #TODO and new files added
+cd $SUBMOD
+FILES=$(git status | grep '^#\s*modified:' | cut -f 2- -d :)
+for MOD_PATH in "${FILES[@]}"
+do
+   :
+   MOD_PATH="$(echo -e "${MOD_PATH}" | sed -e 's/^[[:space:]]*//')"
+   echo "$SUBMOD/$MOD_PATH ==> $APPS_DIR/$REPONAME/$MOD_PATH"
+   #Copy them from the project submodule to the app clone
+   if [ $TEST  == 0 ]
+     then
+	echo "Copying $SUBMOD/$MOD_PATH" && cp $MOD_PATH $APPS_DIR/$REPONAME/$MOD_PATH
+   	#revert the copied file in the sumodule
+	DIFF=$(diff $MOD_PATH $APPS_DIR/$REPONAME/$MOD_PATH) 
+	if [ "$DIFF" != "" ] 
+		then	
+		echo "Stopping as the file $SUBMOD/$MOD_PATH wasn't copied to $APPS_DIR/$REPONAME/$MOD_PATH properly" && exit
+	fi
+	echo "reverting submodule" && git checkout -- $MOD_PATH
+
+   	# Go to the APP clone and commit the change
+   	cd $APP_DIR
+   	echo "commiting to reall app repository" && git commit $MOD_PATH
+   else
+	git diff 
+   fi
+
+done
+
+if [ $TEST == 1 ] 
+   then
+	exit
+fi
+
+#push the changed app
+(cd $APP_DIR && git push origin master)
+
+#go to submodule and pull
+cd $DIR/$SUBMOD
+git pull origin master
+#go to project and commit and push
+cd $DIR
+git commit $SUBMOD
+git push origin master
+
