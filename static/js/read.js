@@ -139,7 +139,13 @@ function init_users_table(){
 		    { "data": "lastname" },
 		    { "data": "email" },
 		    { "data": "affiliation" },
-		    { "data": "created" },
+		    { "data": "created",
+		      "render" : function(data, type, row){
+				if(data === "n/a") return data;
+				var date = new Date(data)	
+				return date.toDateString();
+			},
+		    },
 		    { "data": "role" },
         	];
 	return init_datatable($("#users_table"),url,columns);
@@ -176,7 +182,12 @@ function init_documents_table(){
 		    { "data": "docId" },
 		    { "data": "title" },
 		    { "data": "author" },
-		    { "data": "uploadTimestamp" },
+		    { "data": "uploadTimestamp",
+		      "render" : function(data, type, row){
+				var date = new Date(data)	
+				return date.toDateString();
+			} 
+		    },
 		    { "data": "uploader" },
 		    { "data": "nrOfPages" },
 		    { "data": "language" },
@@ -252,8 +263,14 @@ function init_datatable(table,url, columns){
 				if(colId) url = colId;
 				if(data.docId != undefined && data.docId !== "n/a")
 					url += '/'+data.docId;
-				if(data.pageNr != undefined && data.pageNr !== "n/a") //NB will break until we use base url
-					url = serverbase+'/edit/correct/'+data.colId+'/'+data.docId+'/'+data.pageNr;
+				if(data.pageNr != undefined && data.pageNr !== "n/a"){ //NB will break until we use base url
+					url = serverbase+'/edit/correct/'+data.colId+'/'+data.docId+'/'+data.pageNr;	
+					console.log(url);
+					if(serverbase !== "") url = '/'+url;
+				 	window.location.href=url;
+					return false;
+					
+				}
 				//TODO add case for userlist links 
 				if(url){
 					 window.location.href=appbase+'/'+url;

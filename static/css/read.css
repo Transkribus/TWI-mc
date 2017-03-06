@@ -183,7 +183,9 @@ fieldset[disabled] .btn-inverse.active {
 /*dashboard*/
 /*slider (for date range)*/
 .ui-slider {
-
 	margin: 10px;
+}
 
+.clickable:hover {
+	cursor: pointer;
 }
