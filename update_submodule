@@ -13,7 +13,7 @@ function usage(){
 	
 cat <<EOF
 
-update_submodule -s submodule_name [-r repo_name] [-n] [-h]
+update_submodule -s submodule_name [-r repo_name] [-a apps_directory][-n] [-h]
 
 EOF
 }
@@ -23,6 +23,7 @@ function show_help(){
 usage	
 cat <<EOF
 	-s submodule_name : Supply the name of the module to be updated ( eg apps/dashboard )
+	-a apps_dir : the directory in which the real non-submodule versions of the submodule app is  (defaults to ~/APPS)
 	-r repo_name : By default assumes that repo has been cloned in $APPS_DIR with the submodule_name, however if 
 		       this is not the case the repo_name can be suppoied (eg TWI-dashboard)
 	-n : not-really, just show me what will be copied to $APPS_DIR and what the git diff is
@@ -31,7 +32,7 @@ cat <<EOF
 EOF
 }
 
-while getopts "h?ns:r:" opt; do
+while getopts "h?ns:r:a:" opt; do
     case "$opt" in
     h)
         show_help
@@ -49,6 +50,13 @@ while getopts "h?ns:r:" opt; do
         	continue
       	fi
 	SUBMOD=$OPTARG
+        ;;
+    a)  
+	if [[ $OPTARG = -* ]]; then
+        	((OPTIND--))
+        	continue
+      	fi
+	APPS_DIR=$OPTARG
         ;;
     r)  
 	if [[ $OPTARG = -* ]]; then
