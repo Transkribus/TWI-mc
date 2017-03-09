@@ -536,8 +536,10 @@ function get_thumbs(start,length){
 //	var url = "/dashboard/thumbnails_ajax/"+window.location.pathname.replace(/^.*\/(\d+\/\d+)$/, '$1');
 	var ids = parse_path();	
 //	var url = static_url+"/dashboard/table_ajax/pages/"+ids['collId']+'/'+ids['docId'];
-	var url = make_url("/table_ajax/pages/"+ids['collId']+'/'+ids['docId']);
+//	var url = make_url("/table_ajax/pages/"+ids['collId']+'/'+ids['docId']);
+	var url = serverbase+"/utils/table_ajax/pages/"+ids['collId']+'/'+ids['docId'];
 
+	console.log("get_thumbs, URL: ",url);
 
 	$.ajax({
 	    type: 'GET',
@@ -624,7 +626,7 @@ String.prototype.ucfirst = function() {
 }
 
 function parse_path(){
-	var pattern = /\/dashboard(|\/(\d+)(|\/(\d+)(|\/(\d+))))$/;
+	var pattern = /\/\w+(|\/(\d+)(|\/(\d+)(|\/(\d+))))$/;
 	var result = pattern.exec(window.location.pathname);
 	ids = {};
 	if(result != null && result[2]) ids['collId'] = result[2];
