@@ -1,5 +1,5 @@
 #!/bin/bash
-APPS_DIR=~/APPS
+APPS_DIR=/c/Users/Schorsch/APPS
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # A POSIX variable
@@ -110,15 +110,19 @@ fi
 
 #collect files that have changed #TODO and new files added
 cd $SUBMOD
-FILES=$(git status | grep '^#\s*modified:' | cut -f 2- -d :)
-for MOD_PATH in "${FILES[@]}"
+FILES=$(git status | grep '\s\+modified:' | cut -f 2- -d :)
+echo "FILES " $FILES
+for MOD_PATH in $FILES
+#for MOD_PATH in "${FILES[@]}"
 do
    :
+   #echo "MOD_PATH: " $MOD_PATH
    MOD_PATH="$(echo -e "${MOD_PATH}" | sed -e 's/^[[:space:]]*//')"
-   echo "$SUBMOD/$MOD_PATH ==> $APPS_DIR/$REPONAME/$MOD_PATH"
+   #echo "$SUBMOD/$MOD_PATH ==> $APPS_DIR/$REPONAME/$MOD_PATH"
    #Copy them from the project submodule to the app clone
    if [ $TEST  == 0 ]
      then
+    #echo "cp $MOD_PATH $APPS_DIR/$REPONAME/$MOD_PATH"
 	echo "Copying $SUBMOD/$MOD_PATH" && cp $MOD_PATH $APPS_DIR/$REPONAME/$MOD_PATH
    	#revert the copied file in the sumodule
 	DIFF=$(diff $MOD_PATH $APPS_DIR/$REPONAME/$MOD_PATH) 
