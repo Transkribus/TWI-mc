@@ -1,15 +1,69 @@
 {% extends "navi_base.html" %}
 {% load i18n %}
 
+
+
 {%comment%} TODO make this conditional on navigation app being present... somehow {%endcomment%}
 {% block content %}
-
-
-
     <!-- Page Content -->
     <div class="container">
 
         <!-- row 1 -->
+        <div class="row">
+            <div class="col-lg-10">
+                <h1 class="page-header">
+                    Collection: {{collection.colName}} (UD: {{collection.colId}})
+                </h1>
+	    </div>
+		<div class="col-lg-8">
+			<p>This collecction contains the following {{ documents|length }} document{%if documents|length != 1 %}s{% endif %}:</p>
+			<p>
+				<a href="/library/collections">Go back to all my Collections</a>
+			</p>
+			<div class="pagination">
+				<span class="step-links">
+					{% if doclist.number > 1 %}
+						<a href="?page={{ doclist.first }}">first</a>
+					{% endif %}
+
+					{% if doclist.has_previous %}
+						<a href="?page={{ doclist.previous_page_number }}">previous</a>
+					{% endif %}
+
+					<span class="current">
+						Page {{ doclist.number }} of {{ doclist.paginator.num_pages }}.
+					</span>
+
+					{% if doclist.has_next %}
+						<a href="?page={{ doclist.next_page_number }}">next</a>
+					{% endif %}
+
+					{% if doclist.number < doclist.paginator.num_pages %}
+						<a href="?page={{ doclist.paginator.num_pages }}">last</a>
+					{% endif %}
+				</span>
+			</div>
+			<table class="table table-striped sortable">
+			   <thead>
+				<tr><th>{% trans "Image" %}</th><th>{% trans "ID" %}</th><th>{% trans "DOCUMENT" %}</th><th>{% trans "AUTHOR" %}</th><th>{% trans "PAGES" %}</th></tr>
+			   </thead>
+			   <tbody>
+				 {% for doc in doclist %}
+				<tr><td><a href="{% url 'library:document'  collId doc.docId %}"><img src="{{ doc.imgurl2show }}"/></td><td>{{ doc.docId }}</td><td><a href="{% url 'library:document' collId doc.docId%}">{{ doc.title }}</a></td><td>{{ doc.author }}</td><td>{{ doc.children|length }}</td></tr>
+				 {% endfor %}
+			   </tbody>
+			</table>
+	    </div>
+	</div>
+<!--
+	<p>
+		<a href="{{request.META.HTTP_REFERER}}">Go back</a>
+	</p>-->
+
+    <!-- Page Content -->
+<!--    <div class="container">
+
+        &lt;!&ndash; row 1 &ndash;&gt;
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
@@ -22,11 +76,11 @@
 
 		<table class="table table-striped">
 		   <thead>
-	  		<tr><th>{% trans "ID" %}</th><th>{% trans "DOCUMENT" %}</th><th>{% trans "AUTHOR" %}</th><th>{% trans "PAGES" %}</th></tr>
+	  		<tr><th>{% trans "Image" %}</th><th>{% trans "ID" %}</th><th>{% trans "DOCUMENT" %}</th><th>{% trans "AUTHOR" %}</th><th>{% trans "PAGES" %}</th></tr>
 		   </thead>
 		   <tbody>
 		     {% for doc in documents %}
-	  		<tr><td>{{ doc.docId }}</td><td><a href="{% url 'library:document' collId doc.docId%}">{{ doc.title }}</a></td><td>{{ doc.author }}</td><td>{{ doc.children|length }}</td></tr>
+	  		<tr><td><img src="{{ doc.imgurl2show }}"/></td><td>{{ doc.docId }}</td><td><a href="{% url 'library:document' collId doc.docId%}">{{ doc.title }}</a></td><td>{{ doc.author }}</td><td>{{ doc.children|length }}</td></tr>
 		     {% endfor %}
 		   </tbody>
 		</table>
@@ -37,7 +91,7 @@
 			<li><a href="{% url 'library:rand' collection.colId 'word' %}">{% trans "Word" %}</a></li>
 		</ul>
 	    </div>
-	</div>
+	</div>-->
 {%comment%}
 
         <div class="row">
