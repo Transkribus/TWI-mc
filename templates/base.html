@@ -50,6 +50,13 @@
 		var current_userid = "{{ user.tsdata.userId }}";
 	</script>
     <script src="{% static "js/read.js" %}"></script>
+
+    {%comment%}  apphead == appname+'/extra_head.html' so if the app has an 
+	extra_head.html template they can include code for <head></head>,
+	deftaults to empty file in projecy template
+    {%endcomment%}
+	{% include apphead %}
+
 {% comment %}
 <!-- #TODO the modal stuff is dependent on the library app being looaded so this should be executed in an app template or on the condition that the library app is loaded -->
 	<!--- Only needed when logged in -->
