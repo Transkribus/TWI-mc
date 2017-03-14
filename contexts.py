@@ -7,7 +7,7 @@ def urlname(request):
     return {'urlname': request.resolver_match.url_name }
 
 def apphead(request):
-    head_template = request.resolver_match.url_name+'/extra_head.html'
+    head_template = request.resolver_match.app_name+'/extra_head.html'
     try:
         template.loader.get_template(head_template) 
     except template.TemplateDoesNotExist:
