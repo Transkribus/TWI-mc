@@ -1,4 +1,4 @@
-from django import tempalte
+from django import template
 
 def appname(request):
     return {'appname': request.resolver_match.app_name }
@@ -12,6 +12,6 @@ def apphead(request):
         template.loader.get_template(head_template) 
         return {'apphead' : head_template}
     except template.TemplateDoesNotExist:
-        return {'apphead' : 'extra_head.html'} #fall back if no tempalte available
+        return {'apphead' : 'extra_head.html'} #fall back if no template available
 
 
