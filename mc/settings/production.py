@@ -100,6 +100,7 @@ TEMPLATES = [
                 #Added for READ
                 'apps.utils.contexts.appname',
                 'apps.utils.contexts.urlname',
+		'apps.utils.contexts.apphead',
             ],
             'libraries' : {
                 'read_tags': 'apps.utils.templatetags',
