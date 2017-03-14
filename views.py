@@ -92,8 +92,6 @@ def d_collection(request,collId):
             prev=col.get('colId')
             prev_content=col.get('colName')
 
-    up='dashboard'
-    
 #    t_log("NEXT: %s PREV: %s UP: %s" % (next,prev,up))
 #    t_log("REQPATH: %s" % (request.path))
 #    t_log("RESOLVED %s" % (resolve(request.path)))
@@ -105,7 +103,6 @@ def d_collection(request,collId):
 			'last_action': last_action, 
 			'collection': collection, 
 			'action_types': action_types, 
-			'nav_up': up,
 			'nav_up_content': "Up to list of collections",
 			'nav_next': next, 
 			'nav_next_content': next_content,
@@ -165,8 +162,6 @@ def d_document(request,collId,docId):
         else :
             prev=doc.get('docId')
             prev_content=doc.get('title')
-    up='dashboard/{!s}'.format(collId)
-
 
 #    t_log("NEXT: %s PREV: %s UP: %s" % (next,prev,up))
 #    t_log("REQPATH: %s" % (request.path))
@@ -175,7 +170,6 @@ def d_document(request,collId,docId):
 
     return render(request, 'dashboard/document.html', {'document': fulldoc.get('md'),
                                                         'action_types': action_types,
-							'nav_up': up,
 							'nav_up_content': up_content,
 							'nav_next': next, 
 							'nav_next_content': next_content,
