@@ -110,13 +110,15 @@ fi
 
 #collect files that have changed #TODO and new files added
 cd $SUBMOD
-FILES=$(git status | grep '\s\+modified:' | cut -f 2- -d :)
-echo "FILES " $FILES
-for MOD_PATH in $FILES
-#for MOD_PATH in "${FILES[@]}"
+##This is easier!!!
+echo "######## MODIFIED FILES ##########"
+CHANGED_FILES=$(git ls-files --modified --exclude-standard)
+#CHANGED_FILES=$(git status | grep '\s\+modified:' | cut -f 2- -d :)
+for MOD_PATH in $CHANGED_FILES
 do
    :
-   #echo "MOD_PATH: " $MOD_PATH
+   cd $DIR/$SUBMOD
+
    MOD_PATH="$(echo -e "${MOD_PATH}" | sed -e 's/^[[:space:]]*//')"
    echo "$SUBMOD/$MOD_PATH ==> $APP_DIR/$MOD_PATH"
    #Copy them from the project submodule to the app clone
@@ -124,7 +126,7 @@ do
      then
     #echo "cp $MOD_PATH $APPS_DIR/$REPONAME/$MOD_PATH"
 	echo "Copying $SUBMOD/$MOD_PATH"
-	cp $MOD_PATH $APP_DIR/$MOD_PATH || (echo "Copy failed" && exit 1;)
+	cp $MOD_PATH $APP_DIR/$MOD_PATH || { echo "Copy failed" ; exit 1; }
    	#revert the copied file in the sumodule								       
 	DIFF=$(diff $MOD_PATH $APP_DIR/$MOD_PATH) 
 	if [ "$DIFF" != "" ] 
@@ -135,11 +137,44 @@ do
 
    	# Go to the APP clone and commit the change
    	cd $APP_DIR
-   	echo "commiting to reall app repository" && git commit $MOD_PATH
+   	echo "commiting to real app repository" && git commit $MOD_PATH
    else
 	git diff 
    fi
 
+done
+
+echo "######## ADDED FILES ##########"
+ADDED_FILES=$(git ls-files --others --exclude-standard)
+for ADD_PATH in $ADDED_FILES
+do
+   :
+	cd $DIR/$SUBMOD
+
+	echo "$SUBMOD/$ADD_PATH ==> $APP_DIR/$ADD_PATH"
+
+	ADD_DIR=$(dirname "${ADD_PATH}")
+	echo "ADD_DIR: "$ADD_DIR
+	echo "$SUBMOD/$ADD_PATH ==> $APP_DIR/$ADD_PATH"
+
+   if [ $TEST  == 0 ]
+	then
+	[ ! -d $APP_DIR/$ADD_DIR ] && mkdir -p $APP_DIR/$ADD_DIR
+	cp $ADD_PATH $APP_DIR/$ADD_PATH || { echo "Copy failed" ; exit 1; }
+
+   	#revert the copied file in the sumodule								       
+	DIFF=$(diff $ADD_PATH $APP_DIR/$ADD_PATH) 
+	if [ "$DIFF" != "" ] 
+		then	
+		echo "Stopping as the file $SUBMOD/$ADD_PATH wasn't copied to $APP_DIR/$ADD_PATH properly" && exit
+	fi
+	echo "removing file from submodule" && rm $ADD_PATH
+
+   	# Go to the APP clone and commit the change
+   	cd $APP_DIR
+	echo "Adding $ADD_PATH" && git add $ADD_PATH
+ 	echo "Commiting to real app repository" && git commit $ADD_PATH
+   fi
 done
 
 if [ $TEST == 1 ] 
