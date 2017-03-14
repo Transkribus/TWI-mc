@@ -1,5 +1,5 @@
 #!/bin/bash
-APPS_DIR=/c/Users/Schorsch/APPS
+APPS_DIR=~/APPS
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # A POSIX variable
@@ -118,17 +118,18 @@ do
    :
    #echo "MOD_PATH: " $MOD_PATH
    MOD_PATH="$(echo -e "${MOD_PATH}" | sed -e 's/^[[:space:]]*//')"
-   #echo "$SUBMOD/$MOD_PATH ==> $APPS_DIR/$REPONAME/$MOD_PATH"
+   echo "$SUBMOD/$MOD_PATH ==> $APP_DIR/$MOD_PATH"
    #Copy them from the project submodule to the app clone
    if [ $TEST  == 0 ]
      then
     #echo "cp $MOD_PATH $APPS_DIR/$REPONAME/$MOD_PATH"
-	echo "Copying $SUBMOD/$MOD_PATH" && cp $MOD_PATH $APPS_DIR/$REPONAME/$MOD_PATH
-   	#revert the copied file in the sumodule
-	DIFF=$(diff $MOD_PATH $APPS_DIR/$REPONAME/$MOD_PATH) 
+	echo "Copying $SUBMOD/$MOD_PATH"
+	cp $MOD_PATH $APP_DIR/$MOD_PATH || (echo "Copy failed" && exit 1;)
+   	#revert the copied file in the sumodule								       
+	DIFF=$(diff $MOD_PATH $APP_DIR/$MOD_PATH) 
 	if [ "$DIFF" != "" ] 
 		then	
-		echo "Stopping as the file $SUBMOD/$MOD_PATH wasn't copied to $APPS_DIR/$REPONAME/$MOD_PATH properly" && exit
+		echo "Stopping as the file $SUBMOD/$MOD_PATH wasn't copied to $APP_DIR/$MOD_PATH properly" && exit
 	fi
 	echo "reverting submodule" && git checkout -- $MOD_PATH
 
