@@ -133,7 +133,6 @@ do
 		then	
 		echo "Stopping as the file $SUBMOD/$MOD_PATH wasn't copied to $APP_DIR/$MOD_PATH properly" && exit
 	fi
-	echo "reverting submodule" && git checkout -- $MOD_PATH
 
    	# Go to the APP clone and commit the change
    	cd $APP_DIR
@@ -143,6 +142,8 @@ do
    fi
 
 done
+
+#echo "reverting submodule" && git checkout -- $MOD_PATH
 
 echo "######## ADDED FILES ##########"
 ADDED_FILES=$(git ls-files --others --exclude-standard)
@@ -168,7 +169,6 @@ do
 		then	
 		echo "Stopping as the file $SUBMOD/$ADD_PATH wasn't copied to $APP_DIR/$ADD_PATH properly" && exit
 	fi
-	echo "removing file from submodule" && rm $ADD_PATH
 
    	# Go to the APP clone and commit the change
    	cd $APP_DIR
@@ -176,6 +176,8 @@ do
  	echo "Commiting to real app repository" && git commit $ADD_PATH
    fi
 done
+
+#echo "removing file from submodule" && rm $ADD_PATH
 
 if [ $TEST == 1 ] 
    then
