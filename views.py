@@ -74,41 +74,53 @@ def d_collection(request,collId):
     if isinstance(collections,HttpResponse):
         return collections
 
-    collection=None
+    action_types = t_actions_info(request)
+    if isinstance(action_types,HttpResponse):
+        return action_types
+
+    navdata = navigation(collections,collId,'colId','colName')
+    #if we didn't have a focus before navigation call, we'll have one after
+    collection = navdata.get("focus")
+    pagedata = {'last_action': last_action, 'collection': collection, 'action_types': action_types}
+    #merge the dictionaries
+    combidata = pagedata.copy()
+    combidata.update(navdata)
+
+    return render(request, 'dashboard/collection.html', combidata)
+
+def navigation(siblings,focus_id,sibling_id,sibling_content,focus=None):
+
+# siblings = collections
+#    focus = collection=None#
+#    focus_id = collId
+#    sibling_id = 'colId'
+#    sibling_content = 'colName'
+
     prev=None
     prev_content=None
     next=None
     next_content=None
     stop_next=False
-    for col in collections:
+    for sibling in siblings:
         if stop_next:
-            next=col.get('colId')
-            next_content=col.get('colName')
+            next=sibling.get(sibling_id)
+            next_content=sibling.get(sibling_content)
             break
-        if col.get("colId") == int(collId):
-            collection = col
+        if sibling.get(sibling_id) == int(focus_id):
+            focus = sibling
             stop_next=True
         else :
-            prev=col.get('colId')
-            prev_content=col.get('colName')
+            prev=sibling.get(sibling_id)
+            prev_content=sibling.get(sibling_content)
 
-#    t_log("NEXT: %s PREV: %s UP: %s" % (next,prev,up))
-#    t_log("REQPATH: %s" % (request.path))
-#    t_log("RESOLVED %s" % (resolve(request.path)))
-#    t_log("APP_NAME: %s" % (request.resolver_match.app_name))
-    action_types = t_actions_info(request)
-    if isinstance(action_types,HttpResponse):
-        return action_types
-    return render(request, 'dashboard/collection.html', {
-			'last_action': last_action, 
-			'collection': collection, 
-			'action_types': action_types, 
-			'nav_up_content': "Up to list of collections",
-			'nav_next': next, 
-			'nav_next_content': next_content,
-			'nav_prev':prev,
- 			'nav_prev_content': prev_content} )
-#			'app_base_url' : resolve(request.path).app_name  } ) #nb documents only used to display length...
+    t_log("NEXT: %s PREV: %s " % (next,prev), logging.WARN)
+    return {'focus' : focus,
+		'nav_up_content': "Up to list of collections", #TODO dynamic
+		'nav_next': next, 
+		'nav_next_content': next_content,
+		'nav_prev':prev,
+ 		'nav_prev_content': prev_content}
+
 
 # dashboard/{colID}/{docId}
 # d_collection : overall view for a given collection
@@ -120,6 +132,7 @@ def d_collection(request,collId):
 #                       - activity chart for that document (line, activities by time, activities==login/save/access/change)
 #                       - status for aggregated pages in document (pie, new/inprogress/done/final)
 #                       - bar for top 5 users by activity
+
 
 
 @t_login_required
