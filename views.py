@@ -3,6 +3,7 @@ import json
 import sys
 import re
 import random
+import os
 
 #Imports of django modules
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -12,6 +13,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.loader import render_to_string
 
 from apps.utils.utils import crop, t_metadata
@@ -23,7 +25,10 @@ from apps.utils.services import *
 #Imports from app (library)
 import settings
 from apps.navigation import navigation
+
 #from .forms import RegisterForm, IngestMetsUrlForm, MetsFileForm, QuickIngestMetsUrlForm
+
+
 
 #from profiler import profile #profile is a decorator, but things get circular if I include it in decorators.py so...
 
@@ -41,6 +46,43 @@ def collections(request):
         return collections
     return render(request, 'library/collections.html', {'collections': collections} )
 
+#/library/collections
+#view that lists available collections for a user
+#@profile("collections.prof")
+@t_login_required
+def collectionsTest(request):
+    collections = t_collections(request)
+
+    sys.stdout.write("in server test \r\n")
+    sys.stdout.flush()
+    if isinstance(collections,HttpResponse):
+        return collections
+
+    pagedatas = []
+
+    # take the first document of a collection
+    for coll in collections:
+        sys.stdout.write("colId : %s \r\n" % (coll['colId']) )
+        sys.stdout.flush()
+        docs = t_collection(request, {'collId':coll['colId']})
+        if not isinstance(docs, HttpResponseRedirect) and len(docs) > 0:
+            doc = docs[0]
+        else:
+            break
+        full_doc = t_document(request, str(coll['colId']), doc['docId'], -1)
+        pages= full_doc.get('pageList').get('pages')
+        #// means that it is an integer division - not float (float is / )
+        a = len(pages)//2
+        pagedata = full_doc.get('pageList').get('pages')[a]
+        pagedatas.append(str(pagedata['thumbUrl']))
+        sys.stdout.write("page url : %s \r\n" % str(pagedata['thumbUrl']))
+        sys.stdout.flush()
+
+        if isinstance(doc,HttpResponse):
+            return doc
+
+    return render(request, 'library/collections.html', {'collections': collections, 'pagedatas': pagedatas} )
+
 #/library/collection/{colId}
 #view that
 # - lists documents
@@ -53,6 +95,8 @@ def collection(request, collId):
     #probably a redirect if an HttpResponse
     if isinstance(docs,HttpResponse):
         return docs
+
+
 
     collections = t_collections(request)
     #there is currently no transkribus call for collections/{collId} on its own to fetch just data for collection
@@ -72,11 +116,26 @@ def collection(request, collId):
         doc['key'] = doc['docId']
         doc['folder'] = 'true'
         #fetch full document data with no transcripts for pages //TODO avoid REST request in loop?
-#       fulldoc  = t_document(request, collId, doc['docId'], 0)
-#       doc['children'] = fulldoc.get('pageList').get("pages")
-#        for x in doc['children']:
-#          x['title']=x['imgFileName']
-#          x['collId']=collId
+        fulldoc  = t_document(request, collId, doc['docId'], 0)
+        doc['children'] = fulldoc.get('pageList').get("pages")
+        a = len(doc['children']) // 2
+        doc['imgurl2show'] = doc['children'][a]['thumbUrl']
+        #sys.stdout.write("page url : %s \r\n" % doc['imgurl2show'])
+        #sys.stdout.flush()
+        # for x in doc['children']:
+        #   x['title']=x['imgFileName']
+        #   x['collId']=collId
+
+    paginator = Paginator(docs, 10)  # Show 5 docs per page
+    page = request.GET.get('page')
+    try:
+        doclist = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        doclist = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        doclist = paginator.page(paginator.num_pages)
 
     return render(request, 'library/collection.html', {
         'collId': collId,
@@ -86,6 +145,7 @@ def collection(request, collId):
         'nav_up': nav['up'],
         'nav_next': nav['next'],
         'nav_prev': nav['prev'],
+        'doclist': doclist,
         })
 
 #/library/document/{colId}/{docId}
@@ -101,10 +161,62 @@ def document(request, collId, docId, page=None):
         return full_doc
 
     nav = navigation.up_next_prev(request,"document",docId,collection,[collId])
+    
+      
+    #new for fetching all text regions and text of all pages
+    textpages =[]
+    textregions = []
+    for x in full_doc.get('pageList').get('pages'):
+        current_transcript = t_current_transcript(request, collId, docId, x.get("pageNr"))
+        transcript = t_transcript(request, current_transcript.get("tsId"),current_transcript.get("url"))
+        regions=transcript.get("PcGts").get("Page").get("TextRegion");
+
+        if isinstance(regions, dict):
+            regions = [regions]
+
+        strings = []
+        lineList = []
+        if regions:
+            sys.stdout.write("number of regions on this page : %s \r\n" % len(regions))
+            sys.stdout.flush()
+            for y in regions:
+                lines = y.get("TextLine")
+                #region_width = crop(x.get("Coords").get("@points"), 1).get('w')
+                if lines:
+                    if isinstance(lines, dict):
+                        #lines['regionWidth'] = region_width
+                        lineList.extend([lines])
+                    else: # Assume that lines is a list of lines
+                        if lines is not None:
+                            for line in lines:
+                                #line['regionWidth'] = region_width
+                                lineList.extend([line])
+
+                if lineList:
+                    sys.stdout.write("number of lines in this region : %s \r\n" % len(lineList))
+                    sys.stdout.flush()
+                    for z in lineList:
+                        if z.get('TextEquiv') is not None:
+                            unicode_string = z.get('TextEquiv').get('Unicode')
+                        else:
+                            unicode_string = "";
+                                
+                        strings.append(unicode_string)
+            
+                sys.stdout.write("append strings")
+                sys.stdout.flush()
+                textregions.append(strings)
+                strings=[]
+                lineList=[]
+        
+        textpages.append(textregions)
+        textregions=[]
+    #new stuff end
 
     return render(request, 'library/document.html', {
         'metadata': full_doc.get('md'),
         'pageList': full_doc.get('pageList'),
+        'textpages': textpages,
         'collId': int(collId),
         'nav_up': nav['up'],
         'nav_next': nav['next'],
@@ -201,7 +313,7 @@ def transcript(request, collId, docId, page, transcriptId):
 def region(request, collId, docId, page, transcriptId, regionId):
     # We need to be able to target a transcript (as mentioned elsewhere)
     # here there is no need for anything over than the pageXML really
-    # we could get one transcript from ...{page}/curr, but for completeness would
+    # we could get one transcript from ...{page}/curr, but for completeness would 
     # rather use transciptId to target a particular transcript
     transcripts = t_page(request,collId, docId, page)
     if isinstance(transcripts,HttpResponse):
@@ -593,4 +705,60 @@ def error(request):
                 'back' : back,
             })
 
+######### Data views #########
+# These return json for ajax
+# pass back count as recordsTotal/recordsFiltered (would be nice to get real values for these)
+# data as data, this is designed for consumption by dataTables.js
 
+def table_ajax(request,list_name,collId=None,docId=None,userId=None) :
+
+    t_list_name=list_name
+    params = {'collId': collId, 'docId': docId, 'userid' : userId} #userid can only be used to filter in context of a collection
+    ####### EXCEPTION #######
+    # list_name is pages we extract this from fulldoc
+    if list_name == 'pages' :
+        t_list_name = "fulldoc"
+        params['nrOfTranscripts']=1 #only get current transcript
+    #########################
+
+    (data,count) = paged_data(request,t_list_name,params)
+
+   #TODO pass back the error not the redirect and then process the error according to whether we have been called via ajax or not....
+    if isinstance(data,HttpResponse):
+        t_log("data request has failed... %s" % data)
+        #For now this will do but there may be other reasons the transckribus request fails... (see comment above)
+        return HttpResponse('Unauthorized', status=401)
+
+    filters = {
+                'actions' : ['time', 'colId', 'colName', 'docId', 'docName', 'pageId', 'pageNr', 'userName', 'type'],
+                'collections' : ['colId', 'colName', 'description', 'role'],
+                'users' : ['userId', 'userName', 'firstname', 'lastname','email','affiliation','created','role'], #NB roles in userCollection
+                'documents' : ['docId','title','author','uploadTimestamp','uploader','nrOfPages','language','status'],
+#               'pages' : ['pageId','pageNr','thumbUrl','status', 'nrOfTranscripts'], #tables
+                'pages' : ['pageId','pageNr','imgFileName','thumbUrl','status'], #thumbnails
+              }
+
+    ####### EXCEPTION #######
+    # Do the extraction of pages from fulldoc
+    if list_name == 'pages' :
+        data = data.get('pageList').get('pages')
+        data = map(get_ts_status,data)
+    #########################
+
+    data_filtered = filter_data(filters.get(list_name),data)
+
+    ####### EXCEPTION #######
+    # We cannot request a paged list of pages by docid, so we must manage paging here
+    if list_name == 'pages' :
+        dt_params = parser.parse(request.GET.urlencode())
+        nValues = int(dt_params.get('length')) if dt_params.get('length') else int(settings.PAGE_SIZE_DEFAULT)
+        index = int(dt_params.get('start')) if dt_params.get('start') else 0
+        #lame paging for pages for now...
+        data_filtered = data_filtered[index:(index+nValues)]
+    ##########################
+
+    return JsonResponse({
+            'recordsTotal': count,
+            'recordsFiltered': count,
+            'data': data_filtered
+        },safe=False)
