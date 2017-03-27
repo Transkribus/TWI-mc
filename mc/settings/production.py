@@ -101,6 +101,7 @@ TEMPLATES = [
                 'apps.utils.contexts.appname',
                 'apps.utils.contexts.urlname',
 		'apps.utils.contexts.apphead',
+		'apps.utils.contexts.nav_up',
             ],
             'libraries' : {
                 'read_tags': 'apps.utils.templatetags',
