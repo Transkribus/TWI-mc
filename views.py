@@ -1,9 +1,9 @@
 #imports of python modules
 import json
-import sys
+#import sys
 import re
 import random
-import os
+#import os
 
 #Imports of django modules
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -16,11 +16,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.loader import render_to_string
 
-from apps.utils.utils import crop, t_metadata
-#Imports pf read modules
+from apps.utils.utils import crop, t_metadata, t_log
 from apps.utils.decorators import t_login_required
 from apps.utils.services import *
-#t_collection, t_register,
 
 #Imports from app (library)
 import settings
@@ -41,6 +39,9 @@ def index(request):
 #@profile("collections.prof")
 @t_login_required
 def collections(request):
+    if not t_refresh() : 
+        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
+
     collections = t_collections(request)
     if isinstance(collections,HttpResponse):
         return collections
@@ -53,8 +54,7 @@ def collections(request):
 def collectionsTest(request):
     collections = t_collections(request)
 
-    sys.stdout.write("in server test \r\n")
-    sys.stdout.flush()
+    t_log("in server test", logging.WARN)
     if isinstance(collections,HttpResponse):
         return collections
 
@@ -90,13 +90,31 @@ def collectionsTest(request):
 #@profile("collection.prof")
 @t_login_required
 def collection(request, collId):
+
+    if not t_refresh() : 
+        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
+
+    #Avoid this sort of nonsense if possible
+    collections = t_collections(request,{'end':None,'start':None})
+    if isinstance(collections,HttpResponse):
+        return collections
+
+    navdata = navigation.get_nav(collections,collId,'colId','colName')
+    #if we didn't have a focus before navigation call, we'll have one after
+    collection = navdata.get("focus")
+    pagedata = {'collection': collection}
+    #merge the dictionaries
+    combidata = pagedata.copy()
+    combidata.update(navdata)
+
+    return render(request, 'library/collection.html', combidata)
+
+    '''
     #this is actually a call to collections/{collId}/list and returns only the document objects for a collection
     docs = t_collection(request,{'collId':collId})
     #probably a redirect if an HttpResponse
     if isinstance(docs,HttpResponse):
         return docs
-
-
 
     collections = t_collections(request)
     #there is currently no transkribus call for collections/{collId} on its own to fetch just data for collection
@@ -120,6 +138,7 @@ def collection(request, collId):
         doc['children'] = fulldoc.get('pageList').get("pages")
         a = len(doc['children']) // 2
         doc['imgurl2show'] = doc['children'][a]['thumbUrl']
+        t_log("IMAGEURL2SHOW : %s" % doc['imgurl2show'], logging.WARN)
         #sys.stdout.write("page url : %s \r\n" % doc['imgurl2show'])
         #sys.stdout.flush()
         # for x in doc['children']:
@@ -147,27 +166,45 @@ def collection(request, collId):
         'nav_prev': nav['prev'],
         'doclist': doclist,
         })
+    '''
+
 
 #/library/document/{colId}/{docId}
 # view that lists pages in doc and some doc level metadata
 #@profile("document.prof")
 @t_login_required
 def document(request, collId, docId, page=None):
+
+    if not t_refresh() : 
+        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
+
     collection = t_collection(request, {'collId': collId})
     if isinstance(collection,HttpResponse):
         return collection
-    full_doc = t_document(request, collId, docId,-1)
-    if isinstance(full_doc,HttpResponse):
-        return full_doc
+    fulldoc = t_document(request, collId, docId,-1)
+    if isinstance(fulldoc,HttpResponse):
+        return fulldoc
 
     nav = navigation.up_next_prev(request,"document",docId,collection,[collId])
     
-      
+    navdata = navigation.get_nav(collection,docId,'docId','title')
+    #if we didn't have a focus before navigation call, we'll have one after
+    #document = navdata.get("focus")
+    pagedata = {'document':  fulldoc}
+    #merge the dictionaries
+    combidata = pagedata.copy()
+    combidata.update(navdata)
+
+    '''
     #new for fetching all text regions and text of all pages
+    #
+    #This performs terribly... Suggest paged ajax calls as with thumbs
+    #
     textpages =[]
     textregions = []
     for x in full_doc.get('pageList').get('pages'):
         current_transcript = t_current_transcript(request, collId, docId, x.get("pageNr"))
+        t_log("CURRENT_TRANS: %s" % current_transcript,logging.WARN)
         transcript = t_transcript(request, current_transcript.get("tsId"),current_transcript.get("url"))
         regions=transcript.get("PcGts").get("Page").get("TextRegion");
 
@@ -212,7 +249,13 @@ def document(request, collId, docId, page=None):
         textpages.append(textregions)
         textregions=[]
     #new stuff end
-
+    '''
+    #merge the dictionaries
+    combidata = pagedata.copy()
+    combidata.update(navdata)
+    
+    return render(request, 'library/document.html', combidata)
+    '''
     return render(request, 'library/document.html', {
         'metadata': full_doc.get('md'),
         'pageList': full_doc.get('pageList'),
@@ -222,7 +265,7 @@ def document(request, collId, docId, page=None):
         'nav_next': nav['next'],
         'nav_prev': nav['prev'],
         })
-
+    '''
 #/library/document/{colId}/{docId}/{page}
 # view that lists transcripts in doc and some page level metadata
 #@profile("page.prof")
@@ -705,60 +748,4 @@ def error(request):
                 'back' : back,
             })
 
-######### Data views #########
-# These return json for ajax
-# pass back count as recordsTotal/recordsFiltered (would be nice to get real values for these)
-# data as data, this is designed for consumption by dataTables.js
 
-def table_ajax(request,list_name,collId=None,docId=None,userId=None) :
-
-    t_list_name=list_name
-    params = {'collId': collId, 'docId': docId, 'userid' : userId} #userid can only be used to filter in context of a collection
-    ####### EXCEPTION #######
-    # list_name is pages we extract this from fulldoc
-    if list_name == 'pages' :
-        t_list_name = "fulldoc"
-        params['nrOfTranscripts']=1 #only get current transcript
-    #########################
-
-    (data,count) = paged_data(request,t_list_name,params)
-
-   #TODO pass back the error not the redirect and then process the error according to whether we have been called via ajax or not....
-    if isinstance(data,HttpResponse):
-        t_log("data request has failed... %s" % data)
-        #For now this will do but there may be other reasons the transckribus request fails... (see comment above)
-        return HttpResponse('Unauthorized', status=401)
-
-    filters = {
-                'actions' : ['time', 'colId', 'colName', 'docId', 'docName', 'pageId', 'pageNr', 'userName', 'type'],
-                'collections' : ['colId', 'colName', 'description', 'role'],
-                'users' : ['userId', 'userName', 'firstname', 'lastname','email','affiliation','created','role'], #NB roles in userCollection
-                'documents' : ['docId','title','author','uploadTimestamp','uploader','nrOfPages','language','status'],
-#               'pages' : ['pageId','pageNr','thumbUrl','status', 'nrOfTranscripts'], #tables
-                'pages' : ['pageId','pageNr','imgFileName','thumbUrl','status'], #thumbnails
-              }
-
-    ####### EXCEPTION #######
-    # Do the extraction of pages from fulldoc
-    if list_name == 'pages' :
-        data = data.get('pageList').get('pages')
-        data = map(get_ts_status,data)
-    #########################
-
-    data_filtered = filter_data(filters.get(list_name),data)
-
-    ####### EXCEPTION #######
-    # We cannot request a paged list of pages by docid, so we must manage paging here
-    if list_name == 'pages' :
-        dt_params = parser.parse(request.GET.urlencode())
-        nValues = int(dt_params.get('length')) if dt_params.get('length') else int(settings.PAGE_SIZE_DEFAULT)
-        index = int(dt_params.get('start')) if dt_params.get('start') else 0
-        #lame paging for pages for now...
-        data_filtered = data_filtered[index:(index+nValues)]
-    ##########################
-
-    return JsonResponse({
-            'recordsTotal': count,
-            'recordsFiltered': count,
-            'data': data_filtered
-        },safe=False)
