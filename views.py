@@ -119,6 +119,46 @@ def table_ajax(request,list_name,collId=None,docId=None,userId=None) :
             'data': data_filtered
         },safe=False)
 
+#Fetch a single thumb url from the collection referenced
+def collection_thumb(request, collId):
+
+    documents = t_documents(request,{'collId': collId})
+    if isinstance(documents,HttpResponse):
+        return documents
+    #grab first doc
+    docId = next(iter(documents or []), None).get("docId")
+
+    fulldoc = t_fulldoc(request,{'collId': collId, 'docId': docId})
+    if isinstance(fulldoc,HttpResponse):
+        return fulldoc
+
+    pages = fulldoc.get('pageList').get("pages")
+#    a = len(pages) // 2 #page from the middle?
+    #maybe just grab first page?
+    thumb_url = pages[0]['thumbUrl']
+
+    return JsonResponse({
+            'url': thumb_url
+       },safe=False)
+
+
+#Fetch a single thumb url from the document referenced
+def document_thumb(request, collId, docId):
+    import timeit
+    
+    fulldoc = t_document(request, collId, docId,-1)
+    if isinstance(fulldoc,HttpResponse):
+        return fulldoc
+    
+    pages = fulldoc.get('pageList').get("pages")
+#    a = len(pages) // 2 #page from the middle?
+    #maybe just grab first page?
+    thumb_url = pages[0]['thumbUrl']
+
+    return JsonResponse({
+            'url': thumb_url
+        },safe=False)
+
 ##########
 # Helpers
 ##########
