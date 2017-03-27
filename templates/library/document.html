@@ -4,18 +4,7 @@
 {% load staticfiles %}
 <link href="{% static "css/document.css" %}" rel="stylesheet"/>
 
-{%comment%}
-{% block nav_buttons_out %}
-{% include "nav_buttons.html" with out=True %}
-{% endblock %}
-
-{% block nav_buttons_in %}
-{% include "nav_buttons.html" with out=False %}
-{% endblock %}
-{%endcomment%}
 {% block content %}
-
-
 
 
    <!-- Page Content -->
@@ -38,18 +27,19 @@
      {% endfor %}
 	</ul>
 -->
-	<p>{% trans "This document was uploaded by " %}<a href="{%url 'library:users' collId metadata.uploaderId %}">{{metadata.uploader}}</a>.</p>
-     {% if metadata.collectionList.colList|length > 1 %}
-	<p>This document is a also a member of the following collection{% if metadata.collectionList.colList|length > 2 %}s{% endif %}</p>
+	<p>{% trans "This document was uploaded by " %}<a href="{%url 'library:users' document.collection.colId document.md.uploaderId %}">{{document.md.uploader}}</a>.</p>
+
+     {% if document.md.collectionList.colList|length > 1 %}
+	<p>This document is a also a member of the following collection{% if document.md.collectionList.colList|length > 2 %}s{% endif %}</p>
 	<ul>
-	     {% for alt_col in metadata.collectionList.colList %}
+	     {% for alt_col in document.md.collectionList.colList %}
 		{% ifnotequal collId alt_col.colId %}
 		<li><a href="{% url 'library:collection' alt_col.colId %}">{{alt_col.description}}</a></li>
 		{% endifnotequal %}
 	     {% endfor %}
 	</ul>
       {% endif %}
-	<p>This document has {{ pageList.pages|length }} pages:</p>
+	<p>This document has {{ document.pageList.pages|length }} pages:</p>
 	
 	<ul class="nav nav-tabs">
   <li class="active"><a data-toggle="tab" href="#home">Show Thumbs</a></li>

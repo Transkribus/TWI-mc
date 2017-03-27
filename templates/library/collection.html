@@ -1,8 +1,6 @@
 {% extends "navi_base.html" %}
 {% load i18n %}
 
-
-
 {%comment%} TODO make this conditional on navigation app being present... somehow {%endcomment%}
 {% block content %}
     <!-- Page Content -->
@@ -12,138 +10,14 @@
         <div class="row">
             <div class="col-lg-10">
                 <h1 class="page-header">
-                    Collection: {{collection.colName}} (UD: {{collection.colId}})
+                    {% trans 'Collection' %}: {{collection.colName}} ({%trans 'ID'%}: {{collection.colId}})
                 </h1>
 	    </div>
 		<div class="col-lg-8">
-			<p>This collecction contains the following {{ documents|length }} document{%if documents|length != 1 %}s{% endif %}:</p>
-			<p>
-				<a href="/library/collections">Go back to all my Collections</a>
-			</p>
-			<div class="pagination">
-				<span class="step-links">
-					{% if doclist.number > 1 %}
-						<a href="?page={{ doclist.first }}">first</a>
-					{% endif %}
+			<div class="container">
 
-					{% if doclist.has_previous %}
-						<a href="?page={{ doclist.previous_page_number }}">previous</a>
-					{% endif %}
+			  {% include "library/documents_table.html" %}
 
-					<span class="current">
-						Page {{ doclist.number }} of {{ doclist.paginator.num_pages }}.
-					</span>
-
-					{% if doclist.has_next %}
-						<a href="?page={{ doclist.next_page_number }}">next</a>
-					{% endif %}
-
-					{% if doclist.number < doclist.paginator.num_pages %}
-						<a href="?page={{ doclist.paginator.num_pages }}">last</a>
-					{% endif %}
-				</span>
 			</div>
-			<table class="table table-striped sortable">
-			   <thead>
-				<tr><th>{% trans "Image" %}</th><th>{% trans "ID" %}</th><th>{% trans "DOCUMENT" %}</th><th>{% trans "AUTHOR" %}</th><th>{% trans "PAGES" %}</th></tr>
-			   </thead>
-			   <tbody>
-				 {% for doc in doclist %}
-				<tr><td><a href="{% url 'library:document'  collId doc.docId %}"><img src="{{ doc.imgurl2show }}"/></td><td>{{ doc.docId }}</td><td><a href="{% url 'library:document' collId doc.docId%}">{{ doc.title }}</a></td><td>{{ doc.author }}</td><td>{{ doc.children|length }}</td></tr>
-				 {% endfor %}
-			   </tbody>
-			</table>
-	    </div>
-	</div>
-<!--
-	<p>
-		<a href="{{request.META.HTTP_REFERER}}">Go back</a>
-	</p>-->
-
-    <!-- Page Content -->
-<!--    <div class="container">
-
-        &lt;!&ndash; row 1 &ndash;&gt;
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">
-                    Collection Browse for {{collection.colName}}
-                </h1>
-	    </div>
-
-            <div class="col-lg-8">
-		<p>This collecction contains the following {{ documents|length }} document{%if documents|length != 1 %}s{% endif %}:</p>
-
-		<table class="table table-striped">
-		   <thead>
-	  		<tr><th>{% trans "Image" %}</th><th>{% trans "ID" %}</th><th>{% trans "DOCUMENT" %}</th><th>{% trans "AUTHOR" %}</th><th>{% trans "PAGES" %}</th></tr>
-		   </thead>
-		   <tbody>
-		     {% for doc in documents %}
-	  		<tr><td><img src="{{ doc.imgurl2show }}"/></td><td>{{ doc.docId }}</td><td><a href="{% url 'library:document' collId doc.docId%}">{{ doc.title }}</a></td><td>{{ doc.author }}</td><td>{{ doc.children|length }}</td></tr>
-		     {% endfor %}
-		   </tbody>
-		</table>
-		<p>From this collection (if available) get a random:</p>
-		<ul>
-			<li><a href="{% url 'library:rand' collection.colId 'region' %}">{% trans "Region" %}</a></li>
-			<li><a href="{% url 'library:rand' collection.colId 'line' %}">{% trans "Line" %}</a></li>
-			<li><a href="{% url 'library:rand' collection.colId 'word' %}">{% trans "Word" %}</a></li>
-		</ul>
-	    </div>
-	</div>-->
-{%comment%}
-
-        <div class="row">
-
-            <div class="col-md-4 expandable collections_tree">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4><i class="fa fa-fw fa-check"></i>Fancy tree for documents
-			   <a href="#" id="collections_tree_full" class="panel-expand btn btn-default btn-sm pull-right"><span class="glyphicon glyphicon-chevron-right"><span></a>
-			   <a href="#" id="collections_tree_mini" class="panel-shrink btn btn-default btn-sm pull-right" style="display: none;"><span class="glyphicon glyphicon-chevron-left"><span></a>
-			</h4>
-                    </div>
-		<p>This collection contains {{ documents|length }} documents:</p>
-		<script type="text/javascript">
-			var t_data = {{ documents_json|safe }};
-			console.log("tdata:",t_data);
-		</script>
-                    <div class="panel-body" id="collections_tree">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-8 expandable thumbnails">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-		    	<h4><i class="fa fa-fw fa-gift"></i>{% trans "Thumbnnails" %}<a href="#" id="thumbnails_full" class="panel-expand btn btn-default btn-sm pull-right"><span class="glyphicon glyphicon-chevron-right"><span></a>
-			   <a href="#" id="thumbnails_mini" class="panel-shrink btn btn-default btn-sm pull-right" style="display: none;"><span class="glyphicon glyphicon-chevron-left"><span></a>
-			</h4>
-                    </div>
-                    <div class="panel-body">
-			<div class="row">
-		  		<div class="documents_intro">
-					<p>Use the file tree on the left to select documents and pages for closer inspection. You will see a larger image in this panel</p>
-				</div>
-			     {% for doc in documents %}
-		  		<div id="doc_{{ doc.docId }}" class="document_thumbs">
-					<h4><a href="{%  url 'document' collId  doc.docId %}">{{ doc.title }} - {{ doc.author }}</a> <span class="page_title"><a href="#"></a></span></h4>
-					     {% for page in doc.children %}
-					    <div class="col-md-3 thumb page_thumb" id="page_{{page.key}}">
-						<a class="thumbnail" href="{% url 'page' collId doc.docId page.pageNr %}">
-						    <img src="{{ page.thumbUrl }}" alt="{{page.title}}" title="{{page.title}} - {{page.pageNr}}"/>
-						</a>
-					    </div>
-					     {% endfor %}
-				</div>
-			     {% endfor %}
-			</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-{%endcomment%}
-
-        <!-- /.row -->
 
 {% endblock %}

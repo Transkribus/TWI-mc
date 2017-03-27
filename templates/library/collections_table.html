@@ -1,31 +1,24 @@
 {% load i18n %}
-{% load staticfiles %}
 
-<link href="{% static "css/collections_table.css" %}" rel="stylesheet">
+<p>You are a member of the following <span id="collections_table_count"></span> collections:</p>
 
-<style>
-table, th, td {
-    <!--border: 1px solid black;-->
-    border-collapse: collapse;
-}
-th, td {
-    padding: 10px;
-    text-align: left;
-}
-</style>
-
-
-{%comment%}{% licycle = cycle(pagedatas) %}{%endcomment%}
-	<p>You are a member of the following {{ collections|length }} collections:</p>
-
-		<table style="width:100%" class="pagination" >
-		   <thead>
-	  		<tr><th>{% trans "Image" %}</th><th>{% trans "ID" %}</th><th>{% trans "Collection" %}</th><th>{% trans "Description" %}</th><th>{% trans "Role" %}</th></tr>
-		   </thead>
-		   <tbody>
-		     	{% for coll in collections %}
-                <tr><td><a href="{% url 'library:collection'  coll.colId %}"><img src="{{ pagedatas.0 }}"/></a></td><td>{{ coll.colId }}</td><td><a href="{% url 'library:collection'  coll.colId %}">{{ coll.colName }}</a></td><td>{{ coll.description }}</td><td>{{ coll.role }}</td></tr>
-			 	{% endfor %}
-		   </tbody>
-		</table>
-
+ <table class="table table-striped display" id="collections_table">
+   <thead>
+	<tr>
+		<th>{% trans "Img" %}</th>
+		<th>{% trans "ColId" %}</th>
+		<th>{% trans "Collection" %}</th>
+		<th>{% trans "Description" %}</th>
+		<th>{% trans "Role" %}</th>
+	</tr>
+   </thead>
+   <tbody>
+	<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+   </tbody>
+</table>
