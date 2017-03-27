@@ -14,6 +14,7 @@ from apps.utils.services import *
 from apps.utils.utils import t_log
 import settings
 import apps.dashboard.settings
+from apps.navigation import navigation
 
 from apps.querystring_parser.querystring_parser import parser
 
@@ -78,7 +79,7 @@ def d_collection(request,collId):
     if isinstance(action_types,HttpResponse):
         return action_types
 
-    navdata = navigation(collections,collId,'colId','colName')
+    navdata = navigation.get_nav(collections,collId,'colId','colName')
     #if we didn't have a focus before navigation call, we'll have one after
     collection = navdata.get("focus")
     pagedata = {'last_action': last_action, 'collection': collection, 'action_types': action_types}
@@ -87,39 +88,6 @@ def d_collection(request,collId):
     combidata.update(navdata)
 
     return render(request, 'dashboard/collection.html', combidata)
-
-def navigation(siblings,focus_id,sibling_id,sibling_content,focus=None):
-
-# siblings = collections
-#    focus = collection=None#
-#    focus_id = collId
-#    sibling_id = 'colId'
-#    sibling_content = 'colName'
-
-    prev=None
-    prev_content=None
-    next=None
-    next_content=None
-    stop_next=False
-    for sibling in siblings:
-        if stop_next:
-            next=sibling.get(sibling_id)
-            next_content=sibling.get(sibling_content)
-            break
-        if sibling.get(sibling_id) == int(focus_id):
-            focus = sibling
-            stop_next=True
-        else :
-            prev=sibling.get(sibling_id)
-            prev_content=sibling.get(sibling_content)
-
-    t_log("NEXT: %s PREV: %s " % (next,prev), logging.WARN)
-    return {'focus' : focus,
-		'nav_up_content': "Up to list of collections", #TODO dynamic
-		'nav_next': next, 
-		'nav_next_content': next_content,
-		'nav_prev':prev,
- 		'nav_prev_content': prev_content}
 
 
 # dashboard/{colID}/{docId}
