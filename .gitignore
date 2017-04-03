@@ -2,5 +2,5 @@
 mc/settings/development.py
 mc/settings/local.py
 *__pycache__*
-tmp
+tmp/db.sqlite3
 collected_static
