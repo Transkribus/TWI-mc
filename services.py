@@ -35,6 +35,9 @@ def t_set_default_headers(headers):
 #Check session cache in case we don't need to bother the transkribus REST service at all
 def t_check_cache(request,t_id, url, params=None) :
 
+    #If our request doesn't have a session we are probably being called from a script. So no cache
+    if not hasattr(request,"session") : return None
+
     # t_id and url as identifer for cached data, Store with key "cache_url" and in first element if data is a list
     if t_id in request.session :
         request_id = t_gen_request_id(url,params)
@@ -48,6 +51,9 @@ def t_check_cache(request,t_id, url, params=None) :
 
 #Set the session cache after a successful request to transkribus REST service
 def t_set_cache_value(request,t_id,data,url,params=None) :
+
+    #If our request doesn't have a session we are probably being called from a script. So no cache
+    if not hasattr(request,"session") : return None
 
     #Use the t_id as identifer for cached data, Store the url with key "cache_url" (in first element if data is a list)
     request_id = t_gen_request_id(url,params)
