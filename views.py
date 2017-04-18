@@ -40,7 +40,7 @@ def index(request):
 @t_login_required
 def collections(request):
     if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
+        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
 
     collections = t_collections(request)
     if isinstance(collections,HttpResponse):
@@ -92,7 +92,7 @@ def collectionsTest(request):
 def collection(request, collId):
 
     if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
+        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
 
     #Avoid this sort of nonsense if possible
     collections = t_collections(request,{'end':None,'start':None})
@@ -176,7 +176,7 @@ def collection(request, collId):
 def document(request, collId, docId, page=None):
 
     if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
+        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
 
     collection = t_collection(request, {'collId': collId})
     if isinstance(collection,HttpResponse):
