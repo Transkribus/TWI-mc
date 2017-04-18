@@ -217,6 +217,8 @@ MEDIA_URL = '/readTest/media/' #not currently used
 
 ##################### Added for READ ###################
 
+SERVERBASE = '/read/'
+
 ## Auth backend that logs in to transkribus.eu and extends the django.contrib.auth.User
 AUTHENTICATION_BACKENDS = [
     'apps.utils.backends.TranskribusBackend',
