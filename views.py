@@ -42,6 +42,7 @@ def collections(request):
     if not t_refresh() : 
         return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
 
+
     collections = t_collections(request)
     if isinstance(collections,HttpResponse):
         return collections
@@ -93,6 +94,7 @@ def collection(request, collId):
 
     if not t_refresh() : 
         return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
+
 
     #Avoid this sort of nonsense if possible
     collections = t_collections(request,{'end':None,'start':None})
@@ -177,6 +179,7 @@ def document(request, collId, docId, page=None):
 
     if not t_refresh() : 
         return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
+
 
     collection = t_collection(request, {'collId': collId})
     if isinstance(collection,HttpResponse):
@@ -266,6 +269,94 @@ def document(request, collId, docId, page=None):
         'nav_prev': nav['prev'],
         })
     '''
+
+@t_login_required
+def document_page(request, collId, docId, page):
+    
+    if not t_refresh() : 
+        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
+    
+    collection = t_collection(request, {'collId': collId})
+    if isinstance(collection,HttpResponse):
+        return collection
+    full_doc = t_document(request, collId, docId,-1)
+    if isinstance(full_doc,HttpResponse):
+        return full_doc
+    
+    index = int(page)-1
+    #extract page data from full_doc (may be better from a  separate page data request)
+    pagedata = full_doc.get('pageList').get('pages')[index]
+#     transcripts = pagedata.get('tsList').get('transcripts')
+#     
+#     sys.stdout.write("pagedata url : %s \r\n" % pagedata["url"])
+#     sys.stdout.flush()
+      
+    #new for fetching all text regions and text of all pages
+    textlines = []
+    current_transcript = t_current_transcript(request, collId, docId, page)
+    transcript = t_transcript(request, current_transcript.get("tsId"),current_transcript.get("url"))
+    regions=transcript.get("PcGts").get("Page").get("TextRegion");
+     
+    if isinstance(regions, dict):
+        regions = [regions]
+#         
+# 
+    lineList = []
+    if regions:
+        sys.stdout.write("number of regions on this page : %s \r\n" % len(regions))
+        sys.stdout.flush()
+        for y in regions:
+            if y is not None:
+                lines = y.get("TextLine")
+                #region_width = crop(x.get("Coords").get("@points"), 1).get('w')
+                if lines:
+                    if isinstance(lines, dict):
+                        #lines['regionWidth'] = region_width
+                        lineList.extend([lines])
+                    else: # Assume that lines is a list of lines
+                        if lines is not None:
+                            for line in lines:
+                                #line['regionWidth'] = region_width
+                                lineList.extend([line])
+      
+    if lineList:
+        for line in lineList:
+            if line.get('TextEquiv') is not None:
+                unicode_string = line.get('TextEquiv').get('Unicode')
+            else:
+                unicode_string = "";
+            line['Unicode'] = unicode_string
+            line_crop = crop(line.get("Coords").get("@points"))#,True)
+            line['crop'] = line_crop
+            line_id = line.get("@id")
+            line['id'] = line_id
+    
+#     paginator = Paginator(full_doc.get('pageList').get('pages'), 10)  # Show 5 docs per page
+#     page = request.GET.get('page')
+#     try:
+#         doclist = paginator.page(page)
+#     except PageNotAnInteger:
+#         # If page is not an integer, deliver first page.
+#         doclist = paginator.page(1)
+#     except EmptyPage:
+#         # If page is out of range (e.g. 9999), deliver last page of results.
+#         doclist = paginator.page(paginator.num_pages)
+
+    return render(request, 'library/document_page.html', {
+        'metadata': full_doc.get('md'),
+        'textlines': lineList,
+        'pageList': full_doc.get('pageList'),
+        'collId': int(collId),
+        'docId': int(docId),
+        'pageNr': page,
+        'pagedata': pagedata
+#         'nav_up': nav['up'],
+#         'nav_next': nav['next'],
+#         'nav_prev': nav['prev'],
+        })
+    
+    
+    
 #/library/document/{colId}/{docId}/{page}
 # view that lists transcripts in doc and some page level metadata
 #@profile("page.prof")
