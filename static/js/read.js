@@ -75,7 +75,6 @@ function init_datatable(table,url, columns){
 						url += '/'+1+'#thumbs';
 				if(data.pageNr != undefined && data.pageNr !== "n/a"){ //NB will break until we use base url
 					url = serverbase+'/edit/correct/'+data.colId+'/'+data.docId+'/'+data.pageNr;	
-					console.log(url);
 					if(serverbase !== "") url = '/'+url;
 				 	window.location.href=url;
 					return false;
@@ -83,7 +82,8 @@ function init_datatable(table,url, columns){
 				}
 				//TODO add case for userlist links 
 				if(url){
-					 window.location.href=appbase+'/'+url;
+					if(appbase.match(/\/$/)) loc = appbase+url; else loc = appbase+'/'+url;
+					window.location.href=loc;
 				}
 			});
         	},
