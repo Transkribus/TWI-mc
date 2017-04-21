@@ -71,6 +71,8 @@ function init_datatable(table,url, columns){
 				if(colId) url = colId;
 				if(data.docId != undefined && data.docId !== "n/a")
 					url += '/'+data.docId;
+					if (appbase.includes("library"))
+						url += '/'+1+'#thumbs';
 				if(data.pageNr != undefined && data.pageNr !== "n/a"){ //NB will break until we use base url
 					url = serverbase+'/edit/correct/'+data.colId+'/'+data.docId+'/'+data.pageNr;	
 					console.log(url);
@@ -198,6 +200,9 @@ function init_chart(canvas_id,url,chart_type){
 function init_pages_thumbs(){
 	// NB This paging is managed on django until we can do so on transkribus rest
 	// would be great to manage page size and pages with datatable... but this is not a datatable....
+	
+	console.log("get_thumbs");
+	
 	if(!$("#pages_thumbnail_grid").length) return;
 
 	var start = 0;
