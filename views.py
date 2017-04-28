@@ -183,7 +183,6 @@ def document_thumb(request, collId, docId):
             'url': thumb_url
         },safe=False)
 
-
 #Fetch a single thumb url from the document referenced
 def page_img(request, collId, docId, page):
     import timeit
@@ -200,6 +199,7 @@ def page_img(request, collId, docId, page):
     return JsonResponse({
             'url': img_url
         },safe=False)
+
 ##########
 # Helpers
 ##########
