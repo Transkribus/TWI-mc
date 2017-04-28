@@ -4,6 +4,8 @@
 #import re
 #import random
 
+from django.template.defaultfilters import linebreaksbr
+
 #Imports of django modules
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
@@ -66,10 +68,10 @@ def register(request):
     return render(request, 'registration/register.html', {'register_form': form} )
 
 @t_login_required_ajax
-def table_ajax(request,list_name,collId=None,docId=None,userId=None) :
-
+def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
+    
     t_list_name=list_name
-    params = {'collId': collId, 'docId': docId, 'userid' : userId} #userid can only be used to filter in context of a collection
+    params = {'collId': collId, 'docId': docId, 'page': page, 'userid' : userId} #userid can only be used to filter in context of a collection
     ####### EXCEPTION #######
     # list_name is pages we extract this from fulldoc
     if list_name == 'pages' :
@@ -78,6 +80,28 @@ def table_ajax(request,list_name,collId=None,docId=None,userId=None) :
     #########################
 
     (data,count) = paged_data(request,t_list_name,params)
+    
+    print(request)
+
+    #we want to add statistical data to the title column like nr_of_transcribed_lines, nr_of_transkribed_words, tags....
+    if list_name == 'documents':
+        for element in data:
+            #docStat = t_docStat(request,{'collId': collId, 'docId': int(element.get('docId'))})
+            docId = element.get('docId')  
+            params2 = {'collId': collId, 'docId': docId}
+            docStat = eval("t_docStat(request, params2)")
+            #print(docStat)
+            #TODO call rest service to get the stats
+            element.update({'title': str(element.get('title'))+'<br/>nr_lines_transcribed: '+ str(docStat.get('nrOfTranscribedLines')) + '<br/>nr_words_transcribed: ' + str(docStat.get('nrOfWords'))})  
+    
+    #print(data)
+    
+    if list_name == 'collections':
+        for element in data:
+            collId = element.get('colId') 
+            params3 = {'collId': collId}
+            collStat = eval("t_collStat(request, params3)")
+            element.update({'colName': str(element.get('colName'))+'<br/>nr_lines_transcribed: '+ str(collStat.get('nrOfTranscribedLines')) + '<br/>nr_words_transcribed: ' + str(collStat.get('nrOfWords'))}) 
 
    #TODO pass back the error not the redirect and then process the error according to whether we have been called via ajax or not....
     if isinstance(data,HttpResponse):
@@ -89,7 +113,7 @@ def table_ajax(request,list_name,collId=None,docId=None,userId=None) :
                 'actions' : ['time', 'colId', 'colName', 'docId', 'docName', 'pageId', 'pageNr', 'userName', 'type'],
                 'collections' : ['colId', 'colName', 'description', 'role'],
                 'users' : ['userId', 'userName', 'firstname', 'lastname','email','affiliation','created','role'], #NB roles in userCollection
-                'documents' : ['docId','title','author','uploadTimestamp','uploader','nrOfPages','language','status'],
+                'documents' : ['docId','title','author','uploadTimestamp','uploader','nrOfPages','language','status', 'new_key'],
 #               'pages' : ['pageId','pageNr','thumbUrl','status', 'nrOfTranscripts'], #tables
                 'pages' : ['pageId','pageNr','imgFileName','thumbUrl','status'], #thumbnails
               }
@@ -119,6 +143,63 @@ def table_ajax(request,list_name,collId=None,docId=None,userId=None) :
             'data': data_filtered
         },safe=False)
 
+#Fetch a single thumb url from the collection referenced
+def collection_thumb(request, collId):
+
+    documents = t_documents(request,{'collId': collId})
+    if isinstance(documents,HttpResponse):
+        return documents
+    #grab first doc
+    docId = next(iter(documents or []), None).get("docId")
+
+    fulldoc = t_fulldoc(request,{'collId': collId, 'docId': docId})
+    if isinstance(fulldoc,HttpResponse):
+        return fulldoc
+
+    pages = fulldoc.get('pageList').get("pages")
+#    a = len(pages) // 2 #page from the middle?
+    #maybe just grab first page?
+    thumb_url = pages[0]['thumbUrl']
+
+    return JsonResponse({
+            'url': thumb_url
+       },safe=False)
+
+
+#Fetch a single thumb url from the document referenced
+def document_thumb(request, collId, docId):
+    import timeit
+    
+    fulldoc = t_document(request, collId, docId,-1)
+    if isinstance(fulldoc,HttpResponse):
+        return fulldoc
+    
+    pages = fulldoc.get('pageList').get("pages")
+#    a = len(pages) // 2 #page from the middle?
+    #maybe just grab first page?
+    thumb_url = pages[0]['thumbUrl']
+
+    return JsonResponse({
+            'url': thumb_url
+        },safe=False)
+
+
+#Fetch a single thumb url from the document referenced
+def page_img(request, collId, docId, page):
+    import timeit
+    
+    fulldoc = t_document(request, collId, docId, page)
+    if isinstance(fulldoc,HttpResponse):
+        return fulldoc
+    
+    currPage = fulldoc.get('pageList').get("pages")[page]
+#    a = len(pages) // 2 #page from the middle?
+    #maybe just grab first page?
+    img_url = currPage['url']
+
+    return JsonResponse({
+            'url': img_url
+        },safe=False)
 ##########
 # Helpers
 ##########
@@ -139,6 +220,7 @@ def paged_data(request,list_name,params=None):#collId=None,docId=None):
     params['start'] = str(dt_params.get('start_date')) if dt_params.get('start_date') else None
     params['end'] = str(dt_params.get('end_date')) if dt_params.get('end_date') else None
     params['index'] = int(dt_params.get('start')) if dt_params.get('start') else 0
+    params['page'] = int(dt_params.get('page')) if dt_params.get('page') else 1
 
     #NB dataTables uses length, transkribus nValues
     if 'nValues' not in params :
