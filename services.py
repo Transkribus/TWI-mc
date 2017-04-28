@@ -35,6 +35,9 @@ def t_set_default_headers(headers):
 #Check session cache in case we don't need to bother the transkribus REST service at all
 def t_check_cache(request,t_id, url, params=None) :
 
+    #If our request doesn't have a session we are probably being called from a script. So no cache
+    if not hasattr(request,"session") : return None
+
     # t_id and url as identifer for cached data, Store with key "cache_url" and in first element if data is a list
     if t_id in request.session :
         request_id = t_gen_request_id(url,params)
@@ -48,6 +51,9 @@ def t_check_cache(request,t_id, url, params=None) :
 
 #Set the session cache after a successful request to transkribus REST service
 def t_set_cache_value(request,t_id,data,url,params=None) :
+
+    #If our request doesn't have a session we are probably being called from a script. So no cache
+    if not hasattr(request,"session") : return None
 
     #Use the t_id as identifer for cached data, Store the url with key "cache_url" (in first element if data is a list)
     request_id = t_gen_request_id(url,params)
@@ -76,6 +82,8 @@ def t_request(request,t_id,url,params=None,method=None,headers=None,handler_para
         r = s.post(url, params=params, verify=False, headers=headers)
     else:
         r = s.get(url, params=params, verify=False, headers=headers)
+        
+    print(r)
 
     #Check responses, 
     #	401: unauth
@@ -86,7 +94,7 @@ def t_request(request,t_id,url,params=None,method=None,headers=None,handler_para
         r.raise_for_status()
     except requests.exceptions.HTTPError as e:
         if e.response.status_code not in (401, 403, 400):
-            raise e
+            raise e.response.status_code
 
         if e.response.status_code == 400 : # and handler_params is not None and "collId" in handler_params):
             if re.match(r'^.*/rest/user/register', url) :
@@ -332,6 +340,26 @@ def t_page(request,collId, docId, page):
     url = settings.TRP_URL+'collections/'+collId+'/'+str(docId)+'/'+str(page)+'/list'
     t_id = "page"
     return t_request(request,t_id,url)
+
+#returns (nr_of_transcribed_lines, nr_of_transcribed_words) for a document
+def t_docStat(request, params):
+
+    url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/'+str(params.get('docId'))+'/docStat'
+    t_id = "docStat"
+    return t_request(request,t_id,url)
+
+def t_docStat_handler(r,params=None):
+    return json.loads(r.text)
+
+#returns (nr_of_transcribed_lines, nr_of_transcribed_words) for a whole collection
+def t_collStat(request, params):
+
+    url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/collStat'
+    t_id = "collStat"
+    return t_request(request,t_id,url)
+
+def t_collStat_handler(r,params=None):
+    return json.loads(r.text)
 
 def t_page_handler(r,params=None):
 
