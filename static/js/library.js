@@ -47,7 +47,7 @@ function init_collections_table(){
 		    { "data": "role" },
         	];
 	var datatable = init_datatable($("#collections_table"),url,columns);
-
+	
 	$("#collections_table").on( 'draw.dt', function () {
 		row_data = [];
 		$("#collections_table tbody tr").each(function(rowInd){ 
@@ -85,10 +85,11 @@ function init_documents_table(){
 		    { "data": "author" },
 		    { "data": "nrOfPages" },
 		    { "data": "language" },
+		    //{ "data": "new_key" },//if we want to add a new column in this table
         	];
 
 	var datatable = init_datatable($("#documents_table"),url,columns);
-	
+		
 	$("#documents_table").on( 'draw.dt', function () {
 		row_data = [];
 		$("#documents_table tbody tr").each(function(rowInd){ 
