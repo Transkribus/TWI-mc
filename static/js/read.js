@@ -69,8 +69,11 @@ function init_datatable(table,url, columns){
 					colId = ids.collId;
 
 				if(colId) url = colId;
-				if(data.docId != undefined && data.docId !== "n/a")
+				if(data.docId != undefined && data.docId !== "n/a"){
 					url += '/'+data.docId;
+					if (appbase.includes("library"))
+						url += '/'+1+'#thumbs';
+				}
 				if(data.pageNr != undefined && data.pageNr !== "n/a"){ //NB will break until we use base url
 					url = serverbase+'/edit/correct/'+data.colId+'/'+data.docId+'/'+data.pageNr;	
 					if(serverbase !== "") url = '/'+url;
@@ -322,8 +325,10 @@ String.prototype.ucfirst = function() {
 }
 
 function parse_path(){
+	
 	var pattern = /\/\w+(|\/(\d+)(|\/(\d+)(|\/(\d+))))$/;
 	var result = pattern.exec(window.location.pathname);
+	console.log("pattern result " + result)
 	ids = {};
 	if(result != null && result[2]) ids['collId'] = result[2];
 	if(result != null && result[4]) ids['docId'] = result[4];
