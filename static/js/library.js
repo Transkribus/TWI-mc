@@ -35,13 +35,14 @@ function init_collections_table(){
 		    //This column will be for our image which we will not get from the table_ajax/collections view
 		    //We may need to divise some darstedly view especially for getting a single image from a collection or document
 		    //One thing is sure if we start make full doc calls in side collection loops we will be waiting a long time
+		//,
+	     // "render" : function(data, type, row){
+		//		return '<a href="'+row.colId+'">'+data+'</a>';
+		//	} --> was after colName
 		    { "data" : null,
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>'}, 
 		    { "data": "colId" },
-		    { "data": "colName",
-		      "render" : function(data, type, row){
-				return '<a href="'+row.colId+'">'+data+'</a>';
-			} 
+		    { "data": "colName" 
 		    },
 		    { "data": "description" },
 		    { "data": "role" },
