@@ -188,6 +188,7 @@ def document(request, collId, docId, page=None):
     if isinstance(fulldoc,HttpResponse):
         return fulldoc
 
+    
     nav = navigation.up_next_prev(request,"document",docId,collection,[collId])
     
     navdata = navigation.get_nav(collection,docId,'docId','title')
@@ -287,6 +288,14 @@ def document_page(request, collId, docId, page):
     #extract page data from full_doc (may be better from a  separate page data request)
     pagedata = full_doc.get('pageList').get('pages')[index]
 #     transcripts = pagedata.get('tsList').get('transcripts')
+
+    sys.stdout.write((str(request)))
+    sys.stdout.write((str(request)).rsplit('/', 1)[0])
+    sys.stdout.flush()
+    startStr = (str(request)).rsplit('/', 1)[0]
+    #nav = navigation.up_next_prev(startStr,"document",docId,collection,[collId])
+    
+    navdata = navigation.get_nav(collection,collId,'docId','title')
 #     
 #     sys.stdout.write("pagedata url : %s \r\n" % pagedata["url"])
 #     sys.stdout.flush()
