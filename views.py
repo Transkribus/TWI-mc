@@ -81,18 +81,38 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
 
     (data,count) = paged_data(request,t_list_name,params)
     
-    print(request)
-
     #we want to add statistical data to the title column like nr_of_transcribed_lines, nr_of_transkribed_words, tags....
     if list_name == 'documents':
         for element in data:
             #docStat = t_docStat(request,{'collId': collId, 'docId': int(element.get('docId'))})
             docId = element.get('docId')  
             params2 = {'collId': collId, 'docId': docId}
+            personParam = {'collId': collId, 'docId': docId, 'tagName': 'person'}
+            placeParam = {'collId': collId, 'docId': docId, 'tagName': 'place'}
+            dateParam = {'collId': collId, 'docId': docId, 'tagName': 'date'}
+            abbrevParam = {'collId': collId, 'docId': docId, 'tagName': 'abbrev'}
+            otherParam = {'collId': collId, 'docId': docId, 'tagName': 'other'}
+            personCount = eval("t_countDocTags(request,personParam)")
+            placeCount = eval("t_countDocTags(request,placeParam)")
+            dateCount = eval("t_countDocTags(request,dateParam)")
+            abbrevCount = eval("t_countDocTags(request,abbrevParam)")
+            otherCount = eval("t_countDocTags(request,otherParam)")
+#             print('nr of person tags: ' + str(personCount))
+#             print('place tags' + str(placeCount))
+#             print('date tags' + str(dateCount))
+#             print('abbrev tags' + str(abbrevCount))
+#             print('other tags' + str(otherCount))
+            
+            tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
+            
             docStat = eval("t_docStat(request, params2)")
             #print(docStat)
             #TODO call rest service to get the stats
-            element.update({'title': str(element.get('title'))+'<br/>nr_lines_transcribed: '+ str(docStat.get('nrOfTranscribedLines')) + '<br/>nr_words_transcribed: ' + str(docStat.get('nrOfWords'))})  
+            if 'nr_lines_transcribed' not in str(element.get('title')):
+                element.update({'title': str(element.get('title'))+'<br/>nr_lines_transcribed: '+ str(docStat.get('nrOfTranscribedLines')) + '<br/>nr_words_transcribed: ' + str(docStat.get('nrOfWords'))}) 
+                
+            if tagsString and 'Tags' not in str(element.get('title')):
+                element.update({'title': str(element.get('title'))+tagsString}) 
     
     #print(data)
     
@@ -100,8 +120,29 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
         for element in data:
             collId = element.get('colId') 
             params3 = {'collId': collId}
+            
+            personParam = {'collId': collId, 'tagName': 'person'}
+            placeParam = {'collId': collId, 'tagName': 'place'}
+            dateParam = {'collId': collId, 'tagName': 'date'}
+            abbrevParam = {'collId': collId, 'tagName': 'abbrev'}
+            otherParam = {'collId': collId, 'tagName': 'other'}
+            personCount = eval("t_countCollTags(request,personParam)")
+            placeCount = eval("t_countCollTags(request,placeParam)")
+            dateCount = eval("t_countCollTags(request,dateParam)")
+            abbrevCount = eval("t_countCollTags(request,abbrevParam)")
+            otherCount = eval("t_countCollTags(request,otherParam)")
+            
+            tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
+                
+            print(tagsString)
+        
             collStat = eval("t_collStat(request, params3)")
-            element.update({'colName': str(element.get('colName'))+'<br/>nr_lines_transcribed: '+ str(collStat.get('nrOfTranscribedLines')) + '<br/>nr_words_transcribed: ' + str(collStat.get('nrOfWords'))}) 
+            
+            if 'nr_lines_transcribed' not in str(element.get('colName')):
+                element.update({'colName': str(element.get('colName'))+'<br/>nr_lines_transcribed: '+ str(collStat.get('nrOfTranscribedLines')) + '<br/>nr_words_transcribed: ' + str(collStat.get('nrOfWords'))}) 
+                
+            if tagsString and 'Tags' not in str(element.get('colName')):
+                element.update({'colName': str(element.get('colName'))+tagsString}) 
 
    #TODO pass back the error not the redirect and then process the error according to whether we have been called via ajax or not....
     if isinstance(data,HttpResponse):
@@ -113,7 +154,7 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
                 'actions' : ['time', 'colId', 'colName', 'docId', 'docName', 'pageId', 'pageNr', 'userName', 'type'],
                 'collections' : ['colId', 'colName', 'description', 'role'],
                 'users' : ['userId', 'userName', 'firstname', 'lastname','email','affiliation','created','role'], #NB roles in userCollection
-                'documents' : ['docId','title','author','uploadTimestamp','uploader','nrOfPages','language','status', 'new_key'],
+                'documents' : ['docId','title','author','uploadTimestamp','uploader','nrOfPages','language','status'],
 #               'pages' : ['pageId','pageNr','thumbUrl','status', 'nrOfTranscripts'], #tables
                 'pages' : ['pageId','pageNr','imgFileName','thumbUrl','status'], #thumbnails
               }
@@ -142,6 +183,24 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
             'recordsFiltered': count,
             'data': data_filtered
         },safe=False)
+    
+
+def getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount):
+    tagsString = ''
+    if personCount > 0 or placeCount>0 or dateCount>0 or abbrevCount>0 or otherCount>0:
+        tagsString += '<br/>Tags: '
+    if personCount > 0:
+        tagsString += '<br/>Persons (' + str(personCount) + ')'
+    if placeCount > 0:
+        tagsString += '<br/>Places (' + str(placeCount) + ')'
+    if dateCount > 0:
+        tagsString += '<br/>Dates (' + str(dateCount) + ')'
+    if abbrevCount > 0:
+        tagsString += '<br/>Abbrevs: (' + str(abbrevCount) + ')'
+    if otherCount > 0:
+        tagsString += '<br/>Others: (' + str(otherCount) + ')'
+        
+    return tagsString
 
 #Fetch a single thumb url from the collection referenced
 def collection_thumb(request, collId):
