@@ -361,6 +361,25 @@ def t_collStat(request, params):
 def t_collStat_handler(r,params=None):
     return json.loads(r.text)
 
+#returns (nr_of_transcribed_lines, nr_of_transcribed_words) for a document
+def t_countDocTags(request, params):
+
+    url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/'+str(params.get('docId'))+'/countTags'
+    t_id = "countDocTags"
+    return t_request(request,t_id,url, params)
+
+def t_countDocTags_handler(r,params=None):
+    return json.loads(r.text)
+
+def t_countCollTags(request, params):
+
+    url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/countTags'
+    t_id = "countCollTags"
+    return t_request(request,t_id,url, params)
+
+def t_countCollTags_handler(r,params=None):
+    return json.loads(r.text)
+
 def t_page_handler(r,params=None):
 
     t_page = json.loads(r.text)
