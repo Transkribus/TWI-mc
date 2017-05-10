@@ -2,11 +2,6 @@
 {% load i18n %}
 
 {% block content %}
-
-<h1>My Collections</h1>
-
-{% include "dashboard/collections_table.html" %}
-
 <div class="container">
  <h2>My activities:</h2>
 
@@ -43,6 +38,10 @@
   <button class="btn btn-default table_filter" id="filter_clear" value="">X</button>
 
 </div>
+
+<h1>My Collections</h1>
+
+{% include "dashboard/collections_table.html" %}
 
 <!--
 <div class="container">
