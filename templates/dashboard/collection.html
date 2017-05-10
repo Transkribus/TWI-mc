@@ -9,7 +9,8 @@
 
 	<h2>Last activity {{collection.colName}}</h2>
 
-	<p>{{last_action.time}}: User {{last_action.userName}}, {{last_action.role}}, operation ({{last_action.type}}) on page ID {{last_action.pageNr}} of document ID {{last_action.docId}}</p>
+	<p>{{last_action.time}}: User {{last_action.userName}}. {{last_action.type}} {%if last_action.pageNr %} on page {{last_action.pageNr}} {%endif%} {%if last_action.docId %} of document ID {{last_action.docId}} {%endif%}</p>
+
 
 	<div class="container">
 
@@ -65,6 +66,7 @@
 		</div>
 
 	</div>
+
 
 	<div class="container">
 

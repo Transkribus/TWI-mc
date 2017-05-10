@@ -35,7 +35,7 @@ from apps.querystring_parser.querystring_parser import parser
 def index(request):
 
     if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"logout/?next={!s}".format(request.get_full_path())))
+        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
        
     last_action = t_actions(request,{'nValues' : 1})[0]
     
@@ -66,7 +66,7 @@ def index(request):
 def d_collection(request,collId):
 
     if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"logout/?next={!s}".format(request.get_full_path())))
+        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
  
     last_action = t_actions(request,{'nValues' : 1, 'collId' : collId})[0]
 
@@ -107,7 +107,9 @@ def d_collection(request,collId):
 def d_document(request,collId,docId):
 
     if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"logout/?next={!s}".format(request.get_full_path())))
+        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
+
+    last_action = t_actions(request,{'nValues' : 1})[0]
 
     documents = t_documents(request,{'collId': collId}) #for nav only...
     if isinstance(documents,HttpResponse):
@@ -150,6 +152,7 @@ def d_document(request,collId,docId):
 #    t_log("APP_NAME: %s" % (request.resolver_match.app_name))
 
     return render(request, 'dashboard/document.html', {'document': fulldoc.get('md'),
+							'last_action': last_action,
                                                         'action_types': action_types,
 							'nav_up_content': up_content,
 							'nav_next': next, 
@@ -163,7 +166,7 @@ def d_document(request,collId,docId):
 def d_user(request,username):
 
     if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"logout/?next={!s}".format(request.get_full_path())))
+        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
 
     t_log("##################### USERNAME: %s " % username)
     
