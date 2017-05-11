@@ -272,7 +272,7 @@ def document(request, collId, docId, page=None):
     '''
 
 @t_login_required
-def document_page(request, collId, docId, page):
+def document_page(request, collId, docId, page=None):
     
     if not t_refresh() : 
         return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
@@ -283,6 +283,9 @@ def document_page(request, collId, docId, page):
     full_doc = t_document(request, collId, docId,-1)
     if isinstance(full_doc,HttpResponse):
         return full_doc
+    
+    if (page is None):
+        page = 1
     
     index = int(page)-1
     #extract page data from full_doc (may be better from a  separate page data request)
