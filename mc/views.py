@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
 def index(request):
-    return HttpResponseRedirect('dashboard/')
+    return HttpResponseRedirect('library/')
 
 def about(request):
     return render(request, 'pages/about.html')
