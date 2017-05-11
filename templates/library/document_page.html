@@ -51,6 +51,10 @@
             pre{
                 margin: 10px 0;
             }
+            .top-bottom-one {
+            	margin-top: 1cm;
+			  	margin-bottom: 1cm;
+			}
             .bs-docs-example {
                 position: relative;
                 margin: 15px 0;
@@ -168,6 +172,9 @@
 				    <div class="container" id="pages_thumbnail_grid"></div>
 				  </div>
 				  <div id="image" class="tab-pane">
+				  	<p>
+				  	<a href="{% url 'edit:correct' collId metadata.docId pageNr%}" class="btn btn-info btn-md top-bottom-one">Correction mode</a>
+				  	</p>
 				  	<img src="{{pagedata.url}}" style="width:600px;height:800px;>
 <!-- 				    <img src="{{pagedata.url}}" alt="test" style="width:({{pagedata.width}}/2)px;height:({{pagedata.height}}/2)px;"> -->
 						<!-- <img src="{{pagedata.url}}" alt="test" style="width:600px;height:800px;"> -->
@@ -219,7 +226,14 @@
 					
 				 </div>
 				 <div id="text" class="tab-pane">
-				 	<p>This pages has {{ textlines|length }} lines of text:</p>
+<!-- 				 	<form action="{% url 'edit:proofread' collId metadata.docId 1 1%}">
+					    <input type="submit" value="Edit this text" />
+					</form> -->
+					<a href="{% url 'edit:proofread' collId metadata.docId 1 1%}" class="btn btn-info btn-md top-bottom-one">Edit this text</a>
+					<br/>
+				 	<p>This page has {{ textlines|length }} lines of text: </p>
+				 	
+				 	<!-- <iframe id="encoder_iframe" height=100% width="100%" src="{% url 'edit:proofread' collId metadata.docId 1 1%}" style=" width: 1000px; height: 500px;"> </iframe> -->
 
 				  		{%for line in textlines%}
 							<ul class="line-list" contenteditable="true">
