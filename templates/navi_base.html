@@ -22,9 +22,6 @@
     <div class="collapse navbar-collapse" id="ts-app-menu">
        <ul class="nav navbar-nav">
         <li>
-        <li {%ifequal urlname "about" %}class="active"{%endifequal%}>
-          <a href="{% url 'about' %}">{% trans "About" %}</a>
-        </li>
         <li {%ifequal urlname "user_guide" %}class="active"{%endifequal%}>
           <a href="{% url 'user_guide' %}">{% trans "User Guide" %}</a>
         </li>
