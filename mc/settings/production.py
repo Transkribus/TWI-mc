@@ -232,7 +232,7 @@ NOCAPTCHA = True
 LOGIN_URL = 'login'
 
 #Where to on login if no next param available?
-LOGIN_REDIRECT_URL = '/dashboard'
+LOGIN_REDIRECT_URL = '/library'
 
 #Default for size of paged data
 PAGE_SIZE_DEFAULT = 5
