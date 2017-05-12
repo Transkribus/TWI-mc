@@ -428,6 +428,52 @@ def t_transcript_xml_handler(r,params=None):
 def t_create_collection_handler(r, params=None):
     return r.status_code == requests.codes.ok
 
+#t_crowdsourcing_count 
+def t_crowdsourcing_count(request,params=None):
+    url = settings.TRP_URL+'crowdsourcing/count'
+    t_id = "crowdsourcing_count"
+    return t_request(request,t_id,url,params)
+
+def t_crowdsourcing_count_handler(r,params=None):
+    return json.loads(r.text)
+
+#t_crowdsourcing_list
+def t_crowdsourcing(request,params=None):
+    url = settings.TRP_URL+'crowdsourcing/list'
+    t_id = "crowdsourcing"
+
+    return t_request(request,t_id,url,params)
+
+def t_crowdsourcing_handler(r,params=None):
+    return json.loads(r.text)
+
+#t_crowdsourcing_subscribe
+def t_crowdsourcing_subscribe(request,params):
+    url = settings.TRP_URL+'crowdsourcing/'+str(params.get('collId'))+'/subscribe'
+    t_id = "crowdsourcing_subscribe"
+
+    params = {'collId': params.get('collId')}
+    headers = {'content-type': "application/json"}
+
+    return t_request(request, t_id, url, method='POST',params=params,headers=headers)
+
+def t_crowdsourcing_subscribe_handler(r,params=None):
+    return r.status_code
+
+#t_crowdsourcing_unsubscribe
+def t_crowdsourcing_unsubscribe(request,params):
+    url = settings.TRP_URL+'crowdsourcing/'+str(params.get('collId'))+'/unsubscribe'
+    t_id = "crowdsourcing_unsubscribe"
+
+    params = {'collId': params.get('collId')}
+    headers = {'content-type': "application/json"}
+
+    return t_request(request, t_id, url, method='POST',params=params,headers=headers)
+
+def t_crowdsourcing_unsubscribe_handler(r,params=None):
+    return r.status_code
+
+
 # t_metadata moved to utils
 
 ####################################
