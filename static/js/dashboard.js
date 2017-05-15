@@ -73,7 +73,13 @@ function init_actions_table(){
 	url += context;
 	console.log("URL: ",url);
 	var columns =  [
-		    { "data": "time" },
+		    { "data": "time",
+		      "render" : function(data, type, row){
+				if(data === "n/a") return data;
+				var date = new Date(data);
+				return date.toDateString();
+			},
+		    },
 		    { "data": "colId", "visible": false },
 		    { "data": "colName" },
 		    { "data": "docId", "visible": false  },
@@ -108,7 +114,7 @@ function init_users_table(){
 		    { "data": "created",
 		      "render" : function(data, type, row){
 				if(data === "n/a") return data;
-				var date = new Date(data)	
+				var date = new Date(data);
 				return date.toDateString();
 			},
 		    },
