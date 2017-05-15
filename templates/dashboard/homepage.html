@@ -2,21 +2,22 @@
 {% load i18n %}
 
 {% block content %}
-<div class="container">
- <h2>My activities:</h2>
+
+<div class="read-container container">
+<h2>{% trans 'My activities:' %}</h2>
 
    {% include "dashboard/date_input.html" %}
-
 </div>
 
+<div class="read-container container">
 
 <div class="panel">
  
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#a_table" aria-controls="a_table" role="tab" data-toggle="tab">My activities</a></li>
-    <li role="presentation"><a href="#a_chart" aria-controls="a_chart" role="tab" data-toggle="tab">My activities chart</a></li>
-    <li role="presentation"><a href="#top_coll" aria-controls="top_coll" role="tab" data-toggle="tab">My most active collections</a></li>
+    <li role="presentation" class="active"><a href="#a_table" aria-controls="a_table" role="tab" data-toggle="tab">{% trans 'My activities' %}</a></li>
+    <li role="presentation"><a href="#a_chart" aria-controls="a_chart" role="tab" data-toggle="tab">{% trans 'My activities chart' %}</a></li>
+    <li role="presentation"><a href="#top_coll" aria-controls="top_coll" role="tab" data-toggle="tab">{% trans 'My most active collections' %}</a></li>
   </ul>
 
   <!-- Tab panes -->
@@ -38,24 +39,27 @@
   <button class="btn btn-default table_filter" id="filter_clear" value="">X</button>
 
 </div>
+</div>
+<div class="read-container container">
 
-<h1>My Collections</h1>
+<h1>{% trans 'My Collections' %}</h1>
 
 {% include "dashboard/collections_table.html" %}
 
+</div>
 <!--
 <div class="container">
 	<div class="row">
 		<div class="col-md-12" id="actions_chart">
-		<h3>Your overall activity</h3>
+		<h3>{% trans 'My overall activity' %}</h3>
 		<canvas id="actions_line" class="chart_canvas" width="400" height="200"></canvas>
 		</div>
 		<div class="col-md-8">
-		<h3>User activity</h3>
+		<h3>{% trans 'User activity' %}</h3>
 		<canvas id="_bar" class="chart_canvas" width="400" height="200"></canvas>
 		</div>
 		<div class="col-md-4">
-		<h3>Status</h3>
+		<h3>{% trans 'Status' %}</h3>
 		<canvas id="status_pie" class="chart_canvas" width="200" height="200"></canvas>
 		</div>
 	</div>
