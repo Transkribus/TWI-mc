@@ -1,12 +1,14 @@
 {% load i18n %}
 
-<p>This collection contains the following  <span id="documents_table_count"></span> documents</p>
+<p style="font-size:14pt; margin-top:20px; margin-bottom:20px; color: black;">Collection {{collection.colName}} with ID {{collection.colId}} contains the following <span id="documents_table_count"></span> documents</p>
 
 <table class="table table-striped display" id="documents_table">
    <thead>
 	<tr>
 		<th>{% trans "Img" %}</th>
+		<th>{% trans "DocID" %}</th>
 		<th>{% trans "Document" %}</th>
+		<th>{% trans "Description" %}</th>
 		<th>{% trans "Author" %}</th>
 		<th>{% trans "Pages" %}</th>
 		<th>{% trans "Language" %}</th>
