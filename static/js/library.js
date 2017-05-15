@@ -42,8 +42,7 @@ function init_collections_table(){
 		    { "data" : null,
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>'}, 
 		    { "data": "colId" },
-		    { "data": "colName" 
-		    },
+		    { "data": "colName"},
 		    { "data": "description" },
 		    { "data": "role" },
         	];
@@ -82,7 +81,9 @@ function init_documents_table(){
 		    //This column will be for our image which we will not get from the table_ajax/document view
 		    { "data" : null, 
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>'}, 
+		    { "data": "docId" },
 		    { "data": "title" },
+		    { "data": "desc" },
 		    { "data": "author" },
 		    { "data": "nrOfPages" },
 		    { "data": "language" },
