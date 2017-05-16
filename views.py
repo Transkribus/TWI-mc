@@ -37,7 +37,7 @@ from apps.querystring_parser.querystring_parser import parser
 def index(request):
 
     if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
+        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
     
     last_actions = t_actions(request,{'nValues' : 5,  'userid': request.user.tsdata.userId, 'typeId': 4 })
  
@@ -71,7 +71,7 @@ def index(request):
 def d_collection(request,collId):
 
     if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
+        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
  
     last_actions = t_actions(request,{'nValues' : 5, 'collId' : collId, 'userid': request.user.tsdata.userId, 'typeId': 4 })
  
@@ -115,7 +115,7 @@ def d_collection(request,collId):
 def d_document(request,collId,docId):
 
     if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
+        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
 
     last_actions = t_actions(request,{'nValues' : 5, 'collId' : collId, 'docId' : docId, 'userid': request.user.tsdata.userId, 'typeId': 4  })
  
@@ -178,7 +178,7 @@ def d_document(request,collId,docId):
 def d_user(request,username):
 
     if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
+        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
 
     t_log("##################### USERNAME: %s " % username)
     
