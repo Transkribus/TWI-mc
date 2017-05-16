@@ -154,7 +154,6 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
         #For now this will do but there may be other reasons the transckribus request fails... (see comment above)
         return HttpResponse('Unauthorized', status=401)
 
-    #desc added
     filters = {
                 'actions' : ['time', 'colId', 'colName', 'docId', 'docName', 'pageId', 'pageNr', 'userName', 'type'],
                 'collections' : ['colId', 'colName', 'description', 'role'],
