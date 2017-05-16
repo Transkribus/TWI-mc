@@ -107,9 +107,9 @@ def t_request(request,t_id,url,params=None,method=None,headers=None,handler_para
             m = re.match(r'^.*/rest/[^/]+/(-?\d+)/.*', url)
             collId = m.group(1)
             if collId :
-                return HttpResponseRedirect(request.build_absolute_uri("/library/collection_noaccess/"+str(collId)))
+                return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/library/collection_noaccess/"+str(collId)))
         #otherwise you get logged out...
-        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
+        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
 
 
     # Pass transkribus response to handler (NB naming convention is t_[t_id]_handler(r, handler_params)
