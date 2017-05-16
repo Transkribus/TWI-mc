@@ -77,13 +77,13 @@ def t_request(request,t_id,url,params=None,method=None,headers=None,handler_para
     headers = t_set_default_headers(headers)
 
     #Default method is GET
-    t_log("TRANSKRIBUS REQUEST: %s" % url)
+    #t_log("TRANSKRIBUS REQUEST: %s" % url)
     if method == 'POST' :
         r = s.post(url, params=params, verify=False, headers=headers)
     else:
         r = s.get(url, params=params, verify=False, headers=headers)
         
-    print(r)
+    #print(r)
 
     #Check responses, 
     #	401: unauth
@@ -115,6 +115,7 @@ def t_request(request,t_id,url,params=None,method=None,headers=None,handler_para
     # Pass transkribus response to handler (NB naming convention is t_[t_id]_handler(r, handler_params)
     # handler_params are for things that we might need to pass through this t_request to the handler
     data = eval("t_"+t_id+"_handler(r,handler_params)")
+    
     #We store the data in the sesison cache
     t_set_cache_value(request,t_id,data,url,params)
     #And return it too

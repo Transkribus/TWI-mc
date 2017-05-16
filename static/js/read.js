@@ -26,8 +26,9 @@ function make_url(url){
 
 function init_datatable(table,url, columns){
 	var datatable = table.DataTable({
+		"ordering": false,
 		"processing": true,
-        	"serverSide": true,
+        "serverSide": true,
 		"ajax": {
 			"url": url,
 			"data": function ( d ) {
@@ -52,7 +53,7 @@ function init_datatable(table,url, columns){
 		"length" : 5,
 		"lengthMenu": [ 5, 10, 20, 50, 100 ],
 		//ordering should be handled server side
-		"ordering": false,  //still not sure about this
+		//"ordering": false,  //still not sure about this
 		"columns": columns,
 		"createdRow": function ( row, data, index ) {
                 	$(row).addClass("clickable");

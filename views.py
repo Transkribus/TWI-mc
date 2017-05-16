@@ -154,7 +154,7 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
                 'actions' : ['time', 'colId', 'colName', 'docId', 'docName', 'pageId', 'pageNr', 'userName', 'type'],
                 'collections' : ['colId', 'colName', 'description', 'role'],
                 'users' : ['userId', 'userName', 'firstname', 'lastname','email','affiliation','created','role'], #NB roles in userCollection
-                'documents' : ['docId','title','author','uploadTimestamp','uploader','nrOfPages','language','status'],
+                'documents' : ['docId','title', 'desc', 'author','uploadTimestamp','uploader','nrOfPages','language','status'],
 #               'pages' : ['pageId','pageNr','thumbUrl','status', 'nrOfTranscripts'], #tables
                 'pages' : ['pageId','pageNr','imgFileName','thumbUrl','status'], #thumbnails
               }
