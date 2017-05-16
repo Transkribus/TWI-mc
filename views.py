@@ -117,7 +117,7 @@ def d_document(request,collId,docId):
     if not t_refresh() : 
         return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
 
-    last_actions = t_actions(request,{'nValues' : 5, 'collId' : collId, 'docId' : docId, 'userid': request.user.tsdata.userId, 'typeId': 3  })
+    last_actions = t_actions(request,{'nValues' : 5, 'collId' : collId, 'docId' : docId, 'userid': request.user.tsdata.userId, 'typeId': 4  })
  
     for la in last_actions :
          la['time'] = dateutil.parser.parse(la['time']).strftime("%a %b %d %Y %H:%M")
