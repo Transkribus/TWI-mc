@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse#,resolve
 #from django.contrib.auth.models import User
+from django.utils.dateparse import parse_date
+
 import datetime
 import dateutil.parser
 import functools
@@ -36,9 +38,12 @@ def index(request):
 
     if not t_refresh() : 
         return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
-       
-    last_action = t_actions(request,{'nValues' : 1})[0]
     
+    last_actions = t_actions(request,{'nValues' : 5,  'userid': request.user.tsdata.userId, 'typeId': 4 })
+ 
+    for la in last_actions :
+         la['time'] = dateutil.parser.parse(la['time']).strftime("%a %b %d %Y %H:%M")
+
     action_types = t_actions_info(request)
     if isinstance(action_types,HttpResponse):
         return action_types
@@ -48,7 +53,7 @@ def index(request):
 #    sorted_list=sorted(myDic.items(), key=lambda x: x[0])
 #    myOrdDic = OrderedDict(sorted_list)
 #    return render(request, 'dashboard/homepage.html', {'action_types': myOrdDic, 'up': None, 'next': None, 'prev': None} )
-    return render(request, 'dashboard/homepage.html', {'last_action': last_action, 'action_types': action_types, 'nav_up': None, 'nav_next': None, 'nav_prev': None} )
+    return render(request, 'dashboard/homepage.html', {'last_actions': last_actions, 'action_types': action_types, 'nav_up': None, 'nav_next': None, 'nav_prev': None} )
 
 
 # dashboard/{colID}
@@ -68,7 +73,10 @@ def d_collection(request,collId):
     if not t_refresh() : 
         return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
  
-    last_action = t_actions(request,{'nValues' : 1, 'collId' : collId})[0]
+    last_actions = t_actions(request,{'nValues' : 5, 'collId' : collId, 'userid': request.user.tsdata.userId, 'typeId': 4 })
+ 
+    for la in last_actions :
+         la['time'] = dateutil.parser.parse(la['time']).strftime("%a %b %d %Y %H:%M")
 
     #Avoid this sort of nonsense if possible
     collections = t_collections(request,{'end':None,'start':None})
@@ -82,7 +90,7 @@ def d_collection(request,collId):
     navdata = navigation.get_nav(collections,collId,'colId','colName')
     #if we didn't have a focus before navigation call, we'll have one after
     collection = navdata.get("focus")
-    pagedata = {'last_action': last_action, 'collection': collection, 'action_types': action_types}
+    pagedata = {'last_actions': last_actions, 'collection': collection, 'action_types': action_types}
     #merge the dictionaries
     combidata = pagedata.copy()
     combidata.update(navdata)
@@ -109,7 +117,11 @@ def d_document(request,collId,docId):
     if not t_refresh() : 
         return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
 
-    last_action = t_actions(request,{'nValues' : 1})[0]
+    last_actions = t_actions(request,{'nValues' : 5, 'collId' : collId, 'docId' : docId, 'userid': request.user.tsdata.userId, 'typeId': 3  })
+ 
+    for la in last_actions :
+         la['time'] = dateutil.parser.parse(la['time']).strftime("%a %b %d %Y %H:%M")
+
 
     documents = t_documents(request,{'collId': collId}) #for nav only...
     if isinstance(documents,HttpResponse):
@@ -152,7 +164,7 @@ def d_document(request,collId,docId):
 #    t_log("APP_NAME: %s" % (request.resolver_match.app_name))
 
     return render(request, 'dashboard/document.html', {'document': fulldoc.get('md'),
-							'last_action': last_action,
+							'last_actions': last_actions,
                                                         'action_types': action_types,
 							'nav_up_content': up_content,
 							'nav_next': next, 

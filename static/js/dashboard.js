@@ -7,6 +7,7 @@ $(document).ready(function(){
 	$("#id_language").on("change keyup", function () {
 		$(this).closest("form").submit();
 	});
+	init_recent_accesses();
 	actions_table = init_actions_table();
 	init_date_inputs(actions_table);
 	init_actions_chart();
@@ -54,6 +55,13 @@ function init_date_inputs(actions_table){
 		slide_start = slider.slider("option", "values")[0];
 		slider.slider( "option", "values", [slide_start,($(this).datepicker("getDate")/1000)] );
 	}}).val(new Date(max*1000).toDateString());
+
+}
+function init_recent_accesses(){
+
+	$("#last_access_table tbody tr").on("click", function(){
+		window.location = make_url('/dashboard/'+$(this).data('colid')+'/'+$(this).data('docid'));
+	});
 
 }
 function init_actions_table(){
