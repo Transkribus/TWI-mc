@@ -1,6 +1,7 @@
 from django import template
 import re
 from .utils import t_log
+import logging
 
 def appname(request):
     t_log("APPNAME: %s " % (request.resolver_match.app_name))
@@ -22,8 +23,13 @@ def apphead(request):
     return {'apphead' : head_template}
 
 def nav_up(request):
-    request.path
-    nav_up = re.sub(r'\/[^\/]+$',"",request.path)
-    return {'nav_up': nav_up }
+    #excptions for subverts
+    if re.search(r'library\/\d+\/\d+\/\d+$', request.path):
+        return {'nav_up' : re.sub(r'\/\d+\/\d+$',"",request.path)}
+    if re.search(r'edit\/correct\/\d+\/\d+\/\d+$', request.path):
+        return {'nav_up' : re.sub(r'edit\/correct(\/\d+\/\d+)\/\d+$',r'library\1',request.path)}
+
+    return {'nav_up': re.sub(r'\/[^\/]+$',"",request.path)}
+
 
 

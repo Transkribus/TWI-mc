@@ -78,9 +78,13 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
         t_list_name = "fulldoc"
         params['nrOfTranscripts']=1 #only get current transcript
     #########################
+    t_log("TABLE_AJAX for %s" % list_name, logging.WARN)
 
     (data,count) = paged_data(request,t_list_name,params)
     
+    if list_name == 'actions' :
+        t_log("ACTION DATA: %s" % data, logging.WARN)
+
     #we want to add statistical data to the title column like nr_of_transcribed_lines, nr_of_transkribed_words, tags....
     if list_name == 'documents':
         for element in data:
@@ -279,7 +283,15 @@ def paged_data(request,list_name,params=None):#collId=None,docId=None):
     params['start'] = str(dt_params.get('start_date')) if dt_params.get('start_date') else None
     params['end'] = str(dt_params.get('end_date')) if dt_params.get('end_date') else None
     params['index'] = int(dt_params.get('start')) if dt_params.get('start') else 0
-    params['page'] = int(dt_params.get('page')) if dt_params.get('page') else 1
+    #This filters all actions request to the first page which is dumb.
+    #It is probably to catch cases where not supplying a page number results in an error
+    #Excepting actions call for now
+    if dt_params.get('page') :
+        params['page'] = int(dt_params.get('page')) 
+    elif list_name != 'actions' :
+        params['page'] = 1
+    else :
+        params['page'] = None
 
     #NB dataTables uses length, transkribus nValues
     if 'nValues' not in params :
