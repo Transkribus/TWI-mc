@@ -77,13 +77,13 @@ def t_request(request,t_id,url,params=None,method=None,headers=None,handler_para
     headers = t_set_default_headers(headers)
 
     #Default method is GET
-    t_log("TRANSKRIBUS REQUEST: %s" % url)
+    #t_log("TRANSKRIBUS REQUEST: %s" % url)
     if method == 'POST' :
         r = s.post(url, params=params, verify=False, headers=headers)
     else:
         r = s.get(url, params=params, verify=False, headers=headers)
         
-    print(r)
+    #print(r)
 
     #Check responses, 
     #	401: unauth
@@ -107,14 +107,15 @@ def t_request(request,t_id,url,params=None,method=None,headers=None,handler_para
             m = re.match(r'^.*/rest/[^/]+/(-?\d+)/.*', url)
             collId = m.group(1)
             if collId :
-                return HttpResponseRedirect(request.build_absolute_uri("/library/collection_noaccess/"+str(collId)))
+                return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/library/collection_noaccess/"+str(collId)))
         #otherwise you get logged out...
-        return HttpResponseRedirect(request.build_absolute_uri("/logout/?next={!s}".format(request.get_full_path())))
+        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
 
 
     # Pass transkribus response to handler (NB naming convention is t_[t_id]_handler(r, handler_params)
     # handler_params are for things that we might need to pass through this t_request to the handler
     data = eval("t_"+t_id+"_handler(r,handler_params)")
+    
     #We store the data in the sesison cache
     t_set_cache_value(request,t_id,data,url,params)
     #And return it too
@@ -427,6 +428,52 @@ def t_transcript_xml_handler(r,params=None):
 
 def t_create_collection_handler(r, params=None):
     return r.status_code == requests.codes.ok
+
+#t_crowdsourcing_count 
+def t_crowdsourcing_count(request,params=None):
+    url = settings.TRP_URL+'crowdsourcing/count'
+    t_id = "crowdsourcing_count"
+    return t_request(request,t_id,url,params)
+
+def t_crowdsourcing_count_handler(r,params=None):
+    return json.loads(r.text)
+
+#t_crowdsourcing_list
+def t_crowdsourcing(request,params=None):
+    url = settings.TRP_URL+'crowdsourcing/list'
+    t_id = "crowdsourcing"
+
+    return t_request(request,t_id,url,params)
+
+def t_crowdsourcing_handler(r,params=None):
+    return json.loads(r.text)
+
+#t_crowdsourcing_subscribe
+def t_crowdsourcing_subscribe(request,params):
+    url = settings.TRP_URL+'crowdsourcing/'+str(params.get('collId'))+'/subscribe'
+    t_id = "crowdsourcing_subscribe"
+
+    params = {'collId': params.get('collId')}
+    headers = {'content-type': "application/json"}
+
+    return t_request(request, t_id, url, method='POST',params=params,headers=headers)
+
+def t_crowdsourcing_subscribe_handler(r,params=None):
+    return r.status_code
+
+#t_crowdsourcing_unsubscribe
+def t_crowdsourcing_unsubscribe(request,params):
+    url = settings.TRP_URL+'crowdsourcing/'+str(params.get('collId'))+'/unsubscribe'
+    t_id = "crowdsourcing_unsubscribe"
+
+    params = {'collId': params.get('collId')}
+    headers = {'content-type': "application/json"}
+
+    return t_request(request, t_id, url, method='POST',params=params,headers=headers)
+
+def t_crowdsourcing_unsubscribe_handler(r,params=None):
+    return r.status_code
+
 
 # t_metadata moved to utils
 

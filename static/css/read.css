@@ -215,3 +215,9 @@ fieldset[disabled] .btn-inverse.active {
         transform: rotate(359deg);
     }
 }
+
+.container.read-container {
+      padding: 0;
+      margin: 0 auto;
+      width: 99%;
+}
