@@ -40,7 +40,7 @@ def t_check_cache(request,t_id, url, params=None) :
 
     # t_id and url as identifer for cached data, Store with key "cache_url" and in first element if data is a list
     if t_id in request.session :
-        request_id = t_gen_request_id(url,params)
+        request_id = t_gen_request_id(url,params,request.user.tsdata.userId)
         t_log("CHECK FOR CACHE of %s WITH: %s " % (t_id, request_id), logging.WARN)
         if request_id in request.session[t_id] :
             t_log("USING CACHE: %s " % request_id, logging.WARN)
@@ -56,7 +56,7 @@ def t_set_cache_value(request,t_id,data,url,params=None) :
     if not hasattr(request,"session") : return None
 
     #Use the t_id as identifer for cached data, Store the url with key "cache_url" (in first element if data is a list)
-    request_id = t_gen_request_id(url,params)
+    request_id = t_gen_request_id(url,params,request.user.tsdata.userId)
 
     t_log("CACHING %s with request_id : %s" % (t_id,request_id), logging.WARN )
     if t_id not in request.session : request.session[t_id] = {}

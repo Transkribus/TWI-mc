@@ -21,7 +21,7 @@ def t_log(text,level=logging.INFO):
     logger = logging.getLogger('django')
     logger.log(level,text)
 
-def t_gen_request_id(url,params):
+def t_gen_request_id(url,params,userid):
     ###### EXCEPTION ######
     # we will exlucde the params of fulldoc calls from being used in cacheid,
     # this is because TS is not *currently* paging any data in the fulldoc requests
@@ -33,7 +33,7 @@ def t_gen_request_id(url,params):
         return hashlib.md5((str(url)).encode('utf-8')).hexdigest()
     ########################
 
-    return hashlib.md5((str(url)+str(params)).encode('utf-8')).hexdigest()
+    return hashlib.md5((str(url)+str(params)+str(userid)).encode('utf-8')).hexdigest()
 
 ###########################################################
 # crop(list coords, boolean offset=None)
