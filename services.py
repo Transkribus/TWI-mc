@@ -39,7 +39,9 @@ def t_check_cache(request,t_id, url, params=None) :
     if not hasattr(request,"session") : return None
 
     # t_id and url as identifer for cached data, Store with key "cache_url" and in first element if data is a list
-    if t_id in request.session :
+    # exempting actions data from caching this data will be updated in transkribus by us by virtue of loggin in and viewing stuff.
+    # TODO (but not here) - clear cache for certain t_ids that TWI changes... eg on save (or other any triggers that update transkribus data)
+    if t_id in request.session and t_id is not "actions":
         request_id = t_gen_request_id(url,params,request.user.tsdata.userId)
         t_log("CHECK FOR CACHE of %s WITH: %s " % (t_id, request_id), logging.WARN)
         if request_id in request.session[t_id] :
