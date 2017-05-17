@@ -89,6 +89,7 @@
 	     <span class="glyphicon glyphicon-user"></span> <span class="caret"></span>
 	    </a>
 	    <ul class="dropdown-menu">
+		  <li><a href="#">{%if user.first_name%}{{user.first_name}}{%endif%} {%if user.last_name%}{{user.last_name}}{%endif%}{%if not user.first_name and not user.last_name %}{{user.username}}{%endif%}</a></li>
 	          <li>
         	    <a href="{% url 'logout' %}?next={{request.path}}">{% trans "Logout" %}</a>
 	          </li>
