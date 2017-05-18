@@ -5,7 +5,7 @@
     git pull
     git submodule update --init
 
-Make a file called mc/settings/local.py and add
+Make a file called `mc/settings/local.py` and add
 
     SECRET_KEY = '[somestuff]'
 
