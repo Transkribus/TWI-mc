@@ -14,5 +14,6 @@ Make a file called `mc/settings/local.py` and add
 
     SERVERBASE = ''
     STATIC_URL = SERVERBASE+'/static/'
+    ALLOWED_HOSTS = ['127.0.0.1'] #or your local/dev server
 
 With approprate values (The last two may need to override/reset the defaults that are `mc/settings/production.py`)
