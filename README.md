@@ -1,6 +1,17 @@
 # TWI-mc
  Transkribus Web Interfaces: My collections site (python project)
 
-git clone https://github.com/Transkribus/TWI-mc
-git pull
-git submodule update --init
+    git clone https://github.com/Transkribus/TWI-mc
+    git pull
+    git submodule update --init
+
+Make a file called mc/settings/local.py and add
+
+    SECRET_KEY = '[somestuff]'
+
+    RECAPTCHA_PUBLIC_KEY = ''
+    RECAPTCHA_PRIVATE_KEY = ''
+
+    SERVERBASE = ''
+
+with approprate values
