@@ -17,3 +17,9 @@ Make a file called `mc/settings/local.py` and add
     ALLOWED_HOSTS = ['127.0.0.1'] #or your local/dev server
 
 With approprate values (The last two may need to override/reset the defaults that are `mc/settings/production.py`)
+
+To set up and run (with the default django dev environment):
+    python manage.py makemigrations
+    python manage.py migrate
+    # possibly add python manage.py migrate utils
+    python manage.py runserver [port]
