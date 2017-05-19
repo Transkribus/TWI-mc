@@ -3,15 +3,14 @@ from django.http import HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse#,resolve
 #from django.contrib.auth.models import User
 from django.utils.dateparse import parse_date
+from django.contrib.auth.decorators import login_required
 
 import datetime
 import dateutil.parser
 import functools
 import collections
 
-#
-#from django.contrib.auth.decorators import login_required #for ajax reponses
-from apps.utils.decorators import t_login_required, t_login_required_ajax
+from apps.utils.decorators import t_login_required_ajax
 from apps.utils.services import *
 from apps.utils.utils import t_log
 import settings
@@ -33,18 +32,18 @@ from apps.querystring_parser.querystring_parser import parser
 #                       - bar... ?
 
 # dashboard/index is the dashboard for that logged in user. Will show actions, collections and metrics for that user
-@t_login_required
+@login_required
 def index(request):
-
-    if not t_refresh() : 
+    t = request.user.tsdata.t
+    if not t.refresh() : 
         return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
     
-    last_actions = t_actions(request,{'nValues' : 5,  'userid': request.user.tsdata.userId, 'typeId': 4 })
+    last_actions = t.actions(request,{'nValues' : 5,  'userid': request.user.tsdata.userId, 'typeId': 4 })
  
     for la in last_actions :
          la['time'] = dateutil.parser.parse(la['time']).strftime("%a %b %d %Y %H:%M")
 
-    action_types = t_actions_info(request)
+    action_types = t.actions_info(request)
     if isinstance(action_types,HttpResponse):
         return action_types
 
@@ -67,23 +66,23 @@ def index(request):
 #                       - status for aggregated pages in collection (pie, new/inprogress/done/final)
 #                       - bar for top 5 users by activity
 
-@t_login_required
+@login_required
 def d_collection(request,collId):
-
-    if not t_refresh() : 
+    t = request.user.tsdata.t
+    if not t.refresh() : 
         return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
  
-    last_actions = t_actions(request,{'nValues' : 5, 'collId' : collId, 'userid': request.user.tsdata.userId, 'typeId': 4 })
+    last_actions = t.actions(request,{'nValues' : 5, 'collId' : collId, 'userid': request.user.tsdata.userId, 'typeId': 4 })
  
     for la in last_actions :
          la['time'] = dateutil.parser.parse(la['time']).strftime("%a %b %d %Y %H:%M")
 
     #Avoid this sort of nonsense if possible
-    collections = t_collections(request,{'end':None,'start':None})
+    collections = t.collections(request,{'end':None,'start':None})
     if isinstance(collections,HttpResponse):
         return collections
 
-    action_types = t_actions_info(request)
+    action_types = t.actions_info(request)
     if isinstance(action_types,HttpResponse):
         return action_types
 
@@ -111,27 +110,28 @@ def d_collection(request,collId):
 
 
 
-@t_login_required
+@login_required
 def d_document(request,collId,docId):
+    t = request.user.tsdata.t
 
-    if not t_refresh() : 
+    if not t.refresh() : 
         return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
 
-    last_actions = t_actions(request,{'nValues' : 5, 'collId' : collId, 'docId' : docId, 'userid': request.user.tsdata.userId, 'typeId': 4  })
+    last_actions = t.actions(request,{'nValues' : 5, 'collId' : collId, 'docId' : docId, 'userid': request.user.tsdata.userId, 'typeId': 4  })
  
     for la in last_actions :
          la['time'] = dateutil.parser.parse(la['time']).strftime("%a %b %d %Y %H:%M")
 
 
-    documents = t_documents(request,{'collId': collId}) #for nav only...
+    documents = t.documents(request,{'collId': collId}) #for nav only...
     if isinstance(documents,HttpResponse):
         return documents
 
-    fulldoc = t_fulldoc(request,{'collId': collId, 'docId': docId})
+    fulldoc = t.fulldoc(request,{'collId': collId, 'docId': docId})
     if isinstance(fulldoc,HttpResponse):
         return fulldoc
 
-    action_types = t_actions_info(request)
+    action_types = t.actions_info(request)
     if isinstance(action_types,HttpResponse):
         return action_types
 
@@ -174,17 +174,17 @@ def d_document(request,collId,docId):
 
 
 # dashboard/u/{userId} is the dashboard for that user. Will show actions, collections and metrics for that user, can only be accessed by collection owners (editors?)
-@t_login_required
+@login_required
 def d_user(request,username):
-
-    if not t_refresh() : 
+    t = request.user.tsdata.t
+    if not t.refresh() : 
         return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
 
     t_log("##################### USERNAME: %s " % username)
     
-    user = t_user(request,{'user' : username}) #TODO use url encoding...
+    user = t.user(request,{'user' : username}) #TODO use url encoding...
     t_log("##################### USER: %s " % user)
-    action_types = t_actions_info(request)
+    action_types = t.actions_info(request)
     if isinstance(action_types,HttpResponse):
         return action_types
 
@@ -203,6 +203,8 @@ def d_user(request,username):
 
 @t_login_required_ajax
 def paged_data(request,list_name,params=None):#collId=None,docId=None):
+
+    t = request.user.tsdata.t
 
     #collect params from request into dict
     dt_params = parser.parse(request.GET.urlencode())
@@ -230,13 +232,13 @@ def paged_data(request,list_name,params=None):#collId=None,docId=None):
 
     #Get data
     t_log("SENT PARAMS: %s" % params)
-    data = eval("t_"+list_name+"(request,params)")
+    data = eval("t."+list_name+"(request,params)")
 
     #Get count
     count=None
     #When we call a full doc we *probably* want to count the pages (we can't fo that with a /count call)
     if list_name not in ["fulldoc"]:
-        count = eval("t_"+list_name+"_count(request,params)")
+        count = eval("t."+list_name+"_count(request,params)")
     #In some cases we can derive count from data (eg pages from fulldoc)
     if list_name == "fulldoc" : #as we have the full page list in full doc for now we can use it for a recordsTotal
         count = data.get('md').get('nrOfPages')
@@ -250,7 +252,7 @@ def paged_data(request,list_name,params=None):#collId=None,docId=None):
 
 @t_login_required_ajax
 def table_ajax(request,list_name,collId=None,docId=None,userId=None) :
-
+    
     t_list_name=list_name
     params = {'collId': collId, 'docId': docId, 'userid' : userId} #userid can only be used to filter in context of a collection
     ####### EXCEPTION #######
