@@ -15,547 +15,550 @@ import logging # only for log levels (ie logging.WARN etc, which is a maybe crap
 import json
 import re
 
-s = requests.Session()
 
 ###############################################################
 # Helper functions to do request and data handling grunt work
 ###############################################################
 
+class TranskribusSession(object):
 
-#set default headers for requests
-def t_set_default_headers(headers):
-
-    if 'clientId' not in headers:
-        headers['clientId'] = str(2)
-    if 'content-type' not in headers:
-        headers['content-type'] = 'application/json'
-
-    return headers
-
-#Check session cache in case we don't need to bother the transkribus REST service at all
-def t_check_cache(request,t_id, url, params=None) :
-
-    #If our request doesn't have a session we are probably being called from a script. So no cache
-    if not hasattr(request,"session") : return None
-
-    # t_id and url as identifer for cached data, Store with key "cache_url" and in first element if data is a list
-    # exempting actions data from caching this data will be updated in transkribus by us by virtue of loggin in and viewing stuff.
-    # TODO (but not here) - clear cache for certain t_ids that TWI changes... eg on save (or other any triggers that update transkribus data)
-    if t_id in request.session and t_id is not "actions":
-        request_id = t_gen_request_id(url,params,request.user.tsdata.userId)
-        t_log("CHECK FOR CACHE of %s WITH: %s " % (t_id, request_id), logging.WARN)
-        if request_id in request.session[t_id] :
-            t_log("USING CACHE: %s " % request_id, logging.WARN)
-            return request.session[t_id][request_id]
-
-    #no data cached for this t_id/url pair, return None
-    return None
-
-#Set the session cache after a successful request to transkribus REST service
-def t_set_cache_value(request,t_id,data,url,params=None) :
-
-    #If our request doesn't have a session we are probably being called from a script. So no cache
-    if not hasattr(request,"session") : return None
-
-    #Use the t_id as identifer for cached data, Store the url with key "cache_url" (in first element if data is a list)
-    request_id = t_gen_request_id(url,params,request.user.tsdata.userId)
-
-    t_log("CACHING %s with request_id : %s" % (t_id,request_id), logging.WARN )
-    if t_id not in request.session : request.session[t_id] = {}
-    request.session[t_id][request_id] = data
-
-#Make a request for data (possibly) to the transkribus REST service make
-#use of helper functions and calling the appropriate data handler when done
-def t_request(request,t_id,url,params=None,method=None,headers=None,handler_params=None):
-
-    #Check for cached value and return that #TODO override this on some occaisions
-    cache_data = t_check_cache(request, t_id, url, params)
-    if cache_data :
-        t_log("FROM CACHE: %s" % url)
-        return cache_data
-
-    #Add default headers to *possibly* already defined header data
-    if not headers : headers = {}
-    headers = t_set_default_headers(headers)
-
-    #Default method is GET
-    #t_log("TRANSKRIBUS REQUEST: %s" % url)
-    if method == 'POST' :
-        r = s.post(url, params=params, verify=False, headers=headers)
-    else:
-        r = s.get(url, params=params, verify=False, headers=headers)
-        
-    #print(r)
-
-    #Check responses, 
-    #	401: unauth
-    #	403+rest+collId: forbidden collection
-    #	400+register bad data input
-    #	raise error for the rest
-    try:
-        r.raise_for_status()
-    except requests.exceptions.HTTPError as e:
-        if e.response.status_code not in (401, 403, 400):
-            raise e.response.status_code
-
-        if e.response.status_code == 400 : # and handler_params is not None and "collId" in handler_params):
-            if re.match(r'^.*/rest/user/register', url) :
-                #t_register_handler only handles exceptions, if reg is successsful then t_user_data_handlercan be used
-                return t_register_handler(r,handler_params)
-
-        #no access to requested collection... if we are indeed requesting a collection (which we usually are)
-        #FAFF collId needs passed in via handler_params... we could extract from url??
-        if e.response.status_code == 403 : # and handler_params is not None and "collId" in handler_params):
-            m = re.match(r'^.*/rest/[^/]+/(-?\d+)/.*', url)
-            collId = m.group(1)
-            if collId :
-                return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/library/collection_noaccess/"+str(collId)))
-        #otherwise you get logged out...
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
-
-
-    # Pass transkribus response to handler (NB naming convention is t_[t_id]_handler(r, handler_params)
-    # handler_params are for things that we might need to pass through this t_request to the handler
-    data = eval("t_"+t_id+"_handler(r,handler_params)")
+    def __init__(self):
+        self.s = requests.Session()
     
-    #We store the data in the sesison cache
-    t_set_cache_value(request,t_id,data,url,params)
-    #And return it too
-    return data
-
-###########################################################################################
-# Request/handler functions
-# 1. Request specific bits of data from transkribus REST service
-#    Set a url and t_id (ref dor data), set any specific headers or paramters, call request
-# 2. Handle the response, do any datamungery before passing back to view
-#    The handler must be named thus in order that t_request can find it: t_[t_id]_handler(r)
-#    Recieves response from t_request, does stuff if necessary, returns data via 1. to view
-#    TODO will probably need to pass through params in some cases to help mung the data
-###########################################################################################
-
-
-def t_register(request):
-
-    url = settings.TRP_URL+'user/register'
-    t_id = "user_data" # note we are using the same t_id as for t_login...
-    t_log("G_CAPTCH_RESPONSE: %s" % request.POST.get('g-recaptcha-response'))
-    params = {'user': request.POST.get('user'),
-                'pw': request.POST.get('pw'),
-                'firstName': request.POST.get('firstName'),
-                'lastName': request.POST.get('lastNaame'),
-#               'email': request.POST.get('email'),
-#               'gender': request.POST.get('gender'),
-#               'orcid':request.POST.get('orcid'),
-                'token': request.POST.get('g-recaptcha-response'),
-                'application': "WEB_UI"}
-    headers = {'content-type': 'application/x-www-form-urlencoded'}
-    return t_request(request,t_id,url,params,"POST",headers)
-
-# REG FAIL HANDLER
-def t_register_handler(r,params=None):
-    t_log("400 from register...")
-    raise ValueError('%s' % (r.text))
-
-def t_login(user, pw):
-    url = settings.TRP_URL+'auth/login'
-    t_id = "user_data" # note we are using the same t_id as for t_register... This is OK because the data response will be the same... I think
-    params = {'user': user, 'pw': pw}
-    headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-    #t_login is called from backend and doesn't have "request" so we don't call t_request or the handler
-    r = s.post(url, params=params, verify=False, headers=headers)
-
-    if r.status_code != requests.codes.ok:
+    #set default headers for requests
+    def set_default_headers(self,headers):
+    
+        if 'clientId' not in headers:
+            headers['clientId'] = str(2)
+        if 'content-type' not in headers:
+            headers['content-type'] = 'application/json'
+    
+        return headers
+    
+    #Check session cache in case we don't need to bother the transkribus REST service at all
+    def check_cache(self,request,t_id, url, params=None) :
+    
+        #If our request doesn't have a session we are probably being called from a script. So no cache
+        if not hasattr(request,"session") : return None
+    
+        # t_id and url as identifer for cached data, Store with key "cache_url" and in first element if data is a list
+        # exempting actions data from caching this data will be updated in transkribus by us by virtue of loggin in and viewing stuff.
+        # TODO (but not here) - clear cache for certain t_ids that TWI changes... eg on save (or other any triggers that update transkribus data)
+        if t_id in request.session and t_id is not "actions":
+            request_id = t_gen_request_id(url,params,request.user.tsdata.userId)
+            if t_id is "collections" : t_log("request_id:userid %s:%s" % (request_id,request.user.tsdata.userId), logging.WARN)
+    #        t_log("CHECK FOR CACHE of %s (%s) WITH: %s " % (t_id, request.user.tsdata.userId, request_id), logging.WARN)
+            if request_id in request.session[t_id] :
+    #            t_log("USING CACHE: %s " % request_id, logging.WARN)
+                return request.session[t_id][request_id]
+    
+        #no data cached for this t_id/url pair, return None
         return None
-
-    return xmltodict.parse(r.text).get('trpUserLogin')
-
-# NOT currently used
-def t_user_data_handler(r,params=None):
-    return xmltodict.parse(r.text).get('trpUserLogin')
-
-#refresh transkribus session (called by t_login_required decorator to test persistence/validity of transkribus session)
-############## DEPRECATED ########################
-def t_refresh():
-    url = settings.TRP_URL+'auth/refresh'
-
-    t_log("[POST REQUEST] t_refresh will POST: %s" % (url) )
-
-    r = s.post(url, verify=False)
-
-    t_log("### t_refresh response STATUS_CODE: %s" % (r.status_code) )
-
-    if r.status_code != requests.codes.ok:
-        return False
-    else:
-        return True
-
-#t_actions_info called to get lookup for action types for subsequent action list calls
-def t_actions_info(request):
-    #The url for the transkribus rest call
-    url = settings.TRP_URL+'actions/info'
-    #the id to use call the correct data handler and store the data
-    t_id = "action_types"
-    #Return the data from the request (via the handler, defined below)
-    return t_request(request,t_id,url)
-# Below is the simplest case imaginable
-def t_action_types_handler(r,params=None):
-    return json.loads(r.text)
-
-#t_actions_count #NB this call is not yet available
-def t_actions_count(request,params=None):
-    url = settings.TRP_URL+'actions/count'
-    t_id = "actions_count"
-    return t_request(request,t_id,url,params)
-
-def t_actions_count_handler(r,params=None):
-    return json.loads(r.text)
-
-#t_actions_list
-def t_actions(request,params=None):
-    url = settings.TRP_URL+'actions/list'
-    t_id = "actions"
-
-    return t_request(request,t_id,url,params)
-
-def t_actions_handler(r,params=None):
-    return json.loads(r.text)
-
-
-#t_collections_recent called to get most recently actioned collection [NOT CURRENTLY USED.... and needs a different url or handler code!]
-def t_collection_recent(request,collId):
-    url = settings.TRP_URL+'collections/'+str(collId)+'/list'
-    t_id = "collection_recent"
-    params = {'collId': collId}
-
-    return t_request(request,t_id,url,params,"GET")
-
-def t_collection_recent_handler(r,params=None):
-    t_log("collection_recent: %s " % r.text)
-    return json.loads(r.text)
-
-#t_collections_count
-def t_collections_count(request,params=None):
-    url = settings.TRP_URL+'collections/count'
-    t_id = "collections_count"
-
-    return t_request(request,t_id,url,params)
-
-def t_collections_count_handler(r,params=None):
-    return json.loads(r.text)
-
-def t_collections(request,params=None):
-    url = settings.TRP_URL+'collections/list'
-    t_id = "collections"
-    return t_request(request,t_id,url,params)
-
-def t_collections_handler(r,params=None):
-    t_collections = json.loads(r.text)
-    t_log(str(t_collections))
-    #use common param 'key' for ids (may yet drop...)
-    for col in t_collections:
-        col['key'] = col['colId']
-    return t_collections
-
-#t_users_count
-def t_users_count(request,params=None):
-    url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/userlist/count'
-    t_id = "users_count"
-    return t_request(request,t_id,url,params,"GET",None,{"collId": params.get('collId')})
-
-def t_users_count_handler(r,params=None):
-    return json.loads(r.text)
-
-#t_users_list
-def t_users(request,params=None):
-    url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/userlist'
-    t_id = "users"
-
-    return t_request(request,t_id,url,params)
-
-def t_users_handler(r,params=None):
-    return json.loads(r.text)
-
-#t_user (by username... yuk!)
-def t_user(request,params=None):
-    url = settings.TRP_URL+'user/findUser'	
-    t_id = "user"
-    headers = {'content-type': 'application/x-www-form-urlencoded'}
-
-    return t_request(request,t_id,url,params,'GET',headers)
-
-def t_user_handler(r,params=None): 
-    return xmltodict.parse(r.text).get('trpUsers').get('trpUser')
-
-def t_collection(request,params):
-    url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/list'
-    t_id = "collection"
-    return t_request(request,t_id,url,params,"GET",None,{"collId": params.get('collId')})
-
-def t_collection_handler(r,params=None):
-    return json.loads(r.text)
-
-def t_collection_count(request,params):
-    url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/count'
-    t_id = "collection_count"
-
-    return t_request(request,t_id,url,params)
-
-def t_collection_count_handler(r,params=None):
-    return json.loads(r.text)
-
-#Alias t_documents > t_collection
-def t_documents(request,params):
-    return t_collection(request,params)
-
-def t_documents_count(request,params):
-    return t_collection_count(request,params)
-
-def t_fulldoc(request,params):
-
-    url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/'+str(params.get('docId'))+'/fulldoc'
-    t_id = "fulldoc"
-    return t_request(request,t_id,url,params)
-
-def t_fulldoc_handler(r,params=None):
-    return json.loads(r.text)
-
-def t_document(request, collId, docId, nrOfTranscripts=None):
-    url = settings.TRP_URL+'collections/'+collId+'/'+str(docId)+'/fulldoc'
-    t_id = "document"
-    params = {}
-    if not nrOfTranscripts is None:
-        params['nrOfTranscripts'] = nrOfTranscripts
-    return t_request(request,t_id,url)
-
-def t_document_handler(r,params=None):
-    t_doc = json.loads(r.text)
-    pages = t_doc.get("pageList").get("pages")
-    for x  in pages:
-        x['key'] = x.get('pageNr') #I'm aware this will replacce the legitimate key....
-
-    return t_doc
-
-#returns a list of transcripts for a page, no page metadata...
-def t_page(request,collId, docId, page):
-
-    #list of transcripts for this page
-    url = settings.TRP_URL+'collections/'+collId+'/'+str(docId)+'/'+str(page)+'/list'
-    t_id = "page"
-    return t_request(request,t_id,url)
-
-#returns (nr_of_transcribed_lines, nr_of_transcribed_words) for a document
-def t_docStat(request, params):
-
-    url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/'+str(params.get('docId'))+'/docStat'
-    t_id = "docStat"
-    return t_request(request,t_id,url)
-
-def t_docStat_handler(r,params=None):
-    return json.loads(r.text)
-
-#returns (nr_of_transcribed_lines, nr_of_transcribed_words) for a whole collection
-def t_collStat(request, params):
-
-    url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/collStat'
-    t_id = "collStat"
-    return t_request(request,t_id,url)
-
-def t_collStat_handler(r,params=None):
-    return json.loads(r.text)
-
-#returns (nr_of_transcribed_lines, nr_of_transcribed_words) for a document
-def t_countDocTags(request, params):
-
-    url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/'+str(params.get('docId'))+'/countTags'
-    t_id = "countDocTags"
-    return t_request(request,t_id,url, params)
-
-def t_countDocTags_handler(r,params=None):
-    return json.loads(r.text)
-
-def t_countCollTags(request, params):
-
-    url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/countTags'
-    t_id = "countCollTags"
-    return t_request(request,t_id,url, params)
-
-def t_countCollTags_handler(r,params=None):
-    return json.loads(r.text)
-
-def t_page_handler(r,params=None):
-
-    t_page = json.loads(r.text)
-
-    #TODO would prefer a pageId rather than "page" which is a the page number
-    for x  in t_page:
-        #key is used already for transcripts, however using key is handy for jquery things like fancy tree...
-        x['key'] = x.get('tsId')
-
-    return t_page
-
-#returns the current transcript for a page
-def t_current_transcript(request,collId, docId, page):
-
-    #list of transcripts for this page
-    url = settings.TRP_URL+'collections/'+collId+'/'+str(docId)+'/'+str(page)+'/curr'
-    t_id="current_transcript"
-    return t_request(request,t_id,url)
-
-def t_current_transcript_handler(r,params=None):
-    t_transcript = json.loads(r.text)
-    t_transcript['key'] = t_transcript.get('tsId')
-    return t_transcript
-
-def t_transcript(request,transcriptId,url):
-
-    t_id = "transcript"
-    headers = {'content-type': 'application/xml'}
-    params = {}
-    return t_request(request,t_id,url,params,"GET",headers,{'transcriptId': transcriptId})
-
-def t_transcript_handler(r,params=None):
-    t_transcript=xmltodict.parse(r.text)
-    t_transcript['tsId'] = params.get('transcriptId')
-    return t_transcript
-
-def t_transcript_xml(request,transcriptId,url):
-    t_id = "transcript_xml"
-    headers = {'content-type': 'application/xml'}
-    params = {}
-    return t_request(request,t_id,url,params,headers,{'transcriptId': transcriptId})
-
-def t_transcript_xml_handler(r,params=None):
-    return r.text
-
-def t_create_collection_handler(r, params=None):
-    return r.status_code == requests.codes.ok
-
-#t_crowdsourcing_count 
-def t_crowdsourcing_count(request,params=None):
-    url = settings.TRP_URL+'crowdsourcing/count'
-    t_id = "crowdsourcing_count"
-    return t_request(request,t_id,url,params)
-
-def t_crowdsourcing_count_handler(r,params=None):
-    return json.loads(r.text)
-
-#t_crowdsourcing_list
-def t_crowdsourcing(request,params=None):
-    url = settings.TRP_URL+'crowdsourcing/list'
-    t_id = "crowdsourcing"
-
-    return t_request(request,t_id,url,params)
-
-def t_crowdsourcing_handler(r,params=None):
-    return json.loads(r.text)
-
-#t_crowdsourcing_subscribe
-def t_crowdsourcing_subscribe(request,params):
-    url = settings.TRP_URL+'crowdsourcing/'+str(params.get('collId'))+'/subscribe'
-    t_id = "crowdsourcing_subscribe"
-
-    params = {'collId': params.get('collId')}
-    headers = {'content-type': "application/json"}
-
-    return t_request(request, t_id, url, method='POST',params=params,headers=headers)
-
-def t_crowdsourcing_subscribe_handler(r,params=None):
-    return r.status_code
-
-#t_crowdsourcing_unsubscribe
-def t_crowdsourcing_unsubscribe(request,params):
-    url = settings.TRP_URL+'crowdsourcing/'+str(params.get('collId'))+'/unsubscribe'
-    t_id = "crowdsourcing_unsubscribe"
-
-    params = {'collId': params.get('collId')}
-    headers = {'content-type': "application/json"}
-
-    return t_request(request, t_id, url, method='POST',params=params,headers=headers)
-
-def t_crowdsourcing_unsubscribe_handler(r,params=None):
-    return r.status_code
-
-
-# t_metadata moved to utils
-
-####################################
-# Leave this for Matti
-##################################
-
-# Saves transcripts. TODO Statuses...
-def t_save_transcript(request, transcript_xml, collId, docId, page):
-    params = {"status": "NEW"}
-    headers = {"content-type": "application/xml"}
-
-    url = settings.TRP_URL+'collections/'+collId+'/'+str(docId)+'/'+str(page)+'/text'
-    r = s.post(url, verify=False, headers=headers, params=params, data=transcript_xml)
-
-    # Remove the old version from cache.
-    del request.session['current_transcript']
-
-    return None
-
-def t_download_mets_xml(mets_url):
-    r = s.get(mets_url)
-    # TODO Consider returning some "document name" or such to enable the user to verify the document title...? 
-    return r.text 
-
-def t_ingest_mets_xml(collId, mets_file):
-
-    url = settings.TRP_URL+'collections/' + collId + '/createDocFromMets'
-    files = {'mets':  mets_file}
-    r = s.post(url, files=files, verify=False)
-
-    if r.status_code != requests.codes.ok:
-        t_log("ERROR CODE: %s%% \r\n ERROR: %s%%" % (r.status_code, r.text) )
+    
+    #Set the session cache after a successful request to transkribus REST service
+    def set_cache_value(self, request,t_id,data,url,params=None) :
+    
+        #If our request doesn't have a session we are probably being called from a script. So no cache
+        if not hasattr(request,"session") : return None
+    
+        #Use the t_id as identifer for cached data, Store the url with key "cache_url" (in first element if data is a list)
+        request_id = t_gen_request_id(url,params,request.user.tsdata.userId)
+    
+    #    t_log("CACHING %s for %s with request_id : %s" % (t_id, request.user.tsdata.userId,request_id), logging.WARN )
+        if t_id not in request.session : request.session[t_id] = {}
+        request.session[t_id][request_id] = data
+    
+    #Make a request for data (possibly) to the transkribus REST service make
+    #use of helper functions and calling the appropriate data handler when done
+    def request(self,request,t_id,url,params=None,method=None,headers=None,handler_params=None):
+    
+        t_log("requests.Session == %s" % self.s,logging.WARN)
+        #Check for cached value and return that #TODO override this on some occaisions
+        cache_data = self.check_cache(request, t_id, url, params)
+        if cache_data :
+            return cache_data
+    
+        #Add default headers to *possibly* already defined header data
+        if not headers : headers = {}
+        headers = self.set_default_headers(headers)
+    
+        #Default method is GET
+        #t_log("TRANSKRIBUS REQUEST: %s" % url)
+        if method == 'POST' :
+            r = self.s.post(url, params=params, verify=False, headers=headers)
+        else:
+            r = self.s.get(url, params=params, verify=False, headers=headers)
+    
+            
+        #print(r)
+    
+        #Check responses, 
+        #	401: unauth
+        #	403+rest+collId: forbidden collection
+        #	400+register bad data input
+        #	raise error for the rest
+        try:
+            r.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code not in (401, 403, 400):
+                #raise e.response.status_code
+                #exceptions must derive from BaseException
+                raise e    
+            if e.response.status_code == 400 : # and handler_params is not None and "collId" in handler_params):
+                if re.match(r'^.*/rest/user/register', url) :
+                    #t_register_handler only handles exceptions, if reg is successsful then t_user_data_handlercan be used
+                    return t_register_handler(r,handler_params)
+    
+            #no access to requested collection... if we are indeed requesting a collection (which we usually are)
+            #FAFF collId needs passed in via handler_params... we could extract from url??
+    #        if e.response.status_code == 403 : # and handler_params is not None and "collId" in handler_params):
+    #            m = re.match(r'^.*/rest/[^/]+/(-?\d+)/.*', url)
+    #            collId = m.group(1)
+    #            if collId :
+    #                return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/utils/collection_noaccess/"+str(collId)))
+            #otherwise you get logged out...
+            t_log("TRANSKRIBUS SAYS: %s" % e.response.status_code, logging.WARN)
+            return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
+    
+        # Pass transkribus response to handler (NB naming convention is t_[t_id]_handler(r, handler_params)
+        # handler_params are for things that we might need to pass through this t_request to the handler
+        data = eval("self."+t_id+"_handler(r,handler_params)")
+        
+        #We store the data in the sesison cache
+        self.set_cache_value(request,t_id,data,url,params)
+        #And return it too
+        return data
+    
+    ###########################################################################################
+    # Request/handler functions
+    # 1. Request specific bits of data from transkribus REST service
+    #    Set a url and t_id (ref dor data), set any specific headers or paramters, call request
+    # 2. Handle the response, do any datamungery before passing back to view
+    #    The handler must be named thus in order that t_request can find it: t_[t_id]_handler(r)
+    #    Recieves response from t_request, does stuff if necessary, returns data via 1. to view
+    #    TODO will probably need to pass through params in some cases to help mung the data
+    ###########################################################################################
+    
+    
+    def register(self,request):
+    
+        url = settings.TRP_URL+'user/register'
+        t_id = "user_data" # note we are using the same t_id as for t_login...
+        t_log("G_CAPTCH_RESPONSE: %s" % request.POST.get('g-recaptcha-response'))
+        params = {'user': request.POST.get('user'),
+                    'pw': request.POST.get('pw'),
+                    'firstName': request.POST.get('firstName'),
+                    'lastName': request.POST.get('lastNaame'),
+    #               'email': request.POST.get('email'),
+    #               'gender': request.POST.get('gender'),
+    #               'orcid':request.POST.get('orcid'),
+                    'token': request.POST.get('g-recaptcha-response'),
+                    'application': "WEB_UI"}
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+        return self.request(request,t_id,url,params,"POST",headers)
+    
+    # REG FAIL HANDLER
+    def register_handler(self,r,params=None):
+        t_log("400 from register...")
+        raise ValueError('%s' % (r.text))
+    
+    def login(self, user, pw):
+        url = settings.TRP_URL+'auth/login'
+        t_id = "user_data" # note we are using the same t_id as for t_register... This is OK because the data response will be the same... I think
+        params = {'user': user, 'pw': pw}
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+    
+        r = self.s.post(url, params=params, verify=False, headers=headers)
+   
+        if r.status_code != requests.codes.ok:
+            return None
+    
+        return xmltodict.parse(r.text).get('trpUserLogin')
+    
+    # NOT currently used
+    def user_data_handler(self,r,params=None):
+        return xmltodict.parse(r.text).get('trpUserLogin')
+    
+    #refresh transkribus session (called by t_login_required decorator to test persistence/validity of transkribus session)
+    ############## DEPRECATED ########################
+    def refresh(self):
+    
+        url = settings.TRP_URL+'auth/refresh' 
+        r = self.s.post(url, verify=False)
+    
+        t_log("### t_refresh response STATUS_CODE: %s" % (r.status_code) )
+    
+        if r.status_code != requests.codes.ok:
+            return False
+        else:
+            return True
+    
+    #t_actions_info called to get lookup for action types for subsequent action list calls
+    def actions_info(self,request):
+        #The url for the transkribus rest call
+        url = settings.TRP_URL+'actions/info'
+        #the id to use call the correct data handler and store the data
+        t_id = "action_types"
+        #Return the data from the request (via the handler, defined below)
+        return self.request(request,t_id,url)
+    # Below is the simplest case imaginable
+    def action_types_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    #t_actions_count #NB this call is not yet available
+    def actions_count(self,request,params=None):
+        url = settings.TRP_URL+'actions/count'
+        t_id = "actions_count"
+        return self.request(request,t_id,url,params)
+    
+    def actions_count_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    #t_actions_list
+    def actions(self,request,params=None):
+        url = settings.TRP_URL+'actions/list'
+        t_id = "actions"
+    
+        return self.request(request,t_id,url,params)
+    
+    def actions_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    
+    #t_collections_recent called to get most recently actioned collection [NOT CURRENTLY USED.... and needs a different url or handler code!]
+    def collection_recent(self,request,collId):
+        url = settings.TRP_URL+'collections/'+str(collId)+'/list'
+        t_id = "collection_recent"
+        params = {'collId': collId}
+    
+        return self.request(request,t_id,url,params,"GET")
+    
+    def collection_recent_handler(self,r,params=None):
+        t_log("collection_recent: %s " % r.text)
+        return json.loads(r.text)
+    
+    #t_collections_count
+    def collections_count(self,request,params=None):
+        url = settings.TRP_URL+'collections/count'
+        t_id = "collections_count"
+    
+        return self.request(request,t_id,url,params)
+    
+    def collections_count_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    def collections(self,request,params=None):
+        url = settings.TRP_URL+'collections/list'
+        t_id = "collections"
+        return self.request(request,t_id,url,params)
+    
+    def collections_handler(self, r,params=None):
+        t_collections = json.loads(r.text)
+        t_log(str(t_collections))
+        #use common param 'key' for ids (may yet drop...)
+        for col in t_collections:
+            col['key'] = col['colId']
+        return t_collections
+    
+    #t_users_count
+    def users_count(self,request,params=None):
+        url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/userlist/count'
+        t_id = "users_count"
+        return self.request(request,t_id,url,params,"GET",None,{"collId": params.get('collId')})
+    
+    def users_count_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    #t_users_list
+    def users(self,request,params=None):
+        url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/userlist'
+        t_id = "users"
+    
+        return self.request(request,t_id,url,params)
+    
+    def users_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    #t_user (by username... yuk!)
+    def user(self,request,params=None):
+        url = settings.TRP_URL+'user/findUser'	
+        t_id = "user"
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+    
+        return self.request(request,t_id,url,params,'GET',headers)
+    
+    def user_handler(self,r,params=None): 
+        return xmltodict.parse(r.text).get('trpUsers').get('trpUser')
+    
+    def collection(self,request,params):
+        url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/list'
+        t_id = "collection"
+        return self.request(request,t_id,url,params,"GET",None,{"collId": params.get('collId')})
+    
+    def collection_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    def collection_count(self,request,params):
+        url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/count'
+        t_id = "collection_count"
+    
+        return self.request(request,t_id,url,params)
+    
+    def collection_count_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    #Alias t_documents > t_collection
+    def documents(self,request,params):
+        return self.collection(request,params)
+    
+    def documents_count(self,request,params):
+        return self.collection_count(request,params)
+    
+    def fulldoc(self,request,params):
+    
+        url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/'+str(params.get('docId'))+'/fulldoc'
+        t_id = "fulldoc"
+        return self.request(request,t_id,url,params)
+    
+    def fulldoc_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    def document(self,request, collId, docId, nrOfTranscripts=None):
+        url = settings.TRP_URL+'collections/'+collId+'/'+str(docId)+'/fulldoc'
+        t_id = "document"
+        params = {}
+        if not nrOfTranscripts is None:
+            params['nrOfTranscripts'] = nrOfTranscripts
+        return self.request(request,t_id,url)
+    
+    def document_handler(self,r,params=None):
+        t_doc = json.loads(r.text)
+        pages = t_doc.get("pageList").get("pages")
+        for x  in pages:
+            x['key'] = x.get('pageNr') #I'm aware this will replacce the legitimate key....
+    
+        return t_doc
+    
+    #returns a list of transcripts for a page, no page metadata...
+    def page(self,request,collId, docId, page):
+    
+        #list of transcripts for this page
+        url = settings.TRP_URL+'collections/'+collId+'/'+str(docId)+'/'+str(page)+'/list'
+        t_id = "page"
+        return self.request(request,t_id,url)
+    
+    #returns (nr_of_transcribed_lines, nr_of_transcribed_words) for a document
+    def docStat(self,request, params):
+    
+        url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/'+str(params.get('docId'))+'/docStat'
+        t_id = "docStat"
+        return self.request(request,t_id,url)
+    
+    def docStat_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    #returns (nr_of_transcribed_lines, nr_of_transcribed_words) for a whole collection
+    def collStat(self,request, params):
+    
+        url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/collStat'
+        t_id = "collStat"
+        return self.request(request,t_id,url)
+    
+    def collStat_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    #returns (nr_of_transcribed_lines, nr_of_transcribed_words) for a document
+    def countDocTags(self,request, params):
+    
+        url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/'+str(params.get('docId'))+'/countTags'
+        t_id = "countDocTags"
+        return self.request(request,t_id,url, params)
+    
+    def countDocTags_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    def countCollTags(self,request, params):
+    
+        url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/countTags'
+        t_id = "countCollTags"
+        return self.request(request,t_id,url, params)
+    
+    def countCollTags_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    def page_handler(self,r,params=None):
+    
+        t_page = json.loads(r.text)
+    
+        #TODO would prefer a pageId rather than "page" which is a the page number
+        for x  in t_page:
+            #key is used already for transcripts, however using key is handy for jquery things like fancy tree...
+            x['key'] = x.get('tsId')
+    
+        return self.page
+    
+    #returns the current transcript for a page
+    def current_transcript(self,request,collId, docId, page):
+    
+        #list of transcripts for this page
+        url = settings.TRP_URL+'collections/'+collId+'/'+str(docId)+'/'+str(page)+'/curr'
+        t_id="current_transcript"
+        return self.request(request,t_id,url)
+    
+    def current_transcript_handler(self,r,params=None):
+        t_transcript = json.loads(r.text)
+        t_transcript['key'] = t_transcript.get('tsId')
+        return t_transcript
+    
+    def transcript(self,request,transcriptId,url):
+    
+        t_id = "transcript"
+        headers = {'content-type': 'application/xml'}
+        params = {}
+        return self.request(request,t_id,url,params,"GET",headers,{'transcriptId': transcriptId})
+    
+    def transcript_handler(self,r,params=None):
+        t_transcript=xmltodict.parse(r.text)
+        t_transcript['tsId'] = params.get('transcriptId')
+        return t_transcript
+    
+    def transcript_xml(self,request,transcriptId,url):
+        t_id = "transcript_xml"
+        headers = {'content-type': 'application/xml'}
+        params = {}
+        return self.request(request,t_id,url,params,headers,{'transcriptId': transcriptId})
+    
+    def transcript_xml_handler(self,r,params=None):
+        return r.text
+    
+    def create_collection_handler(self,r, params=None):
+        return r.status_code == requests.codes.ok
+    
+    #t_crowdsourcing_count 
+    def crowdsourcing_count(self,request,params=None):
+        url = settings.TRP_URL+'crowdsourcing/count'
+        t_id = "crowdsourcing_count"
+        return self.request(request,t_id,url,params)
+    
+    def crowdsourcing_count_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    #t_crowdsourcing_list
+    def crowdsourcing(self,request,params=None):
+        url = settings.TRP_URL+'crowdsourcing/list'
+        t_id = "crowdsourcing"
+    
+        return self.request(request,t_id,url,params)
+    
+    def crowdsourcing_handler(self,r,params=None):
+        return json.loads(r.text)
+    
+    #t_crowdsourcing_subscribe
+    def crowdsourcing_subscribe(self,request,params):
+        url = settings.TRP_URL+'crowdsourcing/'+str(params.get('collId'))+'/subscribe'
+        t_id = "crowdsourcing_subscribe"
+    
+        params = {'collId': params.get('collId')}
+        headers = {'content-type': "application/json"}
+    
+        return self.request(request, t_id, url, method='POST',params=params,headers=headers)
+    
+    def crowdsourcing_subscribe_handler(self,r,params=None):
+        return r.status_code
+    
+    #t_crowdsourcing_unsubscribe
+    def crowdsourcing_unsubscribe(self,request,params):
+        url = settings.TRP_URL+'crowdsourcing/'+str(params.get('collId'))+'/unsubscribe'
+        t_id = "crowdsourcing_unsubscribe"
+    
+        params = {'collId': params.get('collId')}
+        headers = {'content-type': "application/json"}
+    
+        return self.request(request, t_id, url, method='POST',params=params,headers=headers)
+    
+    def crowdsourcing_unsubscribe_handler(self,r,params=None):
+        return r.status_code
+    
+    
+    # t_metadata moved to utils
+    
+    ####################################
+    # Leave this for Matti
+    ##################################
+    
+    # Saves transcripts. TODO Statuses...
+    def save_transcript(self,request, transcript_xml, collId, docId, page):
+        params = {"status": "NEW"}
+        headers = {"content-type": "application/xml"}
+    
+        url = settings.TRP_URL+'collections/'+collId+'/'+str(docId)+'/'+str(page)+'/text'
+        r = self.s.post(url, verify=False, headers=headers, params=params, data=transcript_xml)
+    
+        # Remove the old version from cache.
+        del request.session['current_transcript']
+    
         return None
-    # TODO What to do when we're successful?'
-
-def t_ingest_mets_url(collId, mets_url):
-
-    url = settings.TRP_URL+'collections/' + collId + '/createDocFromMetsUrl'
-    params = {'fileName': mets_url}#, 'checkForDuplicateTitle': 'false'}# Perhaps this won't work even for testing! TODO Resolve!
-    r = s.post(url, params=params, verify=False)
-
-    t_log("Ingesting document from METS XML file URL: %s%% \r\n" % (mets_url) )
-    if (r.status_code == requests.codes.ok):
-        return True
-    else:
-        t_log("ERROR CODE: %s%% \r\n ERROR: %s%%" % (r.status_code, r.text) )
-        return None
-
-def t_create_collection(request, collection_name):
-    url = settings.TRP_URL+'collections/createCollection'
-    params = {'collName': collection_name}
-    headers = {'content-type': None}
-    return t_request(request, t_id, url, method='POST', params=params, headers=headers)
-
-def t_jobs(status = ''):
-    url = settings.TRP_URL+'jobs/list'
-    params = {'status': status}
-    r = s.get(url, params=params, verify=False)
-    if r.status_code != requests.codes.ok:
-        t_log("Error getting jobs: %s \r\n ERROR: %s" % (r.status_code, r.text))
-        return None
-    jobs_json=r.text
-    jobs = json.loads(jobs_json)
-    return jobs
-
-def t_job_count(status = ''):
-    url = settings.TRP_URL+'jobs/count'
-    params = {'status': status}
-    r = s.get(url, params=params, verify=False)
-    if r.status_code != requests.codes.ok:
-        t_log("Error getting job count: %s \r\n ERROR: %s" % (r.status_code, r.text))
-        return None
-    count=r.text
-    return count
-
-def t_kill_job(job_id):
-    url = settings.TRP_URL + 'jobs/' + job_id + '/kill'
-    r = s.post(url, verify=False)
-
-    t_log("Response to kill job: %s  \r\n" % (r.status_code) )
-
-    return r.status_code == requests.codes.ok
+    
+    def download_mets_xml(self,mets_url):
+        r = self.s.get(mets_url)
+        # TODO Consider returning some "document name" or such to enable the user to verify the document title...? 
+        return r.text 
+    
+    def ingest_mets_xml(self,collId, mets_file):
+    
+        url = settings.TRP_URL+'collections/' + collId + '/createDocFromMets'
+        files = {'mets':  mets_file}
+        r = self.s.post(url, files=files, verify=False)
+    
+        if r.status_code != requests.codes.ok:
+            t_log("ERROR CODE: %s%% \r\n ERROR: %s%%" % (r.status_code, r.text) )
+            return None
+        # TODO What to do when we're successful?'
+    
+    def ingest_mets_url(self,collId, mets_url):
+    
+        url = settings.TRP_URL+'collections/' + collId + '/createDocFromMetsUrl'
+        params = {'fileName': mets_url}#, 'checkForDuplicateTitle': 'false'}# Perhaps this won't work even for testing! TODO Resolve!
+        r = self.s.post(url, params=params, verify=False)
+    
+        t_log("Ingesting document from METS XML file URL: %s%% \r\n" % (mets_url) )
+        if (r.status_code == requests.codes.ok):
+            return True
+        else:
+            t_log("ERROR CODE: %s%% \r\n ERROR: %s%%" % (r.status_code, r.text) )
+            return None
+    
+    def create_collection(self,request, collection_name):
+        url = settings.TRP_URL+'collections/createCollection'
+        params = {'collName': collection_name}
+        headers = {'content-type': None}
+        return self.request(request, t_id, url, method='POST', params=params, headers=headers)
+    
+    def jobs(self,status = ''):
+        url = settings.TRP_URL+'jobs/list'
+        params = {'status': status}
+        r = self.s.get(url, params=params, verify=False)
+        if r.status_code != requests.codes.ok:
+            t_log("Error getting jobs: %s \r\n ERROR: %s" % (r.status_code, r.text))
+            return None
+        jobs_json=r.text
+        jobs = json.loads(jobs_json)
+        return jobs
+    
+    def job_count(self,status = ''):
+        url = settings.TRP_URL+'jobs/count'
+        params = {'status': status}
+        r = self.s.get(url, params=params, verify=False)
+        if r.status_code != requests.codes.ok:
+            t_log("Error getting job count: %s \r\n ERROR: %s" % (r.status_code, r.text))
+            return None
+        count=r.text
+        return count
+    
+    def kill_job(self,job_id):
+        url = settings.TRP_URL + 'jobs/' + job_id + '/kill'
+        r = self.s.post(url, verify=False)
+    
+        t_log("Response to kill job: %s  \r\n" % (r.status_code) )
+    
+        return r.status_code == requests.codes.ok
