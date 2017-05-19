@@ -11,7 +11,6 @@ urlpatterns = [
     url(r'^$', views.collections, name='index'),
 #    url(r'^collections$', views.collections, name='collections'),
     url(r'^([\-0-9]+)$', views.collection, name='collection'),
-#    url(r'^collection_noaccess/([\-0-9]+)$', views.collection_noaccess, name='collection_noaccess'),
 #    url(r'^([\-0-9]+)/([0-9]+)$', views.document, name='document'),
     url(r'^([\-0-9]+)/([0-9]+)/([0-9]+)$', views.document_page, name='document_page'),
     url(r'^([\-0-9]+)/([0-9]+)$', views.document_page, name='document_page'),
