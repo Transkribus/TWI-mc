@@ -36,14 +36,6 @@ def index(request):
 def collections(request):
     t = request.user.tsdata.t
 
-    if not t.refresh() : 
-        t_log("refresh failed...",logging.WARN)
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
-
-    t_log("tsdata: %s" % request.user.tsdata, logging.WARN)
-
-    t_log("tsdata.transkribus session is %s big" % sys.getsizeof(t), logging.WARN)
-
     collections = t.collections(request)
     if isinstance(collections,HttpResponse):
         return collections
@@ -56,10 +48,6 @@ def collections(request):
 @login_required
 def collection(request, collId):
     t = request.user.tsdata.t
-
-    if not t.refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
-
 
     #Avoid this sort of nonsense if possible
     collections = t.collections(request,{'end':None,'start':None})
@@ -142,17 +130,12 @@ def collection(request, collId):
 def document(request, collId, docId, page=None):
     t = request.user.tsdata.t
 
-    if not t.refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
-
-
     collection = t.collection(request, {'collId': collId})
     if isinstance(collection,HttpResponse):
         return collection
     fulldoc = t.document(request, collId, docId,-1)
     if isinstance(fulldoc,HttpResponse):
         return fulldoc
-
     
     nav = navigation.up_next_prev(request,"document",docId,collection,[collId])
     
@@ -240,9 +223,6 @@ def document(request, collId, docId, page=None):
 def document_page(request, collId, docId, page=None):
     t = request.user.tsdata.t
 
-    if not t.refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
-    
     collection = t.collection(request, {'collId': collId})
     if isinstance(collection,HttpResponse):
         return collection
