@@ -8,12 +8,13 @@ from django.db import models
 #   password = models.CharField(max_length=128)
 
 from django.contrib.auth.models import User
+from picklefield.fields import PickledObjectField
 
 class TSData(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     userId = models.CharField(max_length=100, default=0)
     gender = models.CharField(max_length=100)
     affiliation = models.CharField(max_length=100)
-
+    t = PickledObjectField()
     #Add fields for any user data local to app here
     #thingthatappneedstostoreperuser = models.WhateverField();
