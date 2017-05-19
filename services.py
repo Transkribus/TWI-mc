@@ -70,27 +70,23 @@ class TranskribusSession(object):
     
     #Make a request for data (possibly) to the transkribus REST service make
     #use of helper functions and calling the appropriate data handler when done
-    def request(self,request,t_id,url,params=None,method=None,headers=None,handler_params=None):
-    
-        t_log("requests.Session == %s" % self.s,logging.WARN)
-        #Check for cached value and return that #TODO override this on some occaisions
-        cache_data = self.check_cache(request, t_id, url, params)
-        if cache_data :
-            return cache_data
-    
+    def request(self,request,t_id,url,params=None,method=None,headers=None,handler_params=None,ignore_cache=None):
+        
+        #Check for cached value and return that
+        if ignore_cache is None :
+            cache_data = self.check_cache(request, t_id, url, params)
+            if cache_data :
+                return cache_data
+        
         #Add default headers to *possibly* already defined header data
         if not headers : headers = {}
         headers = self.set_default_headers(headers)
     
         #Default method is GET
-        #t_log("TRANSKRIBUS REQUEST: %s" % url)
         if method == 'POST' :
             r = self.s.post(url, params=params, verify=False, headers=headers)
         else:
             r = self.s.get(url, params=params, verify=False, headers=headers)
-    
-            
-        #print(r)
     
         #Check responses, 
         #	401: unauth
@@ -117,7 +113,7 @@ class TranskribusSession(object):
     #            if collId :
     #                return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/utils/collection_noaccess/"+str(collId)))
             #otherwise you get logged out...
-            t_log("TRANSKRIBUS SAYS: %s" % e.response.status_code, logging.WARN)
+            t_log("TRANSKRIBUS SAYS NO: %s" % e.response.status_code, logging.WARN)
             return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
     
         # Pass transkribus response to handler (NB naming convention is t_[t_id]_handler(r, handler_params)
@@ -187,7 +183,7 @@ class TranskribusSession(object):
         r = self.s.post(url, verify=False)
     
         t_log("### t_refresh response STATUS_CODE: %s" % (r.status_code) )
-    
+   
         if r.status_code != requests.codes.ok:
             return False
         else:
@@ -218,13 +214,12 @@ class TranskribusSession(object):
     def actions(self,request,params=None):
         url = settings.TRP_URL+'actions/list'
         t_id = "actions"
-    
-        return self.request(request,t_id,url,params)
+        #We always want fresh data on actions as they are always changing
+        return self.request(request,t_id,url,params=params,ignore_cache=True)
     
     def actions_handler(self,r,params=None):
         return json.loads(r.text)
-    
-    
+     
     #t_collections_recent called to get most recently actioned collection [NOT CURRENTLY USED.... and needs a different url or handler code!]
     def collection_recent(self,request,collId):
         url = settings.TRP_URL+'collections/'+str(collId)+'/list'
@@ -247,10 +242,10 @@ class TranskribusSession(object):
     def collections_count_handler(self,r,params=None):
         return json.loads(r.text)
     
-    def collections(self,request,params=None):
+    def collections(self,request,params=None,ignore_cache=None):
         url = settings.TRP_URL+'collections/list'
         t_id = "collections"
-        return self.request(request,t_id,url,params)
+        return self.request(request,t_id,url,params=params,ignore_cache=ignore_cache)
     
     def collections_handler(self, r,params=None):
         t_collections = json.loads(r.text)
@@ -477,14 +472,7 @@ class TranskribusSession(object):
         return self.request(request, t_id, url, method='POST',params=params,headers=headers)
     
     def crowdsourcing_unsubscribe_handler(self,r,params=None):
-        return r.status_code
-    
-    
-    # t_metadata moved to utils
-    
-    ####################################
-    # Leave this for Matti
-    ##################################
+        return r.status_code 
     
     # Saves transcripts. TODO Statuses...
     def save_transcript(self,request, transcript_xml, collId, docId, page):
@@ -498,6 +486,13 @@ class TranskribusSession(object):
         del request.session['current_transcript']
     
         return None
+    
+    ####################################
+    # TODO decide what to do with this stuff (ie mets up/downloading, create_collection, etc)
+    # It was previouly lumped to gether with everything in the old library app
+    # Some of these things will be popular with some partners
+    # There is a nascent "upload" app that is meant to make use of them
+    ##################################
     
     def download_mets_xml(self,mets_url):
         r = self.s.get(mets_url)
@@ -532,7 +527,11 @@ class TranskribusSession(object):
         url = settings.TRP_URL+'collections/createCollection'
         params = {'collName': collection_name}
         headers = {'content-type': None}
-        return self.request(request, t_id, url, method='POST', params=params, headers=headers)
+        #clear cached collections list so that the new one will appear when created
+        request.session['collections'] = None
+        t_id = "create_collection"
+        #actucally this will need more working on if we decide to keep (need handler etc)
+        return self.request(request, t_id, url, method='POST', params=params, headers=headers, ignore_cache=True)
     
     def jobs(self,status = ''):
         url = settings.TRP_URL+'jobs/list'
