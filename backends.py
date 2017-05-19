@@ -43,7 +43,7 @@ class TranskribusBackend(object):
             user.first_name = t_user['firstname']
             user.last_name = t_user['lastname']
             if t_user['isAdmin'] == 'true':
-                user.is_superuser = True
+                user.is_staff = True
             user.save()
             #Extend the user object with some extra data from transkribus
             try:
