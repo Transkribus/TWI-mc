@@ -2,7 +2,10 @@ from django.conf import settings
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.models import User
 
-from apps.utils.services import t_login
+from apps.utils.services import TranskribusSession
+from apps.utils.utils import t_log
+
+
 from .models import TSData
 import sys
 
@@ -20,10 +23,14 @@ b) set any data that is extra to default django user from
 class TranskribusBackend(object):
 
     def authenticate(self, username=None, password=None):
-
-        t_user = t_login(username, password)
-        #We are using the colections data to set group permissions... somehow
-
+        
+        # Make transkribus session here
+        # In projects where we need unauthenticated access this is not the place to put it... 
+        # or maybe we can use the django anonymous user 
+        t = TranskribusSession()
+        # Do the login using the TranskribusSession
+        t_user = t.login(username, password)
+       
         if t_user:
             try:
                 user = User.objects.get(username=t_user['userName'])
@@ -46,6 +53,9 @@ class TranskribusBackend(object):
             tsdata.gender=t_user['gender']
             tsdata.affiliation=t_user['affiliation']
             tsdata.userId=t_user['userId']
+	    # we can store the transkribus session as a pickled field, probably better in request.session
+            # but we need django 1.11 which passes request to the authenticate backend
+            tsdata.t=t
 
             ######
             # If we have some local user data that we need to update dependent on whatever TS-REST returns do so here
