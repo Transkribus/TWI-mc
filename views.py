@@ -35,11 +35,11 @@ from apps.querystring_parser.querystring_parser import parser
 @login_required
 def index(request):
     t = request.user.tsdata.t
-    if not t.refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
     
     last_actions = t.actions(request,{'nValues' : 5,  'userid': request.user.tsdata.userId, 'typeId': 4 })
- 
+    if isinstance(last_actions,HttpResponse):
+        return last_actions
+
     for la in last_actions :
          la['time'] = dateutil.parser.parse(la['time']).strftime("%a %b %d %Y %H:%M")
 
@@ -69,11 +69,11 @@ def index(request):
 @login_required
 def d_collection(request,collId):
     t = request.user.tsdata.t
-    if not t.refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
  
     last_actions = t.actions(request,{'nValues' : 5, 'collId' : collId, 'userid': request.user.tsdata.userId, 'typeId': 4 })
- 
+    if isinstance(last_actions,HttpResponse):
+        return last_actions
+
     for la in last_actions :
          la['time'] = dateutil.parser.parse(la['time']).strftime("%a %b %d %Y %H:%M")
 
@@ -114,14 +114,12 @@ def d_collection(request,collId):
 def d_document(request,collId,docId):
     t = request.user.tsdata.t
 
-    if not t.refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
-
     last_actions = t.actions(request,{'nValues' : 5, 'collId' : collId, 'docId' : docId, 'userid': request.user.tsdata.userId, 'typeId': 4  })
- 
+    if isinstance(last_actions,HttpResponse):
+        return last_actions
+
     for la in last_actions :
          la['time'] = dateutil.parser.parse(la['time']).strftime("%a %b %d %Y %H:%M")
-
 
     documents = t.documents(request,{'collId': collId}) #for nav only...
     if isinstance(documents,HttpResponse):
@@ -177,12 +175,12 @@ def d_document(request,collId,docId):
 @login_required
 def d_user(request,username):
     t = request.user.tsdata.t
-    if not t.refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
-
     t_log("##################### USERNAME: %s " % username)
     
-    user = t.user(request,{'user' : username}) #TODO use url encoding...
+    user = t.user(request,{'user' : username})
+    if isinstance(user,HttpResponse):
+        return user
+
     t_log("##################### USER: %s " % user)
     action_types = t.actions_info(request)
     if isinstance(action_types,HttpResponse):
@@ -201,7 +199,6 @@ def d_user(request,username):
 #       - Some params must be passed in params (eg ids from url, typeId from calling function)
 #       - Some params are set directly from REQUEST, but can be overridden by params (eg nValues)
 
-@t_login_required_ajax
 def paged_data(request,list_name,params=None):#collId=None,docId=None):
 
     t = request.user.tsdata.t
@@ -231,6 +228,7 @@ def paged_data(request,list_name,params=None):#collId=None,docId=None):
     ##################################
 
     #Get data
+    data=None
     t_log("SENT PARAMS: %s" % params)
     data = eval("t."+list_name+"(request,params)")
 
@@ -265,7 +263,7 @@ def table_ajax(request,list_name,collId=None,docId=None,userId=None) :
     (data,count) = paged_data(request,t_list_name,params)
 
    #TODO pass back the error not the redirect and then process the error according to whether we have been called via ajax or not....
-    if isinstance(data,HttpResponse):
+    if isinstance(data,HttpResponse) or data is None:
         t_log("data request has failed... %s" % data)
         #For now this will do but there may be other reasons the transckribus request fails... (see comment above)
         return HttpResponse('Unauthorized', status=401)
