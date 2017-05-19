@@ -197,6 +197,8 @@ USE_TZ = True
 
 #### NB this is the static files setting for the production apache server
 
+SERVERBASE = '/readTest'
+
 #Step 1: we store static files in project_root/static
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
@@ -212,12 +214,11 @@ STATICFILES_FINDERS = (
 STATIC_ROOT =  'collected_static'
 MEDIA_ROOT = 'media' #not currently used
 #Step 4 Finally we tell django how to serve the static files
-STATIC_URL = '/readTest/static/'
-MEDIA_URL = '/readTest/media/' #not currently used
+STATIC_URL = SERVERBASE+'/static/'
+MEDIA_URL =  SERVERBASE+'/media/' #not currently used
 
 ##################### Added for READ ###################
 
-SERVERBASE = '/read/'
 
 ## Auth backend that logs in to transkribus.eu and extends the django.contrib.auth.User
 AUTHENTICATION_BACKENDS = [
