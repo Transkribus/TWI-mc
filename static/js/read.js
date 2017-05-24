@@ -211,7 +211,11 @@ function init_chart(canvas_id,url,chart_type){
 			for(x in ids){
 				context += '/'+ids[x];
 			};
-			url += context+'/u/'+clicked_label;
+			if(canvas_id == 'top_users'){	
+				url += context+'/u/'+clicked_label;
+			}else{
+				url += context+'/'+clicked_id;
+			}
 
 //			console.log("CLICK: ",clicked_id);
 //			console.log("URL: ",url);
