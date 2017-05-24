@@ -1,0 +1,19 @@
+{% extends "navi_base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+
+    <!-- Page Content -->
+    <div class="read-container container">
+
+	<div class="alert alert-danger" role="alert">
+		<strong>{% trans 'We have a slight problem: ' %}</strong>{{ msg|safe }}
+	</div>
+	<p>{% trans "Return to " %}
+		{% if back %}{%trans "the "%}<a href="{{back}}">{% trans "previous page" %}</a> {%trans "or" %}{% endif %}
+	{% trans "the Transkribus-web " %}<a href="{% url 'index' %}">{% trans "home page" %}</a></p>
+    </div>
+
+{% endblock %}
+
