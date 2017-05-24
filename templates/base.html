@@ -19,16 +19,19 @@
     <!-- FancyTree CSS -->
 <!--    <link href="{% static "css/ui.fancytree.css" %}" rel="stylesheet"/> -->
     <!-- Sidebar CSS -->
-    <link href="{% static "css/simple-sidebar.css" %}" rel="stylesheet"/>
+<!--  not used  <link href="{% static "css/simple-sidebar.css" %}" rel="stylesheet"/> -->
     <!-- Flag CSS -->
     <link href="{% static "css/flag-icon.css" %}" rel="stylesheet"/>
-    <!-- Local CSS -->
-    <link href="{% static "css/read.css" %}" rel="stylesheet"/>
     <!-- Carousel CSS (needed?) -->
-    <link href="{% static "css/carousel.css" %}" rel="stylesheet"/>
+<!-- not used   <link href="{% static "css/carousel.css" %}" rel="stylesheet"/> -->
 
     <link href="{{ "datatables_css"|load_lib  }}" rel="stylesheet"/>
     <link href="{{ "jquery_ui_css"|load_lib  }}" rel="stylesheet"/>
+    <link href="{{ "bootstrap_notify_css"|load_lib  }}" rel="stylesheet"/>
+
+    <!-- Local CSS -->
+    <link href="{% static "css/read.css" %}" rel="stylesheet"/>
+
     <!-- recaptcha -->
    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
 
@@ -37,13 +40,20 @@
     <script src="{{ "jquery_ui"|load_lib }}"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
+<!--    <script src="{% static "js/bootstrap.min.js" %}"></script> -->
+    <script src="{{ "bootstrap_js"|load_lib }}"></script>
+
     <!-- Fancytree -->
+<!-- not used 
     <script src="{% static "js/jquery.fancytree-all.min.js" %}"></script>
+-->
     <!-- Data tables -->
     <script src="{{ "datatables_js"|load_lib }}"></script>
     <!-- Chart.js -->
     <script src="{{ "chart_js"|load_lib }}"></script>
+    <!-- Bootstrap-notify -->
+    <script src="{{ "bootstrap_notify_js"|load_lib }}"></script>
+
     <!-- Local JS -->
 	<script language="javascript">
 		var static_url = "{{ STATIC_URL|escapejs }}";
