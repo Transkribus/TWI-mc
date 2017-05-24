@@ -19,7 +19,7 @@
 		{% if form.errors %}
 		<p>{% trans "Your username and password didn't match. Please try again." %}</p>
 		{% endif %}
-
+		<!-- Though this might be logout when session ends... but looks not to be. Referrer: {{ request.META.HTTP_REFERER }}	-->
 		{% if next %}
 		    {% if user.is_authenticated %}
 		    <p>Your account doesn't have access to this page. To proceed,
