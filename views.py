@@ -72,7 +72,9 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
     #########################
 
     (data,count) = paged_data(request,t_list_name,params)
-    
+    if isinstance(data,HttpResponse):
+        return data
+
     t = request.user.tsdata.t
 
     #we want to add statistical data to the title column like nr_of_transcribed_lines, nr_of_transkribed_words, tags....
@@ -168,7 +170,7 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
     if isinstance(data,HttpResponse):
         t_log("data request has failed... %s" % data)
         #For now this will do but there may be other reasons the transckribus request fails... (see comment above)
-        return HttpResponse('Unauthorized', status=401)
+        return data
 
     filters = {
                 'actions' : ['time', 'colId', 'colName', 'docId', 'docName', 'pageId', 'pageNr', 'userName', 'type'],
@@ -362,8 +364,24 @@ def filter_data(fields, data) :
         filtered.append(filtered_datum)
 
     return filtered
+#error pages (where not handled by modals)
+def error_view(request, response) : 
+    t_log("Request %s, Response %s" % (request,response), logging.WARN)
+    message = error_switch(response.status_code)    
+    return render(request, 'error.html', {
+                'msg' : message,
+#                'back' : back,
+            })
+
+def error_switch(x):
+    return {
+        401: _('Transkribus session is unauthorised, you must <a href="'+request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path()))+'" class="alert-link">(re)log on to Transkribus-web</a>.'),
+        403: _('You are forbidden to request this data from Transkribus.'),
+        404: _('The requested Transkribus resource does not exist.'),
+        500: _('A Server error was reported by Transkribus.'),
+    }.get(x,_('An unknown error was returned by Transkribus: ')+str(x))
+
 '''
-#error pages (where not handled by modals
 def collection_noaccess(request, collId):
     if(request.get_full_path() == request.META.get("HTTP_REFERER") or re.match(r'^.*login.*', request.META.get("HTTP_REFERER"))):
         back = None

@@ -8,6 +8,7 @@ requests.packages.urllib3.disable_warnings()
 
 import xmltodict
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 import sys #remove after switching to t_log
 from .utils import t_log, t_gen_request_id
@@ -83,11 +84,14 @@ class TranskribusSession(object):
         headers = self.set_default_headers(headers)
     
         #Default method is GET
-        if method == 'POST' :
-            r = self.s.post(url, params=params, verify=False, headers=headers)
-        else:
-            r = self.s.get(url, params=params, verify=False, headers=headers)
-    
+        try:
+            if method == 'POST' :
+                r = self.s.post(url, params=params, verify=False, headers=headers)
+            else:
+                r = self.s.get(url, params=params, verify=False, headers=headers)
+        except ConnectionError as e:
+            t_log("TRANSKRIBUS SAYS NO: %s (%s)" % (e), logging.WARN)
+
         #Check responses, 
         #	401: unauth
         #	403+rest+collId: forbidden collection
@@ -105,16 +109,10 @@ class TranskribusSession(object):
                     #t_register_handler only handles exceptions, if reg is successsful then t_user_data_handlercan be used
                     return t_register_handler(r,handler_params)
     
-            #no access to requested collection... if we are indeed requesting a collection (which we usually are)
-            #FAFF collId needs passed in via handler_params... we could extract from url??
-    #        if e.response.status_code == 403 : # and handler_params is not None and "collId" in handler_params):
-    #            m = re.match(r'^.*/rest/[^/]+/(-?\d+)/.*', url)
-    #            collId = m.group(1)
-    #            if collId :
-    #                return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/utils/collection_noaccess/"+str(collId)))
             #otherwise you get logged out...
-            t_log("TRANSKRIBUS SAYS NO: %s" % e.response.status_code, logging.WARN)
-            return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
+            t_log("TRANSKRIBUS SAYS NO: %s (%s)" % (e.response.reason, e.response.status_code), logging.WARN)
+#            return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
+            return HttpResponse(e.response.reason, status=e.response.status_code)
     
         # Pass transkribus response to handler (NB naming convention is t_[t_id]_handler(r, handler_params)
         # handler_params are for things that we might need to pass through this t_request to the handler
@@ -215,6 +213,7 @@ class TranskribusSession(object):
         url = settings.TRP_URL+'actions/list'
         t_id = "actions"
         #We always want fresh data on actions as they are always changing
+        t_log("ACTION PARAMS: %s" % params, logging.WARN)
         return self.request(request,t_id,url,params=params,ignore_cache=True)
     
     def actions_handler(self,r,params=None):
@@ -276,13 +275,16 @@ class TranskribusSession(object):
     
     #t_user (by username... yuk!)
     def user(self,request,params=None):
-        url = settings.TRP_URL+'user/findUser'	
+        url = settings.TRP_URL+'user/findUser'
         t_id = "user"
         headers = {'content-type': 'application/x-www-form-urlencoded'}
-    
+        t_log("USER url: %s" % url,logging.WARN)   
+        t_log("USER params: %s" % params,logging.WARN)   
+
         return self.request(request,t_id,url,params,'GET',headers)
     
     def user_handler(self,r,params=None): 
+        t_log("USER response: %s" % r.text,logging.WARN)
         return xmltodict.parse(r.text).get('trpUsers').get('trpUser')
     
     def collection(self,request,params):

@@ -14,6 +14,10 @@ var serverbase = window.location.pathname.replace(/\/\w+(|\/|\/\d.*)$/g, "");
 console.log("APPBASE: ",appbase);
 console.log("SERVERBASE: ",serverbase);
 
+$(document).ready(function(){
+	$('#errorModal').modal({ show: false})
+
+});
 function make_url(url){
 //	appbase = appbase.replace(/\/$/,""); //remove trailing slash from appbase
 //	return appbase+url;
@@ -28,7 +32,7 @@ function init_datatable(table,url, columns){
 	var datatable = table.DataTable({
 		"ordering": false,
 		"processing": true,
-        "serverSide": true,
+	        "serverSide": true,
 		"ajax": {
 			"url": url,
 			"data": function ( d ) {
@@ -40,15 +44,26 @@ function init_datatable(table,url, columns){
 				}
 			},
 			"error": function (xhr, error, thrown) {
-				//for now we assume that a problem with the ajax request means 
-				//that TS REST session is expired and you need logged out... 
-				//this could be annoying if not the case though!
-				//TODO needs query string too...?
-				alert("There was an issue communicating with the transkribus service Please try again, if the problem persists send the error below to....\n ",error, thrown);
-//				window.location.replace("/login/?next="+window.location.pathname)
+				$(table.selector+'_processing').hide();
+				if(xhr.status == 401){ //unauthorised response from transkribus... we should forward to logout
+					//but with a message on the login page... somehow
+					window.location.href = make_url("/logout/?next="+window.location.pathname)
+				}else{
+					//otherwise motify user of the error 
+					$.notify({
+						// options
+						message: "There was a problem communicating with Transkribus.<br/>Error code: "+xhr.status+ " : "+thrown,
+						},{
+						// settings
+						type: 'danger'
+		 			});
+				}
 			},
 		},		
 //		"sDom": "rltip",
+		"oLanguage": {
+			"sProcessing": 'Retrieving data from transkribus <span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
+		},
 		"dom": '<"top">rt<"bottom"lip><"clear">',
 		"length" : 5,
 		"lengthMenu": [ 5, 10, 20, 50, 100 ],
@@ -83,6 +98,10 @@ function init_datatable(table,url, columns){
 					
 				}
 				//TODO add case for userlist links 
+				if(table.selector.match(/users/)){
+					url += '/u/'+data.userName;
+				}
+
 				if(url){
 					if(appbase.match(/\/$/)) loc = appbase+url; else loc = appbase+'/'+url;
 					window.location.href=loc;
@@ -117,6 +136,12 @@ function init_list(list_id,url){
 		data_cache[url] = data; //cache the cahrt data as it is generally much bigger
 		make_list(list_id,data);
  	     },
+	     "error": function (xhr, error, thrown) {
+			$('#errorModal').modal('show').on('shown.bs.modal', function () {
+				$('.modal-body', this).html("Sorry, it looks like there was a problem communicating with Transkribus.<br/>Error code: "+xhr.status+ " : "+thrown);
+			});
+		},
+
 	});
 }	
 function make_list(list_id,data){
@@ -186,10 +211,10 @@ function init_chart(canvas_id,url,chart_type){
 			for(x in ids){
 				context += '/'+ids[x];
 			};
-			url += context+'/'+clicked_id;
+			url += context+'/u/'+clicked_label;
 
-			console.log("CLICK: ",clicked_id);
-			console.log("URL: ",url);
+//			console.log("CLICK: ",clicked_id);
+//			console.log("URL: ",url);
 		 	window.location.href=static_url+url;
 		    }
 		);  
@@ -327,7 +352,7 @@ String.prototype.ucfirst = function() {
 
 function parse_path(){
 	
-	var pattern = /\/\w+(|\/(\d+)(|\/(\d+)(|\/(\d+))))$/;
+	var pattern = /\/\w+(|\/(\d+)(|\/(\d+)(|\/(\d+))))(|\/u\/.+)$/;
 	var result = pattern.exec(window.location.pathname);
 	console.log("pattern result " + result)
 	ids = {};
