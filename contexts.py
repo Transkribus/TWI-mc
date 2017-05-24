@@ -28,6 +28,8 @@ def nav_up(request):
         return {'nav_up' : re.sub(r'\/\d+\/\d+$',"",request.path)}
     if re.search(r'edit\/correct\/\d+\/\d+\/\d+$', request.path):
         return {'nav_up' : re.sub(r'edit\/correct(\/\d+\/\d+)\/\d+$',r'library\1',request.path)}
+    if re.search(r'dashboard\/\d+\/u\/.+$', request.path):
+        return {'nav_up' : re.sub(r'\/u\/.+$',"",request.path)}
 
     return {'nav_up': re.sub(r'\/[^\/]+$',"",request.path)}
 
