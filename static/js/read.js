@@ -206,7 +206,7 @@ function init_chart(canvas_id,url,chart_type){
 			var clicked_id = data.label_ids[activeElement[0]._index];
 
 			var ids = parse_path();
-			var url = static_url+"/dashboard";
+			var url = "/dashboard";
 			var context = '';
 			for(x in ids){
 				context += '/'+ids[x];
@@ -219,7 +219,7 @@ function init_chart(canvas_id,url,chart_type){
 
 //			console.log("CLICK: ",clicked_id);
 //			console.log("URL: ",url);
-		 	window.location.href=static_url+url;
+		 	window.location.href=make_url(url);
 		    }
 		);  
 
