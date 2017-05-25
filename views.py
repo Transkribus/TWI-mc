@@ -75,6 +75,7 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
     if isinstance(data,HttpResponse):
         return data
 
+
     t = request.user.tsdata.t
 
     #we want to add statistical data to the title column like nr_of_transcribed_lines, nr_of_transkribed_words, tags....
@@ -267,6 +268,7 @@ def document_thumb(request, collId, docId):
             'url': thumb_url
         },safe=False)
 
+## not used
 #Fetch a single thumb url from the document referenced
 def page_img(request, collId, docId, page):
     import timeit
@@ -367,13 +369,13 @@ def filter_data(fields, data) :
 #error pages (where not handled by modals)
 def error_view(request, response) : 
     t_log("Request %s, Response %s" % (request,response), logging.WARN)
-    message = error_switch(response.status_code)    
+    message = error_switch(request,response.status_code)    
     return render(request, 'error.html', {
                 'msg' : message,
 #                'back' : back,
             })
 
-def error_switch(x):
+def error_switch(request,x):
     return {
         401: _('Transkribus session is unauthorised, you must <a href="'+request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path()))+'" class="alert-link">(re)log on to Transkribus-web</a>.'),
         403: _('You are forbidden to request this data from Transkribus.'),
@@ -381,23 +383,4 @@ def error_switch(x):
         500: _('A Server error was reported by Transkribus.'),
     }.get(x,_('An unknown error was returned by Transkribus: ')+str(x))
 
-'''
-def collection_noaccess(request, collId):
-    if(request.get_full_path() == request.META.get("HTTP_REFERER") or re.match(r'^.*login.*', request.META.get("HTTP_REFERER"))):
-        back = None
-    else:
-        back = request.META.get("HTTP_REFERER") #request.GET.get("back")
 
-    return render(request, 'utils/error.html', {
-                'msg' : _("I'm afraid you are not allowed to access this collection"),
-                'back' : back,
-            })
-def error(request):
-    back = request.build_absolute_uri('/register')
-
-    return render(request, 'utils/error.html', {
-                'msg' : messages,
-                'back' : back,
-            })
-
-'''
