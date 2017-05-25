@@ -69,17 +69,20 @@ function init_actions_table(){
 	if(!$("#actions_table").length) return;
 
 	var ids = parse_path();
+	console.log("IDS: ",ids);
 	var url = make_url("/utils/table_ajax/actions");
 	console.log("Using appbase: ",url);
 
-//	var url = "./table_ajax/actions";
 	var context = '';
 	for(x in ids){
 		console.log(x," => ",ids[x])
 		context += '/'+ids[x];
 	};
 	url += context;
-	console.log("URL: ",url);
+        if($("#userid").data("userid")){
+		url += '/'+$("#userid").data("userid");
+	}
+	console.log("ACTIONS URL: ",url);
 	var columns =  [
 		    { "data": "time",
 		      "render" : function(data, type, row){

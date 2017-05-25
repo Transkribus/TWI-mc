@@ -38,14 +38,14 @@ def index(request):
     
     last_actions = t.actions(request,{'nValues' : 5,  'userid': request.user.tsdata.userId, 'typeId': 4 })
     if isinstance(last_actions,HttpResponse):
-        return last_actions
+        return apps.utils.views.error_view(request,last_actions)
 
     for la in last_actions :
          la['time'] = dateutil.parser.parse(la['time']).strftime("%a %b %d %Y %H:%M")
 
     action_types = t.actions_info(request)
     if isinstance(action_types,HttpResponse):
-        return action_types
+        return apps.utils.views.error_view(request,action_types)
 
 #    oat = collections.OrderedDict(sorted(action_types))
 #    myDic = action_types
@@ -72,7 +72,7 @@ def d_collection(request,collId):
  
     last_actions = t.actions(request,{'nValues' : 5, 'collId' : collId, 'userid': request.user.tsdata.userId, 'typeId': 4 })
     if isinstance(last_actions,HttpResponse):
-        return last_actions
+        return apps.utils.views.error_view(request,last_actions)
 
     for la in last_actions :
          la['time'] = dateutil.parser.parse(la['time']).strftime("%a %b %d %Y %H:%M")
@@ -80,11 +80,11 @@ def d_collection(request,collId):
     #Avoid this sort of nonsense if possible
     collections = t.collections(request,{'end':None,'start':None})
     if isinstance(collections,HttpResponse):
-        return collections
+        return apps.utils.views.error_view(request,collections)
 
     action_types = t.actions_info(request)
     if isinstance(action_types,HttpResponse):
-        return action_types
+        return apps.utils.views.error_view(request,action_types)
 
     navdata = navigation.get_nav(collections,collId,'colId','colName')
     #if we didn't have a focus before navigation call, we'll have one after
@@ -116,22 +116,22 @@ def d_document(request,collId,docId):
 
     last_actions = t.actions(request,{'nValues' : 5, 'collId' : collId, 'docId' : docId, 'userid': request.user.tsdata.userId, 'typeId': 4  })
     if isinstance(last_actions,HttpResponse):
-        return last_actions
+        return apps.utils.views.error_view(request,last_actions)
 
     for la in last_actions :
          la['time'] = dateutil.parser.parse(la['time']).strftime("%a %b %d %Y %H:%M")
 
     documents = t.documents(request,{'collId': collId}) #for nav only...
     if isinstance(documents,HttpResponse):
-        return documents
+        return apps.utils.views.error_view(request,documents)
 
     fulldoc = t.fulldoc(request,{'collId': collId, 'docId': docId})
     if isinstance(fulldoc,HttpResponse):
-        return fulldoc
+        return apps.utils.views.error_view(request,fulldoc)
 
     action_types = t.actions_info(request)
     if isinstance(action_types,HttpResponse):
-        return action_types
+        return apps.utils.views.error_view(request,action_types)
 
     document=None
     prev=None
@@ -171,20 +171,22 @@ def d_document(request,collId,docId):
 							'nav_prev_content': prev_content })
 
 
-# dashboard/u/{userId} is the dashboard for that user. Will show actions, collections and metrics for that user, can only be accessed by collection owners (editors?)
+# dashboard{collId}/u/{username} is the dashboard for that user. Will show actions, collections and metrics for that user, can only be accessed by collection owners (editors?)
 @login_required
-def d_user(request,username):
+def d_user(request,collId,username):
     t = request.user.tsdata.t
+    # If the logged in user is owner of collection collId then (and username is a member)
+    # Then we get relevant data about that user+collection and make dashboard view
     t_log("##################### USERNAME: %s " % username)
     
     user = t.user(request,{'user' : username})
     if isinstance(user,HttpResponse):
-        return user
+        return apps.utils.views.error_view(request,user)
 
     t_log("##################### USER: %s " % user)
     action_types = t.actions_info(request)
     if isinstance(action_types,HttpResponse):
-        return action_types
+        return apps.utils.views.error_view(request,action_types)
 
     return render(request, 'dashboard/user.html', {'action_types': action_types, 'user' : user} )
 
@@ -243,69 +245,6 @@ def paged_data(request,list_name,params=None):#collId=None,docId=None):
 
     return (data,count)
 
-######### Data views #########
-# These return json for ajax
-# pass back count as recordsTotal/recordsFiltered (would be nice to get real values for these)
-# data as data, this is designed for consumption by dataTables.js
-
-@t_login_required_ajax
-def table_ajax(request,list_name,collId=None,docId=None,userId=None) :
-    
-    t_list_name=list_name
-    params = {'collId': collId, 'docId': docId, 'userid' : userId} #userid can only be used to filter in context of a collection
-    ####### EXCEPTION #######
-    # list_name is pages we extract this from fulldoc
-    if list_name == 'pages' :
-        t_list_name = "fulldoc"
-        params['nrOfTranscripts']=1 #only get current transcript
-    #########################
-
-    (data,count) = paged_data(request,t_list_name,params)
-
-   #TODO pass back the error not the redirect and then process the error according to whether we have been called via ajax or not....
-    if isinstance(data,HttpResponse) or data is None:
-        t_log("data request has failed... %s" % data)
-        #For now this will do but there may be other reasons the transckribus request fails... (see comment above)
-        return HttpResponse('Unauthorized', status=401)
-
-    filters = {
-                'actions' : ['time', 'colId', 'colName', 'docId', 'docName', 'pageId', 'pageNr', 'userName', 'type'],
-                'collections' : ['colId', 'colName', 'description', 'role'],
-                'users' : ['userId', 'userName', 'firstname', 'lastname','email','affiliation','created','role'], #NB roles in userCollection
-                'documents' : ['docId','title','author','uploadTimestamp','uploader','nrOfPages','language','status'],
-#               'pages' : ['pageId','pageNr','thumbUrl','status', 'nrOfTranscripts'], #tables
-                'pages' : ['pageId','pageNr','imgFileName','thumbUrl','status'], #thumbnails
-              }
-
-    ####### EXCEPTION #######
-    # Do the extraction of pages from fulldoc
-    if list_name == 'pages' :
-        data = data.get('pageList').get('pages')
-        data = map(get_ts_status,data)
-    #########################
-
-    data_filtered = filter_data(filters.get(list_name),data)
-
-    ####### EXCEPTION #######
-    # We cannot request a paged list of pages by docid, so we must manage paging here
-    if list_name == 'pages' :
-        dt_params = parser.parse(request.GET.urlencode())
-        nValues = int(dt_params.get('length')) if dt_params.get('length') else int(settings.PAGE_SIZE_DEFAULT)
-        index = int(dt_params.get('start')) if dt_params.get('start') else 0
-        #lame paging for pages for now...
-        data_filtered = data_filtered[index:(index+nValues)]
-    ##########################
-
-    return JsonResponse({
-            'recordsTotal': count,
-            'recordsFiltered': count,
-            'data': data_filtered
-        },safe=False)
-
-def get_ts_status(x) :
-    x['status'] = x.get('tsList').get('transcripts')[0].get('status')
-    return x
-
 ##### Views for chart data #######
 
 # actions_for_chart_ajax
@@ -321,9 +260,12 @@ def chart_ajax(request,list_name,chart_type,collId=None,docId=None,userId=None,s
     (data,count) = paged_data(request,list_name,{'nValues':-1, 'collId': collId, 'docId': docId, 'userid': userId})
 
     if isinstance(data,HttpResponse):
-        t_log("data request has failed... %s" % data)
-        #For now this will do but there may be other reasons the transckribus request fails... (see comment above)
-        return HttpResponse('Unauthorized', status=401)
+        t_log("%s failed" % t_list_name,logging.WARN)
+        return apps.utils.views.error_view(request,data)
+
+    if data is None: #No data? we send a 404
+        HttpResponse('Not found', status=404)
+
     return eval(chart_type+"(data,subject,label)")
 
 #plot bar for the X number of Y with greatest number of (activity) records
@@ -467,9 +409,9 @@ def line(data,subject=None,label=None):
             'datasets' : datasets
         },safe=False)
 
+'''
 def doughnut(data,subject=None,label=None):
-    '''
-    var ctx = document.getElementById("status_pie");
+    var ctx = document.getElementById("status_pie")
 var myChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
@@ -499,8 +441,7 @@ var myChart = new Chart(ctx, {
 		}
     }
 });
-    '''
-
+'''
 def isolate_data(data,field) :
     return [d.get(field) for d in data]
 ##    return map(functools.partial(get_item, f=field), data)
@@ -522,3 +463,4 @@ def filter_data(fields, data) :
         filtered.append(filtered_datum)
 
     return filtered
+
