@@ -38,7 +38,7 @@ def collections(request):
 
     collections = t.collections(request)
     if isinstance(collections,HttpResponse):
-        return collections
+        return apps.utils.views.error_view(request,collections)
     return render(request, 'library/collections.html', {'collections': collections} )
 
 #/library/{colId}
@@ -52,7 +52,7 @@ def collection(request, collId):
     #Avoid this sort of nonsense if possible
     collections = t.collections(request,{'end':None,'start':None})
     if isinstance(collections,HttpResponse):
-        return collections
+        return apps.utils.views.error_view(request,collections)
 
     navdata = navigation.get_nav(collections,collId,'colId','colName')
     #if we didn't have a focus before navigation call, we'll have one after
@@ -132,10 +132,10 @@ def document(request, collId, docId, page=None):
 
     collection = t.collection(request, {'collId': collId})
     if isinstance(collection,HttpResponse):
-        return collection
+        return apps.utils.views.error_view(request,collection)
     fulldoc = t.document(request, collId, docId,-1)
     if isinstance(fulldoc,HttpResponse):
-        return fulldoc
+        return apps.utils.views.error_view(request,fulldoc)
     
     nav = navigation.up_next_prev(request,"document",docId,collection,[collId])
     
@@ -225,10 +225,10 @@ def document_page(request, collId, docId, page=None):
 
     collection = t.collection(request, {'collId': collId})
     if isinstance(collection,HttpResponse):
-        return collection
+        return apps.utils.views.error_view(request,collection)
     full_doc = t.document(request, collId, docId,-1)
     if isinstance(full_doc,HttpResponse):
-        return full_doc
+        return apps.utils.views.error_view(request,full_doc)
     
     if (page is None):
         page = 1
@@ -323,7 +323,7 @@ def page(request, collId, docId, page):
     #call t_document with noOfTranscript=-1 which will return no transcript data
     full_doc = t.document(request, collId, docId, -1)
     if isinstance(full_doc,HttpResponse):
-        return full_doc
+        return apps.utils.views.error_view(request,full_doc)
     # big wodge of data from full doc includes data for each page and for each page, each transcript...
     index = int(page)-1
     #extract page data from full_doc (may be better from a  separate page data request)
@@ -361,7 +361,7 @@ def transcript(request, collId, docId, page, transcriptId):
     #t_page returns an array of the transcripts for a page
     pagedata = t.page(request, collId, docId, page)
     if isinstance(pagedata,HttpResponse):
-        return pagedata
+        return apps.utils.views.error_view(request,pagedata)
 
     nav = navigation.up_next_prev(request,"transcript",transcriptId,pagedata,[collId,docId,page])
 
@@ -376,7 +376,7 @@ def transcript(request, collId, docId, page, transcriptId):
     if pageXML_url:
         transcript = t.transcript(request,transcriptId,pageXML_url)
         if isinstance(transcript,HttpResponse):
-            return transcript
+            return apps.utils.views.error_view(request,transcript)
 
 
     regions=transcript.get("PcGts").get("Page").get("TextRegion");
@@ -414,12 +414,12 @@ def region(request, collId, docId, page, transcriptId, regionId):
     # rather use transciptId to target a particular transcript
     transcripts = t.page(request,collId, docId, page)
     if isinstance(transcripts,HttpResponse):
-        return transcripts
+        return apps.utils.views.error_view(request,transcripts)
 
     #To get the page image url we need the full_doc (we hope it's been cached)
     full_doc = t.document(request, collId, docId, -1)
     if isinstance(full_doc,HttpResponse):
-        return full_doc
+        return apps.utils.views.error_view(request,full_doc)
 
     index = int(page)-1
     # and then extract the correct page from full_doc (may be better from a  separate page data request??)
@@ -441,7 +441,7 @@ def region(request, collId, docId, page, transcriptId, regionId):
     if pageXML_url:
         transcript = t.transcript(request,transcriptId,pageXML_url)
         if isinstance(transcript,HttpResponse):
-            return transcript
+            return apps.utils.views.error_view(request,transcript)
 
     regions=transcript.get("PcGts").get("Page").get("TextRegion");
     if isinstance(regions, dict):
@@ -493,7 +493,7 @@ def line(request, collId, docId, page, transcriptId, regionId, lineId):
     # rather use transciptId to target a particular transcript
     transcripts = t.page(request,collId, docId, page)
     if isinstance(transcripts,HttpResponse):
-        return transcripts
+        return apps.utils.views.error_view(request,transcripts)
     #we are only using the transcripts to get the pageXML for a particular
     pageXML_url = None;
     for x in transcripts:
@@ -504,12 +504,12 @@ def line(request, collId, docId, page, transcriptId, regionId, lineId):
     if pageXML_url:
         transcript = t.transcript(request,transcriptId,pageXML_url)
         if isinstance(transcript,HttpResponse):
-            return transcript
+            return apps.utils.views.error_view(request,transcript)
 
     #To get the page image url we need the full_doc (we hope it's been cached)
     full_doc = t.document(request, collId, docId, -1)
     if isinstance(full_doc,HttpResponse):
-        return full_doc
+        return apps.utils.views.error_view(request,full_doc)
 
     index = int(page)-1
     # and then extract the correct page from full_doc (may be better from a  separate page data request??)
@@ -575,7 +575,7 @@ def word(request, collId, docId, page, transcriptId, regionId, lineId, wordId):
     # booo hiss
     transcripts = t.page(request, collId, docId, page)
     if isinstance(transcripts,HttpResponse):
-        return transcripts
+        return apps.utils.views.error_view(request,transcripts)
     #we are only using the pagedata to get the pageXML for a particular
     pageXML_url = None;
     for x in transcripts:
@@ -586,12 +586,12 @@ def word(request, collId, docId, page, transcriptId, regionId, lineId, wordId):
     if pageXML_url:
         transcript = t.transcript(request,transcriptId,pageXML_url)
         if isinstance(transcript,HttpResponse):
-            return transcript
+            return apps.utils.views.error_view(request,transcript)
 
     #To get the page image url we need the full_doc (we hope it's been cached)
     full_doc = t.document(request, collId, docId, -1)
     if isinstance(full_doc,HttpResponse):
-        return full_doc
+        return apps.utils.views.error_view(request,full_doc)
 
     index = int(page)-1
     # and then extract the correct page from full_doc (may be better from a  separate page data request??)
@@ -656,7 +656,7 @@ def rand(request, collId, element):
     collection = t.collection(request, {'collId': collId})
 
     if isinstance(collection,HttpResponse):
-        return collection
+        return apps.utils.views.error_view(request,collection)
 
     doc = random.choice(collection)
 
@@ -667,7 +667,7 @@ def rand(request, collId, element):
 
     pages  = t.document(request, collId, doc.get("docId"), 0)
     if isinstance(pages,HttpResponse):
-        return pages
+        return apps.utils.views.error_view(request,pages)
     page = random.choice(pages.get("pageList").get("pages"))
 
     sys.stdout.write("RANDOM PAGE: %s\r\n" % (page.get("pageNr")) )
@@ -766,44 +766,5 @@ def display_random(request,level,data, collection, doc, page):
         } )
 
 @login_required
-def search(request):
-    return render(request, 'library/search.html')
-
-def about(request):
-    return render(request, 'library/about.html')
-
-def message_modal(request):
-    return render(request, 'library/message_modal.html')
-
-def user_guide(request):
-    return render(request, 'library/user_guide.html')
-
-@login_required
 def users(request, collId, userId):
     return render(request, 'library/users.html')
-
-@login_required
-def profile(request):
-    collections = t_collections(request)
-    return render(request, 'library/profile.html', {'collections': collections})
-
-#error pages (where not handled by modals
-def collection_noaccess(request, collId):
-    if(request.get_full_path() == request.META.get("HTTP_REFERER") or re.match(r'^.*login.*', request.META.get("HTTP_REFERER"))):
-        back = None
-    else:
-        back = request.META.get("HTTP_REFERER") #request.GET.get("back")
-
-    return render(request, 'library/error.html', {
-                'msg' : _("I'm afraid you are not allowed to access this collection"),
-                'back' : back,
-            })
-def error(request):
-    back = request.build_absolute_uri('/register')
-
-    return render(request, 'library/error.html', {
-                'msg' : messages,
-                'back' : back,
-            })
-
-
