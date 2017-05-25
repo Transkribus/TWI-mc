@@ -87,7 +87,7 @@ function init_datatable(table,url, columns){
 				if(colId) url = colId;
 				if(data.docId != undefined && data.docId !== "n/a"){
 					url += '/'+data.docId;
-					if (appbase.includes("library"))
+					if (appbase.match(/library/))
 						url += '/'+1+'#thumbs';
 				}
 				if(data.pageNr != undefined && data.pageNr !== "n/a"){ //NB will break until we use base url
@@ -261,11 +261,7 @@ function init_pages_thumbs(){
 
 }
 function get_thumbs(start,length){
-//	var url = "/dashboard/thumbnails_ajax/"+window.location.pathname.replace(/^.*\/(\d+\/\d+)$/, '$1');
 	var ids = parse_path();	
-//	var url = static_url+"/dashboard/table_ajax/pages/"+ids['collId']+'/'+ids['docId'];
-//	var url = make_url("/table_ajax/pages/"+ids['collId']+'/'+ids['docId']);
-//	var url = serverbase+"/utils/table_ajax/pages/"+ids['collId']+'/'+ids['docId'];
 	var url = make_url("/utils/table_ajax/pages/"+ids['collId']+'/'+ids['docId']);
 
 	console.log("get_thumbs, URL: ",url);
