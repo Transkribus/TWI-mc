@@ -177,13 +177,14 @@ def d_user(request,collId,username):
     t = request.user.tsdata.t
     # If the logged in user is owner of collection collId then (and username is a member)
     # Then we get relevant data about that user+collection and make dashboard view
-    t_log("##################### USERNAME: %s " % username)
+    t_log("##################### USERNAME: %s " % username, logging.WARN)
     
     user = t.user(request,{'user' : username})
     if isinstance(user,HttpResponse):
         return apps.utils.views.error_view(request,user)
 
-    t_log("##################### USER: %s " % user)
+    t_log("##################### USER: %s " % user, logging.WARN)
+    #TODO send userid param  with this request
     action_types = t.actions_info(request)
     if isinstance(action_types,HttpResponse):
         return apps.utils.views.error_view(request,action_types)

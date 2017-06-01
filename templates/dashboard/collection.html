@@ -47,8 +47,9 @@
 		    <li role="presentation"><a href="#a_chart_me" aria-controls="profile" role="tab" data-toggle="tab">{% trans 'My activities' %}</a></li>
 		    <li class="dropdown">
 			<a href="#" data-toggle="dropdown">{% trans 'Activities for... ' %}<span class="caret"></span></a>
+			<!--  list loaded by apps/utils/read.js#init_list -->
 			<ul class="dropdown-menu" role="menu" id="user_list">
-			    <li><a href="#user_list_panel" data-toggle="tab">{% trans 'Default 4' %}</a></li>
+			    <li><a href="#user_list_panel" data-toggle="tab">{% trans 'User list loading...' %}<span class="glyphicon glyphicon-refresh glyphicon-spin"></span></a></li>
 			</ul>
 		    </li>
 		    <li role="presentation"><a href="#a_top_users" aria-controls="profile" role="tab" data-toggle="tab">{% trans 'Most Active Users' %}</a></li>
