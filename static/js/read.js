@@ -147,6 +147,10 @@ function init_list(list_id,url){
 function make_list(list_id,data){
 
 	$("#"+list_id).html(""); //clearout
+	
+	if(data.data!==undefined && data.data.length == 0){
+		$("#"+list_id).append('<li><a href="#" onclick="return false;">User data unavailable</a></li>');
+	}
 
 	for(i in data.data){
 		$("#"+list_id).append('<li data-userid="'+data.data[i].userId+'"><a href="#'+list_id+'_panel" data-toggle="tab">'+data.data[i].userName+'</a></li>');
