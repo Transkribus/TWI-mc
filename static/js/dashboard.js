@@ -27,7 +27,7 @@ $(document).ready(function(){
 });
 function init_date_inputs(actions_table){
 
-    var min = new Date('2016.01.01').getTime() / 1000;
+    var min = new Date(2016, 0, 1).getTime() / 1000;
     var max = new Date().getTime() / 1000;
 
     var slider = $( "#slider-range" ).slider({
