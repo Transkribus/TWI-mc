@@ -381,6 +381,7 @@ def error_switch(request,x):
         403: _('You are forbidden to request this data from Transkribus.'),
         404: _('The requested Transkribus resource does not exist.'),
         500: _('A Server error was reported by Transkribus.'),
+        503: _('Could not contact the Transkribus service, please try again later.'),
     }.get(x,_('An unknown error was returned by Transkribus: ')+str(x))
 
 
