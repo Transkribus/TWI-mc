@@ -1,7 +1,8 @@
 {% load i18n %}
 
-<p style="font-size:14pt; margin-top:20px; margin-bottom:20px; color: black;">Collection {{collection.colName}} with ID {{collection.colId}} contains the following <span id="documents_table_count"></span> documents</p>
-
+<p style="font-size:14pt; margin-top:20px; margin-bottom:20px; color: black;">Collection {{collection.colName}} with ID {{collection.colId}} contains:</p>
+<p style="font-size:12pt; color: black;">Documents: <span id="documents_table_count"></span>, {{collection.collStat}}</p>
+<p style="font-size:12pt; color: black;">{{collection.tagsString}}</p>
 <table class="table table-striped display" id="documents_table">
    <thead>
 	<tr>
@@ -22,5 +23,4 @@
 		<td></td>
    </tbody>
 </table>
-<!-- RM: que? -->
-<!--<button id="change">Click</button>-->
+<button id="change">Click</button>
