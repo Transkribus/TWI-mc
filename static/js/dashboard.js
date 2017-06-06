@@ -43,15 +43,21 @@ function init_date_inputs(actions_table){
       change: function(event, ui){
 	//if the slider values change we reload the data table...
 	actions_table.ajax.reload();
+	// and the charts....
+        init_actions_chart();
+	init_user_actions_chart();
+	init_top_users_chart();
+	init_top_collections_chart()
+
       }
     });
     $( "#start_date" ).datepicker({"dateFormat":"D M dd yy", "onSelect": function(date){
-		console.log("start date picker onSelect");
+//		console.log("start date picker onSelect");
 		slide_end = slider.slider("option", "values")[1];
 		slider.slider( "option", "values", [($(this).datepicker("getDate")/1000),slide_end] );
 	}}).val(new Date(min*1000).toDateString());
     $( "#end_date" ).datepicker({"dateFormat":"D M dd yy","onSelect": function(date){
-		console.log("end date picker onSelect");
+//		console.log("end date picker onSelect");
 		slide_start = slider.slider("option", "values")[0];
 		slider.slider( "option", "values", [slide_start,($(this).datepicker("getDate")/1000)] );
 	}}).val(new Date(max*1000).toDateString());
@@ -69,20 +75,20 @@ function init_actions_table(){
 	if(!$("#actions_table").length) return;
 
 	var ids = parse_path();
-	console.log("IDS: ",ids);
+//	console.log("IDS: ",ids);
 	var url = make_url("/utils/table_ajax/actions");
-	console.log("Using appbase: ",url);
+//	console.log("Using appbase: ",url);
 
 	var context = '';
 	for(x in ids){
-		console.log(x," => ",ids[x])
+//		console.log(x," => ",ids[x])
 		context += '/'+ids[x];
 	};
 	url += context;
         if($("#userid").data("userid")){
 		url += '/'+$("#userid").data("userid");
 	}
-	console.log("ACTIONS URL: ",url);
+//	console.log("ACTIONS URL: ",url);
 	var columns =  [
 		    { "data": "time",
 		      "render" : function(data, type, row){
@@ -209,6 +215,7 @@ function init_actions_chart(){
 	for(id in ids){
 		url += '/'+ids[id];
 	}
+	console.log("DRAWING actions_line");
 	init_chart("actions_line",url,"line");
 
 }
@@ -228,6 +235,7 @@ function init_user_actions_chart(userid,canvas_id){
 	for(id in ids){
 		url += '/'+ids[id];
 	}
+	console.log("DRAWING ",canvas_id);
 	init_chart(canvas_id,url,"line");
 }
 
@@ -241,6 +249,7 @@ function init_top_users_chart(){
 	for(id in ids){
 		url += '/'+ids[id];
 	}
+	console.log("DRAWING top_users");
 	init_chart("top_users",url,"bar");
 }
 
@@ -251,6 +260,7 @@ function init_top_collections_chart(){
 //	var url = static_url+"/dashboard/chart_ajax/actions/top_bar/colId/colName";
 	var url = make_url("/dashboard/chart_ajax/actions/top_bar/colId/colName");
 
+	console.log("DRAWING top_collections");
 	init_chart("top_collections",url,"bar");
 }
 
@@ -264,6 +274,8 @@ function init_doughnut(){
 	for(id in ids){
 		url += '/'+ids[id];
 	}
+
+	console.log("DRAWING top_users (doughnut)");
 	init_chart("top_users",url,"doughnut");
 }
 
