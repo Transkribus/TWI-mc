@@ -12,14 +12,12 @@
 	 <table class="table table-striped display" id="last_access_table">
 	   <thead>
 		<tr>
-			<th>{% trans "Page number" %}</th>
 			<th>{% trans "Access time" %}</th>
 		</tr>
 	   </thead>
 	   <tbody>
 		{% for last_action in last_actions %}
 		<tr class="clickable" data-colid="{{last_action.colId}}" data-docid="{{last_action.docId}}">
-			<td>{%if last_action.pageNr%}{{last_action.pageNr}}{%else%}{%trans 'n/a'%}{%endif%}</td>
 			<td>{{last_action.time}}</td>
 		</tr>
 		{%endfor%}

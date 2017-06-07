@@ -13,7 +13,7 @@
 	   <thead>
 		<tr>
 			<th>{% trans "Document" %}</th>
-			<th>{% trans "Page number" %}</th>
+			{%comment%}<th>{% trans "Page number" %}</th>{%endcomment%}
 			<th>{% trans "Access time" %}</th>
 		</tr>
 	   </thead>
@@ -21,7 +21,7 @@
 		{% for last_action in last_actions %}
 		<tr class="clickable" data-colid="{{last_action.colId}}" data-docid="{{last_action.docId}}">
 			<td>{{last_action.docName}}</td>
-			<td>{%if last_action.pageNr%}{{last_action.pageNr}}{%else%}{%trans 'n/a'%}{%endif%}</td>
+			{%comment%}<td>{%if last_action.pageNr%}{{last_action.pageNr}}{%else%}{%trans 'n/a'%}{%endif%}</td>{%endcomment%}
 			<td>{{last_action.time}}</td>
 		</tr>
 		{%endfor%}
