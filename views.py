@@ -8,26 +8,20 @@ from django.template.defaultfilters import linebreaksbr
 
 #Imports of django modules
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.utils.translation import ugettext_lazy as _
 
 from django.shortcuts import render
-#from django.utils import translation
-#from django.contrib.auth.models import User
-#from django.contrib.auth.decorators import login_required
-#from django.contrib import messages
-#from django.utils.translation import ugettext_lazy as _
-#from django.template.loader import render_to_string
+from django.shortcuts import resolve_url
 
-#from django.contrib.auth.decorators import login_required #for ajax reponses
-from apps.utils.decorators import t_login_required, t_login_required_ajax
+#from django.contrib.auth import authenticate, login
+from apps.utils.decorators import t_login_required_ajax
 from apps.utils.services import *
 from apps.utils.utils import t_log
+import logging
 
 from apps.querystring_parser.querystring_parser import parser
 
 from .forms import RegisterForm
-
-#from profiler import profile #profile is a decorator, but things get circular if I include it in decorators.py so...
-
 
 def register(request):
 #TODO this is generic guff need to extend form for extra fields, send reg data to transkribus and authticate (which will handle the user creation)
@@ -37,25 +31,23 @@ def register(request):
         return HttpResponseRedirect(request.build_absolute_uri(request.resolver_match.app_name))
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        sys.stdout.write("### IN t_register \r\n" )
         # create a form instance and populate it with data from the request:
         form = RegisterForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            sys.stdout.write("### IN form is valid \r\n" )
 
             # user = User.objects.create_user(form.cleaned_data['username'],password=form.cleaned_data['password'],email=form.cleaned_data['email'],first_name=form.cleaned_data['given_name'],last_name=form.cleaned_data['family_name'])
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
             try:
-                t_register(request)
+                t = request.user.tsdata.t
+                t.register(request)
                 return HttpResponseRedirect(request.build_absolute_uri(request.resolver_match.app_name))
                 #tried out modal here and it is nice (but not really for registration)
 #               messages.info(request, _('Registration requested please check your email.'))
 #                return HttpResponse(json.dumps({'RESET': 'true', 'MESSAGE': render_to_string('library/message_modal.html', request=request)}), content_type='text/plain')
             except ValueError as err:
-                sys.stdout.write("### t_register response ERROR RAISED: %s  \r\n" % (err) )
 #               return render(request, 'registration/register.html', {'register_form': form} )
                 #Why the f**k won't this redirect?!? TODO fix or try another method
                 return HttpResponseRedirect(request.build_absolute_uri('/library/error'))
@@ -78,12 +70,13 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
         t_list_name = "fulldoc"
         params['nrOfTranscripts']=1 #only get current transcript
     #########################
-    t_log("TABLE_AJAX for %s" % list_name, logging.WARN)
 
     (data,count) = paged_data(request,t_list_name,params)
-    
-    if list_name == 'actions' :
-        t_log("ACTION DATA: %s" % data, logging.WARN)
+    if isinstance(data,HttpResponse):
+        return data
+
+
+    t = request.user.tsdata.t
 
     #we want to add statistical data to the title column like nr_of_transcribed_lines, nr_of_transkribed_words, tags....
 #===============================================================================
@@ -97,11 +90,23 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
 #             dateParam = {'collId': collId, 'docId': docId, 'tagName': 'date'}
 #             abbrevParam = {'collId': collId, 'docId': docId, 'tagName': 'abbrev'}
 #             otherParam = {'collId': collId, 'docId': docId, 'tagName': 'other'}
-#             personCount = eval("t_countDocTags(request,personParam)")
-#             placeCount = eval("t_countDocTags(request,placeParam)")
-#             dateCount = eval("t_countDocTags(request,dateParam)")
-#             abbrevCount = eval("t_countDocTags(request,abbrevParam)")
-#             otherCount = eval("t_countDocTags(request,otherParam)")
+#             #RM These need to check what is returned. If the transkribus call fails for some reason then they will get a HttpRedirect object (specifically a redirect to logout)
+#             personCount = eval("t.countDocTags(request,personParam)")
+#             if isinstance(personCount,HttpResponse):
+#                 return personCount
+#             placeCount = eval("t.countDocTags(request,placeParam)")
+#             if isinstance(placeCount,HttpResponse):
+#                 return placeCount
+#             dateCount = eval("t.countDocTags(request,dateParam)")
+#             if isinstance(dateCount,HttpResponse):
+#                 return dateCount
+#             abbrevCount = eval("t.countDocTags(request,abbrevParam)")
+#             if isinstance(abbrevCount,HttpResponse):
+#                 return abbrevCount
+#             otherCount = eval("t.countDocTags(request,otherParam)")
+#             if isinstance(otherCount,HttpResponse):
+#                 return otherCount
+# 
 # #             print('nr of person tags: ' + str(personCount))
 # #             print('place tags' + str(placeCount))
 # #             print('date tags' + str(dateCount))
@@ -110,7 +115,10 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
 #             
 #             tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
 #             
-#             docStat = eval("t_docStat(request, params2)")
+#             docStat = eval("t.docStat(request, params2)")
+#             if isinstance(docStat,HttpResponse):
+#                 return docStat
+# 
 #             #print(docStat)
 #             #TODO call rest service to get the stats
 #             if 'nr_lines_transcribed' not in str(element.get('title')):
@@ -118,45 +126,54 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
 #                 
 #             if tagsString and 'Tags' not in str(element.get('title')):
 #                 element.update({'title': str(element.get('title'))+tagsString}) 
+#     
+#     #print(data)
+#     
+#     if list_name == 'collections':
+#         for element in data:
+#             collId = element.get('colId') 
+#             params3 = {'collId': collId}
+#             
+#             personParam = {'collId': collId, 'tagName': 'person'}
+#             placeParam = {'collId': collId, 'tagName': 'place'}
+#             dateParam = {'collId': collId, 'tagName': 'date'}
+#             abbrevParam = {'collId': collId, 'tagName': 'abbrev'}
+#             otherParam = {'collId': collId, 'tagName': 'other'}
+#             #RM These need to check what is returned. If the transkribus call fails for some reason then they will get a HttpRedirect object (specifically a redirect to logout)
+#             personCount = eval("t.countCollTags(request,personParam)")
+#             if isinstance(personCount,HttpResponse):
+#                 return personCount
+#             placeCount = eval("t.countCollTags(request,placeParam)")
+#             if isinstance(placeCount,HttpResponse):
+#                 return placeCount
+#             dateCount = eval("t.countCollTags(request,dateParam)")
+#             if isinstance(dateCount,HttpResponse):
+#                 return dateCount
+#             abbrevCount = eval("t.countCollTags(request,abbrevParam)")
+#             if isinstance(abbrevCount,HttpResponse):
+#                 return abbrevCount
+#             otherCount = eval("t.countCollTags(request,otherParam)")
+#             if isinstance(otherCount,HttpResponse):
+#                 return otherCount
+#             
+#             tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
+#                 
+#             print(tagsString)
+#         
+#             collStat = eval("t.collStat(request, params3)")
+#             
+#             if 'nr_lines_transcribed' not in str(element.get('colName')):
+#                 element.update({'colName': str(element.get('colName'))+'<br/>nr_lines_transcribed: '+ str(collStat.get('nrOfTranscribedLines')) + '<br/>nr_words_transcribed: ' + str(collStat.get('nrOfWords'))}) 
+#                 
+#             if tagsString and 'Tags' not in str(element.get('colName')):
+#                 element.update({'colName': str(element.get('colName'))+tagsString}) 
 #===============================================================================
-    
-    #print(data)
-    
-    #===========================================================================
-    # if list_name == 'collections':
-    #     for element in data:
-    #         collId = element.get('colId') 
-    #         params3 = {'collId': collId}
-    #           
-    #         personParam = {'collId': collId, 'tagName': 'person'}
-    #         placeParam = {'collId': collId, 'tagName': 'place'}
-    #         dateParam = {'collId': collId, 'tagName': 'date'}
-    #         abbrevParam = {'collId': collId, 'tagName': 'abbrev'}
-    #         otherParam = {'collId': collId, 'tagName': 'other'}
-    #         personCount = eval("t_countCollTags(request,personParam)")
-    #         placeCount = eval("t_countCollTags(request,placeParam)")
-    #         dateCount = eval("t_countCollTags(request,dateParam)")
-    #         abbrevCount = eval("t_countCollTags(request,abbrevParam)")
-    #         otherCount = eval("t_countCollTags(request,otherParam)")
-    #           
-    #         tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
-    #               
-    #         print(tagsString)
-    #       
-    #         collStat = eval("t_collStat(request, params3)")
-    #           
-    #         if 'nr_lines_transcribed' not in str(element.get('colName')):
-    #             element.update({'colName': str(element.get('colName'))+'<br/>nr_lines_transcribed: '+ str(collStat.get('nrOfTranscribedLines')) + '<br/>nr_words_transcribed: ' + str(collStat.get('nrOfWords'))}) 
-    #               
-    #         if tagsString and 'Tags' not in str(element.get('colName')):
-    #             element.update({'colName': str(element.get('colName'))+tagsString}) 
-    #===========================================================================
 
    #TODO pass back the error not the redirect and then process the error according to whether we have been called via ajax or not....
     if isinstance(data,HttpResponse):
         t_log("data request has failed... %s" % data)
         #For now this will do but there may be other reasons the transckribus request fails... (see comment above)
-        return HttpResponse('Unauthorized', status=401)
+        return data
 
     filters = {
                 'actions' : ['time', 'colId', 'colName', 'docId', 'docName', 'pageId', 'pageNr', 'userName', 'type'],
@@ -213,13 +230,14 @@ def getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount):
 #Fetch a single thumb url from the collection referenced
 def collection_thumb(request, collId):
 
-    documents = t_documents(request,{'collId': collId})
+    t = request.user.tsdata.t
+    documents = t.documents(request,{'collId': collId})
     if isinstance(documents,HttpResponse):
         return documents
     #grab first doc
     docId = next(iter(documents or []), None).get("docId")
 
-    fulldoc = t_fulldoc(request,{'collId': collId, 'docId': docId})
+    fulldoc = t.fulldoc(request,{'collId': collId, 'docId': docId})
     if isinstance(fulldoc,HttpResponse):
         return fulldoc
 
@@ -237,7 +255,9 @@ def collection_thumb(request, collId):
 def document_thumb(request, collId, docId):
     import timeit
     
-    fulldoc = t_document(request, collId, docId,-1)
+    t = request.user.tsdata.t
+
+    fulldoc = t.document(request, collId, docId,-1)
     if isinstance(fulldoc,HttpResponse):
         return fulldoc
     
@@ -250,11 +270,13 @@ def document_thumb(request, collId, docId):
             'url': thumb_url
         },safe=False)
 
+## not used
 #Fetch a single thumb url from the document referenced
 def page_img(request, collId, docId, page):
     import timeit
-    
-    fulldoc = t_document(request, collId, docId, page)
+    t = request.user.tsdata.t
+   
+    fulldoc = t.document(request, collId, docId, page)
     if isinstance(fulldoc,HttpResponse):
         return fulldoc
     
@@ -282,8 +304,6 @@ def paged_data(request,list_name,params=None):#collId=None,docId=None):
 
     #collect params from request into dict
     dt_params = parser.parse(request.GET.urlencode())
-
-    print('the xx request ' + str(request))
 #    t_log("DT PARAMS: %s" % dt_params)
     if params is None: params = {}
     params['start'] = str(dt_params.get('start_date')) if dt_params.get('start_date') else None
@@ -301,9 +321,8 @@ def paged_data(request,list_name,params=None):#collId=None,docId=None):
 
     #NB dataTables uses length, transkribus nValues
     if 'nValues' not in params :
-        #params['nValues'] = int(dt_params.get('length')) if dt_params.get('length') else settings.PAGE_SIZE_DEFAULT
-        #this means we fetch all data from rest service and show in  a paged datatable - length is shown after data has loaded
         params['nValues'] = int(dt_params.get('length')) if dt_params.get('length') else 0
+        #params['nValues'] = int(dt_params.get('length')) if dt_params.get('length') else settings.PAGE_SIZE_DEFAULT
 
 #    params['sortColumn'] = int(dt_params.get('length')) if dt_params.get('length') else None
 #    params['sortDirection'] = int(dt_params.get('start')) if dt_params.get('start') else None
@@ -318,18 +337,19 @@ def paged_data(request,list_name,params=None):#collId=None,docId=None):
     ##################################
 
     #Get data
-    t_log("SENT PARAMS: %s" % params)
-    data = eval("t_"+list_name+"(request,params)")
+    t_log("SENT PARAMS: %s" % params) 
+    t = request.user.tsdata.t
+    data = eval("t."+list_name+"(request,params)")
 
     #Get count
     count=None
     #When we call a full doc we *probably* want to count the pages (we can't fo that with a /count call)
     if list_name not in ["fulldoc"]:
-        count = eval("t_"+list_name+"_count(request,params)")
+        count = eval("t."+list_name+"_count(request,params)")
     #In some cases we can derive count from data (eg pages from fulldoc)
     if list_name == "fulldoc" : #as we have the full page list in full doc for now we can use it for a recordsTotal
         count = data.get('md').get('nrOfPages')
-
+    
     return (data,count)
 
 
@@ -349,3 +369,21 @@ def filter_data(fields, data) :
         filtered.append(filtered_datum)
 
     return filtered
+#error pages (where not handled by modals)
+def error_view(request, response) : 
+    t_log("Request %s, Response %s" % (request,response), logging.WARN)
+    message = error_switch(request,response.status_code)    
+    return render(request, 'error.html', {
+                'msg' : message,
+#                'back' : back,
+            })
+
+def error_switch(request,x):
+    return {
+        401: _('Transkribus session is unauthorised, you must <a href="'+request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path()))+'" class="alert-link">(re)log on to Transkribus-web</a>.'),
+        403: _('You are forbidden to request this data from Transkribus.'),
+        404: _('The requested Transkribus resource does not exist.'),
+        500: _('A Server error was reported by Transkribus.'),
+    }.get(x,_('An unknown error was returned by Transkribus: ')+str(x))
+
+
