@@ -9,3 +9,6 @@ def about(request):
 
 def user_guide(request):
     return render(request, 'pages/user_guide.html')
+
+def crowd_howto(request):
+    return render(request, 'pages/crowd_howto.html')
