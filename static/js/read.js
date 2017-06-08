@@ -14,6 +14,10 @@ var serverbase = window.location.pathname.replace(/\/\w+(|\/|\/\d.*)$/g, "");
 console.log("APPBASE: ",appbase);
 console.log("SERVERBASE: ",serverbase);
 
+$(document).ready(function(){
+	$('#errorModal').modal({ show: false})
+
+});
 function make_url(url){
 //	appbase = appbase.replace(/\/$/,""); //remove trailing slash from appbase
 //	return appbase+url;
@@ -43,20 +47,31 @@ function init_datatable(table,url, columns){
 				}
 			},
 			"error": function (xhr, error, thrown) {
-				//for now we assume that a problem with the ajax request means 
-				//that TS REST session is expired and you need logged out... 
-				//this could be annoying if not the case though!
-				//TODO needs query string too...?
-				alert("There was an issue communicating with the transkribus service Please try again, if the problem persists send the error below to....\n ",error, thrown);
-//				window.location.replace("/login/?next="+window.location.pathname)
+				$(table.selector+'_processing').hide();
+				if(xhr.status == 401){ //unauthorised response from transkribus... we should forward to logout
+					//but with a message on the login page... somehow
+					window.location.href = make_url("/logout/?next="+window.location.pathname)
+				}else{
+					//otherwise motify user of the error 
+					$.notify({
+						// options
+						message: "There was a problem communicating with Transkribus.<br/>Error code: "+xhr.status+ " : "+thrown,
+						},{
+						// settings
+						type: 'danger'
+		 			});
+				}
 			},
-		},	
+		},		
 //		"sDom": "rltip",
+		"oLanguage": {
+			"sProcessing": 'Retrieving data from transkribus <span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
+		},
 		"dom": '<"top"f>rt<"bottom"lip><"clear">',
-		"pageLength" : 5,
+		"length" : 5,
 		"lengthMenu": [ 5, 10, 20, 50, 100 ],
 		//ordering should be handled server side
-		//"ordering": true,  //still not sure about this
+		//"ordering": false,  //still not sure about this
 		"columns": columns,
 		"createdRow": function ( row, data, index ) {
                 	$(row).addClass("clickable");
@@ -75,11 +90,10 @@ function init_datatable(table,url, columns){
 				if(colId) url = colId;
 				if(data.docId != undefined && data.docId !== "n/a"){
 					url += '/'+data.docId;
-					if (appbase.includes("library"))
+					if (appbase.includes("library")){
 						appbase = appbase.replace("library", "edit/correct")
-						//window.alert(appbase);
 						url += '/'+1;
-						//url += '/'+1+'#thumbs';//was needed for document_page view
+					}
 				}
 				if(data.pageNr != undefined && data.pageNr !== "n/a"){ //NB will break until we use base url
 					url = serverbase+'/edit/correct/'+data.colId+'/'+data.docId+'/'+data.pageNr;	
@@ -89,6 +103,10 @@ function init_datatable(table,url, columns){
 					
 				}
 				//TODO add case for userlist links 
+				if(table.selector.match(/users/)){
+					url += '/u/'+data.userName;
+				}
+
 				if(url){
 					if(appbase.match(/\/$/)) loc = appbase+url; else loc = appbase+'/'+url;
 					window.location.href=loc;
@@ -103,9 +121,6 @@ function init_datatable(table,url, columns){
         	.draw();
 		return false;
 	});
-	$('#myInput').on( 'keyup', function () {
-		datatable.search( this.value ).draw();
-	} );
 	$(table).on( 'draw.dt', function () {
 		$("#"+$(table).attr("id")+"_count").html(datatable.page.info().recordsTotal);
 	} );
@@ -126,11 +141,21 @@ function init_list(list_id,url){
 		data_cache[url] = data; //cache the cahrt data as it is generally much bigger
 		make_list(list_id,data);
  	     },
+	     "error": function (xhr, error, thrown) {
+			$('#errorModal').modal('show').on('shown.bs.modal', function () {
+				$('.modal-body', this).html("Sorry, it looks like there was a problem communicating with Transkribus.<br/>Error code: "+xhr.status+ " : "+thrown);
+			});
+		},
+
 	});
 }	
 function make_list(list_id,data){
 
 	$("#"+list_id).html(""); //clearout
+	
+	if(data.data!==undefined && data.data.length == 0){
+		$("#"+list_id).append('<li><a href="#" onclick="return false;">User data unavailable</a></li>');
+	}
 
 	for(i in data.data){
 		$("#"+list_id).append('<li data-userid="'+data.data[i].userId+'"><a href="#'+list_id+'_panel" data-toggle="tab">'+data.data[i].userName+'</a></li>');
@@ -190,16 +215,20 @@ function init_chart(canvas_id,url,chart_type){
 			var clicked_id = data.label_ids[activeElement[0]._index];
 
 			var ids = parse_path();
-			var url = static_url+"/dashboard";
+			var url = "/dashboard";
 			var context = '';
 			for(x in ids){
 				context += '/'+ids[x];
 			};
-			url += context+'/'+clicked_id;
+			if(canvas_id == 'top_users'){	
+				url += context+'/u/'+clicked_label;
+			}else{
+				url += context+'/'+clicked_id;
+			}
 
-			console.log("CLICK: ",clicked_id);
-			console.log("URL: ",url);
-		 	window.location.href=static_url+url;
+//			console.log("CLICK: ",clicked_id);
+//			console.log("URL: ",url);
+		 	window.location.href=make_url(url);
 		    }
 		);  
 
@@ -241,11 +270,7 @@ function init_pages_thumbs(){
 
 }
 function get_thumbs(start,length){
-//	var url = "/dashboard/thumbnails_ajax/"+window.location.pathname.replace(/^.*\/(\d+\/\d+)$/, '$1');
 	var ids = parse_path();	
-//	var url = static_url+"/dashboard/table_ajax/pages/"+ids['collId']+'/'+ids['docId'];
-//	var url = make_url("/table_ajax/pages/"+ids['collId']+'/'+ids['docId']);
-//	var url = serverbase+"/utils/table_ajax/pages/"+ids['collId']+'/'+ids['docId'];
 	var url = make_url("/utils/table_ajax/pages/"+ids['collId']+'/'+ids['docId']);
 
 	console.log("get_thumbs, URL: ",url);
@@ -336,7 +361,7 @@ String.prototype.ucfirst = function() {
 
 function parse_path(){
 	
-	var pattern = /\/\w+(|\/(\d+)(|\/(\d+)(|\/(\d+))))$/;
+	var pattern = /\/\w+(|\/(\d+)(|\/(\d+)(|\/(\d+))))(|\/u\/.+)$/;
 	var result = pattern.exec(window.location.pathname);
 	console.log("pattern result " + result)
 	ids = {};
