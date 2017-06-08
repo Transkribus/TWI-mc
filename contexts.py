@@ -2,6 +2,7 @@ from django import template
 import re
 from .utils import t_log
 import logging
+import settings
 
 def appname(request):
     t_log("APPNAME: %s " % (request.resolver_match.app_name))
@@ -33,5 +34,7 @@ def nav_up(request):
 
     return {'nav_up': re.sub(r'\/[^\/]+$',"",request.path)}
 
+def version(request):
+    return {'version': settings.VERSION, 'milestone': settings.MILESTONE }
 
 

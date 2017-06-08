@@ -89,8 +89,10 @@ class TranskribusSession(object):
                 r = self.s.post(url, params=params, verify=False, headers=headers)
             else:
                 r = self.s.get(url, params=params, verify=False, headers=headers)
-        except ConnectionError as e:
-            t_log("TRANSKRIBUS SAYS NO: %s (%s)" % (e), logging.WARN)
+        except requests.exceptions.ConnectionError as e:
+            t_log("COULD NOT CONNECT TO TRANSKRIBUS: %s" % (e), logging.WARN)
+            return HttpResponse("Service Unavailable", status=503)
+
 
         #Check responses, 
         #	401: unauth
