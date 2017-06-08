@@ -4,6 +4,7 @@ import json
 import re
 import random
 #import os
+import sys
 
 #Imports of django modules
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -17,7 +18,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.loader import render_to_string
 
 from apps.utils.utils import crop, t_metadata, t_log
-from apps.utils.decorators import t_login_required
 from apps.utils.services import *
 
 #Imports from app (library)
@@ -26,85 +26,38 @@ from apps.navigation import navigation
 
 #from .forms import RegisterForm, IngestMetsUrlForm, MetsFileForm, QuickIngestMetsUrlForm
 
-
-
-#from profiler import profile #profile is a decorator, but things get circular if I include it in decorators.py so...
-
 def index(request):
     return render(request, 'library/homepage.html' )
 
 
-#/library/collections
+#/library
 #view that lists available collections for a user
-#@profile("collections.prof")
-@t_login_required
+@login_required
 def collections(request):
-    if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
+    t = request.user.tsdata.t
 
-
-    collections = t_collections(request)
+    collections = t.collections(request)
     if isinstance(collections,HttpResponse):
-        return collections
+        return apps.utils.views.error_view(request,collections)
     return render(request, 'library/collections.html', {'collections': collections} )
 
-#/library/collections
-#view that lists available collections for a user
-#@profile("collections.prof")
-@t_login_required
-def collectionsTest(request):
-    collections = t_collections(request)
-
-    t_log("in server test", logging.WARN)
-    if isinstance(collections,HttpResponse):
-        return collections
-
-    pagedatas = []
-
-    # take the first document of a collection
-    for coll in collections:
-        sys.stdout.write("colId : %s \r\n" % (coll['colId']) )
-        sys.stdout.flush()
-        docs = t_collection(request, {'collId':coll['colId']})
-        if not isinstance(docs, HttpResponseRedirect) and len(docs) > 0:
-            doc = docs[0]
-        else:
-            break
-        full_doc = t_document(request, str(coll['colId']), doc['docId'], -1)
-        pages= full_doc.get('pageList').get('pages')
-        #// means that it is an integer division - not float (float is / )
-        a = len(pages)//2
-        pagedata = full_doc.get('pageList').get('pages')[a]
-        pagedatas.append(str(pagedata['thumbUrl']))
-        sys.stdout.write("page url : %s \r\n" % str(pagedata['thumbUrl']))
-        sys.stdout.flush()
-
-        if isinstance(doc,HttpResponse):
-            return doc
-
-    return render(request, 'library/collections.html', {'collections': collections, 'pagedatas': pagedatas} )
-
-#/library/collection/{colId}
+#/library/{colId}
 #view that
 # - lists documents
 # - also lists pages for documents
-#@profile("collection.prof")
-@t_login_required
+@login_required
 def collection(request, collId):
-
-    if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
-
+    t = request.user.tsdata.t
 
     #Avoid this sort of nonsense if possible
-    collections = t_collections(request,{'end':None,'start':None})
+    collections = t.collections(request,{'end':None,'start':None})
     if isinstance(collections,HttpResponse):
-        return collections
+        return apps.utils.views.error_view(request,collections)
 
     navdata = navigation.get_nav(collections,collId,'colId','colName')
     #if we didn't have a focus before navigation call, we'll have one after
     collection = navdata.get("focus")
-    
+        
     collIdParam = {'collId': collId}
                
     personParam = {'collId': collId, 'tagName': 'person'}
@@ -112,21 +65,20 @@ def collection(request, collId):
     dateParam = {'collId': collId, 'tagName': 'date'}
     abbrevParam = {'collId': collId, 'tagName': 'abbrev'}
     otherParam = {'collId': collId, 'tagName': 'other'}
-    personCount = eval("t_countCollTags(request,personParam)")
-    placeCount = eval("t_countCollTags(request,placeParam)")
-    dateCount = eval("t_countCollTags(request,dateParam)")
-    abbrevCount = eval("t_countCollTags(request,abbrevParam)")
-    otherCount = eval("t_countCollTags(request,otherParam)")
+    personCount = eval("t.countCollTags(request,personParam)")
+    placeCount = eval("t.countCollTags(request,placeParam)")
+    dateCount = eval("t.countCollTags(request,dateParam)")
+    abbrevCount = eval("t.countCollTags(request,abbrevParam)")
+    otherCount = eval("t.countCollTags(request,otherParam)")
        
     tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
            
     print(tagsString)
    
-    collStat = eval("t_collStat(request, collIdParam)")
+    collStat = eval("t.collStat(request, collIdParam)")
     
     collection['collStat'] = ('Lines transcribed: '+ str(collStat.get('nrOfTranscribedLines')) + ', Words transcribed: ' + str(collStat.get('nrOfWords')))
-    collection['tagsString'] = tagsString
-    
+    collection['tagsString'] = tagsString    
     
     pagedata = {'collection': collection}
     #merge the dictionaries
@@ -195,24 +147,18 @@ def collection(request, collId):
     '''
 
 
-
-#/library/document/{colId}/{docId}
+#/library/{colId}/{docId}
 # view that lists pages in doc and some doc level metadata
-#@profile("document.prof")
-@t_login_required
+@login_required
 def document(request, collId, docId, page=None):
+    t = request.user.tsdata.t
 
-    if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
-
-
-    collection = t_collection(request, {'collId': collId})
+    collection = t.collection(request, {'collId': collId})
     if isinstance(collection,HttpResponse):
-        return collection
-    fulldoc = t_document(request, collId, docId,-1)
+        return apps.utils.views.error_view(request,collection)
+    fulldoc = t.document(request, collId, docId,-1)
     if isinstance(fulldoc,HttpResponse):
-        return fulldoc
-
+        return apps.utils.views.error_view(request,fulldoc)
     
     nav = navigation.up_next_prev(request,"document",docId,collection,[collId])
     
@@ -296,18 +242,16 @@ def document(request, collId, docId, page=None):
         })
     '''
 
-@t_login_required
+@login_required
 def document_page(request, collId, docId, page=None):
-    
-    if not t_refresh() : 
-        return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
-    
-    collection = t_collection(request, {'collId': collId})
+    t = request.user.tsdata.t
+
+    collection = t.collection(request, {'collId': collId})
     if isinstance(collection,HttpResponse):
-        return collection
-    full_doc = t_document(request, collId, docId,-1)
+        return apps.utils.views.error_view(request,collection)
+    full_doc = t.document(request, collId, docId,-1)
     if isinstance(full_doc,HttpResponse):
-        return full_doc
+        return apps.utils.views.error_view(request,full_doc)
     
     if (page is None):
         page = 1
@@ -324,32 +268,14 @@ def document_page(request, collId, docId, page=None):
     #nav = navigation.up_next_prev(startStr,"document",docId,collection,[collId])
     
     navdata = navigation.get_nav(collection,collId,'docId','title')
-    
-    idParam = {'collId': collId, 'docId': docId}
-    personParam = {'collId': collId, 'docId': docId, 'tagName': 'person'}
-    placeParam = {'collId': collId, 'docId': docId, 'tagName': 'place'}
-    dateParam = {'collId': collId, 'docId': docId, 'tagName': 'date'}
-    abbrevParam = {'collId': collId, 'docId': docId, 'tagName': 'abbrev'}
-    otherParam = {'collId': collId, 'docId': docId, 'tagName': 'other'}
-    personCount = eval("t_countDocTags(request,personParam)")
-    placeCount = eval("t_countDocTags(request,placeParam)")
-    dateCount = eval("t_countDocTags(request,dateParam)")
-    abbrevCount = eval("t_countDocTags(request,abbrevParam)")
-    otherCount = eval("t_countDocTags(request,otherParam)")
-             
-    tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
-     
-    docStat = eval("t_docStat(request, idParam)")
-    docStatString = ('Lines transcribed: '+ str(docStat.get('nrOfTranscribedLines')) + ', Words transcribed: ' + str(docStat.get('nrOfWords')))
-
 #     
 #     sys.stdout.write("pagedata url : %s \r\n" % pagedata["url"])
 #     sys.stdout.flush()
       
     #new for fetching all text regions and text of all pages
     textlines = []
-    current_transcript = t_current_transcript(request, collId, docId, page)
-    transcript = t_transcript(request, current_transcript.get("tsId"),current_transcript.get("url"))
+    current_transcript = t.current_transcript(request, collId, docId, page)
+    transcript = t.transcript(request, current_transcript.get("tsId"),current_transcript.get("url"))
     regions=transcript.get("PcGts").get("Page").get("TextRegion");
      
     if isinstance(regions, dict):
@@ -404,9 +330,7 @@ def document_page(request, collId, docId, page=None):
         'collId': int(collId),
         'docId': int(docId),
         'pageNr': page,
-        'pagedata': pagedata,
-        'docStatString': docStatString,
-        'tagsString': tagsString
+        'pagedata': pagedata
 #         'nav_up': nav['up'],
 #         'nav_next': nav['next'],
 #         'nav_prev': nav['prev'],
@@ -414,15 +338,15 @@ def document_page(request, collId, docId, page=None):
     
     
     
-#/library/document/{colId}/{docId}/{page}
+#/library/{colId}/{docId}/{page}
 # view that lists transcripts in doc and some page level metadata
-#@profile("page.prof")
-@t_login_required
+@login_required
 def page(request, collId, docId, page):
+    t = request.user.tsdata.t
     #call t_document with noOfTranscript=-1 which will return no transcript data
-    full_doc = t_document(request, collId, docId, -1)
+    full_doc = t.document(request, collId, docId, -1)
     if isinstance(full_doc,HttpResponse):
-        return full_doc
+        return apps.utils.views.error_view(request,full_doc)
     # big wodge of data from full doc includes data for each page and for each page, each transcript...
     index = int(page)-1
     #extract page data from full_doc (may be better from a  separate page data request)
@@ -451,14 +375,16 @@ def page(request, collId, docId, page):
         'docId': docId,
         })
 
-#/library/transcript/{colId}/{docId}/{page}/{tsId}
+#/library/{colId}/{docId}/{page}/{tsId}
 # view that lists regions in transcript and some transcript level metadata
-@t_login_required
+@login_required
 def transcript(request, collId, docId, page, transcriptId):
+    t = request.user.tsdata.t
+
     #t_page returns an array of the transcripts for a page
-    pagedata = t_page(request, collId, docId, page)
+    pagedata = t.page(request, collId, docId, page)
     if isinstance(pagedata,HttpResponse):
-        return pagedata
+        return apps.utils.views.error_view(request,pagedata)
 
     nav = navigation.up_next_prev(request,"transcript",transcriptId,pagedata,[collId,docId,page])
 
@@ -471,9 +397,9 @@ def transcript(request, collId, docId, page, transcriptId):
     sys.stdout.flush()
 
     if pageXML_url:
-        transcript = t_transcript(request,transcriptId,pageXML_url)
+        transcript = t.transcript(request,transcriptId,pageXML_url)
         if isinstance(transcript,HttpResponse):
-            return transcript
+            return apps.utils.views.error_view(request,transcript)
 
 
     regions=transcript.get("PcGts").get("Page").get("TextRegion");
@@ -498,22 +424,25 @@ def transcript(request, collId, docId, page, transcriptId):
                 'pageId': page, #NB actually the number for now
                 })
 
-#/library/transcript/{colId}/{docId}/{page}/{tsId}/{regionId}
+#/library/{colId}/{docId}/{page}/{tsId}/{regionId}
 # view that lists lines in region and some region level metadata
-@t_login_required
+@login_required
 def region(request, collId, docId, page, transcriptId, regionId):
+
+    t = request.user.tsdata.t
+
     # We need to be able to target a transcript (as mentioned elsewhere)
     # here there is no need for anything over than the pageXML really
     # we could get one transcript from ...{page}/curr, but for completeness would 
     # rather use transciptId to target a particular transcript
-    transcripts = t_page(request,collId, docId, page)
+    transcripts = t.page(request,collId, docId, page)
     if isinstance(transcripts,HttpResponse):
-        return transcripts
+        return apps.utils.views.error_view(request,transcripts)
 
     #To get the page image url we need the full_doc (we hope it's been cached)
-    full_doc = t_document(request, collId, docId, -1)
+    full_doc = t.document(request, collId, docId, -1)
     if isinstance(full_doc,HttpResponse):
-        return full_doc
+        return apps.utils.views.error_view(request,full_doc)
 
     index = int(page)-1
     # and then extract the correct page from full_doc (may be better from a  separate page data request??)
@@ -533,9 +462,9 @@ def region(request, collId, docId, page, transcriptId, regionId):
     t_log("############# PAGEXML_url: %s" % pageXML_url )
 
     if pageXML_url:
-        transcript = t_transcript(request,transcriptId,pageXML_url)
+        transcript = t.transcript(request,transcriptId,pageXML_url)
         if isinstance(transcript,HttpResponse):
-            return transcript
+            return apps.utils.views.error_view(request,transcript)
 
     regions=transcript.get("PcGts").get("Page").get("TextRegion");
     if isinstance(regions, dict):
@@ -576,17 +505,18 @@ def region(request, collId, docId, page, transcriptId, regionId):
                 })
 
 
-#/library/transcript/{colId}/{docId}/{page}/{tsId}/{regionId}/{lineId}
+#/library/{colId}/{docId}/{page}/{tsId}/{regionId}/{lineId}
 # view that lists words in line and some line level metadata
-@t_login_required
+@login_required
 def line(request, collId, docId, page, transcriptId, regionId, lineId):
+    t = request.user.tsdata.t
     # We need to be able to target a transcript (as mentioned elsewhere)
     # here there is no need for anything over than the pageXML really
     # we could get one transcript from ...{page}/curr, but for completeness would
     # rather use transciptId to target a particular transcript
-    transcripts = t_page(request,collId, docId, page)
+    transcripts = t.page(request,collId, docId, page)
     if isinstance(transcripts,HttpResponse):
-        return transcripts
+        return apps.utils.views.error_view(request,transcripts)
     #we are only using the transcripts to get the pageXML for a particular
     pageXML_url = None;
     for x in transcripts:
@@ -595,14 +525,14 @@ def line(request, collId, docId, page, transcriptId, regionId, lineId):
             break
 
     if pageXML_url:
-        transcript = t_transcript(request,transcriptId,pageXML_url)
+        transcript = t.transcript(request,transcriptId,pageXML_url)
         if isinstance(transcript,HttpResponse):
-            return transcript
+            return apps.utils.views.error_view(request,transcript)
 
     #To get the page image url we need the full_doc (we hope it's been cached)
-    full_doc = t_document(request, collId, docId, -1)
+    full_doc = t.document(request, collId, docId, -1)
     if isinstance(full_doc,HttpResponse):
-        return full_doc
+        return apps.utils.views.error_view(request,full_doc)
 
     index = int(page)-1
     # and then extract the correct page from full_doc (may be better from a  separate page data request??)
@@ -660,14 +590,15 @@ def line(request, collId, docId, page, transcriptId, regionId, lineId):
                 'imageUrl' : pagedata.get("url"),
                 })
 
-#/library/transcript/{colId}/{docId}/{page}/{tsId}/{regionId}/{lineId}/{wordId}
+#/library/{colId}/{docId}/{page}/{tsId}/{regionId}/{lineId}/{wordId}
 # view that shows some word level metadata
-@t_login_required
+@login_required
 def word(request, collId, docId, page, transcriptId, regionId, lineId, wordId):
+    t = request.user.tsdata.t
     # booo hiss
-    transcripts = t_page(request, collId, docId, page)
+    transcripts = t.page(request, collId, docId, page)
     if isinstance(transcripts,HttpResponse):
-        return transcripts
+        return apps.utils.views.error_view(request,transcripts)
     #we are only using the pagedata to get the pageXML for a particular
     pageXML_url = None;
     for x in transcripts:
@@ -676,14 +607,14 @@ def word(request, collId, docId, page, transcriptId, regionId, lineId, wordId):
             break
 
     if pageXML_url:
-        transcript = t_transcript(request,transcriptId,pageXML_url)
+        transcript = t.transcript(request,transcriptId,pageXML_url)
         if isinstance(transcript,HttpResponse):
-            return transcript
+            return apps.utils.views.error_view(request,transcript)
 
     #To get the page image url we need the full_doc (we hope it's been cached)
-    full_doc = t_document(request, collId, docId, -1)
+    full_doc = t.document(request, collId, docId, -1)
     if isinstance(full_doc,HttpResponse):
-        return full_doc
+        return apps.utils.views.error_view(request,full_doc)
 
     index = int(page)-1
     # and then extract the correct page from full_doc (may be better from a  separate page data request??)
@@ -741,12 +672,14 @@ def word(request, collId, docId, page, transcriptId, regionId, lineId, wordId):
 # Randomly fetch region/line/word this gives us an awful lot of empty responses
 # Ideally we want to filter out the transcripts that don't contain good qulity data
 # This may be as simple as isPublished(), rather than any analysis on the content
-@t_login_required
+@login_required
 def rand(request, collId, element):
-    collection = t_collection(request, {'collId': collId})
+    t = request.user.tsdata.t
+
+    collection = t.collection(request, {'collId': collId})
 
     if isinstance(collection,HttpResponse):
-        return collection
+        return apps.utils.views.error_view(request,collection)
 
     doc = random.choice(collection)
 
@@ -755,17 +688,17 @@ def rand(request, collId, element):
         if str(x.get("colId")) == str(collId):
             collection = x
 
-    pages  = t_document(request, collId, doc.get("docId"), 0)
+    pages  = t.document(request, collId, doc.get("docId"), 0)
     if isinstance(pages,HttpResponse):
-        return pages
+        return apps.utils.views.error_view(request,pages)
     page = random.choice(pages.get("pageList").get("pages"))
 
     sys.stdout.write("RANDOM PAGE: %s\r\n" % (page.get("pageNr")) )
     sys.stdout.flush()
 
     #best to avoid a random transcript, so we'll go for the current in the hope that it is best....
-    current_transcript = t_current_transcript(request, collId, doc.get("docId"), page.get("pageNr"))
-    transcript = t_transcript(request, current_transcript.get("tsId"),current_transcript.get("url"))
+    current_transcript = t.current_transcript(request, collId, doc.get("docId"), page.get("pageNr"))
+    transcript = t.transcript(request, current_transcript.get("tsId"),current_transcript.get("url"))
 
     word = None
     line = None
@@ -855,47 +788,10 @@ def display_random(request,level,data, collection, doc, page):
                 "page" : page,
         } )
 
-@t_login_required
-def search(request):
-    return render(request, 'library/search.html')
-
-def about(request):
-    return render(request, 'library/about.html')
-
-def message_modal(request):
-    return render(request, 'library/message_modal.html')
-
-def user_guide(request):
-    return render(request, 'library/user_guide.html')
-
-@t_login_required
+@login_required
 def users(request, collId, userId):
     return render(request, 'library/users.html')
 
-@t_login_required
-def profile(request):
-    collections = t_collections(request)
-    return render(request, 'library/profile.html', {'collections': collections})
-
-#error pages (where not handled by modals
-def collection_noaccess(request, collId):
-    if(request.get_full_path() == request.META.get("HTTP_REFERER") or re.match(r'^.*login.*', request.META.get("HTTP_REFERER"))):
-        back = None
-    else:
-        back = request.META.get("HTTP_REFERER") #request.GET.get("back")
-
-    return render(request, 'library/error.html', {
-                'msg' : _("I'm afraid you are not allowed to access this collection"),
-                'back' : back,
-            })
-def error(request):
-    back = request.build_absolute_uri('/register')
-
-    return render(request, 'library/error.html', {
-                'msg' : messages,
-                'back' : back,
-            })
-    
 def getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount):
     tagsString = ''
     if personCount > 0 or placeCount>0 or dateCount>0 or abbrevCount>0 or otherCount>0:
@@ -912,5 +808,3 @@ def getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount):
         tagsString += 'Others: (' + str(otherCount) + ')'
         
     return tagsString
-
-
