@@ -1,0 +1,33 @@
+{% extends "navi_base.html" %}
+{% load staticfiles %}
+
+{% load i18n %}
+
+{% block content %}
+
+<div class="read-container container">
+
+	<h1>{% trans 'How to start a crowd sourcing project for your collection' %}</h1>
+
+	<p>Follw the steps below using the Transkribus desktop application to prepare a collection for a crowd sourcing project.</p>
+
+	<h2>Check list</h2>
+	<ul>
+		<li>A Transkribus account. <a href="https://transkribus.eu/Transkribus/">Get an account</a>.</li>
+		<li>The Transkribus Desktop appliction. <a href="https://transkribus.eu/Transkribus/">Download</a>.</li>
+		<li>A Collection within Transkribus. <a href="https://transkribus.eu/wiki/images/7/77/How_to_use_TRANSKRIBUS_-_10_steps.pdf">Read more</a>.</li>
+	</ul>
+
+	<h2>Preparation phase in Transkribus desktop</h2>
+
+	<ol>
+		<li>Upload of manuscripts <img src="{% static "images/screen_shots/upload_document.png" %}"/></li>
+		<li>Batch processing of block and line segmentation</li>
+		<li>Polygon2Baseline tool: open issue in SWTGui (tool is available but needs to be integrated); is needed for beautiful line snippets</li>
+		<li>Mark as crowdsourcing: can be already done via ‘Edit Collection Metadata’ by owner/editor (may only owner should be allowed to do this). Deselecting means crowdsourcing is closed for the moment. Later on we can handle this automatically with a date field (from/to).</li>
+		<li>Owner can define a representative collection image and representative image for each doc in the collection to be shown as a thumb image in the browsing interface. As default the first or the image in the middle can be used.</li>
+		<li>Run HTR (if 2nd crowdsourcing run with a trained model)</li>
+		<li>Define a tag set for your collection which the WebUI loads and the crowd should use for tagging (will not be available at the start)</li>
+	</ol>
+</div>
+{% endblock %}

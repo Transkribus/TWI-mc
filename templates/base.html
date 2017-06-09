@@ -31,6 +31,9 @@
 
     <!-- Local CSS -->
     <link href="{% static "css/read.css" %}" rel="stylesheet"/>
+    <link href="{% static "css/common.css" %}" rel="stylesheet"/>
+
+
 
     <!-- recaptcha -->
    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
@@ -108,6 +111,9 @@
         <li><a href="http://127.0.0.1:8005">Transcription training</a></li>
         <li><a href="http://127.0.0.1:8006">Crowd-sourcing</a></li>
       </ul>
+      <div class="alert alert-info alert-auto version-status" role="alert"> This is version {{version}} <a href="https://github.com/Transkribus/TWI-mc/milestone/{{milestone}}">View on github</a>. <a href="https://github.com/Transkribus/TWI-mc/issues">Report a bug</a>. <a href="https://github.com/Transkribus/TWI-mc/issues">Request a feature</a>.</div>
+
+
     </div>	
   </div>
 </nav>
