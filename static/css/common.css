@@ -1,2 +1,5 @@
 .alert-auto {display:inline-block;}
-.version-status {float: right;}
+.version-status {float: right; margin-bottom: 0px;}
+a.link_disabled {cursor: default;}
+.navbar-inverse .navbar-nav > li > a.link_disabled:focus {color: #9d9d9d;}
+.navbar-inverse .navbar-nav > li > a.link_disabled:hover {color: #9d9d9d;}

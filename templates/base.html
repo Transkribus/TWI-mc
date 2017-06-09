@@ -107,11 +107,11 @@
     <div class="collapse navbar-collapse" id="ts-menu">
       <ul class="nav navbar-nav">
         <li class="active"><a href="{% url 'index' %}">My Collections <span class="sr-only">(current)</span></a></li>
-        <li><a href="http://127.0.0.1:8004">Published collections</a></li>
-        <li><a href="http://127.0.0.1:8005">Transcription training</a></li>
-        <li><a href="http://127.0.0.1:8006">Crowd-sourcing</a></li>
+        <li><a href="http://127.0.0.1:8004" onclick="return false;" class="link_disabled">Published collections</a></li>
+        <li><a href="http://127.0.0.1:8005" onclick="return false;" class="link_disabled">Transcription training</a></li>
+        <li><a href="http://127.0.0.1:8006" onclick="return false;" class="link_disabled">Crowd-sourcing</a></li>
       </ul>
-      <div class="alert alert-info alert-auto version-status" role="alert"> This is version {{version}} <a href="https://github.com/Transkribus/TWI-mc/milestone/{{milestone}}">View on github</a>. <a href="https://github.com/Transkribus/TWI-mc/issues">Report a bug</a>. <a href="https://github.com/Transkribus/TWI-mc/issues">Request a feature</a>.</div>
+      <div class="alert alert-info alert-auto version-status" role="alert"> This is version {{version}} <a href="https://github.com/Transkribus/TWI-mc/milestone/{{milestone}}">View on github</a>. <a href="https://github.com/Transkribus/TWI-mc/labels/bug">Report a bug</a>. <a href="https://github.com/Transkribus/TWI-mc/labels/enhancement">Request a feature</a>.</div>
 
 
     </div>	

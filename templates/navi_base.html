@@ -31,10 +31,10 @@
           <li {%ifequal appname "library" %}class="active"{%endifequal%}>
             <a href="{% url 'library:index' %}">{% trans "Browse" %}</a>
           </li>
-          <li {%ifequal appname "search" %}class="active"{%endifequal%}>
+    {%comment%}      <li {%ifequal appname "search" %}class="active"{%endifequal%}>
             <a href="{% url 'search:index' %}">{% trans "Search" %}</a>
           </li>
-
+	{%endcomment%}
 {%comment%}
 	  <li role="presentation" class="dropdown">
 	    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
