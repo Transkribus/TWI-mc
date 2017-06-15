@@ -37,9 +37,9 @@ urlpatterns = [
 
     ## Project pages for My collection ##
     url(r'^$', mc.views.index, name='index'),
-    url(r'^about$', mc.views.about, name='about'),
-    url(r'^user_guide$', mc.views.user_guide, name='user_guide'),
-    url(r'^crowd$', mc.views.crowd_howto, name='crowd_howto'),
+    url(r'^about/$', mc.views.about, name='about'),
+    url(r'^user_guide/$', mc.views.user_guide, name='user_guide'),
+    url(r'^crowd/$', mc.views.crowd_howto, name='crowd_howto'),
 
 
     ## Others ##
