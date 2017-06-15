@@ -5,14 +5,14 @@ a.link_disabled {cursor: default;}
 .navbar-inverse .navbar-nav > li > a.link_disabled:hover {color: #9d9d9d;}
 
 #imagemodal .modal-dialog {
-  width: 80%;
-  height: 70%;
+  width: 90%;
+  height: 90%;
   padding: 0;
 }
 
 #imagemodal .modal-content {
     height: auto;
-    min-height: 70%;
+    min-height: 90%;
 }
 
 .cs-flow-demo {
