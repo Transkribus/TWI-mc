@@ -3,3 +3,21 @@
 a.link_disabled {cursor: default;}
 .navbar-inverse .navbar-nav > li > a.link_disabled:focus {color: #9d9d9d;}
 .navbar-inverse .navbar-nav > li > a.link_disabled:hover {color: #9d9d9d;}
+
+#imagemodal .modal-dialog {
+  width: 80%;
+  height: 70%;
+  padding: 0;
+}
+
+#imagemodal .modal-content {
+    height: auto;
+    min-height: 70%;
+}
+
+.cs-flow-demo {
+	font-size: 300%;
+}
+.cs-howto div.row {
+	margin-bottom: 2%;
+}

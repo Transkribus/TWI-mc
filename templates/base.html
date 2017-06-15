@@ -62,6 +62,7 @@
 		var static_url = "{{ STATIC_URL|escapejs }}";
 		var current_userid = "{{ user.tsdata.userId }}";
 	</script>
+    <script src="{% static "js/img_display.js" %}"></script>
     <script src="{% static "js/read.js" %}"></script>
 
     {%comment%}  apphead == appname+'/extra_head.html' so if the app has an 

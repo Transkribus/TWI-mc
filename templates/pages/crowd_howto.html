@@ -19,15 +19,153 @@
 	</ul>
 
 	<h2>Preparation phase in Transkribus desktop</h2>
+	<p>Within Transkribus an owner has the ability to open up a collection for crowd-sourced transcription. This can only be done once the baselines have been detected and recorded. Crowd sourcing can be started without any automatic transcription (ie with a blank transcript) or after HTR has been run (for the purposes of improving transcription quality). The whole collection will be made available so unless the owner wishes all the documents to be made available they should consider creating a new collection that will include only those documents they wish to be made avialable for public transcription.</p>
 
-	<ol>
-		<li>Upload of manuscripts <img src="{% static "images/screen_shots/upload_document.png" %}"/></li>
-		<li>Batch processing of block and line segmentation</li>
-		<li>Polygon2Baseline tool: open issue in SWTGui (tool is available but needs to be integrated); is needed for beautiful line snippets</li>
-		<li>Mark as crowdsourcing: can be already done via ‘Edit Collection Metadata’ by owner/editor (may only owner should be allowed to do this). Deselecting means crowdsourcing is closed for the moment. Later on we can handle this automatically with a date field (from/to).</li>
-		<li>Owner can define a representative collection image and representative image for each doc in the collection to be shown as a thumb image in the browsing interface. As default the first or the image in the middle can be used.</li>
-		<li>Run HTR (if 2nd crowdsourcing run with a trained model)</li>
-		<li>Define a tag set for your collection which the WebUI loads and the crowd should use for tagging (will not be available at the start)</li>
-	</ol>
+	<div class="read-container container cs-howto">
+    		<div class="row">
+        		<div class="col-xs-5">
+            			<div class="row">
+			                <div class="col-xs-12">
+						<h3>Add manuscripts</h3>
+						<p>Upload or select from existing collections the select the manuscripts that you wish to make available to the crowd-sourcing platform</p>
+		     			</div>
+		    		</div>
+			</div>
+        		<div class="col-xs-7">
+            			<div class="row">
+			                <div class="col-xs-12">
+						<a href="#" class="static_thumb"><img id="cs_upload_ms" src="{% static "images/screen_shots/upload_document.png" %}" width="300" height="200"/></a>
+
+		     			</div>
+		    		</div>
+			</div>
+	    	</div>
+ 		<div class="row">
+        		<div class="col-xs-5">
+            			<div class="row">
+			                <div class="col-xs-12">
+					<h3>Line segmentation</h3>
+				<p> It is essential that line segmentation is performed on the documents in order to give the prepare the transcripts for the addition of text. This is done as a batch process after upload.</p>	
+					</div>
+		    		</div>
+			</div>
+        		<div class="col-xs-7">
+            			<div class="row">
+			                <div class="col-xs-12">
+						<a href="#" class="static_thumb"><img id="cs_upload_ms" src="{% static "images/screen_shots/do_line_segmentation.png" %}" width="300" height="200"/></a>
+						<span class="glyphicon glyphicon-arrow-right cs-flow-demo"></span>
+						<a href="#" class="static_thumb"><img id="cs_upload_ms" src="{% static "images/screen_shots/line_segmented.png" %}" width="300" height="200"/></a>
+
+		     			</div>
+		    		</div>
+			</div>
+	    	</div>
+ 		<div class="row">
+        		<div class="col-xs-5">
+            			<div class="row">
+			                <div class="col-xs-12">
+					<h3>Polygon2Baseline tool</h3>
+					<p>This tool will create snippets of the doumnet image that correspond to the lines detected in the previous step.</p>
+					</div>
+		    		</div>
+			</div>
+        		<div class="col-xs-7">
+            			<div class="row">
+			                <div class="col-xs-12">
+		     			</div>
+		    		</div>
+			</div>
+	    	</div>
+ 		<div class="row">
+        		<div class="col-xs-5">
+            			<div class="row">
+			                <div class="col-xs-12">
+	<h3>Mark as crowdsourcing</h3>
+	<p>At this point we are ready to mark the collection as available for crowd-sourcing. This can be done within the &quot;Edit Collection Metadata&quot; window by owner or editor. Unselecting this option will mean that crowd-sourcing is closed again and transcription can only be done via the expert tool. The owner can write a description of the collection that will be displayed within the crowd-sourcing platform to explain what is the collection and why it may be of interest to public transcribers.</p>
+
+					</div>
+		    		</div>
+			</div>
+        		<div class="col-xs-7">
+            			<div class="row">
+			                <div class="col-xs-12">
+	<a href="#" class="static_thumb"><img id="cs_upload_ms" src="{% static "images/screen_shots/crowd_source_flag.png" %}" width="300" height="200"/></a>
+
+		     			</div>
+		    		</div>
+			</div>
+	    	</div>
+ 		<div class="row">
+        		<div class="col-xs-5">
+            			<div class="row">
+			                <div class="col-xs-12">
+	<h3>Choose a representative image</h3>
+	<p>Owner can choose and upload an image to represent the collection on the crowd-sourcing platform. This image will be displayed alongside the descrption and as a thumbnail in the browsing interface.</p>
+
+					</div>
+		    		</div>
+			</div>
+        		<div class="col-xs-7">
+            			<div class="row">
+			                <div class="col-xs-12">
+		     			</div>
+		    		</div>
+			</div>
+	    	</div>
+ 		<div class="row">
+        		<div class="col-xs-5">
+            			<div class="row">
+			                <div class="col-xs-12">
+	<h3>Run HTR</h3>
+	<p>Depending on the nature of your crowd sourcing project you may wish to seed the transcripts with the output tfrom the Transkribus Handwritten Text Recognition (HTR) process. In such cases Transkribus will process the images and populate the transcripts so that your &quot;crowd&quot; will then have the task of correcting any errors that have arisen. For more on how to get the best out of the HTR process see... </p>
+					</div>
+		    		</div>
+			</div>
+        		<div class="col-xs-7">
+            			<div class="row">
+			                <div class="col-xs-12">
+	<a href="#" class="static_thumb"><img id="cs_upload_ms" src="{% static "images/screen_shots/HTR_1.png" %}" width="300" height="200"/></a>
+	<span class="glyphicon glyphicon-arrow-right cs-flow-demo"></span>
+	<a href="#" class="static_thumb"><img id="cs_upload_ms" src="{% static "images/screen_shots/HTR_2.png" %}" width="300" height="200"/></a>
+	<span class="glyphicon glyphicon-arrow-right cs-flow-demo"></span>
+	<a href="#" class="static_thumb"><img id="cs_upload_ms" src="{% static "images/screen_shots/HTR_3.png" %}" width="300" height="200"/></a>
+
+		     			</div>
+		    		</div>
+			</div>
+	    	</div>
+ 		<div class="row">
+        		<div class="col-xs-5">
+            			<div class="row">
+			                <div class="col-xs-12">
+	<h3>Define a tag set</h3>
+	<p>The crowd-sourcing interface allows transcripts to be enhanced by tagging words and phrases with metadata. This is a task particularly suited to public participation. Transkribus has a set of predefined core tags, but a collection owner can spefic their own tags that may be suitable for the given collection.</p>
+
+
+					</div>
+		    		</div>
+			</div>
+        		<div class="col-xs-7">
+            			<div class="row">
+			                <div class="col-xs-12">
+	<a href="#" class="static_thumb"><img id="cs_upload_ms" src="{% static "images/screen_shots/add_tags.png" %}" width="300" height="200"/></a>
+
+		     			</div>
+		    		</div>
+			</div>
+	    	</div>
+ 	</div>
+
+</div>
+
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">              
+      <div class="modal-body">
+      	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <img src="" class="imagepreview" style="width: 100%;" >
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
