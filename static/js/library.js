@@ -49,19 +49,34 @@ function init_collections_table(){
 	var datatable = init_datatable($("#collections_table"),url,columns);
 	
 	$("#collections_table").on( 'draw.dt', function () {
+	    var api = new $.fn.DataTable.Api( "#collections_table" );
 		row_data = [];
-		$("#collections_table tbody tr").each(function(rowInd){ 
-			row_data[rowInd] = {} ;
-			console.log(datatable.cell(rowInd,0).data().colId);
-			row_data[rowInd].collId = datatable.cell(rowInd,0).data().colId;
-			row_data[rowInd].url = make_url("/utils/thumb/"+row_data[rowInd].collId);
-			row_data[rowInd].img_cell = this;
-			$.getJSON(row_data[rowInd].url, function(thumb_data){
-				$("td:eq(0)", row_data[rowInd].img_cell).html('<img src="'+thumb_data.url+'"/>');
-			}).done(function(a,b) {
-			    console.log( "Done: ",a, " ",b );
-			}).fail(function( a, b){
-			    console.log( "Fail: ",a, " ",b );
+		//rowIdx is the index of this row before the sort/search, rowLoop contains the (current) idx of the row after the sort
+		api.rows({page:'current'}).every( function ( rowIdx, tableLoop, rowLoop ) {
+
+			var d = this.data();
+		    this.invalidate('dom');
+		    var currRow = this;
+
+			$("#collections_table tbody tr").each(function(rowInd){
+		    	if (rowLoop == rowInd){
+					 
+					row_data[rowInd] = {} ;
+					row_data[rowInd].collId = currRow.data().colId;
+					console.log( "TestAusgabe docId: ", row_data[rowInd].collId);
+			
+					//console.log(datatable.cell(rowInd,0).data().colId);
+					//row_data[rowInd].collId = datatable.cell(rowInd,0).data().colId;
+					row_data[rowInd].url = make_url("/utils/thumb/"+row_data[rowInd].collId);
+					row_data[rowInd].img_cell = this;
+					$.getJSON(row_data[rowInd].url, function(thumb_data){
+						$("td:eq(0)", row_data[rowInd].img_cell).html('<img src="'+thumb_data.url+'"/>');
+					}).done(function(a,b) {
+					    console.log( "Done: ",a, " ",b );
+					}).fail(function( a, b){
+					    console.log( "Fail: ",a, " ",b );
+					});
+		    	}
 			});
 		});
 	});
@@ -87,25 +102,58 @@ function init_documents_table(){
 		    { "data": "author" },
 		    { "data": "nrOfPages" },
 		    { "data": "language" },
+		    { "data" : null, 
+		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>'},
 		    //{ "data": "new_key" },//if we want to add a new column in this table
         	];
 
 	var datatable = init_datatable($("#documents_table"),url,columns);
+			
+	//redraw handled here: may an easier solution to get current docID after a sort/search exist but this one works fine for the moment
+	$("#documents_table ").on( 'draw.dt', function () {
 		
-	$("#documents_table").on( 'draw.dt', function () {
+	    var api = new $.fn.DataTable.Api( "#documents_table" );
 		row_data = [];
-		$("#documents_table tbody tr").each(function(rowInd){ 
-			row_data[rowInd] = {} ;
-			row_data[rowInd].docId = datatable.cell(rowInd,0).data().docId;
-			row_data[rowInd].url = make_url("/utils/thumb/"+ids['collId']+'/'+row_data[rowInd].docId);
-			row_data[rowInd].img_cell = this;
-			$.getJSON(row_data[rowInd].url, function(thumb_data){
-				$("td:eq(0)", row_data[rowInd].img_cell).html('<img src="'+thumb_data.url+'"/>');
-			}).done(function(a,b) {
-			    console.log( "Done: ",a, " ",b );
-			}).fail(function( a, b){
-			    console.log( "Fail: ",a, " ",b );
-			});
+		//rowIdx is the index of this row before the sort/search, rowLoop contains the (current) idx of the row after the sort
+		api.rows({page:'current'}).every( function ( rowIdx, tableLoop, rowLoop ) {
+
+			var d = this.data();
+		    this.invalidate('dom');
+		    var currRow = this;
+		    
+/*		    console.log( "rowIdx: ", rowIdx);
+		    console.log( "rowLoop: ", rowLoop);
+		    console.log( "currRow: ", currRow.data().docId);*/
+		    
+		    //this way we can only go throug the indizes of the first page before the change during sort/search
+		    $("#documents_table tbody tr").each(function(rowInd){
+		    	
+		    	//console.log( "rowInd: ", rowInd);
+		    	if (rowLoop == rowInd){
+		    				 
+					row_data[rowInd] = {} ;
+					row_data[rowInd].docId = currRow.data().docId;
+					console.log( "TestAusgabe docId: ", row_data[rowInd].docId);
+					
+					row_data[rowInd].url = make_url("/utils/thumb/"+ids['collId']+'/'+row_data[rowInd].docId);
+					row_data[rowInd].stats = make_url("/library/statistics/"+ids['collId']+'/'+row_data[rowInd].docId);
+					row_data[rowInd].img_cell = this;
+					$.getJSON(row_data[rowInd].url, function(thumb_data){
+						$("td:eq(0)", row_data[rowInd].img_cell).html('<img src="'+thumb_data.url+'"/>');
+					}).done(function(a,b) {
+					    console.log( "Done: ",a, " ",b );
+					}).fail(function( a, b){
+					    console.log( "Fail: ",a, " ",b );
+					});
+					$.getJSON(row_data[rowInd].stats, function(stat_data){
+						$("td:eq(7)", row_data[rowInd].img_cell).html('<p>"'+stat_data.docStatString+'"</p><p>"'+stat_data.tagsString+'"</p>');
+					}).done(function(a,b) {
+					    console.log( "Done: ",a, " ",b );
+					}).fail(function( a, b){
+					    console.log( "Fail: ",a, " ",b );
+					});	
+			    }
+		    });
 		});
 	});
 }
