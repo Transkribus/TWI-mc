@@ -297,9 +297,10 @@ function init_chart_filters(){
 
 	$(".table_filter").on("click", function(){
 		active_canvas = $(".tab-pane.active > canvas").attr("id");
-		console.log("table_filter CLICKED",active_canvas);
 
 		if($("#"+active_canvas).length==0) return false;
+
+		console.log("table_filter CLICKED",active_canvas);
 
 		var chart =  charts[active_canvas];
 		//TODO the hiding needs to be inversed to make click on the button positive (ie just show clicked, rather than hide clicked)
