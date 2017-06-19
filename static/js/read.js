@@ -116,9 +116,12 @@ function init_datatable(table,url, columns){
 
 	});
 	$(".table_filter").on("click", function(){
-		 datatable.columns( 5 )
-        	.search( this.value )
-        	.draw();
+		console.log("filter value: ",this.value);
+//		This search does not work now that all data is loaded to client
+//		Also changing the number of columns would need to be handled which it is not at present
+//		 datatable.columns( 5 ).search( this.value ).draw();
+//		This search will, but is not limited to column so there is a risk it will show rows where "title =~ /Save/" etc
+		 datatable.search( this.value ).draw();
 		return false;
 	});
 	$(table).on( 'draw.dt', function () {
