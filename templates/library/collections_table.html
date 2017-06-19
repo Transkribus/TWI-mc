@@ -1,15 +1,15 @@
 {% load i18n %}
 
-<p style="font-size:14pt; margin-top:20px; margin-bottom:20px; color: black;">You are a member of the following <span id="collections_table_count"></span> collections:</p>
+<p style="font-size:14pt; margin-top:20px; margin-bottom:20px; color: black;">You are member of <span id="collections_table_count"></span> collections:</p>
 
  <table class="table table-striped display" id="collections_table">
    <thead>
 	<tr>
-		<th>{% trans "Img" %}</th>
-		<th>{% trans "ColId" %}</th>
-		<th>{% trans "Collection" %}</th>
+		<th>{% trans "Image" %}</th>
+		<th>{% trans "ID" %}</th>
+		<th>{% trans "Collection Name" %}</th>
 		<th>{% trans "Description" %}</th>
-		<th>{% trans "Role" %}</th>
+		<th>{% trans "My Role" %}</th>
 	</tr>
    </thead>
    <tbody>
