@@ -3,6 +3,7 @@ import sys
 import datetime
 import json
 import hashlib
+from django.utils.translation import ugettext_lazy as _
 
 from django.conf import settings
 import logging
@@ -92,3 +93,14 @@ def t_metadata(custom_attr):
     t_log("### METADATA from CSS: %s   \r\n" % (t_metadata) )
 
     return t_metadata
+
+def error_message_switch(request=None,x=0):
+    return {
+#        401: _('Transkribus session is unauthorised, you must <a href="'+request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path()))+'" class="alert-link">(re)log on to Transkribus-web</a>.'),
+        401: _('Transkribus session is unauthorised, you must log on to Transkribus-web.'),
+        403: _('You are forbidden to request this data from Transkribus.'),
+        404: _('The requested Transkribus resource does not exist.'),
+        500: _('A Server error was reported by Transkribus.'),
+        503: _('Could not contact the Transkribus service, please try again later.'),
+    }.get(x, _('An unknown error was returned by Transkribus: ')+str(x))
+

@@ -8,7 +8,6 @@ from django.template.defaultfilters import linebreaksbr
 
 #Imports of django modules
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.utils.translation import ugettext_lazy as _
 
 from django.shortcuts import render
 from django.shortcuts import resolve_url
@@ -16,8 +15,9 @@ from django.shortcuts import resolve_url
 #from django.contrib.auth import authenticate, login
 from apps.utils.decorators import t_login_required_ajax
 from apps.utils.services import *
-from apps.utils.utils import t_log
+from apps.utils.utils import t_log, error_message_switch
 import logging
+
 
 from apps.querystring_parser.querystring_parser import parser
 
@@ -59,6 +59,7 @@ def register(request):
     #Recpatch errors are not properly dislpayed by bootstrap-form... hmph
     return render(request, 'registration/register.html', {'register_form': form} )
 
+
 @t_login_required_ajax
 def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
     
@@ -79,93 +80,95 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
     t = request.user.tsdata.t
 
     #we want to add statistical data to the title column like nr_of_transcribed_lines, nr_of_transkribed_words, tags....
-    if list_name == 'documents':
-        for element in data:
-            #docStat = t_docStat(request,{'collId': collId, 'docId': int(element.get('docId'))})
-            docId = element.get('docId')  
-            params2 = {'collId': collId, 'docId': docId}
-            personParam = {'collId': collId, 'docId': docId, 'tagName': 'person'}
-            placeParam = {'collId': collId, 'docId': docId, 'tagName': 'place'}
-            dateParam = {'collId': collId, 'docId': docId, 'tagName': 'date'}
-            abbrevParam = {'collId': collId, 'docId': docId, 'tagName': 'abbrev'}
-            otherParam = {'collId': collId, 'docId': docId, 'tagName': 'other'}
-            #RM These need to check what is returned. If the transkribus call fails for some reason then they will get a HttpRedirect object (specifically a redirect to logout)
-            personCount = eval("t.countDocTags(request,personParam)")
-            if isinstance(personCount,HttpResponse):
-                return personCount
-            placeCount = eval("t.countDocTags(request,placeParam)")
-            if isinstance(placeCount,HttpResponse):
-                return placeCount
-            dateCount = eval("t.countDocTags(request,dateParam)")
-            if isinstance(dateCount,HttpResponse):
-                return dateCount
-            abbrevCount = eval("t.countDocTags(request,abbrevParam)")
-            if isinstance(abbrevCount,HttpResponse):
-                return abbrevCount
-            otherCount = eval("t.countDocTags(request,otherParam)")
-            if isinstance(otherCount,HttpResponse):
-                return otherCount
-
-#             print('nr of person tags: ' + str(personCount))
-#             print('place tags' + str(placeCount))
-#             print('date tags' + str(dateCount))
-#             print('abbrev tags' + str(abbrevCount))
-#             print('other tags' + str(otherCount))
-            
-            tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
-            
-            docStat = eval("t.docStat(request, params2)")
-            if isinstance(docStat,HttpResponse):
-                return docStat
-
-            #print(docStat)
-            #TODO call rest service to get the stats
-            if 'nr_lines_transcribed' not in str(element.get('title')):
-                element.update({'title': str(element.get('title'))+'<br/>nr_lines_transcribed: '+ str(docStat.get('nrOfTranscribedLines')) + '<br/>nr_words_transcribed: ' + str(docStat.get('nrOfWords'))}) 
-                
-            if tagsString and 'Tags' not in str(element.get('title')):
-                element.update({'title': str(element.get('title'))+tagsString}) 
-    
-    #print(data)
-    
-    if list_name == 'collections':
-        for element in data:
-            collId = element.get('colId') 
-            params3 = {'collId': collId}
-            
-            personParam = {'collId': collId, 'tagName': 'person'}
-            placeParam = {'collId': collId, 'tagName': 'place'}
-            dateParam = {'collId': collId, 'tagName': 'date'}
-            abbrevParam = {'collId': collId, 'tagName': 'abbrev'}
-            otherParam = {'collId': collId, 'tagName': 'other'}
-            #RM These need to check what is returned. If the transkribus call fails for some reason then they will get a HttpRedirect object (specifically a redirect to logout)
-            personCount = eval("t.countCollTags(request,personParam)")
-            if isinstance(personCount,HttpResponse):
-                return personCount
-            placeCount = eval("t.countCollTags(request,placeParam)")
-            if isinstance(placeCount,HttpResponse):
-                return placeCount
-            dateCount = eval("t.countCollTags(request,dateParam)")
-            if isinstance(dateCount,HttpResponse):
-                return dateCount
-            abbrevCount = eval("t.countCollTags(request,abbrevParam)")
-            if isinstance(abbrevCount,HttpResponse):
-                return abbrevCount
-            otherCount = eval("t.countCollTags(request,otherParam)")
-            if isinstance(otherCount,HttpResponse):
-                return otherCount
-            
-            tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
-                
-            print(tagsString)
-        
-            collStat = eval("t.collStat(request, params3)")
-            
-            if 'nr_lines_transcribed' not in str(element.get('colName')):
-                element.update({'colName': str(element.get('colName'))+'<br/>nr_lines_transcribed: '+ str(collStat.get('nrOfTranscribedLines')) + '<br/>nr_words_transcribed: ' + str(collStat.get('nrOfWords'))}) 
-                
-            if tagsString and 'Tags' not in str(element.get('colName')):
-                element.update({'colName': str(element.get('colName'))+tagsString}) 
+#===============================================================================
+#     if list_name == 'documents':
+#         for element in data:
+#             #docStat = t_docStat(request,{'collId': collId, 'docId': int(element.get('docId'))})
+#             docId = element.get('docId')  
+#             params2 = {'collId': collId, 'docId': docId}
+#             personParam = {'collId': collId, 'docId': docId, 'tagName': 'person'}
+#             placeParam = {'collId': collId, 'docId': docId, 'tagName': 'place'}
+#             dateParam = {'collId': collId, 'docId': docId, 'tagName': 'date'}
+#             abbrevParam = {'collId': collId, 'docId': docId, 'tagName': 'abbrev'}
+#             otherParam = {'collId': collId, 'docId': docId, 'tagName': 'other'}
+#             #RM These need to check what is returned. If the transkribus call fails for some reason then they will get a HttpRedirect object (specifically a redirect to logout)
+#             personCount = eval("t.countDocTags(request,personParam)")
+#             if isinstance(personCount,HttpResponse):
+#                 return personCount
+#             placeCount = eval("t.countDocTags(request,placeParam)")
+#             if isinstance(placeCount,HttpResponse):
+#                 return placeCount
+#             dateCount = eval("t.countDocTags(request,dateParam)")
+#             if isinstance(dateCount,HttpResponse):
+#                 return dateCount
+#             abbrevCount = eval("t.countDocTags(request,abbrevParam)")
+#             if isinstance(abbrevCount,HttpResponse):
+#                 return abbrevCount
+#             otherCount = eval("t.countDocTags(request,otherParam)")
+#             if isinstance(otherCount,HttpResponse):
+#                 return otherCount
+# 
+# #             print('nr of person tags: ' + str(personCount))
+# #             print('place tags' + str(placeCount))
+# #             print('date tags' + str(dateCount))
+# #             print('abbrev tags' + str(abbrevCount))
+# #             print('other tags' + str(otherCount))
+#             
+#             tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
+#             
+#             docStat = eval("t.docStat(request, params2)")
+#             if isinstance(docStat,HttpResponse):
+#                 return docStat
+# 
+#             #print(docStat)
+#             #TODO call rest service to get the stats
+#             if 'nr_lines_transcribed' not in str(element.get('title')):
+#                 element.update({'title': str(element.get('title'))+'<br/>nr_lines_transcribed: '+ str(docStat.get('nrOfTranscribedLines')) + '<br/>nr_words_transcribed: ' + str(docStat.get('nrOfWords'))}) 
+#                 
+#             if tagsString and 'Tags' not in str(element.get('title')):
+#                 element.update({'title': str(element.get('title'))+tagsString}) 
+#     
+#     #print(data)
+#     
+#     if list_name == 'collections':
+#         for element in data:
+#             collId = element.get('colId') 
+#             params3 = {'collId': collId}
+#             
+#             personParam = {'collId': collId, 'tagName': 'person'}
+#             placeParam = {'collId': collId, 'tagName': 'place'}
+#             dateParam = {'collId': collId, 'tagName': 'date'}
+#             abbrevParam = {'collId': collId, 'tagName': 'abbrev'}
+#             otherParam = {'collId': collId, 'tagName': 'other'}
+#             #RM These need to check what is returned. If the transkribus call fails for some reason then they will get a HttpRedirect object (specifically a redirect to logout)
+#             personCount = eval("t.countCollTags(request,personParam)")
+#             if isinstance(personCount,HttpResponse):
+#                 return personCount
+#             placeCount = eval("t.countCollTags(request,placeParam)")
+#             if isinstance(placeCount,HttpResponse):
+#                 return placeCount
+#             dateCount = eval("t.countCollTags(request,dateParam)")
+#             if isinstance(dateCount,HttpResponse):
+#                 return dateCount
+#             abbrevCount = eval("t.countCollTags(request,abbrevParam)")
+#             if isinstance(abbrevCount,HttpResponse):
+#                 return abbrevCount
+#             otherCount = eval("t.countCollTags(request,otherParam)")
+#             if isinstance(otherCount,HttpResponse):
+#                 return otherCount
+#             
+#             tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
+#                 
+#             print(tagsString)
+#         
+#             collStat = eval("t.collStat(request, params3)")
+#             
+#             if 'nr_lines_transcribed' not in str(element.get('colName')):
+#                 element.update({'colName': str(element.get('colName'))+'<br/>nr_lines_transcribed: '+ str(collStat.get('nrOfTranscribedLines')) + '<br/>nr_words_transcribed: ' + str(collStat.get('nrOfWords'))}) 
+#                 
+#             if tagsString and 'Tags' not in str(element.get('colName')):
+#                 element.update({'colName': str(element.get('colName'))+tagsString}) 
+#===============================================================================
 
    #TODO pass back the error not the redirect and then process the error according to whether we have been called via ajax or not....
     if isinstance(data,HttpResponse):
@@ -319,7 +322,8 @@ def paged_data(request,list_name,params=None):#collId=None,docId=None):
 
     #NB dataTables uses length, transkribus nValues
     if 'nValues' not in params :
-        params['nValues'] = int(dt_params.get('length')) if dt_params.get('length') else settings.PAGE_SIZE_DEFAULT
+        params['nValues'] = int(dt_params.get('length')) if dt_params.get('length') else 0
+        #params['nValues'] = int(dt_params.get('length')) if dt_params.get('length') else settings.PAGE_SIZE_DEFAULT
 
 #    params['sortColumn'] = int(dt_params.get('length')) if dt_params.get('length') else None
 #    params['sortDirection'] = int(dt_params.get('start')) if dt_params.get('start') else None
@@ -369,19 +373,20 @@ def filter_data(fields, data) :
 #error pages (where not handled by modals)
 def error_view(request, response) : 
     t_log("Request %s, Response %s" % (request,response), logging.WARN)
-    message = error_switch(request,response.status_code)    
-    return render(request, 'error.html', {
-                'msg' : message,
-#                'back' : back,
-            })
+    return error_switch(request,response.status_code)
 
 def error_switch(request,x):
     return {
-        401: _('Transkribus session is unauthorised, you must <a href="'+request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path()))+'" class="alert-link">(re)log on to Transkribus-web</a>.'),
-        403: _('You are forbidden to request this data from Transkribus.'),
-        404: _('The requested Transkribus resource does not exist.'),
-        500: _('A Server error was reported by Transkribus.'),
-        503: _('Could not contact the Transkribus service, please try again later.'),
-    }.get(x,_('An unknown error was returned by Transkribus: ')+str(x))
+        401: HttpResponseRedirect(request.build_absolute_uri('/login?error=401')),
+        403: render(request, 'error.html', {
+		'msg' : error_message_switch(request,403) }),
+        404: render(request, 'error.html', {
+		'msg' : error_message_switch(404) }),
+        500: render(request, 'error.html', {
+		'msg' : error_message_switch(500) }),
+        503:render(request, 'error.html', {
+		'msg' : error_message_switch(503) }),
+    }.get(x, render(request, 'error.html', {
+		'msg' : error_message_switch(x) } ) )
 
 
