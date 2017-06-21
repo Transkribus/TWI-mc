@@ -88,8 +88,13 @@ function init_actions_table(){
         if($("#userid").data("userid")){
 		url += '/'+$("#userid").data("userid");
 	}
-//	console.log("ACTIONS URL: ",url);
+	
+	/* Whether or not display the username can be judjed by whrther or not there is any thing in context
+	 * No context suggests that we are looking at "My Activities and therefore do not need to display the username */
+	var show_username = true;
+	if(context === '') show_username = false;
 	var columns =  [
+		    { "data": "type" },
 		    { "data": "time",
 		      "render" : function(data, type, row){
 				if(data === "n/a") return data;
@@ -103,8 +108,7 @@ function init_actions_table(){
 		    { "data": "docName" },
 		    { "data": "pageId", "visible": false  },
 		    { "data": "pageNr" },
-		    { "data": "userName" },
-		    { "data": "type" }
+		    { "data": "userName", "visible": show_username }
         	];
 	return init_datatable($("#actions_table"),url,columns);
 }
