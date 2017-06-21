@@ -2,6 +2,7 @@ from django import template
 import re
 from .utils import t_log
 import logging
+import settings
 
 def appname(request):
     t_log("APPNAME: %s " % (request.resolver_match.app_name))
@@ -27,11 +28,16 @@ def nav_up(request):
     if re.search(r'library\/\d+\/\d+\/\d+$', request.path):
         return {'nav_up' : re.sub(r'\/\d+\/\d+$',"",request.path)}
     if re.search(r'edit\/correct\/\d+\/\d+\/\d+$', request.path):
-        return {'nav_up' : re.sub(r'edit\/correct(\/\d+\/\d+)\/\d+$',r'library\1',request.path)}
+#        return {'nav_up' : re.sub(r'edit\/correct(\/\d+\/\d+)\/\d+$',r'library\1',request.path)}
+#temp skip of doc page
+        return {'nav_up' : re.sub(r'edit\/correct(\/\d+)\/\d+\/\d+$',r'library\1',request.path)}
+
     if re.search(r'dashboard\/\d+\/u\/.+$', request.path):
         return {'nav_up' : re.sub(r'\/u\/.+$',"",request.path)}
 
     return {'nav_up': re.sub(r'\/[^\/]+$',"",request.path)}
 
+def version(request):
+    return {'version': settings.VERSION, 'milestone': settings.MILESTONE }
 
 

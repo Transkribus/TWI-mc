@@ -53,7 +53,7 @@ function init_datatable(table,url, columns){
 					//but with a message on the login page... somehow
 					window.location.href = make_url("/logout/?next="+window.location.pathname)
 				}else{
-					//otherwise motify user of the error 
+					//otherwise notify user of the error 
 					$.notify({
 						// options
 						message: "There was a problem communicating with Transkribus.<br/>Error code: "+xhr.status+ " : "+thrown,
@@ -126,9 +126,12 @@ function init_datatable(table,url, columns){
 
 	});
 	$(".table_filter").on("click", function(){
-		 datatable.columns( 5 )
-        	.search( this.value )
-        	.draw();
+		console.log("filter value: ",this.value);
+//		This search does not work now that all data is loaded to client
+//		Also changing the number of columns would need to be handled which it is not at present
+//		 datatable.columns( 5 ).search( this.value ).draw();
+//		This search will, but is not limited to column so there is a risk it will show rows where "title =~ /Save/" etc
+		 datatable.search( this.value ).draw();
 		return false;
 	});
 	$(table).on( 'draw.dt', function () {
@@ -177,28 +180,43 @@ function make_list(list_id,data){
 	});
 }
 function init_chart(canvas_id,url,chart_type){
-	console.log("url: ",url);
-	console.log("ccanvas: ",canvas_id);
+//	console.log("url: ",url);
+//	console.log("ccanvas: ",canvas_id);
 
+	//Collect date parameters from slider
+	var params = {"start_date": ($("#slider-range").slider("option", "values")[0]*1000),
+		"end_date":($("#slider-range").slider("option", "values")[1]*1000)};
 
 	$.ajax({
 	    'type': 'GET',
     	    'url': url,
-	  //  data: {length: length, start: start},
+	    'data': params,
             'dataType': 'json',
+	    "error": function (xhr, error, thrown) {
+			$(table.selector+'_processing').hide();
+			if(xhr.status == 401){ //unauthorised response from transkribus... we should forward to logout
+				//but with a message on the login page... somehow
+				window.location.href = make_url("/logout/?next="+window.location.pathname)
+			}else{
+				//otherwise notify user of the error 
+				$.notify({message: "There was a problem communicating with Transkribus.<br/>Error code: "+xhr.status+ " : "+thrown,},
+					{type: 'danger'});
+			}
+		},
             'success': function (data) {
 		data_cache[url] = data; //cache the cahrt data as it is generally much bigger
 
 		if(data.labels.length == 0 && data.datasets.length ==0){
-			console.log(data.labels,data.datasets)
+			//console.log(data.labels,data.datasets)
 			//TODO tigger panel so we can see a message
+			$.notify({message: "This chart appears to have no data."},
+					{type: 'warning'});
 			$("#"+canvas_id).html("No data available");
 		}
 		if(chart_type == 'bar')
 			Chart.defaults.global.legend.display = false;
 		else
 			Chart.defaults.global.legend.display = true;
-
 		charts[canvas_id] = new Chart(document.getElementById(canvas_id).getContext('2d'), {
 		    type: chart_type,
 		    data: data,
@@ -283,7 +301,7 @@ function get_thumbs(start,length){
 	var ids = parse_path();	
 	var url = make_url("/utils/table_ajax/pages/"+ids['collId']+'/'+ids['docId']);
 
-	console.log("get_thumbs, URL: ",url);
+//	console.log("get_thumbs, URL: ",url);
 
 	$.ajax({
 	    type: 'GET',
@@ -373,7 +391,7 @@ function parse_path(){
 	
 	var pattern = /\/\w+(|\/(\d+)(|\/(\d+)(|\/(\d+))))(|\/u\/.+)$/;
 	var result = pattern.exec(window.location.pathname);
-	console.log("pattern result " + result)
+//	console.log("pattern result " + result)
 	ids = {};
 	if(result != null && result[2]) ids['collId'] = result[2];
 	if(result != null && result[4]) ids['docId'] = result[4];
