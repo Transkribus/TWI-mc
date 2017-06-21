@@ -31,6 +31,7 @@ function make_url(url){
 function init_datatable(table,url, columns){
 	var datatable = table.DataTable({
 		"ordering": true,
+		"rowReorder": true,
 		"processing": true,
         "serverSide": false,
         "filter": true,
@@ -67,12 +68,21 @@ function init_datatable(table,url, columns){
 		"oLanguage": {
 			"sProcessing": 'Retrieving data from transkribus <span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
 		},
-		"dom": '<"top"f>rt<"bottom"lip><"clear">',
-		"length" : 5,
+		"dom": '<"top"fi>rt<"bottom"lp><"clear">',
+		"pageLength": 10,
 		"lengthMenu": [ 5, 10, 20, 50, 100 ],
 		//ordering should be handled server side
 		//"ordering": false,  //still not sure about this
 		"columns": columns,
+		"columnDefs": [
+				//negative value starts from the right 
+			   { orderable: false, targets: [0,-1] }
+		],
+		"columnDefs": [
+			    {width: "20%", targets: -1 },
+			    {searchable: false, orderable: false, targets: 0}
+	    ],
+	    "order": [[ 1, "desc" ]],
 		"createdRow": function ( row, data, index ) {
                 	$(row).addClass("clickable");
 			//make rows click through to wheresoever they have an id for (col,doc,page)
