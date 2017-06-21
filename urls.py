@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^([\-0-9]+)/(word|line|region|transcript|document)$', views.rand, name='rand'),
 
     url(r'^users/([\-0-9]+)/([0-9]+)$', views.users, name='users'),
-    url(r'^statistics/(?P<collId>[0-9]+)/(?P<docId>[0-9]+)$', views.document_statistics, name='document_statistics'),
+#RM don't have this view yet?
+#    url(r'^statistics/(?P<collId>[0-9]+)/(?P<docId>[0-9]+)$', views.document_statistics, name='document_statistics'),
 ]
