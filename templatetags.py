@@ -2,6 +2,7 @@ from django import template
 from django.template.defaulttags import register
 import datetime
 import settings
+from apps.utils.utils import error_message_switch
 
 #register = template.Library()
 @register.filter
@@ -48,3 +49,10 @@ def load_lib(lib):
     if settings.USE_CDNS and lib in settings.CDNS:
         return str(settings.CDNS.get(lib).get('cdn'))
     return str(settings.CDNS.get(lib).get('local'))
+
+@register.filter
+def login_error_message(code):
+    return error_message_switch(None,int(code))
+
+
+

@@ -8,7 +8,6 @@ from django.template.defaultfilters import linebreaksbr
 
 #Imports of django modules
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.utils.translation import ugettext_lazy as _
 
 from django.shortcuts import render
 from django.shortcuts import resolve_url
@@ -16,8 +15,9 @@ from django.shortcuts import resolve_url
 #from django.contrib.auth import authenticate, login
 from apps.utils.decorators import t_login_required_ajax
 from apps.utils.services import *
-from apps.utils.utils import t_log
+from apps.utils.utils import t_log, error_message_switch
 import logging
+
 
 from apps.querystring_parser.querystring_parser import parser
 
@@ -58,6 +58,7 @@ def register(request):
 
     #Recpatch errors are not properly dislpayed by bootstrap-form... hmph
     return render(request, 'registration/register.html', {'register_form': form} )
+
 
 @t_login_required_ajax
 def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
@@ -372,19 +373,20 @@ def filter_data(fields, data) :
 #error pages (where not handled by modals)
 def error_view(request, response) : 
     t_log("Request %s, Response %s" % (request,response), logging.WARN)
-    message = error_switch(request,response.status_code)    
-    return render(request, 'error.html', {
-                'msg' : message,
-#                'back' : back,
-            })
+    return error_switch(request,response.status_code)
 
 def error_switch(request,x):
     return {
-        401: _('Transkribus session is unauthorised, you must <a href="'+request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path()))+'" class="alert-link">(re)log on to Transkribus-web</a>.'),
-        403: _('You are forbidden to request this data from Transkribus.'),
-        404: _('The requested Transkribus resource does not exist.'),
-        500: _('A Server error was reported by Transkribus.'),
-        503: _('Could not contact the Transkribus service, please try again later.'),
-    }.get(x,_('An unknown error was returned by Transkribus: ')+str(x))
+        401: HttpResponseRedirect(request.build_absolute_uri('/login?error=401')),
+        403: render(request, 'error.html', {
+		'msg' : error_message_switch(request,403) }),
+        404: render(request, 'error.html', {
+		'msg' : error_message_switch(404) }),
+        500: render(request, 'error.html', {
+		'msg' : error_message_switch(500) }),
+        503:render(request, 'error.html', {
+		'msg' : error_message_switch(503) }),
+    }.get(x, render(request, 'error.html', {
+		'msg' : error_message_switch(x) } ) )
 
 
