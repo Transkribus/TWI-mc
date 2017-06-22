@@ -313,10 +313,13 @@ function init_chart_filters(){
 			a.hidden=null;
 		}
 		if($(this).attr("id") === "filter_clear"){ chart.update(); return;}
-
+		//this is now a string so we need to look it up...
+		action_type_lookup = {"Access Document" : 3, "Login": 1, "Save": 0, "Status Change": 2};
+		console.log($(this).val());
 		var n=parseInt($(this).val())-1;
 		for(x in chart.data.datasets){
-			if(n!=x){
+			console.log("chart x ",x);
+			if(action_type_lookup[$(this).val()]!=x){
 				var a=chart.getDatasetMeta(x);
 				a.hidden=null===a.hidden ?! chart.data.datasets[x].hidden : null;
 			}
