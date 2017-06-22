@@ -80,7 +80,7 @@ function init_datatable(table,url, columns){
 		],
 		"columnDefs": [
 			    {width: "20%", targets: -1 },
-			    {searchable: false, orderable: false, targets: 0}
+			    {searchable: false, orderable: false, targets: 1}
 	    ],
 	    "order": [[ 1, "desc" ]],
 		"createdRow": function ( row, data, index ) {
@@ -126,12 +126,8 @@ function init_datatable(table,url, columns){
 
 	});
 	$(".table_filter").on("click", function(){
-		console.log("filter value: ",this.value);
-//		This search does not work now that all data is loaded to client
-//		Also changing the number of columns would need to be handled which it is not at present
-//		 datatable.columns( 5 ).search( this.value ).draw();
-//		This search will, but is not limited to column so there is a risk it will show rows where "title =~ /Save/" etc
-		 datatable.search( this.value ).draw();
+
+		datatable.table("#actions_table").columns(0).search(this.value).draw();
 		return false;
 	});
 	$(table).on( 'draw.dt', function () {
@@ -193,7 +189,6 @@ function init_chart(canvas_id,url,chart_type){
 	    'data': params,
             'dataType': 'json',
 	    "error": function (xhr, error, thrown) {
-			$(table.selector+'_processing').hide();
 			if(xhr.status == 401){ //unauthorised response from transkribus... we should forward to logout
 				//but with a message on the login page... somehow
 				window.location.href = make_url("/logout/?next="+window.location.pathname)
