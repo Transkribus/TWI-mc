@@ -17,14 +17,13 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template.loader import render_to_string
 
+from apps.utils.decorators import t_login_required_ajax
 from apps.utils.utils import crop, t_metadata, t_log
 from apps.utils.services import *
 
 #Imports from app (library)
 import settings
 from apps.navigation import navigation
-
-import apps.library.settings
 
 #from .forms import RegisterForm, IngestMetsUrlForm, MetsFileForm, QuickIngestMetsUrlForm
 
@@ -41,7 +40,6 @@ def collections(request):
     collections = t.collections(request)
     if isinstance(collections,HttpResponse):
         return apps.utils.views.error_view(request,collections)
-
     return render(request, 'library/collections.html', {'collections': collections} )
 
 #/library/{colId}
@@ -69,20 +67,35 @@ def collection(request, collId):
     abbrevParam = {'collId': collId, 'tagName': 'abbrev'}
     otherParam = {'collId': collId, 'tagName': 'other'}
     personCount = eval("t.countCollTags(request,personParam)")
+    if isinstance(personCount,HttpResponse):
+        return apps.utils.views.error_view(request,personCount)
     placeCount = eval("t.countCollTags(request,placeParam)")
+    if isinstance(placeCount,HttpResponse):
+        return apps.utils.views.error_view(request,placeCount)
     dateCount = eval("t.countCollTags(request,dateParam)")
+    if isinstance(dateCount,HttpResponse):
+        return apps.utils.views.error_view(request,dateCount)
     abbrevCount = eval("t.countCollTags(request,abbrevParam)")
+    if isinstance(abbrevCount,HttpResponse):
+        return apps.utils.views.error_view(request,abbrevCount)
     otherCount = eval("t.countCollTags(request,otherParam)")
+    if isinstance(otherCount,HttpResponse):
+        return apps.utils.views.error_view(request,otherCount)
        
     tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
            
     print(tagsString)
    
     collStat = eval("t.collStat(request, collIdParam)")
+    if isinstance(collStat,HttpResponse):
+        return apps.utils.views.error_view(request,collStat)
     
-    collection['collStat'] = ('Lines transcribed: '+ str(collStat.get('nrOfTranscribedLines')) + ', Words transcribed: ' + str(collStat.get('nrOfWords')))
-    collection['tagsString'] = tagsString    
-    
+    if (collection):
+        print("print collection: " + str(collection))
+        collection['collStat'] = ('Lines transcribed: '+ str(collStat.get('nrOfTranscribedLines')) + ', Words transcribed: ' + str(collStat.get('nrOfWords')))
+        collection['tagsString'] = tagsString 
+
+    print("print navdata: "+str(navdata))
     pagedata = {'collection': collection}
     #merge the dictionaries
     combidata = pagedata.copy()
@@ -243,7 +256,43 @@ def document(request, collId, docId, page=None):
         'nav_next': nav['next'],
         'nav_prev': nav['prev'],
         })
+        
+        
     '''
+
+#Fetch a single thumb url from the document referenced
+def document_statistics(request, collId, docId):
+    import timeit
+    
+    t = request.user.tsdata.t
+    
+    idParam = {'collId': collId, 'docId': docId}
+    personParam = {'collId': collId, 'docId': docId, 'tagName': 'person'}
+    placeParam = {'collId': collId, 'docId': docId, 'tagName': 'place'}
+    dateParam = {'collId': collId, 'docId': docId, 'tagName': 'date'}
+    abbrevParam = {'collId': collId, 'docId': docId, 'tagName': 'abbrev'}
+    otherParam = {'collId': collId, 'docId': docId, 'tagName': 'other'}
+    personCount = eval("t.countDocTags(request,personParam)")
+    placeCount = eval("t.countDocTags(request,placeParam)")
+    dateCount = eval("t.countDocTags(request,dateParam)")
+    abbrevCount = eval("t.countDocTags(request,abbrevParam)")
+    otherCount = eval("t.countDocTags(request,otherParam)")
+             
+    tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
+     
+    docStat = eval("t.docStat(request, idParam)")
+    docStatString = ('Lines transcribed: '+ str(docStat.get('nrOfTranscribedLines')) + ', Words transcribed: ' + str(docStat.get('nrOfWords')))
+
+    #===========================================================================
+    # fulldoc = t.document(request, collId, docId,-1)
+    # if isinstance(fulldoc,HttpResponse):
+    #     return fulldoc
+    #===========================================================================
+
+    return JsonResponse({
+            'tagsString': tagsString,
+            'docStatString': docStatString
+        },safe=False)
 
 @login_required
 def document_page(request, collId, docId, page=None):
@@ -797,7 +846,7 @@ def users(request, collId, userId):
 
 def getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount):
     tagsString = ''
-    if personCount > 0 or placeCount>0 or dateCount>0 or abbrevCount>0 or otherCount>0:
+    if (personCount>0) or (placeCount>0) or (dateCount>0) or (abbrevCount>0) or (otherCount>0):
         tagsString += 'Tags: '
     if personCount > 0:
         tagsString += 'Persons (' + str(personCount) + '), '
@@ -810,4 +859,7 @@ def getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount):
     if otherCount > 0:
         tagsString += 'Others: (' + str(otherCount) + ')'
         
-    return tagsString
+    if (tagsString):
+        return tagsString
+    else:
+        return 'No Tags'
