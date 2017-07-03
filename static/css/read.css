@@ -221,3 +221,5 @@ fieldset[disabled] .btn-inverse.active {
       margin: 0 auto;
       width: 99%;
 }
+
+.read-container div.inner {padding: 5px;}
