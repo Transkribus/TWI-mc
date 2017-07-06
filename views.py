@@ -179,7 +179,7 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
     filters = {
                 'actions' : ['time', 'colId', 'colName', 'docId', 'docName', 'pageId', 'pageNr', 'userName', 'type'],
                 'collections' : ['colId', 'colName', 'description', 'role'],
-                'users' : ['userId', 'userName', 'firstname', 'lastname','email','affiliation','created','role'], #NB roles in userCollection
+                'users' : ['userId', 'userName', 'firstname', 'lastname','email','affiliation','created','userCollection.role'], #NB roles in userCollection
                 'documents' : ['docId','title', 'desc', 'author','uploadTimestamp','uploader','nrOfPages','language','status'],
 #               'pages' : ['pageId','pageNr','thumbUrl','status', 'nrOfTranscripts'], #tables
                 'pages' : ['pageId','pageNr','imgFileName','thumbUrl','status'], #thumbnails
@@ -366,7 +366,31 @@ def filter_data(fields, data) :
     for datum in data:
         filtered_datum = {}
         for field in fields :
-            filtered_datum[field] = datum.get(field) if datum.get(field) else "n/a" #TODO this will n/a 0!!
+            ### sub field extraction basically we use the notation field.sub_field and try to crack the 
+            ### sub_field value out of the field value which we assume is a dict or a list (with one thing in it)
+            ### currently only used for userCollection.role but could be useful for other things
+            if field.find(".") > -1 : #sub_field
+                parts = field.split(".")
+                #t_log("PARTS: %s" % parts, logging.WARN)
+                parent = parts[0]
+                sub_field = parts[1]
+                p_data = datum.get(parent)
+                #t_log("P_DATA: %s" % p_data, logging.WARN)
+                if isinstance(p_data,list) : #it's a list
+                    #t_log("Its a list", logging.WARN)
+                    pd_value = p_data[0].get(sub_field) #for now we get the first thing in the list but...
+                    #in time we may wish to do something like the below (the caveat being that we need something to match the list item we want)
+                    '''
+                    for pd in p_data :
+                        if pd.get(#the match id) == datum.get(#the match id) :
+                             pd_value = pd.get(sub_field)
+                    '''
+                elif isinstance(p_data,dict) :
+                    #t_log("Its a dict %s: %s" % (sub_field, p_data.get(sub_field)), logging.WARN)
+                    pd_value = p_data.get(sub_field)
+                filtered_datum[parent+"_"+sub_field] = pd_value if pd_value else "n/a" #TODO this will n/a 0!!
+            else : #normal fields processed as usual
+                filtered_datum[field] = datum.get(field) if datum.get(field) else "n/a" #TODO this will n/a 0!!
         filtered.append(filtered_datum)
 
     return filtered
