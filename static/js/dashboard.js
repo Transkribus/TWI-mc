@@ -139,7 +139,7 @@ function init_users_table(){
 				return date.toDateString();
 			},
 		    },
-		    { "data": "role" },
+		    { "data": "userCollection_role" },
         	];
 	return init_datatable($("#users_table"),url,columns);
 }
@@ -157,7 +157,7 @@ function init_collections_table(){
 			} 
 		    },
 		    { "data": "description" },
-		    { "data": "role" },
+		    { "data": "userCollection_role" },
         	];
 	init_datatable($("#collections_table"),url,columns);
 }
