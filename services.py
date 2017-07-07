@@ -112,7 +112,7 @@ class TranskribusSession(object):
                     return t_register_handler(r,handler_params)
     
             #otherwise you get logged out...
-            t_log("TRANSKRIBUS SAYS NO: %s (%s)" % (e.response.reason, e.response.status_code), logging.WARN)
+            t_log("TRANSKRIBUS SAYS NO: %s (%s) - request: %s" % (e.response.reason, e.response.status_code, url), logging.WARN)
 #            return HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
             return HttpResponse(e.response.reason, status=e.response.status_code)
     

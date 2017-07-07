@@ -34,8 +34,14 @@ def nav_up(request):
 
     if re.search(r'dashboard\/\d+\/u\/.+$', request.path):
         return {'nav_up' : re.sub(r'\/u\/.+$',"",request.path)}
+    
+    t_log("CONTEXT NAV_UP %s" % request.path, logging.WARN)
+    
+    nav_up = re.sub(r'\/[^\/]+$',"/",request.path)
+    if nav_up == request.path :
+        return {'nav_up': None}
 
-    return {'nav_up': re.sub(r'\/[^\/]+$',"",request.path)}
+    return {'nav_up': re.sub(r'\/[^\/]+$',"/",request.path)}
 
 def version(request):
     return {'version': settings.VERSION, 'milestone': settings.MILESTONE }
