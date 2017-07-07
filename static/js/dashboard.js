@@ -157,7 +157,7 @@ function init_collections_table(){
 			} 
 		    },
 		    { "data": "description" },
-		    { "data": "userCollection_role" },
+		    { "data": "role" },
         	];
 	init_datatable($("#collections_table"),url,columns);
 }
