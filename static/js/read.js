@@ -74,15 +74,14 @@ function init_datatable(table,url, columns){
 		//ordering should be handled server side
 		//"ordering": false,  //still not sure about this
 		"columns": columns,
-		"columnDefs": [
-				//negative value starts from the right 
-			   { orderable: false, targets: [0,-1] }
-		],
-		"columnDefs": [
-			    {width: "20%", targets: -1 },
-			    {searchable: false, orderable: false, targets: 1}
-	    ],
-	    "order": [[ 1, "desc" ]],
+/********************/
+/* RM:		These options should be defined in "columns" config passed in by caling functions, not set here as this will be applied to *all* data tables
+/********************/
+//		"columnDefs": [
+//			    {width: "20%", targets: -1 },
+//			    {searchable: false, orderable: false, targets: 1}
+//		    ],
+	        "order": [[ 1, "desc" ]],
 		"createdRow": function ( row, data, index ) {
                 	$(row).addClass("clickable");
 			//make rows click through to wheresoever they have an id for (col,doc,page)
