@@ -40,9 +40,9 @@ function init_collections_table(){
 		//		return '<a href="'+row.colId+'">'+data+'</a>';
 		//	} --> was after colName
 		    { "data" : null,
-		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>'}, 
+		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>', 
 		      "searchable": false, 
-		      "orderable": false
+		      "orderable": false},
 		    { "data": "colId" },
 		    { "data": "colName"},
 		    { "data": "description" },
