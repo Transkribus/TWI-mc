@@ -25,6 +25,7 @@ With approprate values (The last two may need to override/reset the defaults tha
 To set up and run (with the default django dev environment):
     
     python manage.py makemigrations
+    python manage.py makemigrations utils
     python manage.py migrate
     # possibly add python manage.py migrate utils
     python manage.py runserver [port]
