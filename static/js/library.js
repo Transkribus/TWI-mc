@@ -41,6 +41,8 @@ function init_collections_table(){
 		//	} --> was after colName
 		    { "data" : null,
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>'}, 
+		      "searchable": false, 
+		      "orderable": false
 		    { "data": "colId" },
 		    { "data": "colName"},
 		    { "data": "description" },
