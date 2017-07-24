@@ -44,6 +44,7 @@ function init_collections_table(){
 		    { "data": "colId" },
 		    { "data": "colName"},
 		    { "data": "description" },
+		    { "data": "nrOfDocuments" },
 		    { "data": "role" },
         	];
 	var datatable = init_datatable($("#collections_table"),url,columns);
@@ -70,7 +71,11 @@ function init_collections_table(){
 					row_data[rowInd].url = make_url("/utils/thumb/"+row_data[rowInd].collId);
 					row_data[rowInd].img_cell = this;
 					$.getJSON(row_data[rowInd].url, function(thumb_data){
-						$("td:eq(0)", row_data[rowInd].img_cell).html('<img src="'+thumb_data.url+'"/>');
+						if (thumb_data.url)
+							$("td:eq(0)", row_data[rowInd].img_cell).html('<img src="'+thumb_data.url+'"/>');
+						else{
+							$("td:eq(0)", row_data[rowInd].img_cell).html('No image available');
+						}
 					}).done(function(a,b) {
 					    console.log( "Done: ",a, " ",b );
 					}).fail(function( a, b){
