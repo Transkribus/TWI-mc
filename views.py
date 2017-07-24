@@ -25,6 +25,8 @@ from apps.utils.services import *
 import settings
 from apps.navigation import navigation
 
+import apps.library.settings
+
 #from .forms import RegisterForm, IngestMetsUrlForm, MetsFileForm, QuickIngestMetsUrlForm
 
 def index(request):
