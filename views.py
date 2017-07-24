@@ -23,6 +23,7 @@ from apps.utils.services import *
 
 #Imports from app (library)
 import settings
+import apps.library.settings
 from apps.navigation import navigation
 
 import apps.library.settings
