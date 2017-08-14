@@ -1,6 +1,11 @@
 {% extends "navi_base.html" %}
 {% load i18n %}
 
+{% block breadcrumb %}
+    <li><a href="{% url "index" %}">{% trans "My Collections" %}</a></li>
+    <li class="active">{{ collection.colName }} <small>{{ collection.colId }}</small></li>
+{% endblock %}
+
 {%comment%} TODO make this conditional on navigation app being present... somehow {%endcomment%}
 {% block content %}
     <!-- Page Content -->

@@ -4,9 +4,13 @@
 {% load staticfiles %}
 <link href="{% static "css/document.css" %}" rel="stylesheet"/>
 
+{% block breadcrumb %}
+    <li><a href="{% url "index" %}">{% trans "My Collections" %}</a></li>
+    <li><a href="{% url "library:collection" document.collection.colId %}">{{ document.collection.colName }} <small>{{ document.collection.colId }}</small></a></li>
+    <li class="active">{{ metadata.title }} <small>{{ metadata.docId }}</small></li>
+{% endblock %}
+
 {% block content %}
-
-
    <!-- Page Content -->
     <div class="container">
 
@@ -40,7 +44,7 @@
 	</ul>
       {% endif %}
 	<p>This document has {{ document.pageList.pages|length }} pages:</p>
-	
+
 	<ul class="nav nav-tabs">
   <li class="active"><a data-toggle="tab" href="#home">Show Thumbs</a></li>
   <li><a data-toggle="tab" href="#menu1">Show Image</a></li>
@@ -61,7 +65,7 @@
     <h3>Show Image and Text</h3>
     <p>Some content in menu 2.</p>
   </div>
-  <div id="menu3" class="tab-pane fade"> 
+  <div id="menu3" class="tab-pane fade">
   <p>This document has {{ textpages|length }} pages:</p>
   	{%for textregions in textpages%}
   	<p>This pages has {{ textregions|length }} text regions:</p>
@@ -85,7 +89,7 @@
 </div>
 
 
-	
+
 
 <!--	<table class="table table-striped">
 	   <thead>
