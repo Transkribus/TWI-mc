@@ -1,6 +1,10 @@
 {% extends "navi_base.html" %}
 {% load i18n %}
 
+{% block breadcrumb %}
+    <li class="active">{% trans "Dashboard" %}</li>
+{% endblock %}
+
 {% block content %}
 
 <div class="read-container container">
@@ -39,7 +43,7 @@
 	<div class="read-container container">
 
 		<div class="panel">
-		 
+
 		  <!-- Nav tabs -->
 		  <ul class="nav nav-tabs" role="tablist">
 		    <li role="presentation" class="active"><a href="#a_table" aria-controls="a_table" role="tab" data-toggle="tab">{% trans 'My activities' %}</a></li>
