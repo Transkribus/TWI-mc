@@ -59,7 +59,6 @@
 {%endcomment%}
        </ul>
        <ul class="nav navbar-nav navbar-right">
-	  {% include "navigation/nav_buttons.html" %}
 
 {%comment%}
 <!-- #TODO work out where set_language is relative to this....
@@ -112,13 +111,20 @@
 </nav>
 		<div id="page-content-wrapper"><!-- Page Content -->
 			<div class="container-fluid">
-        <div class="row">
-          <div class="col-lg-12" style="margin-top: 5px;">
-            <ol class="breadcrumb">
-              {% block breadcrumb %}{% endblock %}
-            </ol>
-          </div>
-        </div>
+
+		        <div class="row transkribus_nav_bar">
+				<div class="col-lg-12" style="margin-top: 5px;">
+					<div class="navbar-default">
+					  <ul class="nav navbar-nav navbar-right" style="margin-right: 10px;">
+						  {% include "navigation/nav_buttons.html" %}
+					  </ul>
+					    <ol class="breadcrumb">
+					      {% block breadcrumb %}{% endblock %}
+					    </ol>
+					</div>
+				</div>
+			</div>
+
 				<div class="row">
 					<div class="col-lg-12">
 						{% block content %}{% endblock %}
