@@ -393,6 +393,17 @@ function parse_path(){
 
 	return ids;
 }
+
+$(document).ready(function(){
+/*	$(".transkribus_nav_bar").hide();*/
+	var ids = parse_path();
+	if(ids.collId != undefined){
+		$(".transkribus_nav_bar").show();
+	}	
+});
+
+
+
 /* Collections */
 
 glyph_opts = {
