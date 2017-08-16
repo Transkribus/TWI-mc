@@ -21,3 +21,17 @@ a.link_disabled {cursor: default;}
 .cs-howto div.row {
 	margin-bottom: 2%;
 }
+
+.transkribus_nav_bar { display: none; }
+.breadcrumb_arrow {
+
+	width: 30px;
+	-webkit-transform :rotate(180deg) scaleX(-1);
+   	-moz-transform: rotate(180deg) scaleX(-1);
+    	-ms-transform: rotate(180deg) scaleX(-1);
+    	-o-transform: rotate(180deg) scaleX(-1);
+    	transform: rotate(180deg) scaleX(-1);
+	position: relative;
+	top: -7px;
+	margin-left: 50px;
+}
