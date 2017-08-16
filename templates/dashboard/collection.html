@@ -1,10 +1,14 @@
 {% extends "navi_base.html" %}
 {% load i18n %}
 
+
 {% block breadcrumb %}
-    <li><a href="{% url "dashboard:index" %}">{% trans "Dashboard" %}</a></li>
+<!--    <li><a href="{% url "index" %}">{% trans "My Collections" %}</a></li> -->
+    <li><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/482165-200.png" class="breadcrumb_arrow"/></li>
     <li class="active">{{ collection.colName }} <small>{{ collection.colId }}</small></li>
 {% endblock %}
+
+
 
 {% block content %}
 
@@ -44,7 +48,7 @@
 	<div class="read-container container">
 
 		<div class="panel">
-
+		 
 		  <!-- Nav tabs -->
 		  <ul class="nav nav-tabs" role="tablist">
 		    <li role="presentation" class="active"><a href="#a_table" aria-controls="home" role="tab" data-toggle="tab">{% trans 'Table' %}</a></li>

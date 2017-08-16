@@ -35,7 +35,7 @@ from apps.querystring_parser.querystring_parser import parser
 @login_required
 def index(request):
     t = request.user.tsdata.t
-
+    
     last_actions = t.actions(request,{'nValues' : 5,  'userid': request.user.tsdata.userId, 'typeId': 4 })
     if isinstance(last_actions,HttpResponse):
         return apps.utils.views.error_view(request,last_actions)
@@ -69,7 +69,7 @@ def index(request):
 @login_required
 def d_collection(request,collId):
     t = request.user.tsdata.t
-
+ 
     last_actions = t.actions(request,{'nValues' : 5, 'collId' : collId, 'userid': request.user.tsdata.userId, 'typeId': 4 })
     if isinstance(last_actions,HttpResponse):
         return apps.utils.views.error_view(request,last_actions)
@@ -151,6 +151,7 @@ def d_document(request,collId,docId):
             for col in doc.get('collectionList').get('colList'):
                 if(col.get('colId') == int(collId)):
                     up_content=col.get('colName')
+                    up_id=col.get('colId')
                     break
         else :
             prev=doc.get('docId')
@@ -162,11 +163,11 @@ def d_document(request,collId,docId):
 #    t_log("APP_NAME: %s" % (request.resolver_match.app_name))
 
     return render(request, 'dashboard/document.html', {'document': fulldoc.get('md'),
-                            'collection': fulldoc.get('collection'),
 							'last_actions': last_actions,
                                                         'action_types': action_types,
 							'nav_up_content': up_content,
-							'nav_next': next,
+							'nav_up_id': up_id,
+							'nav_next': next, 
 							'nav_next_content': next_content,
 							'nav_prev':prev,
 							'nav_prev_content': prev_content })
@@ -179,7 +180,7 @@ def d_user(request,collId,username):
     # If the logged in user is owner of collection collId then (and username is a member)
     # Then we get relevant data about that user+collection and make dashboard view
     t_log("##################### USERNAME: %s " % username, logging.WARN)
-
+    
     user = t.user(request,{'user' : username})
     if isinstance(user,HttpResponse):
         return apps.utils.views.error_view(request,user)
@@ -287,13 +288,13 @@ def top_bar(data,subject,label=None,chart_size=None):
         subject_value = datum.get(subject)
         if subject_value is None : continue
 
-        #we can maintain labels separate to subjects
+        #we can maintain labels separate to subjects 
         # (eg we can use colId to key/sort data and colName when displaying... protects agains duplicate colNames cumulating
         label_value = datum.get(label)
         if subject_value not in labels and label_value is not None:
             labels[subject_value] = label_value
         #use subject value in case there is no value for the label
-        if label_value is None:
+        if label_value is None: 
             labels[subject_value] = subject_value
 
         #accumulate the data
@@ -310,7 +311,7 @@ def top_bar(data,subject,label=None,chart_size=None):
     chart_label_ids=[]
     #This bit will retrun the index of the 5/chart_size subjects with the highest value in actions_data
     ind_arr = sorted(range(len(action_data)), key=lambda i: action_data[i], reverse=True)[:chart_size]
-    for ind in ind_arr :
+    for ind in ind_arr : 
         chart_data.append(action_data[ind])
         chart_labels.append(labels[key_data[ind]])
         chart_label_ids.append(key_data[ind])
@@ -318,7 +319,7 @@ def top_bar(data,subject,label=None,chart_size=None):
 
     #TODO dynamically process colours...
     return JsonResponse({
-            'labels': chart_labels,
+            'labels': chart_labels,	
 	    'label_ids': chart_label_ids,
             'datasets' : [{
 		 #      'label' : "Top users by activity",
@@ -345,7 +346,7 @@ def top_bar(data,subject,label=None,chart_size=None):
 #plot the (activites) data against time as a line
 #subject and label not used here (yet)
 def line(data,subject=None,label=None):
-
+    
     action_info = {
                   1 : {'label' : 'Save' ,'colour': 'rgba(255,99,132,1)'},
                   2 : {'label' : 'Login', 'colour': 'rgba(54, 162, 235, 1)'},
