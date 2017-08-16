@@ -2,7 +2,8 @@
 {% load i18n %}
 
 {% block breadcrumb %}
-    <li><a href="{% url "index" %}">{% trans "My Collections" %}</a></li>
+<!--    <li><a href="{% url "index" %}">{% trans "My Collections" %}</a></li> -->
+    <li><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/482165-200.png" class="breadcrumb_arrow"/></li>
     <li class="active">{{ collection.colName }} <small>{{ collection.colId }}</small></li>
 {% endblock %}
 
