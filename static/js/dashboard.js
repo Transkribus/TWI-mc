@@ -88,7 +88,13 @@ function init_actions_table(){
         if($("#userid").data("userid")){
 		url += '/'+$("#userid").data("userid");
 	}
+	/* Show and hide columns appropriate to the level of browsing */
+	var doc_vis = true;
+	var col_vis = true;
 	
+	if(ids.collId != undefined ) col_vis = false;
+	if(ids.docId != undefined ) doc_vis = false;
+
 	/* Whether or not display the username can be judjed by whrther or not there is any thing in context
 	 * No context suggests that we are looking at "My Activities and therefore do not need to display the username */
 	var show_username = true;
@@ -103,9 +109,9 @@ function init_actions_table(){
 			},
 		    },
 		    { "data": "colId", "visible": false },
-		    { "data": "colName" },
+		    { "data": "colName", "visible": col_vis },
 		    { "data": "docId", "visible": false  },
-		    { "data": "docName" },
+		    { "data": "docName", "visible": doc_vis },
 		    { "data": "pageId", "visible": false  },
 		    { "data": "pageNr" },
 		    { "data": "userName", "visible": show_username }
