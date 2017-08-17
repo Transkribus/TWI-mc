@@ -102,7 +102,9 @@ function init_documents_table(){
 	var columns =  [
 		    //This column will be for our image which we will not get from the table_ajax/document view
 		    { "data" : null, 
-		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>'}, 
+		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>', 
+		      "searchable": false, 
+		      "orderable": false},
 		    { "data": "docId" },
 		    { "data": "title" },
 		    { "data": "desc" },
@@ -110,7 +112,10 @@ function init_documents_table(){
 		    { "data": "nrOfPages" },
 		    { "data": "language" },
 		    { "data" : null, 
-		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>'},
+		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
+		      "searchable": false, 
+		      "orderable": false}
+
 		    //{ "data": "new_key" },//if we want to add a new column in this table
         	];
 
