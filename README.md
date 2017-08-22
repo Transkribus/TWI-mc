@@ -20,9 +20,9 @@ Make a file called `mc/settings/local.py` and add
     STATIC_URL = SERVERBASE+'/static/'
     ALLOWED_HOSTS = ['127.0.0.1'] #or your local/dev server
     
-    #To display the version string and link to the appropriate milestone set the following:
+    # To display the version string and link to the appropriate milestone set the following:
     VERSION = "My version String"
-    MILESTONE = "1" #or whatever milestone you are on/working to
+    MILESTONE = "1" # or whatever milestone you are on/working to
 
 With approprate values (The last two may need to override/reset the defaults that are `mc/settings/production.py`)
 
