@@ -2,6 +2,10 @@
  Transkribus Web Interfaces: My collections site (python project)
 
     git clone https://github.com/Transkribus/TWI-mc
+    cd TWI-mc
+    virtualenv -p /usr/bin/python3 .
+    source bin/activate
+    pip install -r requirements.txt
     git pull
     git submodule update --init
 
