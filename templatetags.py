@@ -2,7 +2,8 @@ from django import template
 from django.template.defaulttags import register
 import datetime
 import settings
-from apps.utils.utils import error_message_switch
+from apps.utils.utils import error_message_switch, t_log
+import logging # only for log levels
 
 #register = template.Library()
 @register.filter
@@ -54,5 +55,13 @@ def load_lib(lib):
 def login_error_message(code):
     return error_message_switch(None,int(code))
 
-
-
+#dates from transkribus are usually YYYY-MM-DD or similar YYYY-MM-DDTHH:MM:SS.SSS (2017-07-27T16:59:54.601)
+@register.filter
+def str_to_date(s):
+    try:
+        return datetime.datetime.strptime(s, "%Y-%m-%d").date()
+    except ValueError:
+        try:
+            return datetime.datetime.strptime(".".join(s.split('.')[:1]), "%Y-%m-%dT%H:%M:%S").date()
+        except ValueError:
+            return None
