@@ -9,6 +9,7 @@ try:
     from mc.settings.development import *
 except ImportError:
     pass
+
 ## LOCAL
 try:
     from mc.settings.local import *
