@@ -8,7 +8,6 @@ from django.template.defaultfilters import linebreaksbr
 
 #Imports of django modules
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.utils.translation import ugettext_lazy as _
 
 from django.shortcuts import render
 from django.shortcuts import resolve_url
@@ -16,8 +15,9 @@ from django.shortcuts import resolve_url
 #from django.contrib.auth import authenticate, login
 from apps.utils.decorators import t_login_required_ajax
 from apps.utils.services import *
-from apps.utils.utils import t_log
+from apps.utils.utils import t_log, error_message_switch
 import logging
+
 
 from apps.querystring_parser.querystring_parser import parser
 
@@ -58,6 +58,7 @@ def register(request):
 
     #Recpatch errors are not properly dislpayed by bootstrap-form... hmph
     return render(request, 'registration/register.html', {'register_form': form} )
+
 
 @t_login_required_ajax
 def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
@@ -178,7 +179,7 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
     filters = {
                 'actions' : ['time', 'colId', 'colName', 'docId', 'docName', 'pageId', 'pageNr', 'userName', 'type'],
                 'collections' : ['colId', 'colName', 'description', 'nrOfDocuments', 'role'],
-                'users' : ['userId', 'userName', 'firstname', 'lastname','email','affiliation','created','role'], #NB roles in userCollection
+                'users' : ['userId', 'userName', 'firstname', 'lastname','email','affiliation','created','userCollection.role'], #NB roles in userCollection
                 'documents' : ['docId','title', 'desc', 'author','uploadTimestamp','uploader','nrOfPages','language','status'],
 #               'pages' : ['pageId','pageNr','thumbUrl','status', 'nrOfTranscripts'], #tables
                 'pages' : ['pageId','pageNr','imgFileName','thumbUrl','status'], #thumbnails
@@ -365,26 +366,51 @@ def filter_data(fields, data) :
     for datum in data:
         filtered_datum = {}
         for field in fields :
-            filtered_datum[field] = datum.get(field) if datum.get(field) else "n/a" #TODO this will n/a 0!!
+            ### sub field extraction basically we use the notation field.sub_field and try to crack the 
+            ### sub_field value out of the field value which we assume is a dict or a list (with one thing in it)
+            ### currently only used for userCollection.role but could be useful for other things
+            if field.find(".") > -1 : #sub_field
+                parts = field.split(".")
+                #t_log("PARTS: %s" % parts, logging.WARN)
+                parent = parts[0]
+                sub_field = parts[1]
+                p_data = datum.get(parent)
+                #t_log("P_DATA: %s" % p_data, logging.WARN)
+                if isinstance(p_data,list) : #it's a list
+                    #t_log("Its a list", logging.WARN)
+                    pd_value = p_data[0].get(sub_field) #for now we get the first thing in the list but...
+                    #in time we may wish to do something like the below (the caveat being that we need something to match the list item we want)
+                    '''
+                    for pd in p_data :
+                        if pd.get(#the match id) == datum.get(#the match id) :
+                             pd_value = pd.get(sub_field)
+                    '''
+                elif isinstance(p_data,dict) :
+                    #t_log("Its a dict %s: %s" % (sub_field, p_data.get(sub_field)), logging.WARN)
+                    pd_value = p_data.get(sub_field)
+                filtered_datum[parent+"_"+sub_field] = pd_value if pd_value else "n/a" #TODO this will n/a 0!!
+            else : #normal fields processed as usual
+                filtered_datum[field] = datum.get(field) if datum.get(field) else "n/a" #TODO this will n/a 0!!
         filtered.append(filtered_datum)
 
     return filtered
 #error pages (where not handled by modals)
 def error_view(request, response) : 
     t_log("Request %s, Response %s" % (request,response), logging.WARN)
-    message = error_switch(request,response.status_code)    
-    return render(request, 'error.html', {
-                'msg' : message,
-#                'back' : back,
-            })
+    return error_switch(request,response.status_code)
 
 def error_switch(request,x):
     return {
-        401: _('Transkribus session is unauthorised, you must <a href="'+request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path()))+'" class="alert-link">(re)log on to Transkribus-web</a>.'),
-        403: _('You are forbidden to request this data from Transkribus.'),
-        404: _('The requested Transkribus resource does not exist.'),
-        500: _('A Server error was reported by Transkribus.'),
-        503: _('Could not contact the Transkribus service, please try again later.'),
-    }.get(x,_('An unknown error was returned by Transkribus: ')+str(x))
+        401: HttpResponseRedirect(request.build_absolute_uri('/login?error=401')),
+        403: render(request, 'error.html', {
+		'msg' : error_message_switch(request,403) }),
+        404: render(request, 'error.html', {
+		'msg' : error_message_switch(404) }),
+        500: render(request, 'error.html', {
+		'msg' : error_message_switch(500) }),
+        503:render(request, 'error.html', {
+		'msg' : error_message_switch(503) }),
+    }.get(x, render(request, 'error.html', {
+		'msg' : error_message_switch(x) } ) )
 
 
