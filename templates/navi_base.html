@@ -25,9 +25,11 @@
         <li {%ifequal urlname "user_guide" %}class="active"{%endifequal%}>
           <a href="{% url 'user_guide' %}">{% trans "User Guide" %}</a>
         </li>
+{%comment%}
           <li {%ifequal appname "dashboard" %}class="active"{%endifequal%}>
             <a href="{% url 'dashboard:index' %}">{% trans "Dashboard"%}</a>
           </li>
+{%endcomment%}
  {%comment%}
  Removing as "my collections" above is an equivalent link that make s more sense
        <li {%ifequal appname "library" %}class="active"{%endifequal%}>
