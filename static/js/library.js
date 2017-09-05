@@ -46,8 +46,9 @@ function init_collections_table(){
 		    { "data": "colId" },
 		    { "data": "colName"},
 		    { "data": "description" },
-       /* nrOfDOcument has disappeared from the data for some reason... until it found render this field as empty to stop warnings */
-                    { /*"data": "nrOfDocuments",*/ "data": null, "defaultContent": '<span></span>'},
+		    { "data": "nrOfDocuments" },
+       /* nrOfDOcument has disappeared from the data for some reason... until it found render this field as empty to stop warnings
+                    { "data": "nrOfDocuments", "data": null, "defaultContent": '<span></span>'},*/
 		    { "data": "role" },
         	];
 	var datatable = init_datatable($("#collections_table"),url,columns);
