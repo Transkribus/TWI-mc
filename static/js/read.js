@@ -100,12 +100,12 @@ function init_datatable(table,url, columns){
 				if(data.docId != undefined && data.docId !== "n/a"){
 					url += '/'+data.docId;
 					if (appbase.includes("library")){
-						appbase = appbase.replace("library", "edit/correct")
+						appbase = appbase.replace("library", "view")
 						url += '/'+1;
 					}
 				}
 				if(data.pageNr != undefined && data.pageNr !== "n/a"){ //NB will break until we use base url
-					url = serverbase+'/edit/correct/'+data.colId+'/'+data.docId+'/'+data.pageNr;	
+					url = serverbase+'/view/'+data.colId+'/'+data.docId+'/'+data.pageNr;	
 					if(serverbase !== "") url = '/'+url;
 				 	window.location.href=url;
 					return false;
