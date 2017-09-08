@@ -44,8 +44,7 @@ function init_collections_table(){
 		      "searchable": false, 
 		      "orderable": false},
 		    { "data": "colId" },
-		    { "data": "colName"},
-		    { "data": "description" },
+		    { "data": null },
 		    { "data": "nrOfDocuments" },
        /* nrOfDOcument has disappeared from the data for some reason... until it found render this field as empty to stop warnings
                     { "data": "nrOfDocuments", "data": null, "defaultContent": '<span></span>'},*/
@@ -73,6 +72,8 @@ function init_collections_table(){
 					//console.log(datatable.cell(rowInd,0).data().colId);
 					//row_data[rowInd].collId = datatable.cell(rowInd,0).data().colId;
 					row_data[rowInd].url = make_url("/utils/thumb/"+row_data[rowInd].collId);
+					row_data[rowInd].collStat = make_url("/library/coll_statistics/"+row_data[rowInd].collId);
+
 					row_data[rowInd].img_cell = this;
 					$.getJSON(row_data[rowInd].url, function(thumb_data){
 						if (thumb_data.url)
@@ -80,6 +81,16 @@ function init_collections_table(){
 						else{
 							$("td:eq(0)", row_data[rowInd].img_cell).html('No image available');
 						}
+					}).done(function(a,b) {
+					    console.log( "Done: ",a, " ",b );
+					}).fail(function( a, b){
+					    console.log( "Fail: ",a, " ",b );
+					});
+
+					row_data[rowInd].collStat = make_url("/library/coll_statistics/"+row_data[rowInd].collId);
+					$.getJSON(row_data[rowInd].collStat, function(stat_data){
+						$("td:eq(2)", row_data[rowInd].img_cell).html(stat_data.titleDesc);
+						shorten_text("long_text_" + row_data[rowInd].collId);
 					}).done(function(a,b) {
 					    console.log( "Done: ",a, " ",b );
 					}).fail(function( a, b){
@@ -108,16 +119,17 @@ function init_documents_table(){
 		      "searchable": false, 
 		      "orderable": false},
 		    { "data": "docId" },
-		    { "data": "title" },
-		    { "data": "desc" },
-		    { "data": "author" },
-		    { "data": "nrOfPages" },
-		    { "data": "language" },
+		    { "data": null },
 		    { "data" : null, 
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
 		      "searchable": false, 
+		      "orderable": false},
+		    { "data": "nrOfPages",
+		      "searchable": false },
+		    { "data" : null, 
+		      "searchable": false, 
 		      "orderable": false}
-
+		    
 		    //{ "data": "new_key" },//if we want to add a new column in this table
         	];
 
@@ -150,7 +162,6 @@ function init_documents_table(){
 					console.log( "TestAusgabe docId: ", row_data[rowInd].docId);
 					
 					row_data[rowInd].url = make_url("/utils/thumb/"+ids['collId']+'/'+row_data[rowInd].docId);
-					row_data[rowInd].stats = make_url("/library/statistics/"+ids['collId']+'/'+row_data[rowInd].docId);
 					row_data[rowInd].img_cell = this;
 					$.getJSON(row_data[rowInd].url, function(thumb_data){
 						$("td:eq(0)", row_data[rowInd].img_cell).html('<img src="'+thumb_data.url+'"/>');
@@ -159,13 +170,19 @@ function init_documents_table(){
 					}).fail(function( a, b){
 					    console.log( "Fail: ",a, " ",b );
 					});
+
+					row_data[rowInd].stats = make_url("/library/statistics/"+ids['collId']+'/'+row_data[rowInd].docId);
 					$.getJSON(row_data[rowInd].stats, function(stat_data){
-						$("td:eq(7)", row_data[rowInd].img_cell).html('<p>"'+stat_data.docStatString+'"</p><p>"'+stat_data.tagsString+'"</p>');
+						$("td:eq(2)", row_data[rowInd].img_cell).html(stat_data.titleDesc);
+						$("td:eq(3)", row_data[rowInd].img_cell).html(stat_data.statString);
+						$("td:eq(5)", row_data[rowInd].img_cell).html(stat_data.viewLinks);
+
+						shorten_text("long_text_" + row_data[rowInd].docId);
 					}).done(function(a,b) {
 					    console.log( "Done: ",a, " ",b );
 					}).fail(function( a, b){
 					    console.log( "Fail: ",a, " ",b );
-					});	
+					});
 			    }
 		    });
 		});
@@ -225,3 +242,25 @@ function init_pages_thumbs(){
 
 }
 
+function shorten_text(element_id) {
+	$('#'+element_id).each(function(event){ /* select all divs with the item class */
+		var max_length = 150; /* set the max content length before a read more link will be added */
+		
+		if($(this).html().length > max_length){ /* check for content length */
+			var short_content 	= $(this).html().substr(0,max_length); /* split the content in two parts */
+			var long_content	= $(this).html().substr(max_length);
+			
+			$(this).html(short_content+
+						 '<a href="#" class="read_more"><br/>More...</a>'+
+						 '<span class="more_text" style="display:none;">'+long_content+'</span>'); /* Alter the html to allow the read more functionality */
+						 
+			$(this).find('a.read_more').click(function(event){ /* find the a.read_more element within the new html and bind the following code to it */
+ 				alert('hallo');
+
+				event.stopPropagation(); /* prevent the a from changing the url */
+				$(this).hide(); /* hide the read more button */
+				$(this).parents('#'+element_id).find('.more_text').show(); /* show the .more_text span */
+			});
+		}
+	});
+};

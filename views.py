@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 
 from apps.utils.decorators import t_login_required_ajax
@@ -263,6 +264,25 @@ def document(request, collId, docId, page=None):
         
     '''
 
+def _get_collection(document, collId):
+    for collection in document['collectionList']['colList']:
+        if int(collection['colId']) == int(collId):
+            return collection
+
+
+def collection_statistics(request, collId):
+    t = request.user.tsdata.t
+    collections = t.collection(request, {'collId': collId})
+    collection = _get_collection(collections[0], collId)
+
+    title_desc = ''
+    title_desc += '<p><b>%s</b></p>' % collection['colName']
+    if 'description' in collection:
+        title_desc += '<p id="long_text_%s">%s</p>' % (collId, collection['description'])
+
+    return JsonResponse({'titleDesc': title_desc}, safe=False)
+
+
 #Fetch a single thumb url from the document referenced
 def document_statistics(request, collId, docId):
     import timeit
@@ -284,17 +304,29 @@ def document_statistics(request, collId, docId):
     tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
      
     docStat = eval("t.docStat(request, idParam)")
-    docStatString = ('Lines transcribed: '+ str(docStat.get('nrOfTranscribedLines')) + ', Words transcribed: ' + str(docStat.get('nrOfWords')))
+    docStatString = '%i lines, %i words' % (docStat.get('nrOfTranscribedLines'), docStat.get('nrOfWords'))
+    view_links = '<div class="btn-group-vertical" role="group">'
+    view_links += '<a class="btn btn-default" href="%s?view=i">Image</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a class="btn btn-default" href="%s?view=lbl">Line by line</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a class="btn btn-default disabled" href="%s?view=sbs">Side by side</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a class="btn btn-default disabled" href="%s?view=t">Text</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '</div>'
 
-    #===========================================================================
-    # fulldoc = t.document(request, collId, docId,-1)
-    # if isinstance(fulldoc,HttpResponse):
-    #     return fulldoc
-    #===========================================================================
+    fulldoc = t.document(request, collId, docId,-1)
+
+    title_desc = ''
+    title_desc += '<p><b>%s</b></p>' % fulldoc['md']['title']
+    if 'desc' in fulldoc['md']:
+        title_desc += '<p id="long_text_%s">%s</p>' % (docId, fulldoc['md']['desc'])
+
+    stat_string = ''
+    stat_string += '<p>%s</p>' % docStatString
+    stat_string += '<p>%s</p>' % tagsString
 
     return JsonResponse({
-            'tagsString': tagsString,
-            'docStatString': docStatString
+            'statString': stat_string,
+            'titleDesc': title_desc,
+            'viewLinks': view_links
         },safe=False)
 
 @login_required
@@ -851,15 +883,15 @@ def getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount):
     if (personCount>0) or (placeCount>0) or (dateCount>0) or (abbrevCount>0) or (otherCount>0):
         tagsStringParts = []
         if personCount > 0:
-            tagsStringParts += '%i persons' % personCount
+            tagsStringParts += ['%i persons' % personCount]
         if placeCount > 0:
-            tagsStringParts += '%i places' % placeCount
+            tagsStringParts += ['%i places' % placeCount]
         if dateCount > 0:
-            tagsStringParts += '%i dates' % dateCount
+            tagsStringParts += ['%i dates' % dateCount]
         if abbrevCount > 0:
-            tagsStringParts += '%i abbrevs ' % abbrevCount
+            tagsStringParts += ['%i abbrevs ' % abbrevCount]
         if otherCount > 0:
-            tagsStringParts += '%i others' % otherCount
+            tagsStringParts += ['%i others' % otherCount]
 
         return 'Tags: ' + ', '.join(tagsStringParts)
     else:
