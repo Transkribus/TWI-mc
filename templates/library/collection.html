@@ -2,9 +2,11 @@
 {% load i18n %}
 
 {% block breadcrumb %}
-<!--    <li><a href="{% url "index" %}">{% trans "My Collections" %}</a></li> -->
-    <li><img src="https://d30y9cdsu7xlg0.cloudfront.net/png/482165-200.png" class="breadcrumb_arrow"/></li>
-    <li class="active">{{ collection.colName }} <small>{{ collection.colId }}</small></li>
+    <li class="dropdown" id="dropdown">
+        <a href="/library" class="dropdown-toggle navbar-brand" data-toggle="dropdown">{% trans "My Collections" %}</a>
+    </li>
+    
+    <a class="navbar-brand"><b>/ {{ collection.colName }} <small>{{ collection.colId }}</small></b></a>
 {% endblock %}
 
 {%comment%} TODO make this conditional on navigation app being present... somehow {%endcomment%}
