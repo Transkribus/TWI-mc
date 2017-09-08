@@ -95,7 +95,7 @@ def collection(request, collId):
     
     if (collection):
         print("print collection: " + str(collection))
-        collection['collStat'] = ('Lines transcribed: '+ str(collStat.get('nrOfTranscribedLines')) + ', Words transcribed: ' + str(collStat.get('nrOfWords')))
+        collection['collStat'] = '%i words' % collStat.get('nrOfWords')
         collection['tagsString'] = tagsString 
 
     print("print navdata: "+str(navdata))
@@ -848,21 +848,19 @@ def users(request, collId, userId):
     return render(request, 'library/users.html')
 
 def getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount):
-    tagsString = ''
     if (personCount>0) or (placeCount>0) or (dateCount>0) or (abbrevCount>0) or (otherCount>0):
-        tagsString += 'Tags: '
-    if personCount > 0:
-        tagsString += 'Persons (' + str(personCount) + '), '
-    if placeCount > 0:
-        tagsString += 'Places (' + str(placeCount) + '), '
-    if dateCount > 0:
-        tagsString += 'Dates (' + str(dateCount) + '), '
-    if abbrevCount > 0:
-        tagsString += 'Abbrevs: (' + str(abbrevCount) + '), '
-    if otherCount > 0:
-        tagsString += 'Others: (' + str(otherCount) + ')'
-        
-    if (tagsString):
-        return tagsString
+        tagsStringParts = []
+        if personCount > 0:
+            tagsStringParts += '%i persons' % personCount
+        if placeCount > 0:
+            tagsStringParts += '%i places' % placeCount
+        if dateCount > 0:
+            tagsStringParts += '%i dates' % dateCount
+        if abbrevCount > 0:
+            tagsStringParts += '%i abbrevs ' % abbrevCount
+        if otherCount > 0:
+            tagsStringParts += '%i others' % otherCount
+
+        return 'Tags: ' + ', '.join(tagsStringParts)
     else:
         return 'No Tags'
