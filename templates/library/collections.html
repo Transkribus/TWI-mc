@@ -2,26 +2,17 @@
 {% load i18n %}
 
 {% block breadcrumb %}
-    <li class="active">{% trans "My Collections" %}</li>
+    <a href="/library" class="dropdown-toggle navbar-brand" data-toggle="dropdown">{% trans "My Collections" %}</a>
 {% endblock %}
 
 {% block content %}
 
-
-    <!-- Page Content -->
-    <div class="container">
-
-        <!-- row 1 -->
-<!--         <div class="row">
-            <div class="col-lg-10">
-                <h1 class="page-header">
-                    {% trans "Collections Browse" %}
-                </h1>
-	    </div> -->
-            <div class="col-md-8">
-	   {% include "library/collections_table.html" with collections=collections %}
+    <!-- remove class read-container to center content -->
+    <div class="read-container container">
+        <div class="col-lg-8">
+            <div class="container">
+               {% include "library/collections_table.html" with collections=collections %}
             </div>
-
         </div>
-     </div>
+    </div>
 {% endblock %}

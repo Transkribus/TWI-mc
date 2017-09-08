@@ -2,25 +2,15 @@
 {% load i18n %}
 
 {% block breadcrumb %}
-    <li class="dropdown" id="dropdown">
-        <a href="/library" class="dropdown-toggle navbar-brand" data-toggle="dropdown">{% trans "My Collections" %}</a>
-    </li>
-    
+    <a href="/library" class="dropdown-toggle navbar-brand" data-toggle="dropdown">{% trans "My Collections" %}</a>
     <a class="navbar-brand"><b>/ {{ collection.colName }} <small>{{ collection.colId }}</small></b></a>
 {% endblock %}
 
 {%comment%} TODO make this conditional on navigation app being present... somehow {%endcomment%}
 {% block content %}
-    <!-- Page Content -->
-    <div class="read-container container">
 
-        <!-- row 1 -->
-<!--         <div class="row">
-            <div class="col-lg-10">
-                <h1 class="page-header">
-                    {% trans 'Collection' %}: {{collection.colName}} ({%trans 'ID'%}: {{collection.colId}})
-                </h1>
-	    	</div> -->
+    <!-- remove class read-container to center content -->
+    <div class="read-container container">
 		<div class="col-lg-8">
 			<div class="container">
 
