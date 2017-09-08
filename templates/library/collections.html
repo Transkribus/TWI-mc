@@ -2,7 +2,9 @@
 {% load i18n %}
 
 {% block breadcrumb %}
-    <a href="/library" class="navbar-brand">{% trans "My Collections" %}</a>
+    <li class="dropdown" id="dropdown">
+        <a href="{% url "index" %}" class="dropdown-toggle navbar-brand" data-toggle="dropdown">{% trans "My Collections" %}</a>
+    </li> 
 {% endblock %}
 
 {% block content %}
