@@ -32,4 +32,6 @@ To set up and run (with the default django dev environment):
     python manage.py makemigrations utils
     python manage.py migrate
     # possibly add python manage.py migrate utils
+    python manage.py collectstatic
     python manage.py runserver [port]
+    
