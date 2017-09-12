@@ -306,10 +306,10 @@ def document_statistics(request, collId, docId):
     docStat = eval("t.docStat(request, idParam)")
     docStatString = '%i lines, %i words' % (docStat.get('nrOfTranscribedLines'), docStat.get('nrOfWords'))
     view_links = '<div class="btn-group-vertical" role="group">'
-    view_links += '<a class="btn btn-default" href="%s?view=i">Image</a>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<a class="btn btn-default" href="%s?view=lbl">Line by line</a>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<a class="btn btn-default disabled" href="%s?view=sbs">Side by side</a>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<a class="btn btn-default disabled" href="%s?view=t">Text</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a style="border-width: 0px; border-radius: 0px" class="btn btn-default" href="%s?view=i">Image</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a style="border-width: 0px; border-radius: 0px" class="btn btn-default" href="%s?view=lbl">Line by line</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a style="border-width: 0px; border-radius: 0px" class="btn btn-default disabled" href="%s?view=sbs">Side by side</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a style="border-width: 0px; border-radius: 0px" class="btn btn-default disabled" href="%s?view=t">Text</a>' % reverse('edit:correct', args=[collId, docId, 1])
     view_links += '</div>'
 
     fulldoc = t.document(request, collId, docId,-1)
