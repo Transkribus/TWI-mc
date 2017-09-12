@@ -1,10 +1,15 @@
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 nav#ts-top-nav { margin-bottom: 0px; }
 
 .subnav {
   margin:0;
   top: 0px;
   z-index: 1020;
-  background-color: rgb(247,247,247); 
+  background-color: rgb(247,247,247);
   border-bottom: 1px solid #E1E1E1;
   padding: 0px 0px 0px 0px;
 }
@@ -118,51 +123,51 @@ h1.page-header { margin-top: 5px; }
 .panel-heading h4 {margin-top: 0; margin-bottom:5px;}
 
 /* black buttons */
-.btn-inverse { 
-  color: #fff; 
-  background-color: #000; 
-  border-color: #130269; 
-} 
- 
-.btn-inverse:hover, 
-.btn-inverse:focus, 
-.btn-inverse:active, 
-.btn-inverse.active, 
-.open .dropdown-toggle.btn-inverse { 
-  color: #ffffff; 
+.btn-inverse {
+  color: #fff;
+  background-color: #000;
+  border-color: #130269;
+}
+
+.btn-inverse:hover,
+.btn-inverse:focus,
+.btn-inverse:active,
+.btn-inverse.active,
+.open .dropdown-toggle.btn-inverse {
+  color: #ffffff;
 /*  background-color: #49247A;*/
   background-color: #111A75;
-  border-color: #130269; 
-} 
- 
-.btn-inverse:active, 
-.btn-inverse.active, 
-.open .dropdown-toggle.btn-inverse { 
-  background-image: none; 
-} 
- 
-.btn-inverse.disabled, 
-.btn-inverse[disabled], 
-fieldset[disabled] .btn-inverse, 
-.btn-inverse.disabled:hover, 
-.btn-inverse[disabled]:hover, 
-fieldset[disabled] .btn-inverse:hover, 
-.btn-inverse.disabled:focus, 
-.btn-inverse[disabled]:focus, 
-fieldset[disabled] .btn-inverse:focus, 
-.btn-inverse.disabled:active, 
-.btn-inverse[disabled]:active, 
-fieldset[disabled] .btn-inverse:active, 
-.btn-inverse.disabled.active, 
-.btn-inverse[disabled].active, 
-fieldset[disabled] .btn-inverse.active { 
-  background-color: #000; 
-  border-color: #130269; 
-} 
- 
-.btn-inverse .badge { 
-  color: #000; 
-  background-color: #ffffff; 
+  border-color: #130269;
+}
+
+.btn-inverse:active,
+.btn-inverse.active,
+.open .dropdown-toggle.btn-inverse {
+  background-image: none;
+}
+
+.btn-inverse.disabled,
+.btn-inverse[disabled],
+fieldset[disabled] .btn-inverse,
+.btn-inverse.disabled:hover,
+.btn-inverse[disabled]:hover,
+fieldset[disabled] .btn-inverse:hover,
+.btn-inverse.disabled:focus,
+.btn-inverse[disabled]:focus,
+fieldset[disabled] .btn-inverse:focus,
+.btn-inverse.disabled:active,
+.btn-inverse[disabled]:active,
+fieldset[disabled] .btn-inverse:active,
+.btn-inverse.disabled.active,
+.btn-inverse[disabled].active,
+fieldset[disabled] .btn-inverse.active {
+  background-color: #000;
+  border-color: #130269;
+}
+
+.btn-inverse .badge {
+  color: #000;
+  background-color: #ffffff;
 }
 
 /* collection */
