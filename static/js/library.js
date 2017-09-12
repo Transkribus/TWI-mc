@@ -67,18 +67,17 @@ function init_collections_table(){
 					 
 					row_data[rowInd] = {} ;
 					row_data[rowInd].collId = currRow.data().colId;
-					console.log( "TestAusgabe docId: ", row_data[rowInd].collId);
-			
-					//console.log(datatable.cell(rowInd,0).data().colId);
-					//row_data[rowInd].collId = datatable.cell(rowInd,0).data().colId;
 					row_data[rowInd].url = make_url("/utils/thumb/"+row_data[rowInd].collId);
 					row_data[rowInd].collStat = make_url("/library/coll_statistics/"+row_data[rowInd].collId);
 
 					row_data[rowInd].img_cell = this;
 					$.getJSON(row_data[rowInd].url, function(thumb_data){
-						if (thumb_data.url)
-							$("td:eq(0)", row_data[rowInd].img_cell).html('<img src="'+thumb_data.url+'"/>');
-						else{
+						if (thumb_data.url){
+							thumb = loadThumbs(thumb_data.url);
+							$("td:eq(0)", row_data[rowInd].img_cell).empty();
+							$("td:eq(0)", row_data[rowInd].img_cell).append(thumb);
+							$("td:eq(0)", row_data[rowInd].img_cell).addClass('text-center');
+						}else{
 							$("td:eq(0)", row_data[rowInd].img_cell).html('No image available');
 						}
 					}).done(function(a,b) {
@@ -159,12 +158,13 @@ function init_documents_table(){
 		    				 
 					row_data[rowInd] = {} ;
 					row_data[rowInd].docId = currRow.data().docId;
-					console.log( "TestAusgabe docId: ", row_data[rowInd].docId);
-					
 					row_data[rowInd].url = make_url("/utils/thumb/"+ids['collId']+'/'+row_data[rowInd].docId);
 					row_data[rowInd].img_cell = this;
 					$.getJSON(row_data[rowInd].url, function(thumb_data){
-						$("td:eq(0)", row_data[rowInd].img_cell).html('<img src="'+thumb_data.url+'"/>');
+						thumb = loadThumbs(thumb_data.url);
+						$("td:eq(0)", row_data[rowInd].img_cell).empty();
+						$("td:eq(0)", row_data[rowInd].img_cell).append(thumb);
+						$("td:eq(0)", row_data[rowInd].img_cell).addClass('text-center');
 					}).done(function(a,b) {
 					    console.log( "Done: ",a, " ",b );
 					}).fail(function( a, b){
@@ -262,3 +262,28 @@ function shorten_text(element_id) {
 		}
 	});
 };
+
+// $('.automatic_resize').one('load', function() {
+// 	// alert('o_O'):
+//   // console.log($(this).width);
+// }).each(function() {
+//   if(this.complete) $(this).load();
+// });
+function loadThumbs(url) { // Loads all thumbs and shows the ones which are visible as soon as they've been loaded
+	tempImg = new Image();
+	tempImg.src = url;
+	tempImg.onload = function() {
+		// alert(tempImg);
+		// alert(tempImg.clientWidth);
+		if(this.clientWidth > this.clientHeight)
+		{
+			this.width  = 120;
+			this.height = 90;
+		}else{
+			this.width  = 90;
+			this.height = 120;
+		}
+	};
+	return tempImg;
+}
+
