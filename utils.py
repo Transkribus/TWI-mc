@@ -109,9 +109,6 @@ def get_role(request,collId) :
     t = request.user.tsdata.t
 
     collections = t.collections(request)
-    if isinstance(collections,HttpResponse):
-        return apps.utils.views.error_view(request,collections)
-
     for collection in collections:
         if collection.get('colId') == int(collId) :
              return collection.get('role')
