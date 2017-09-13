@@ -39,12 +39,11 @@ function init_collections_table(){
 	     // "render" : function(data, type, row){
 		//		return '<a href="'+row.colId+'">'+data+'</a>';
 		//	} --> was after colName
+			{ "data": "colId" },
 		    { "data" : null,
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>', 
 		      "searchable": false, 
 		      "orderable": false},
-		    { "data": "colId" },
-		    { "data": null },
 		    { "data": "nrOfDocuments" },
        /* nrOfDOcument has disappeared from the data for some reason... until it found render this field as empty to stop warnings
                     { "data": "nrOfDocuments", "data": null, "defaultContent": '<span></span>'},*/
@@ -64,7 +63,9 @@ function init_collections_table(){
 
 			$("#collections_table tbody tr").each(function(rowInd){
 		    	if (rowLoop == rowInd){
-					 
+
+		    		// alert(Object.keys(currRow.data()));
+
 					row_data[rowInd] = {} ;
 					row_data[rowInd].collId = currRow.data().colId;
 					row_data[rowInd].url = make_url("/utils/thumb/"+row_data[rowInd].collId);
@@ -88,7 +89,7 @@ function init_collections_table(){
 
 					row_data[rowInd].collStat = make_url("/library/coll_statistics/"+row_data[rowInd].collId);
 					$.getJSON(row_data[rowInd].collStat, function(stat_data){
-						$("td:eq(2)", row_data[rowInd].img_cell).html(stat_data.titleDesc);
+						$("td:eq(1)", row_data[rowInd].img_cell).html(stat_data.titleDesc);
 						shorten_text("long_text_" + row_data[rowInd].collId);
 					}).done(function(a,b) {
 					    console.log( "Done: ",a, " ",b );
@@ -113,19 +114,18 @@ function init_documents_table(){
 
 	var columns =  [
 		    //This column will be for our image which we will not get from the table_ajax/document view
+		    { "data": "docId",
+		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>'},
 		    { "data" : null, 
-		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>', 
 		      "searchable": false, 
 		      "orderable": false},
-		    { "data": "docId" },
-		    { "data": null },
-		    { "data" : null, 
+		    { "data": null, 
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
 		      "searchable": false, 
 		      "orderable": false},
-		    { "data": "nrOfPages",
+		    { "data": null,
 		      "searchable": false },
-		    { "data" : null, 
+		    { "data" : "nrOfPages", 
 		      "searchable": false, 
 		      "orderable": false}
 		    
@@ -175,7 +175,7 @@ function init_documents_table(){
 					$.getJSON(row_data[rowInd].stats, function(stat_data){
 						$("td:eq(2)", row_data[rowInd].img_cell).html(stat_data.titleDesc);
 						$("td:eq(3)", row_data[rowInd].img_cell).html(stat_data.statString);
-						$("td:eq(5)", row_data[rowInd].img_cell).html(stat_data.viewLinks);
+						$("td:eq(1)", row_data[rowInd].img_cell).html(stat_data.viewLinks);
 
 						shorten_text("long_text_" + row_data[rowInd].docId);
 					}).done(function(a,b) {

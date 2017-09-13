@@ -274,9 +274,10 @@ def collection_statistics(request, collId):
     t = request.user.tsdata.t
     collections = t.collection(request, {'collId': collId})
     collection = _get_collection(collections[0], collId)
+    print(collection.keys())
 
     title_desc = ''
-    title_desc += '<p><b>%s</b></p>' % collection['colName']
+    title_desc += '<p><b>%s</b> (%s)</p>' % (collection['colName'], collId)
     if 'description' in collection:
         title_desc += '<p id="long_text_%s">%s</p>' % (collId, collection['description'])
 
@@ -306,16 +307,16 @@ def document_statistics(request, collId, docId):
     docStat = eval("t.docStat(request, idParam)")
     docStatString = '%i lines, %i words' % (docStat.get('nrOfTranscribedLines'), docStat.get('nrOfWords'))
     view_links = '<div class="btn-group-vertical" role="group">'
-    view_links += '<a style="border-width: 0px; border-radius: 0px" class="btn btn-default" href="%s?view=i">Image</a>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<a style="border-width: 0px; border-radius: 0px" class="btn btn-default" href="%s?view=lbl">Line by line</a>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<a style="border-width: 0px; border-radius: 0px" class="btn btn-default disabled" href="%s?view=sbs">Side by side</a>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<a style="border-width: 0px; border-radius: 0px" class="btn btn-default disabled" href="%s?view=t">Text</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a class="btn btn-primary" href="%s?view=i">Image</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a class="btn btn-primary" href="%s?view=lbl">Line by line</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a class="btn btn-primary disabled" href="%s?view=sbs">Side by side</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a class="btn btn-primary disabled" href="%s?view=t">Text</a>' % reverse('edit:correct', args=[collId, docId, 1])
     view_links += '</div>'
 
     fulldoc = t.document(request, collId, docId,-1)
 
     title_desc = ''
-    title_desc += '<p><b>%s</b></p>' % fulldoc['md']['title']
+    title_desc += '<p><b>%s</b> (%s)</p>' % (fulldoc['md']['title'], docId)
     if 'desc' in fulldoc['md']:
         title_desc += '<p id="long_text_%s">%s</p>' % (docId, fulldoc['md']['desc'])
 
