@@ -104,3 +104,15 @@ def error_message_switch(request=None,x=0):
         503: _('Could not contact the Transkribus service, please try again later.'),
     }.get(x, _('An unknown error was returned by Transkribus: ')+str(x))
 
+
+def get_role(request,collId) :
+    t = request.user.tsdata.t
+
+    collections = t.collections(request)
+    if isinstance(collections,HttpResponse):
+        return apps.utils.views.error_view(request,collections)
+
+    for collection in collections:
+        if collection.get('colId') == int(collId) :
+             return collection.get('role')
+ 
