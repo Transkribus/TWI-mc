@@ -4,3 +4,4 @@ mc/settings/local.py
 *__pycache__*
 tmp/db.sqlite3
 collected_static
+mc/logfile*
