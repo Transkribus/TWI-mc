@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^dashboard/', include('apps.dashboard.urls', app_name='dashboard', namespace='dashboard')),
     url(r'^library/', include('apps.library.urls', app_name='library', namespace='library')),
     url(r'^search/', include('apps.search.urls', app_name='search', namespace='search')),
-    url(r'^view/', include('apps.edit.urls', app_name='edit', namespace='view')),
+    url(r'^view/', include('apps.edit.urls', app_name='edit', namespace='edit')),
     url(r'^edit/', include('apps.edit.urls', app_name='edit', namespace='edit')),
     url(r'^utils/', include('apps.utils.urls', app_name='utils', namespace='utils')),
 
