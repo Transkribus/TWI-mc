@@ -260,4 +260,4 @@ CDNS = {'bootstrap_css' : {'local': "/static/css/bootstrap.min.css", 'cdn' : "//
 
 PROFILE_LOG_BASE = '/tmp/'
 
-
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
