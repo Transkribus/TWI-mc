@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-12 08:49+0000\n"
+"POT-Creation-Date: 2017-09-25 11:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -52,6 +52,7 @@ msgid "Page ID"
 msgstr ""
 
 #: apps/dashboard/templates/dashboard/actions_table.html:12
+#: apps/library/templates/library/documents_table.html:9
 msgid "Page"
 msgstr ""
 
@@ -64,8 +65,8 @@ msgstr ""
 #: apps/dashboard/templates/dashboard/collection.html:6
 #: apps/dashboard/templates/dashboard/document.html:5
 #: apps/dashboard/templates/dashboard/homepage.html:78
-#: apps/edit/templates/edit/correct.html:8
-#: apps/library/templates/library/collection.html:6
+#: apps/edit/templates/edit/correct.html:7
+#: apps/library/templates/library/collection.html:5
 #: apps/library/templates/library/collections.html:6
 #: apps/library/templates/library/document.html:8
 msgid "My Collections"
@@ -137,7 +138,6 @@ msgstr ""
 
 #: apps/dashboard/templates/dashboard/documents_table.html:8
 #: apps/dashboard/templates/dashboard/pages_table.html:8
-#: apps/library/templates/library/collections_table.html:7
 #: apps/library/templates/library/document.html:98
 #: apps/library/templates/library/jobs_list.html:8
 #: apps/library/templates/library/jobs_list_compact.html:5
@@ -246,9 +246,8 @@ msgstr ""
 msgid "Created"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:24
+#: apps/edit/templates/edit/correct.html:22
 #: apps/library/templates/library/collections_table.html:6
-#: apps/library/templates/library/documents_table.html:9
 #: apps/library/templates/library/line.html:34
 #: apps/library/templates/library/page.html:32
 #: apps/library/templates/library/region.html:34
@@ -256,112 +255,140 @@ msgstr ""
 msgid "Image"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:25
+#: apps/edit/templates/edit/correct.html:23
 msgid "Line by line"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:26
+#: apps/edit/templates/edit/correct.html:24
 msgid "Side by side"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:27
+#: apps/edit/templates/edit/correct.html:25
 #: apps/library/templates/library/line.html:32
 #: apps/library/templates/library/region.html:33
 #: apps/library/templates/library/word.html:32
 msgid "Text"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:33
-msgid "Zoom in"
+#: apps/edit/templates/edit/correct.html:28
+msgid "Zoom In"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:36
-msgid "Zoom out"
+#: apps/edit/templates/edit/correct.html:29
+msgid "Zoom Out"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:39
-msgid "Reset image"
+#: apps/edit/templates/edit/correct.html:30
+msgid "Fit Width"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:47
+#: apps/edit/templates/edit/correct.html:31
+msgid "Fit Height"
+msgstr ""
+
+#: apps/edit/templates/edit/correct.html:34
 msgid "First page"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:48
+#: apps/edit/templates/edit/correct.html:35
 msgid "Previous page"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:52
+#: apps/edit/templates/edit/correct.html:37
 msgid "Next page"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:53
+#: apps/edit/templates/edit/correct.html:38
 msgid "Last page"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:55
+#: apps/edit/templates/edit/correct.html:39
 msgid "Thumb overview"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:61
-#: apps/edit/templates/edit/correct.html:293
+#: apps/edit/templates/edit/correct.html:42
+#: apps/edit/templates/edit/correct.html:447
 msgid "Edit"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:68
-msgid "Page status"
+#: apps/edit/templates/edit/correct.html:42
+#: apps/edit/templates/edit/correct.html:443
+msgid "View"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:72
-msgid "New"
+#: apps/edit/templates/edit/correct.html:50
+#: apps/edit/templates/edit/correct.html:69
+#: apps/edit/templates/edit/correct.html:417
+#: apps/edit/templates/edit/correct.html:427
+msgid "Page status: in progress"
 msgstr ""
 
+#: apps/edit/templates/edit/correct.html:52
+#: apps/edit/templates/edit/correct.html:71
+#: apps/edit/templates/edit/correct.html:411
+#: apps/edit/templates/edit/correct.html:429
+msgid "Page status: done"
+msgstr ""
+
+#: apps/edit/templates/edit/correct.html:54
 #: apps/edit/templates/edit/correct.html:73
+#: apps/edit/templates/edit/correct.html:431
+msgid "Page status: final"
+msgstr ""
+
+#: apps/edit/templates/edit/correct.html:56
+#: apps/edit/templates/edit/correct.html:75
+msgid "Page status: ground truth"
+msgstr ""
+
+#: apps/edit/templates/edit/correct.html:61
 msgid "In Progress"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:74
+#: apps/edit/templates/edit/correct.html:62
 msgid "Done"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:75
+#: apps/edit/templates/edit/correct.html:63
 msgid "Final"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:76
-msgid "Ground Truth"
-msgstr ""
-
-#: apps/edit/templates/edit/correct.html:82
+#: apps/edit/templates/edit/correct.html:79
 #: apps/edit/templates/edit/correct_modal.html:66
 #: apps/edit/templates/edit/proofread.html:37
 msgid "Save changes"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:89
+#: apps/edit/templates/edit/correct.html:84
 msgid ""
-"This page lacks segmentation and cannot be edited. Please use the expert "
-"client to create a segmentation first."
+"This page lacks segmentation and cannot be edited. Please use TranskribusX "
+"to create a segmentation first."
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:181
+#: apps/edit/templates/edit/correct.html:140
+#: apps/edit/templates/edit/correct.html:232
+msgid "Your browser does not support the HTML5 canvas tag."
+msgstr ""
+
+#: apps/edit/templates/edit/correct.html:225
 msgid "The page contains no lines."
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:257
+#: apps/edit/templates/edit/correct.html:379
 #: apps/edit/templates/edit/proofread.html:71
 msgid "You have unsaved changes."
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:258
+#: apps/edit/templates/edit/correct.html:380
 msgid "Saving changes..."
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:290
-msgid "View"
+#: apps/edit/templates/edit/correct.html:421
+#: apps/edit/templates/edit/correct.html:435
+msgid "You can not change the page status."
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:593
+#: apps/edit/templates/edit/correct.html:892
 msgid "You have unsaved changes. Are you sure you want to leave?"
 msgstr ""
 
@@ -439,11 +466,11 @@ msgstr ""
 msgid "Your version"
 msgstr ""
 
-#: apps/edit/views.py:74 apps/edit/views.py:158
+#: apps/edit/views.py:74 apps/edit/views.py:164
 msgid "Transcript saved!"
 msgstr ""
 
-#: apps/edit/views.py:162
+#: apps/edit/views.py:168
 msgid "Page status changed!"
 msgstr ""
 
@@ -463,15 +490,15 @@ msgstr ""
 msgid "Select collection"
 msgstr ""
 
-#: apps/library/templates/library/collections_table.html:8
+#: apps/library/templates/library/collections_table.html:7
 msgid "Collection Name and description"
 msgstr ""
 
-#: apps/library/templates/library/collections_table.html:9
-msgid "Documents"
+#: apps/library/templates/library/collections_table.html:8
+msgid "No. of Docs"
 msgstr ""
 
-#: apps/library/templates/library/collections_table.html:10
+#: apps/library/templates/library/collections_table.html:9
 msgid "My Role"
 msgstr ""
 
@@ -522,7 +549,7 @@ msgid "More about READ"
 msgstr ""
 
 #: apps/library/templates/library/documents_table.html:10
-msgid "DocID"
+msgid "Views"
 msgstr ""
 
 #: apps/library/templates/library/documents_table.html:11
@@ -530,15 +557,11 @@ msgid "Document title and description"
 msgstr ""
 
 #: apps/library/templates/library/documents_table.html:12
-msgid "Annotations"
+msgid "Stats"
 msgstr ""
 
 #: apps/library/templates/library/documents_table.html:13
 msgid "pp."
-msgstr ""
-
-#: apps/library/templates/library/documents_table.html:14
-msgid "Views"
 msgstr ""
 
 #: apps/library/templates/library/error.html:17
