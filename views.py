@@ -62,9 +62,9 @@ def collection(request, collId):
     navdata = navigation.get_nav(collections,collId,'colId','colName')
     #if we didn't have a focus before navigation call, we'll have one after
     collection = navdata.get("focus")
-        
+
     collIdParam = {'collId': collId}
-               
+
     personParam = {'collId': collId, 'tagName': 'person'}
     placeParam = {'collId': collId, 'tagName': 'place'}
     dateParam = {'collId': collId, 'tagName': 'date'}
@@ -85,19 +85,19 @@ def collection(request, collId):
     otherCount = eval("t.countCollTags(request,otherParam)")
     if isinstance(otherCount,HttpResponse):
         return apps.utils.views.error_view(request,otherCount)
-       
+
     tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
-           
+
     print(tagsString)
-   
+
     collStat = eval("t.collStat(request, collIdParam)")
     if isinstance(collStat,HttpResponse):
         return apps.utils.views.error_view(request,collStat)
-    
+
     if (collection):
         print("print collection: " + str(collection))
         collection['collStat'] = '%i words' % collStat.get('nrOfWords')
-        collection['tagsString'] = tagsString 
+        collection['tagsString'] = tagsString
 
     print("print navdata: "+str(navdata))
     pagedata = {'collection': collection}
@@ -179,9 +179,9 @@ def document(request, collId, docId, page=None):
     fulldoc = t.document(request, collId, docId,-1)
     if isinstance(fulldoc,HttpResponse):
         return apps.utils.views.error_view(request,fulldoc)
-    
+
     nav = navigation.up_next_prev(request,"document",docId,collection,[collId])
-    
+
     navdata = navigation.get_nav(collection,docId,'docId','title')
     #if we didn't have a focus before navigation call, we'll have one after
     #document = navdata.get("focus")
@@ -232,15 +232,15 @@ def document(request, collId, docId, page=None):
                             unicode_string = z.get('TextEquiv').get('Unicode')
                         else:
                             unicode_string = "";
-                                
+
                         strings.append(unicode_string)
-            
+
                 sys.stdout.write("append strings")
                 sys.stdout.flush()
                 textregions.append(strings)
                 strings=[]
                 lineList=[]
-        
+
         textpages.append(textregions)
         textregions=[]
     #new stuff end
@@ -248,7 +248,7 @@ def document(request, collId, docId, page=None):
     #merge the dictionaries
     combidata = pagedata.copy()
     combidata.update(navdata)
-    
+
     return render(request, 'library/document.html', combidata)
     '''
     return render(request, 'library/document.html', {
@@ -260,8 +260,8 @@ def document(request, collId, docId, page=None):
         'nav_next': nav['next'],
         'nav_prev': nav['prev'],
         })
-        
-        
+
+
     '''
 
 def _get_collection(document, collId):
@@ -287,9 +287,9 @@ def collection_statistics(request, collId):
 #Fetch a single thumb url from the document referenced
 def document_statistics(request, collId, docId):
     import timeit
-    
+
     t = request.user.tsdata.t
-    
+
     idParam = {'collId': collId, 'docId': docId}
     personParam = {'collId': collId, 'docId': docId, 'tagName': 'person'}
     placeParam = {'collId': collId, 'docId': docId, 'tagName': 'place'}
@@ -301,16 +301,16 @@ def document_statistics(request, collId, docId):
     dateCount = eval("t.countDocTags(request,dateParam)")
     abbrevCount = eval("t.countDocTags(request,abbrevParam)")
     otherCount = eval("t.countDocTags(request,otherParam)")
-             
+
     tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
-     
+
     docStat = eval("t.docStat(request, idParam)")
     docStatString = '%i lines, %i words' % (docStat.get('nrOfTranscribedLines'), docStat.get('nrOfWords'))
     view_links = '<div class="btn-group-vertical" role="group">'
-    view_links += '<a class="btn btn-primary" href="%s?view=i">Image</a>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<a class="btn btn-primary" href="%s?view=lbl">Line by line</a>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<a class="btn btn-primary disabled" href="%s?view=sbs">Side by side</a>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<a class="btn btn-primary disabled" href="%s?view=t">Text</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a class="btn btn-primary" href="%s?i=i">Image</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a class="btn btn-primary" href="%s?i=lbl">Line by line</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a class="btn btn-primary" href="%s?i=sbs">Side by side</a>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<a class="btn btn-primary" href="%s?i=t">Text</a>' % reverse('edit:correct', args=[collId, docId, 1])
     view_links += '</div>'
 
     fulldoc = t.document(request, collId, docId,-1)
@@ -340,10 +340,10 @@ def document_page(request, collId, docId, page=None):
     full_doc = t.document(request, collId, docId,-1)
     if isinstance(full_doc,HttpResponse):
         return apps.utils.views.error_view(request,full_doc)
-    
+
     if (page is None):
         page = 1
-    
+
     index = int(page)-1
     #extract page data from full_doc (may be better from a  separate page data request)
     pagedata = full_doc.get('pageList').get('pages')[index]
@@ -354,22 +354,22 @@ def document_page(request, collId, docId, page=None):
     sys.stdout.flush()
     startStr = (str(request)).rsplit('/', 1)[0]
     #nav = navigation.up_next_prev(startStr,"document",docId,collection,[collId])
-    
+
     navdata = navigation.get_nav(collection,collId,'docId','title')
-#     
+#
 #     sys.stdout.write("pagedata url : %s \r\n" % pagedata["url"])
 #     sys.stdout.flush()
-      
+
     #new for fetching all text regions and text of all pages
     textlines = []
     current_transcript = t.current_transcript(request, collId, docId, page)
     transcript = t.transcript(request, current_transcript.get("tsId"),current_transcript.get("url"))
     regions=transcript.get("PcGts").get("Page").get("TextRegion");
-     
+
     if isinstance(regions, dict):
         regions = [regions]
-#         
-# 
+#
+#
     lineList = []
     if regions:
         sys.stdout.write("number of regions on this page : %s \r\n" % len(regions))
@@ -387,7 +387,7 @@ def document_page(request, collId, docId, page=None):
                             for line in lines:
                                 #line['regionWidth'] = region_width
                                 lineList.extend([line])
-      
+
     if lineList:
         for line in lineList:
             if line.get('TextEquiv') is not None:
@@ -399,7 +399,7 @@ def document_page(request, collId, docId, page=None):
             line['crop'] = line_crop
             line_id = line.get("@id")
             line['id'] = line_id
-    
+
 #     paginator = Paginator(full_doc.get('pageList').get('pages'), 10)  # Show 5 docs per page
 #     page = request.GET.get('page')
 #     try:
@@ -423,9 +423,9 @@ def document_page(request, collId, docId, page=None):
 #         'nav_next': nav['next'],
 #         'nav_prev': nav['prev'],
         })
-    
-    
-    
+
+
+
 #/library/{colId}/{docId}/{page}
 # view that lists transcripts in doc and some page level metadata
 @login_required
@@ -521,7 +521,7 @@ def region(request, collId, docId, page, transcriptId, regionId):
 
     # We need to be able to target a transcript (as mentioned elsewhere)
     # here there is no need for anything over than the pageXML really
-    # we could get one transcript from ...{page}/curr, but for completeness would 
+    # we could get one transcript from ...{page}/curr, but for completeness would
     # rather use transciptId to target a particular transcript
     transcripts = t.page(request,collId, docId, page)
     if isinstance(transcripts,HttpResponse):
