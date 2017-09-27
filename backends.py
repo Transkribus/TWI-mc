@@ -49,13 +49,12 @@ class TranskribusBackend(object):
             try:
                 tsdata = TSData.objects.get(user=user)
             except TSData.DoesNotExist:
-                tsdata = TSData.objects.create(user=user)
+                # we can store the transkribus session as a pickled field, probably better in request.session
+                # but we need django 1.11 which passes request to the authenticate backend
+                tsdata = TSData.objects.create(user=user,t=t)
             tsdata.gender=t_user['gender']
             tsdata.affiliation=t_user['affiliation']
             tsdata.userId=t_user['userId']
-	    # we can store the transkribus session as a pickled field, probably better in request.session
-            # but we need django 1.11 which passes request to the authenticate backend
-            tsdata.t=t
 
             ######
             # If we have some local user data that we need to update dependent on whatever TS-REST returns do so here
