@@ -183,6 +183,66 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
                 'documents' : ['docId','title', 'desc', 'author','uploadTimestamp','uploader','nrOfPages','language','status'],
 #               'pages' : ['pageId','pageNr','thumbUrl','status', 'nrOfTranscripts'], #tables
                 'pages' : ['pageId','pageNr','imgFileName','thumbUrl','status'], #thumbnails
+                'crowdsourcing' : ['colId', 'colName', 'description', 'nrOfDocuments', 'role'],
+              }
+
+    ####### EXCEPTION #######
+    # Do the extraction of pages from fulldoc
+    if list_name == 'pages' :
+        data = data.get('pageList').get('pages')
+        data = map(get_ts_status,data)
+    #########################
+
+    data_filtered = filter_data(filters.get(list_name),data)
+
+    ####### EXCEPTION #######
+    # We cannot request a paged list of pages by docid, so we must manage paging here
+    if list_name == 'pages' :
+        dt_params = parser.parse(request.GET.urlencode())
+        nValues = int(dt_params.get('length')) if dt_params.get('length') else int(settings.PAGE_SIZE_DEFAULT)
+        index = int(dt_params.get('start')) if dt_params.get('start') else 0
+        #lame paging for pages for now...
+        data_filtered = data_filtered[index:(index+nValues)]
+    ##########################
+
+    return JsonResponse({
+            'recordsTotal': count,
+            'recordsFiltered': count,
+            'data': data_filtered
+        },safe=False)
+    
+
+def table_ajax_public(request,list_name,collId=None,docId=None,page=None,userId=None) :
+    
+    t_list_name=list_name
+    params = {'collId': collId, 'docId': docId, 'page': page, 'userid' : userId} #userid can only be used to filter in context of a collection
+    ####### EXCEPTION #######
+    # list_name is pages we extract this from fulldoc
+    if list_name == 'pages' :
+        t_list_name = "fulldoc"
+        params['nrOfTranscripts']=1 #only get current transcript
+    #########################
+
+    (data,count) = paged_data(request,t_list_name,params)
+    if isinstance(data,HttpResponse):
+        return data
+
+    #RM In some cases we will be recieving requests for data from unauthenticated (anonymous) users (ie crowdsourcing etc) 
+    if request.user.is_authenticated():
+        t = request.user.tsdata.t 
+    else:
+        t = TranskribusSession()
+    #t = request.user.tsdata.t
+ 
+
+   #TODO pass back the error not the redirect and then process the error according to whether we have been called via ajax or not....
+    if isinstance(data,HttpResponse):
+        t_log("data request has failed... %s" % data)
+        #For now this will do but there may be other reasons the transckribus request fails... (see comment above)
+        return data
+
+    filters = {
+                'crowdsourcing' : ['colId', 'colName', 'description', 'nrOfDocuments', 'role'],
               }
 
     ####### EXCEPTION #######
@@ -300,12 +360,12 @@ def page_img(request, collId, docId, page):
 #       - Some params must be passed in params (eg ids from url, typeId from calling function)
 #       - Some params are set directly from REQUEST, but can be overridden by params (eg nValues)
 
-@t_login_required_ajax
+#@t_login_required_ajax
 def paged_data(request,list_name,params=None):#collId=None,docId=None):
 
     #collect params from request into dict
     dt_params = parser.parse(request.GET.urlencode())
-#    t_log("DT PARAMS: %s" % dt_params)
+    t_log("DT PARAMS: %s" % dt_params, logging.WARN)
     if params is None: params = {}
     params['start'] = str(dt_params.get('start_date')) if dt_params.get('start_date') else None
     params['end'] = str(dt_params.get('end_date')) if dt_params.get('end_date') else None
@@ -338,8 +398,15 @@ def paged_data(request,list_name,params=None):#collId=None,docId=None):
     ##################################
 
     #Get data
-    t_log("SENT PARAMS: %s" % params) 
-    t = request.user.tsdata.t
+    t_log("SENT PARAMS: %s" % params, logging.WARN) 
+
+    #RM In some cases we will be recieving requests for data from unauthenticated (anonymous) users (ie crowdsourcing etc) 
+    if request.user.is_authenticated():
+        t = request.user.tsdata.t 
+    else:
+        t = TranskribusSession()
+    #t = request.user.tsdata.t
+    
     data = eval("t."+list_name+"(request,params)")
 
     #Get count
