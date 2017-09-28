@@ -468,7 +468,7 @@ def error_view(request, response) :
 
 def error_switch(request,x):
     return {
-        401: HttpResponseRedirect(request.build_absolute_uri('/login?error=401')),
+        401: HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"login?error=401&next=".format(request.get_full_path()))),
         403: render(request, 'error.html', {
 		'msg' : error_message_switch(request,403) }),
         404: render(request, 'error.html', {
