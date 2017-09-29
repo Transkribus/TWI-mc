@@ -17,7 +17,7 @@ from apps.utils.decorators import t_login_required_ajax
 from apps.utils.services import *
 from apps.utils.utils import t_log, error_message_switch
 import logging
-
+import settings
 
 from apps.querystring_parser.querystring_parser import parser
 
@@ -467,8 +467,9 @@ def error_view(request, response) :
     return error_switch(request,response.status_code)
 
 def error_switch(request,x):
+    t_log("SERVERBASE IS %s" % settings.SERVERBASE, logging.WARN);
     return {
-        401: HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"login?error=401&next=".format(request.get_full_path()))),
+        401: HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/login?error=401&next=".format(request.get_full_path()))),
         403: render(request, 'error.html', {
 		'msg' : error_message_switch(request,403) }),
         404: render(request, 'error.html', {
