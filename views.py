@@ -22,6 +22,7 @@ import settings
 from apps.querystring_parser.querystring_parser import parser
 
 from .forms import RegisterForm
+from .models import TSData
 
 def register(request):
 #TODO this is generic guff need to extend form for extra fields, send reg data to transkribus and authticate (which will handle the user creation)
@@ -468,6 +469,12 @@ def error_view(request, response) :
 
 def error_switch(request,x):
     t_log("SERVERBASE IS %s" % settings.SERVERBASE, logging.WARN);
+    t_log("request.user.tsdata %s" % request.user.tsdata.t, logging.WARN);
+    #If transkribus session becomes unauthorised we need to remove it from the userobject, so we don't get stuck in a 401 state for ever...
+    tsdata = TSData.objects.get(user=request.user)
+    tsdata.t = {}
+    tsdata.save()
+
     return {
         401: HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/login?error=401&next=".format(request.get_full_path()))),
         403: render(request, 'error.html', {
