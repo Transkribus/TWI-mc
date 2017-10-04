@@ -49,7 +49,7 @@ def t_login_required(function,redirect_field_name=REDIRECT_FIELD_NAME,login_url=
                 response = function(request, *args, **kw)
             except requests.exceptions.HTTPError as e:
                 t_log(e,logging.WARN)
-                response = HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"logout/?next={!s}".format(request.get_full_path())))
+                response = HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/logout/?next={!s}".format(request.get_full_path())))
 
             return response
         else:
