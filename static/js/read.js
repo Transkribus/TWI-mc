@@ -81,7 +81,7 @@ function init_datatable(table,url, columns){
 //			    {width: "20%", targets: -1 },
 //			    {searchable: false, orderable: false, targets: 1}
 //		    ],
-//	        "order": [[ 1, "desc" ]],
+	        "order": [[ 0, false ]], //turn off default asc sort for first col
 		"createdRow": function ( row, data, index ) {
                 	$(row).addClass("clickable");
 			//make rows click through to wheresoever they have an id for (col,doc,page)
