@@ -39,7 +39,10 @@ function init_collections_table(){
 	     // "render" : function(data, type, row){
 		//		return '<a href="'+row.colId+'">'+data+'</a>';
 		//	} --> was after colName
-			{ "data": "colId" },
+		    { "data": "colId",
+		      "searchable": false, 
+		      "orderable": false
+ 		    },
 		    { "data" : null,
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>', 
 		      "searchable": false, 
@@ -114,8 +117,11 @@ function init_documents_table(){
 
 	var columns =  [
 		    //This column will be for our image which we will not get from the table_ajax/document view
+		    //The columns with null data are loaded by ajax on draw.dt (see below) Becuase of this they cannot be searched or ordered
 		    { "data": "docId",
-		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>'},
+		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
+		      "searchable": false, 
+		      "orderable": false },
 		    { "data" : null, 
 		      "searchable": false, 
 		      "orderable": false},
@@ -124,12 +130,9 @@ function init_documents_table(){
 		      "searchable": false, 
 		      "orderable": false},
 		    { "data": null,
-		      "searchable": false },
-		    { "data" : "nrOfPages", 
-		      "searchable": false, 
-		      "orderable": false}
-		    
-		    //{ "data": "new_key" },//if we want to add a new column in this table
+		      "searchable": false ,
+		      "orderable": false},
+		    { "data" : "nrOfPages"}
         	];
 
 	var datatable = init_datatable($("#documents_table"),url,columns);
@@ -142,7 +145,7 @@ function init_documents_table(){
 		//rowIdx is the index of this row before the sort/search, rowLoop contains the (current) idx of the row after the sort
 		api.rows({page:'current'}).every( function ( rowIdx, tableLoop, rowLoop ) {
 
-			var d = this.data();
+		    var d = this.data();
 		    this.invalidate('dom');
 		    var currRow = this;
 		    
