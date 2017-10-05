@@ -469,11 +469,11 @@ def error_view(request, response) :
 
 def error_switch(request,x):
     t_log("SERVERBASE IS %s" % settings.SERVERBASE, logging.WARN);
-    t_log("request.user.tsdata %s" % request.user.tsdata.t, logging.WARN);
     #If transkribus session becomes unauthorised we need to remove it from the userobject, so we don't get stuck in a 401 state for ever...
     if x == 401 :
+        t_log("transkribus request is unauth so deleting tsdata.t %s" % request.user.tsdata.t, logging.WARN);
         tsdata = TSData.objects.get(user=request.user)
-        tsdata.t = {}
+        del tsdata.t
         tsdata.save()
 
     return {
