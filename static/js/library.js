@@ -43,10 +43,11 @@ function init_collections_table(){
 		      "searchable": false, 
 		      "orderable": false
  		    },
-		    { "data" : null,
+		    { "data" : "colName",  //insert colName as default for search and order #bigupSchorsch
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>', 
-		      "searchable": false, 
-		      "orderable": false},
+//		      "searchable": false, 
+//		      "orderable": false
+			},
 		    { "data": "nrOfDocuments" },
        /* nrOfDOcument has disappeared from the data for some reason... until it found render this field as empty to stop warnings
                     { "data": "nrOfDocuments", "data": null, "defaultContent": '<span></span>'},*/
@@ -125,10 +126,11 @@ function init_documents_table(){
 		    { "data" : null, 
 		      "searchable": false, 
 		      "orderable": false},
-		    { "data": null, 
+		    { "data": "title",    //load with title for sorting and ordering (though this gets replaced with secondary ajax (see below)
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
-		      "searchable": false, 
-		      "orderable": false},
+//		      "searchable": false, 
+//		      "orderable": false
+			},
 		    { "data": null,
 		      "searchable": false ,
 		      "orderable": false},
