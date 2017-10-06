@@ -188,6 +188,18 @@ class TranskribusSession(object):
             return False
         else:
             return True
+    #####################################################
+    def invalidate(self):
+
+        url = settings.TRP_URL+'auth/invalidate'
+        r = self.s.post(url, verify=False)
+
+        t_log("### t_invalidate response STATUS_CODE: %s" % (r.status_code), logging.WARN )
+
+        if r.status_code != requests.codes.ok:
+            return False
+        else:
+            return True
 
     #t_actions_info called to get lookup for action types for subsequent action list calls
     def actions_info(self,request):
