@@ -23,6 +23,9 @@ from apps.querystring_parser.querystring_parser import parser
 
 from .forms import RegisterForm
 from .models import TSData
+#from django.contrib.auth.models import User
+from django.contrib.auth import logout
+from urllib.parse import urlparse
 
 def register(request):
 #TODO this is generic guff need to extend form for extra fields, send reg data to transkribus and authticate (which will handle the user creation)
@@ -59,6 +62,28 @@ def register(request):
 
     #Recpatch errors are not properly dislpayed by bootstrap-form... hmph
     return render(request, 'registration/register.html', {'register_form': form} )
+
+def logout_view(request):
+    
+    if request.user.is_authenticated() :
+        #invalidate the transkribu session (at transkribus.eu)
+        request.user.tsdata.t.invalidate()
+        #remove the pickled session from the database
+        TSData.objects.get(user=request.user).delete()
+        #logout (as normal)
+        logout(request)
+
+    #do some redirectin'
+    redirect_to = request.GET.get("next")
+    if redirect_to is None:
+        redirect_to = settings.LOGOUT_REDIRECT_URL
+
+    if redirect_to:
+        o = urlparse(redirect_to)
+        t_log("NETLOC: %s" % (o.netloc), logging.WARN)
+        # Security check -- don't allow redirection to a different host.
+        if not (o.netloc and o.netloc != request.get_host()):
+            return HttpResponseRedirect(redirect_to)
 
 
 @t_login_required_ajax
@@ -471,10 +496,7 @@ def error_switch(request,x):
     t_log("SERVERBASE IS %s" % settings.SERVERBASE, logging.WARN);
     #If transkribus session becomes unauthorised we need to remove it from the userobject, so we don't get stuck in a 401 state for ever...
     if x == 401 :
-        t_log("transkribus request is unauth so deleting tsdata.t %s" % request.user.tsdata.t, logging.WARN);
-        tsdata = TSData.objects.get(user=request.user)
-        del tsdata.t
-        tsdata.save()
+         TSData.objects.get(user=request.user).delete()
 
     return {
         401: HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/login?error=401&next=".format(request.get_full_path()))),
