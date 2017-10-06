@@ -306,12 +306,19 @@ def document_statistics(request, collId, docId):
 
     docStat = eval("t.docStat(request, idParam)")
     docStatString = '%i lines, %i words' % (docStat.get('nrOfTranscribedLines'), docStat.get('nrOfWords'))
-    view_links = '<div class="btn-group-vertical" role="group">'
-    view_links += '<a class="btn btn-primary" href="%s?i=i">Image</a>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<a class="btn btn-primary" href="%s?i=lbl">Line by line</a>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<a class="btn btn-primary" href="%s?i=sbs">Side by side</a>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<a class="btn btn-primary" href="%s?i=t">Text</a>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '</div>'
+    view_links = '<ul class="list-group list-unstyled text-center twi-view-link-list">'
+    view_links += '<li class="list-grou-item"><a href="%s?i=i">Image</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<li class="list-grou-item"><a href="%s?i=lbl">Line by line</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<li class="list-grou-item"><a href="%s?i=sbs">Side by side</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<li class="list-grou-item"><a href="%s?i=t">Text</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '</ul>'
+
+#    view_links = '<div class="btn-group-vertical" role="group">'
+#    view_links += '<a class="btn btn-primary" href="%s?i=i">Image</a>' % reverse('edit:correct', args=[collId, docId, 1])
+#    view_links += '<a class="btn btn-primary" href="%s?i=lbl">Line by line</a>' % reverse('edit:correct', args=[collId, docId, 1])
+#    view_links += '<a class="btn btn-primary" href="%s?i=sbs">Side by side</a>' % reverse('edit:correct', args=[collId, docId, 1])
+#    view_links += '<a class="btn btn-primary" href="%s?i=t">Text</a>' % reverse('edit:correct', args=[collId, docId, 1])
+#    view_links += '</div>'
 
     fulldoc = t.document(request, collId, docId,-1)
 
