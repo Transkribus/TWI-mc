@@ -19,6 +19,7 @@ from django.views.generic import RedirectView
 
 import apps.utils.views
 import mc.views
+import settings
 
 
 urlpatterns = [
@@ -46,6 +47,7 @@ urlpatterns = [
     ## Others ##
     url(r'^admin/', admin.site.urls),
     url(r'^register$', apps.utils.views.register, name='register'),
+    url(r'^logout/$', apps.utils.views.logout_view, name='logout'),
     url('', include('django.contrib.auth.urls')),
     url(r'^i18n/', include('django.conf.urls.i18n')),
 
