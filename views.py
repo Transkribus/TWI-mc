@@ -62,7 +62,7 @@ def collection(request, collId):
     navdata = navigation.get_nav(collections,collId,'colId','colName')
     #if we didn't have a focus before navigation call, we'll have one after
     collection = navdata.get("focus")
-
+    
     collIdParam = {'collId': collId}
 
     personParam = {'collId': collId, 'tagName': 'person'}
@@ -70,19 +70,19 @@ def collection(request, collId):
     dateParam = {'collId': collId, 'tagName': 'date'}
     abbrevParam = {'collId': collId, 'tagName': 'abbrev'}
     otherParam = {'collId': collId, 'tagName': 'other'}
-    personCount = eval("t.countCollTags(request,personParam)")
+    personCount = t.countCollTags(request,personParam)
     if isinstance(personCount,HttpResponse):
         return apps.utils.views.error_view(request,personCount)
-    placeCount = eval("t.countCollTags(request,placeParam)")
+    placeCount = t.countCollTags(request,placeParam)
     if isinstance(placeCount,HttpResponse):
         return apps.utils.views.error_view(request,placeCount)
-    dateCount = eval("t.countCollTags(request,dateParam)")
+    dateCount = t.countCollTags(request,dateParam)
     if isinstance(dateCount,HttpResponse):
         return apps.utils.views.error_view(request,dateCount)
-    abbrevCount = eval("t.countCollTags(request,abbrevParam)")
+    abbrevCount = t.countCollTags(request,abbrevParam)
     if isinstance(abbrevCount,HttpResponse):
         return apps.utils.views.error_view(request,abbrevCount)
-    otherCount = eval("t.countCollTags(request,otherParam)")
+    otherCount = t.countCollTags(request,otherParam)
     if isinstance(otherCount,HttpResponse):
         return apps.utils.views.error_view(request,otherCount)
 
@@ -90,7 +90,7 @@ def collection(request, collId):
 
     print(tagsString)
 
-    collStat = eval("t.collStat(request, collIdParam)")
+    collStat = t.collStat(request, collIdParam)
     if isinstance(collStat,HttpResponse):
         return apps.utils.views.error_view(request,collStat)
 
@@ -296,21 +296,21 @@ def document_statistics(request, collId, docId):
     dateParam = {'collId': collId, 'docId': docId, 'tagName': 'date'}
     abbrevParam = {'collId': collId, 'docId': docId, 'tagName': 'abbrev'}
     otherParam = {'collId': collId, 'docId': docId, 'tagName': 'other'}
-    personCount = eval("t.countDocTags(request,personParam)")
-    placeCount = eval("t.countDocTags(request,placeParam)")
-    dateCount = eval("t.countDocTags(request,dateParam)")
-    abbrevCount = eval("t.countDocTags(request,abbrevParam)")
-    otherCount = eval("t.countDocTags(request,otherParam)")
+    personCount = t.countDocTags(request,personParam)
+    placeCount = t.countDocTags(request,placeParam)
+    dateCount = t.countDocTags(request,dateParam)
+    abbrevCount = t.countDocTags(request,abbrevParam)
+    otherCount = t.countDocTags(request,otherParam)
 
     tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
 
-    docStat = eval("t.docStat(request, idParam)")
+    docStat = t.docStat(request, idParam)
     docStatString = '%i lines, %i words' % (docStat.get('nrOfTranscribedLines'), docStat.get('nrOfWords'))
     view_links = '<ul class="list-group list-unstyled text-center twi-view-link-list">'
-    view_links += '<li class="list-grou-item"><a href="%s?i=i">Image</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<li class="list-grou-item"><a href="%s?i=lbl">Line by line</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<li class="list-grou-item"><a href="%s?i=sbs">Side by side</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<li class="list-grou-item"><a href="%s?i=t">Text</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<li class="list-group-item"><a href="%s?i=i">Image</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<li class="list-group-item"><a href="%s?i=lbl">Line by line</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<li class="list-group-item"><a href="%s?i=sbs">Side by side</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<li class="list-group-item"><a href="%s?i=t">Text</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
     view_links += '</ul>'
 
 #    view_links = '<div class="btn-group-vertical" role="group">'
