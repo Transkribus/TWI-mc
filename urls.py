@@ -14,5 +14,9 @@ urlpatterns = [
     url(r'^thumb/(?P<collId>[0-9]+)$', views.collection_thumb, name='collection_thumb'),
     url(r'^thumb/(?P<collId>[0-9]+)/(?P<docId>[0-9]+)$', views.document_thumb, name='document_thumb'),
 
+    url(r'^collection_recent/(?P<collId>[0-9]+)$', views.collection_recent, name='collection_recent'),
+    url(r'^document_recent/(?P<docId>[0-9]+)$', views.document_recent, name='document_recent'),
+
+
 
 ]

@@ -233,16 +233,26 @@ class TranskribusSession(object):
     def actions_handler(self,r,params=None):
         return json.loads(r.text)
 
-    #t_collections_recent called to get most recently actioned collection [NOT CURRENTLY USED.... and needs a different url or handler code!]
+    #t_collection_recent called to get most recently accessed page in a given collection
     def collection_recent(self,request,collId):
-        url = settings.TRP_URL+'collections/'+str(collId)+'/list'
+        url = settings.TRP_URL+'actions/list'
         t_id = "collection_recent"
-        params = {'collId': collId}
-
+        params = {'collId': collId, 'userid' : request.user.tsdata.userId, 'typeId' : 1, 'nValues' : 1}
         return self.request(request,t_id,url,params,"GET")
 
     def collection_recent_handler(self,r,params=None):
         t_log("collection_recent: %s " % r.text)
+        return json.loads(r.text)
+
+    #t_document_recent called to get most recently accessed page in a given document
+    def document_recent(self,request,docId):
+        url = settings.TRP_URL+'actions/list'
+        t_id = "document_recent"
+        params = {'id': docId, 'userid' : request.user.tsdata.userId, 'typeId' : 1, 'nValues' : 1}
+        return self.request(request,t_id,url,params,"GET")
+
+    def document_recent_handler(self,r,params=None):
+        t_log("document_recent: %s " % r.text)
         return json.loads(r.text)
 
     #t_collections_count
