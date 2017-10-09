@@ -376,6 +376,26 @@ def page_img(request, collId, docId, page):
             'url': img_url
         },safe=False)
 
+@t_login_required_ajax
+def collection_recent(request, collId):
+    t = request.user.tsdata.t
+ 
+    recent = t.collection_recent(request,collId)
+    if isinstance(recent,HttpResponse):
+        return error_view(request,recent)
+
+    return JsonResponse(recent,safe=False)
+ 
+@t_login_required_ajax
+def document_recent(request, docId):
+    t = request.user.tsdata.t
+ 
+    recent = t.document_recent(request,docId)
+    if isinstance(recent,HttpResponse):
+        return error_view(request,recent)
+
+    return JsonResponse(recent,safe=False)
+ 
 ##########
 # Helpers
 ##########
@@ -386,8 +406,7 @@ def page_img(request, collId, docId, page):
 #       - Some params must be passed in params (eg ids from url, typeId from calling function)
 #       - Some params are set directly from REQUEST, but can be overridden by params (eg nValues)
 
-#@t_login_required_ajax
-def paged_data(request,list_name,params=None):#collId=None,docId=None):
+def paged_data(request,list_name,params=None):
 
     #collect params from request into dict
     dt_params = parser.parse(request.GET.urlencode())
