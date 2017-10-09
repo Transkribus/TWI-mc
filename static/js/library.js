@@ -74,7 +74,6 @@ function init_collections_table(){
 					row_data[rowInd].collId = currRow.data().colId;
 					row_data[rowInd].url = make_url("/utils/thumb/"+row_data[rowInd].collId);
 					row_data[rowInd].collStat = make_url("/library/coll_statistics/"+row_data[rowInd].collId);
-
 					row_data[rowInd].img_cell = this;
 					$.getJSON(row_data[rowInd].url, function(thumb_data){
 						if (thumb_data.url){
@@ -86,20 +85,34 @@ function init_collections_table(){
 							$("td:eq(0)", row_data[rowInd].img_cell).html('No image available');
 						}
 					}).done(function(a,b) {
-					    console.log( "Done: ",a, " ",b );
+//					    console.log( "Done: ",a, " ",b );
 					}).fail(function( a, b){
 					    console.log( "Fail: ",a, " ",b );
 					});
+
 
 					row_data[rowInd].collStat = make_url("/library/coll_statistics/"+row_data[rowInd].collId);
 					$.getJSON(row_data[rowInd].collStat, function(stat_data){
 						$("td:eq(1)", row_data[rowInd].img_cell).html(stat_data.titleDesc);
 						shorten_text("long_text_" + row_data[rowInd].collId);
+						
+						//Append a jump to link last accessed data from utils/collection_recent
+						//We do this in the success func so we make sure the title and description goes first	
+						row_data[rowInd].recent = make_url("/utils/collection_recent/"+row_data[rowInd].collId);
+						$.getJSON(row_data[rowInd].recent, function(recent_data){
+							render_jumpto(recent_data, rowInd, 1);
+						}).done(function(a,b) {
+//						    console.log( "Done: ",a, " ",b );
+						}).fail(function( a, b){
+						    console.log( "Fail: ",a, " ",b );
+						});
+
 					}).done(function(a,b) {
-					    console.log( "Done: ",a, " ",b );
+//					    console.log( "Done: ",a, " ",b );
 					}).fail(function( a, b){
 					    console.log( "Fail: ",a, " ",b );
 					});
+
 		    	}
 			});
 		});
@@ -183,6 +196,17 @@ function init_documents_table(){
 						$("td:eq(1)", row_data[rowInd].img_cell).html(stat_data.viewLinks);
 
 						shorten_text("long_text_" + row_data[rowInd].docId);
+						//Append a jump to link last accessed data from utils/collection_recent
+						//We do this in the success func so we make sure the title and description goes first	
+						row_data[rowInd].recent = make_url("/utils/document_recent/"+row_data[rowInd].docId);
+						$.getJSON(row_data[rowInd].recent, function(recent_data){
+							render_jumpto(recent_data, rowInd, 2);
+						}).done(function(a,b) {
+//						    console.log( "Done: ",a, " ",b );
+						}).fail(function( a, b){
+						    console.log( "Fail: ",a, " ",b );
+						});
+
 					}).done(function(a,b) {
 					    console.log( "Done: ",a, " ",b );
 					}).fail(function( a, b){
@@ -267,7 +291,15 @@ function shorten_text(element_id) {
 		}
 	});
 };
+function render_jumpto(recent_data,rowInd,colInd){
 
+	if (recent_data[0]){
+		pageNr = recent_data[0].pageNr;
+		docId = recent_data[0].docId;
+		docName = recent_data[0].docName;
+		$("td:eq("+colInd+")", row_data[rowInd].img_cell).append('<p>Jump to <a href="/view/'+row_data[rowInd].collId+'/'+docId+'/'+pageNr+'">page '+pageNr+' of '+docName+'</a></p>');
+	}
+}
 // $('.automatic_resize').one('load', function() {
 // 	// alert('o_O'):
 //   // console.log($(this).width);
