@@ -297,7 +297,8 @@ function render_jumpto(recent_data,rowInd,colInd){
 		pageNr = recent_data[0].pageNr;
 		docId = recent_data[0].docId;
 		docName = recent_data[0].docName;
-		$("td:eq("+colInd+")", row_data[rowInd].img_cell).append('<p>Jump to <a href="/view/'+row_data[rowInd].collId+'/'+docId+'/'+pageNr+'">page '+pageNr+' of '+docName+'</a></p>');
+                view_url = make_url('/view/'+row_data[rowInd].collId+'/'+docId+'/'+pageNr);
+                $("td:eq("+colInd+")", row_data[rowInd].img_cell).append('<p>Jump to <a href="'+view_url+'">page '+pageNr+' of '+docName+'</a></p>');
 	}
 }
 // $('.automatic_resize').one('load', function() {
