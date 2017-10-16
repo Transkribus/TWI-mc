@@ -67,7 +67,8 @@ def logout_view(request):
     
     if request.user.is_authenticated() :
         #invalidate the transkribu session (at transkribus.eu)
-        request.user.tsdata.t.invalidate()
+        if request.user.tsdata :
+            request.user.tsdata.t.invalidate()
         #remove the pickled session from the database
         TSData.objects.get(user=request.user).delete()
         #logout (as normal)
