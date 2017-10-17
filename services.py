@@ -328,6 +328,15 @@ class TranskribusSession(object):
     def collection_count_handler(self,r,params=None):
         return json.loads(r.text)
 
+    def collection_stats(self,request,params):
+        url = settings.TRP_URL+'collections/'+str(params.get('collId'))+'/metadata'
+        params['stats']='true'
+        t_id = "collection_stats"
+        return self.request(request,t_id,url,params,"GET",None,{"collId": params.get('collId')})
+
+    def collection_stats_handler(self,r,params=None):
+        return json.loads(r.text)
+
     #Alias t_documents > t_collection
     def documents(self,request,params):
         return self.collection(request,params)
