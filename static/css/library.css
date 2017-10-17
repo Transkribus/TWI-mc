@@ -1,3 +1,8 @@
 .twi-view-link-list li {
 	margin-top:5px;
 }
+.embedded-stats-table {width: 100%;}
+/* Prevent the embedded table from being highlighted on hover */
+#collections_table td table.embedded-stats-table tbody tr:hover {
+    background-color: #fff;
+}

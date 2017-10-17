@@ -52,6 +52,10 @@ function init_collections_table(){
        /* nrOfDOcument has disappeared from the data for some reason... until it found render this field as empty to stop warnings
                     { "data": "nrOfDocuments", "data": null, "defaultContent": '<span></span>'},*/
 		    { "data": "role" },
+		    { "data": null,
+		      "searchable": false, 
+		      "orderable": false
+		     },
         	];
 	var datatable = init_datatable($("#collections_table"),url,columns);
 	
@@ -72,27 +76,21 @@ function init_collections_table(){
 
 					row_data[rowInd] = {} ;
 					row_data[rowInd].collId = currRow.data().colId;
-					row_data[rowInd].url = make_url("/utils/thumb/"+row_data[rowInd].collId);
-					row_data[rowInd].collStat = make_url("/library/coll_statistics/"+row_data[rowInd].collId);
+					row_data[rowInd].collStat = make_url("/library/coll_metadata/"+row_data[rowInd].collId);
 					row_data[rowInd].img_cell = this;
-					$.getJSON(row_data[rowInd].url, function(thumb_data){
-						if (thumb_data.url){
-							thumb = loadThumbs(thumb_data.url);
+					$.getJSON(row_data[rowInd].collStat, function(metadata){
+						$("td:eq(1)", row_data[rowInd].img_cell).html(metadata.titleDesc);
+						shorten_text("long_text_" + row_data[rowInd].collId);
+						if (metadata.stats.thumbUrl){
+							thumb = loadThumbs(metadata.stats.thumbUrl);
 							$("td:eq(0)", row_data[rowInd].img_cell).empty();
 							$("td:eq(0)", row_data[rowInd].img_cell).append(thumb);
 							$("td:eq(0)", row_data[rowInd].img_cell).addClass('text-center');
 						}else{
 							$("td:eq(0)", row_data[rowInd].img_cell).html('No image available');
 						}
-					}).done(function(a,b) {
-//					    console.log( "Done: ",a, " ",b );
-					}).fail(function( a, b){
-					    console.log( "Fail: ",a, " ",b );
-					});
+						$("td:eq(4)", row_data[rowInd].img_cell).html(metadata.stats_table);
 
-					$.getJSON(row_data[rowInd].collStat, function(stat_data){
-						$("td:eq(1)", row_data[rowInd].img_cell).html(stat_data.titleDesc);
-						shorten_text("long_text_" + row_data[rowInd].collId);
 					
 					}).done(function(a,b) {
 //					    console.log( "Done: ",a, " ",b );

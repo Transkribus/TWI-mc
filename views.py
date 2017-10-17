@@ -43,7 +43,7 @@ def index(request):
 def collections(request):
     t = request.user.tsdata.t
 
-    collections = t.collections(request,{'empty':'true'})
+    collections = t.collections(request)
     if isinstance(collections,HttpResponse):
         return apps.utils.views.error_view(request,collections)
     return render(request, 'library/collections.html', {'collections': collections} )
@@ -57,7 +57,7 @@ def collection(request, collId):
     t = request.user.tsdata.t
 
     #Avoid this sort of nonsense if possible
-    collections = t.collections(request,{'end':None,'start':None,'empty':'true'})
+    collections = t.collections(request,{'end':None,'start':None})
     if isinstance(collections,HttpResponse):
         return apps.utils.views.error_view(request,collections)
 
@@ -272,7 +272,7 @@ def _get_collection(document, collId):
             return collection
 
 
-def collection_statistics(request, collId):
+def collection_metadata(request, collId):
     t = request.user.tsdata.t
     collections = t.collection(request, {'collId': collId})
     if isinstance(collections,HttpResponse):
@@ -296,12 +296,33 @@ def collection_statistics(request, collId):
         if 'pageNr' in recent:
             title_desc += str(_('Go to <a href="%s">last saved page</a> in this collection')) % reverse('edit:correct', args=[collId,recent.get('docId'),recent.get('pageNr')])
 
+    #Add collection stats from metadata call
+    stats = t.collection_stats(request,{'collId':collId})
+    if isinstance(stats,HttpResponse):
+        return apps.utils.views.error_view(request,stats)
 
-    return JsonResponse({'titleDesc': title_desc}, safe=False)
+    total_pages = stats.get('nrOfNew') +  stats.get('nrOfInProgress') + stats.get('nrOfDone') + stats.get('nrOfFinal') + stats.get('nrOfGT')
+    pc_new = int(round((int(stats.get('nrOfNew'))/total_pages) * 100))
+    pc_ip = int(round((int(stats.get('nrOfInProgress'))/total_pages) * 100))
+    pc_done = int(round((int(stats.get('nrOfDone'))/total_pages) * 100))
+    pc_final = int(round((int(stats.get('nrOfFinal'))/total_pages) * 100))
+    pc_gt = int(round((int(stats.get('nrOfGT'))/total_pages) * 100))
+
+    t_log("pc_ip: %s" % pc_ip, logging.WARN)
+
+    stats_table = '<table class="embedded-stats-table">'
+    if pc_new > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('New'), pc_new)
+    if pc_ip > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('In Progress'), pc_ip)
+    if pc_done > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Done'), pc_done)
+    if pc_final > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Final'), pc_final)
+    if pc_gt > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Ground Truth'), pc_gt)
+    stats_table += '</table>'
+
+    return JsonResponse({'titleDesc': title_desc, 'stats': stats, 'stats_table': stats_table}, safe=False)
 
 
 #Fetch a single thumb url from the document referenced
-def document_statistics(request, collId, docId):
+def document_metadata(request, collId, docId):
     import timeit
 
     t = request.user.tsdata.t
