@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-25 11:42+0000\n"
+"POT-Creation-Date: 2017-10-16 12:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:5
@@ -222,7 +222,8 @@ msgstr "Anzahl der Transkripte"
 msgid "UserId"
 msgstr "ID des Benutzers"
 
-#: apps/dashboard/templates/dashboard/users_table.html:10 apps/utils/forms.py:9
+#: apps/dashboard/templates/dashboard/users_table.html:10
+#: apps/utils/forms.py:9
 msgid "Given Name"
 msgstr "Vorname"
 
@@ -246,7 +247,15 @@ msgstr "Institution"
 msgid "Created"
 msgstr "Erstellt"
 
-#: apps/edit/templates/edit/correct.html:22
+#: apps/edit/templates/edit/correct.html:43
+msgid "You have unsaved changes."
+msgstr "Änderungen wurden noch nicht gespeichert."
+
+#: apps/edit/templates/edit/correct.html:44
+msgid "Saving changes..."
+msgstr "Speichere Änderungen..."
+
+#: apps/edit/templates/edit/correct.html:71
 #: apps/library/templates/library/collections_table.html:6
 #: apps/library/templates/library/line.html:34
 #: apps/library/templates/library/page.html:32
@@ -255,117 +264,116 @@ msgstr "Erstellt"
 msgid "Image"
 msgstr "Bild"
 
-#: apps/edit/templates/edit/correct.html:23
+#: apps/edit/templates/edit/correct.html:72
 msgid "Line by line"
 msgstr "zeilenweise"
 
-#: apps/edit/templates/edit/correct.html:24
+#: apps/edit/templates/edit/correct.html:73
 msgid "Side by side"
 msgstr "seitenweise"
 
-#: apps/edit/templates/edit/correct.html:25
+#: apps/edit/templates/edit/correct.html:74
 #: apps/library/templates/library/line.html:32
 #: apps/library/templates/library/region.html:33
 #: apps/library/templates/library/word.html:32
 msgid "Text"
 msgstr "Text"
 
-#: apps/edit/templates/edit/correct.html:28
+#: apps/edit/templates/edit/correct.html:77
 #, fuzzy
 #| msgid "Zoom in"
 msgid "Zoom In"
 msgstr "Hineinzoomen"
 
-#: apps/edit/templates/edit/correct.html:29
+#: apps/edit/templates/edit/correct.html:78
 #, fuzzy
 #| msgid "Zoom out"
 msgid "Zoom Out"
 msgstr "Herauszoomen"
 
-#: apps/edit/templates/edit/correct.html:30
+#: apps/edit/templates/edit/correct.html:79
 msgid "Fit Width"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:31
+#: apps/edit/templates/edit/correct.html:80
 msgid "Fit Height"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:34
+#: apps/edit/templates/edit/correct.html:83
 msgid "First page"
 msgstr "Erste Seite"
 
-#: apps/edit/templates/edit/correct.html:35
+#: apps/edit/templates/edit/correct.html:84
 msgid "Previous page"
 msgstr "Vorherige Seite"
 
-#: apps/edit/templates/edit/correct.html:37
+#: apps/edit/templates/edit/correct.html:86
 msgid "Next page"
 msgstr "Nächste Seite"
 
-#: apps/edit/templates/edit/correct.html:38
+#: apps/edit/templates/edit/correct.html:87
 msgid "Last page"
 msgstr "Letzte Seite"
 
-#: apps/edit/templates/edit/correct.html:39
+#: apps/edit/templates/edit/correct.html:88
 msgid "Thumb overview"
 msgstr "Miniaturdarstellung"
 
-#: apps/edit/templates/edit/correct.html:42
-#: apps/edit/templates/edit/correct.html:447
+#: apps/edit/templates/edit/correct.html:91
+#: apps/edit/templates/edit/correct.html:460
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: apps/edit/templates/edit/correct.html:42
-#: apps/edit/templates/edit/correct.html:443
+#: apps/edit/templates/edit/correct.html:91
+#: apps/edit/templates/edit/correct.html:455
 msgid "View"
 msgstr "Ansicht"
 
-#: apps/edit/templates/edit/correct.html:50
-#: apps/edit/templates/edit/correct.html:69
-#: apps/edit/templates/edit/correct.html:417
-#: apps/edit/templates/edit/correct.html:427
+#: apps/edit/templates/edit/correct.html:99
+#: apps/edit/templates/edit/correct.html:118
+#: apps/edit/templates/edit/correct.html:429
+#: apps/edit/templates/edit/correct.html:439
 #, fuzzy
 #| msgid "Page status changed!"
 msgid "Page status: in progress"
 msgstr "Status der Seite geändert!"
 
-#: apps/edit/templates/edit/correct.html:52
-#: apps/edit/templates/edit/correct.html:71
-#: apps/edit/templates/edit/correct.html:411
-#: apps/edit/templates/edit/correct.html:429
+#: apps/edit/templates/edit/correct.html:101
+#: apps/edit/templates/edit/correct.html:120
+#: apps/edit/templates/edit/correct.html:423
+#: apps/edit/templates/edit/correct.html:441
 msgid "Page status: done"
 msgstr "Status der Seite: Fertig"
 
-#: apps/edit/templates/edit/correct.html:54
-#: apps/edit/templates/edit/correct.html:73
-#: apps/edit/templates/edit/correct.html:431
+#: apps/edit/templates/edit/correct.html:103
+#: apps/edit/templates/edit/correct.html:122
+#: apps/edit/templates/edit/correct.html:443
 msgid "Page status: final"
 msgstr "Status der Seite: Final"
 
-#: apps/edit/templates/edit/correct.html:56
-#: apps/edit/templates/edit/correct.html:75
+#: apps/edit/templates/edit/correct.html:105
+#: apps/edit/templates/edit/correct.html:124
 msgid "Page status: ground truth"
 msgstr "Status der Seite: Ground Truth"
 
-#: apps/edit/templates/edit/correct.html:61
+#: apps/edit/templates/edit/correct.html:110
 msgid "In Progress"
 msgstr "In Bearbeitung"
 
-#: apps/edit/templates/edit/correct.html:62
+#: apps/edit/templates/edit/correct.html:111
 msgid "Done"
 msgstr "Erledigt"
 
-#: apps/edit/templates/edit/correct.html:63
+#: apps/edit/templates/edit/correct.html:112
 msgid "Final"
 msgstr "Final"
 
-#: apps/edit/templates/edit/correct.html:79
+#: apps/edit/templates/edit/correct.html:128
 #: apps/edit/templates/edit/correct_modal.html:66
-#: apps/edit/templates/edit/proofread.html:37
 msgid "Save changes"
 msgstr "Äderungen speichern"
 
-#: apps/edit/templates/edit/correct.html:84
+#: apps/edit/templates/edit/correct.html:133
 #, fuzzy
 #| msgid ""
 #| "This page lacks segmentation and cannot be edited. Please use the expert "
@@ -377,30 +385,21 @@ msgstr ""
 "Diese Seite enthält keine Segmentierung und kann nicht bearbeitet werden. "
 "Bitte erstellen Sie zuerst eine Segmentierung in TranskribusX."
 
-#: apps/edit/templates/edit/correct.html:140
-#: apps/edit/templates/edit/correct.html:232
+#: apps/edit/templates/edit/correct.html:190
+#: apps/edit/templates/edit/correct.html:284
 msgid "Your browser does not support the HTML5 canvas tag."
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:225
+#: apps/edit/templates/edit/correct.html:277
 msgid "The page contains no lines."
 msgstr "Diese Seite enthält keine Linien."
 
-#: apps/edit/templates/edit/correct.html:379
-#: apps/edit/templates/edit/proofread.html:71
-msgid "You have unsaved changes."
-msgstr "Änderungen wurden noch nicht gespeichert."
-
-#: apps/edit/templates/edit/correct.html:380
-msgid "Saving changes..."
-msgstr "Speichere Änderungen..."
-
-#: apps/edit/templates/edit/correct.html:421
-#: apps/edit/templates/edit/correct.html:435
+#: apps/edit/templates/edit/correct.html:433
+#: apps/edit/templates/edit/correct.html:447
 msgid "You can not change the page status."
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:892
+#: apps/edit/templates/edit/correct.html:923
 msgid "You have unsaved changes. Are you sure you want to leave?"
 msgstr ""
 "Änderungen wurden noch nicht gespeichert. Wollen Sie diese Seite wirklich "
@@ -468,15 +467,11 @@ msgstr "Unterstrichen"
 msgid "Strikethrough"
 msgstr "Durchgestrichen"
 
-#: apps/edit/templates/edit/proofread.html:13
-msgid "Proofreading Interface (working title)"
-msgstr "Schnittstelle für Korrektur (Arbeitstitel)"
-
-#: apps/edit/templates/edit/proofread.html:21
+#: apps/edit/templates/edit/proofread.html:6
 msgid "Original version"
 msgstr "Ursprüngliche Version"
 
-#: apps/edit/templates/edit/proofread.html:29
+#: apps/edit/templates/edit/proofread.html:10
 msgid "Your version"
 msgstr "Ihre Version"
 
@@ -489,7 +484,8 @@ msgid "Page status changed!"
 msgstr "Status der Seite geändert!"
 
 #: apps/library/templates/library/about.html:13
-#: apps/search/templates/search/navi_base.html:47 templates/pages/about.html:13
+#: apps/search/templates/search/navi_base.html:47
+#: templates/pages/about.html:13
 msgid "About"
 msgstr "Über"
 
@@ -505,7 +501,9 @@ msgid "Select collection"
 msgstr "Sammlung auswählen"
 
 #: apps/library/templates/library/collections_table.html:7
-msgid "Collection Name and description"
+#, fuzzy
+#| msgid "Collection Name and description"
+msgid "Collection Title and description"
 msgstr "Name und Beschreibung der Sammlung"
 
 #: apps/library/templates/library/collections_table.html:8
@@ -818,6 +816,13 @@ msgstr "SIE SOLLTEN DAS HIER NIEMALS SEHEN"
 msgid "This word has some metadata:"
 msgstr "Dieses Wort enthält Metadaten:"
 
+#: apps/library/views.py:298
+#, python-format
+msgid ""
+"<p class=\"collection_jumpto\">Go to <a href=\"%s\">last saved page</a> in "
+"this collection</p>"
+msgstr ""
+
 #: apps/navigation/templates/navigation/nav_buttons.html:4
 msgid "Up"
 msgstr "hoch"
@@ -903,95 +908,95 @@ msgstr ""
 msgid "An unknown error was returned by Transkribus: "
 msgstr "Ein unbekannter Fehler ist aufgetreten:"
 
-#: mc/settings/production.py:161
+#: mc/settings/production.py:168
 msgid "Bulgarian"
 msgstr "Bulgarisch"
 
-#: mc/settings/production.py:162
+#: mc/settings/production.py:169
 msgid "Croatian"
 msgstr "Kroatisch"
 
-#: mc/settings/production.py:163
+#: mc/settings/production.py:170
 msgid "Czech"
 msgstr "Tschechisch"
 
-#: mc/settings/production.py:164
+#: mc/settings/production.py:171
 msgid "Danish"
 msgstr "Dänisch"
 
-#: mc/settings/production.py:165
+#: mc/settings/production.py:172
 msgid "Dutch"
 msgstr "Niederländisch"
 
-#: mc/settings/production.py:166
+#: mc/settings/production.py:173
 msgid "English"
 msgstr "Englisch"
 
-#: mc/settings/production.py:167
+#: mc/settings/production.py:174
 msgid "Estonian"
 msgstr "Estisch"
 
-#: mc/settings/production.py:168
+#: mc/settings/production.py:175
 msgid "Finnish"
 msgstr "Finnisch"
 
-#: mc/settings/production.py:169
+#: mc/settings/production.py:176
 msgid "French"
 msgstr "Französisch"
 
-#: mc/settings/production.py:170
+#: mc/settings/production.py:177
 msgid "German"
 msgstr "Deutsch"
 
-#: mc/settings/production.py:171
+#: mc/settings/production.py:178
 msgid "Greek"
 msgstr "Griechisch"
 
-#: mc/settings/production.py:172
+#: mc/settings/production.py:179
 msgid "Hungarian"
 msgstr "Ungarisch"
 
-#: mc/settings/production.py:173
+#: mc/settings/production.py:180
 msgid "Irish"
 msgstr "Irisch"
 
-#: mc/settings/production.py:174
+#: mc/settings/production.py:181
 msgid "Italian"
 msgstr "Italienisch"
 
-#: mc/settings/production.py:175
+#: mc/settings/production.py:182
 msgid "Latvian"
 msgstr "Lettisch"
 
-#: mc/settings/production.py:176
+#: mc/settings/production.py:183
 msgid "Lithuanian"
 msgstr "Lithauisch"
 
-#: mc/settings/production.py:178
+#: mc/settings/production.py:185
 msgid "Polish"
 msgstr "Polnisch"
 
-#: mc/settings/production.py:179
+#: mc/settings/production.py:186
 msgid "Portuguese"
 msgstr "Portugiesich"
 
-#: mc/settings/production.py:180
+#: mc/settings/production.py:187
 msgid "Romanian"
 msgstr "Rumänisch"
 
-#: mc/settings/production.py:181
+#: mc/settings/production.py:188
 msgid "Slovak"
 msgstr "Slovakisch"
 
-#: mc/settings/production.py:182
+#: mc/settings/production.py:189
 msgid "Slovenian"
 msgstr "Slovenisch"
 
-#: mc/settings/production.py:183
+#: mc/settings/production.py:190
 msgid "Spanish"
 msgstr "Spanisch"
 
-#: mc/settings/production.py:184
+#: mc/settings/production.py:191
 msgid "Swedish"
 msgstr "Schwedisch"
 
@@ -1066,6 +1071,9 @@ msgstr "Login"
 #: templates/registration/login.html:48
 msgid "Lost password?"
 msgstr "Passowrt vergessen?"
+
+#~ msgid "Proofreading Interface (working title)"
+#~ msgstr "Schnittstelle für Korrektur (Arbeitstitel)"
 
 #~ msgid "Reset image"
 #~ msgstr "Bild zurücksetzen"
