@@ -523,11 +523,11 @@ def error_switch(request,x):
         403: render(request, 'error.html', {
 		'msg' : error_message_switch(request,403) }),
         404: render(request, 'error.html', {
-		'msg' : error_message_switch(404) }),
+		'msg' : error_message_switch(request,404) }),
         500: render(request, 'error.html', {
-		'msg' : error_message_switch(500) }),
+		'msg' : error_message_switch(request,500) }),
         503:render(request, 'error.html', {
-		'msg' : error_message_switch(503) }),
+		'msg' : error_message_switch(request,503) }),
     }.get(x, render(request, 'error.html', {
 		'msg' : error_message_switch(x) } ) )
 

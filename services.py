@@ -102,7 +102,7 @@ class TranskribusSession(object):
         try:
             r.raise_for_status()
         except requests.exceptions.HTTPError as e:
-            if e.response.status_code not in (401, 403, 400):
+            if e.response.status_code not in (401, 403, 400, 404, 500, 503):
                 #raise e.response.status_code
                 #exceptions must derive from BaseException
                 raise e
