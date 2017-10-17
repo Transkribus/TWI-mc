@@ -3,6 +3,8 @@ import re
 from .utils import t_log
 import logging
 import settings
+import os
+import time
 
 def appname(request):
     t_log("APPNAME: %s " % (request.resolver_match.app_name))
@@ -48,6 +50,4 @@ def nav_up(request):
     return {'nav_up': re.sub(r'\/[^\/]+$',"/",request.path)}
 
 def version(request):
-    return {'version': settings.VERSION, 'milestone': settings.MILESTONE }
-
-
+    return {'version': settings.VERSION, 'milestone': settings.MILESTONE, 'deploy_time': time.strftime('%d/%m/%Y', time.gmtime(os.path.getmtime(settings.BASE_DIR+'/wsgi.py'))) }
