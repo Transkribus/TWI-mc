@@ -90,23 +90,10 @@ function init_collections_table(){
 					    console.log( "Fail: ",a, " ",b );
 					});
 
-
-					row_data[rowInd].collStat = make_url("/library/coll_statistics/"+row_data[rowInd].collId);
 					$.getJSON(row_data[rowInd].collStat, function(stat_data){
 						$("td:eq(1)", row_data[rowInd].img_cell).html(stat_data.titleDesc);
 						shorten_text("long_text_" + row_data[rowInd].collId);
-						
-						//Append a jump to link last accessed data from utils/collection_recent
-						//We do this in the success func so we make sure the title and description goes first	
-						row_data[rowInd].recent = make_url("/utils/collection_recent/"+row_data[rowInd].collId);
-						$.getJSON(row_data[rowInd].recent, function(recent_data){
-							render_jumpto(recent_data, row_data[rowInd], 1);
-						}).done(function(a,b) {
-//						    console.log( "Done: ",a, " ",b );
-						}).fail(function( a, b){
-						    console.log( "Fail: ",a, " ",b );
-						});
-
+					
 					}).done(function(a,b) {
 //					    console.log( "Done: ",a, " ",b );
 					}).fail(function( a, b){
@@ -194,18 +181,8 @@ function init_documents_table(){
 						$("td:eq(2)", row_data[rowInd].img_cell).html(stat_data.titleDesc);
 						$("td:eq(3)", row_data[rowInd].img_cell).html(stat_data.statString);
 						$("td:eq(1)", row_data[rowInd].img_cell).html(stat_data.viewLinks);
-						row_data[rowInd].collId = ids['collId']; //to send to render_jumpto
+						row_data[rowInd].collId = ids['collId'];
 						shorten_text("long_text_" + row_data[rowInd].docId);
-						//Append a jump to link last accessed data from utils/collection_recent
-						//We do this in the success func so we make sure the title and description goes first	
-						row_data[rowInd].recent = make_url("/utils/document_recent/"+row_data[rowInd].docId);
-						$.getJSON(row_data[rowInd].recent, function(recent_data){
-							render_jumpto(recent_data, row_data[rowInd], 2);
-						}).done(function(a,b) {
-//						    console.log( "Done: ",a, " ",b );
-						}).fail(function( a, b){
-						    console.log( "Fail: ",a, " ",b );
-						});
 
 					}).done(function(a,b) {
 					    console.log( "Done: ",a, " ",b );
@@ -291,16 +268,7 @@ function shorten_text(element_id) {
 		}
 	});
 };
-function render_jumpto(recent_data,row_datum,colInd){
 
-	if (recent_data[0]){
-		pageNr = recent_data[0].pageNr;
-		docId = recent_data[0].docId;
-		docName = recent_data[0].docName;
-                view_url = make_url('/view/'+row_datum.collId+'/'+docId+'/'+pageNr);
-                $("td:eq("+colInd+")", row_datum.img_cell).append('<p>Jump to <a href="'+view_url+'">page '+pageNr+' of '+docName+'</a></p>');
-	}
-}
 // $('.automatic_resize').one('load', function() {
 // 	// alert('o_O'):
 //   // console.log($(this).width);

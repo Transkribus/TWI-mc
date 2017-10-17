@@ -21,6 +21,8 @@ from django.template.loader import render_to_string
 from apps.utils.decorators import t_login_required_ajax
 from apps.utils.utils import crop, t_metadata, t_log
 from apps.utils.services import *
+from apps.utils.views import *
+
 
 #Imports from app (library)
 import settings
@@ -273,13 +275,27 @@ def _get_collection(document, collId):
 def collection_statistics(request, collId):
     t = request.user.tsdata.t
     collections = t.collection(request, {'collId': collId})
+    if isinstance(collections,HttpResponse):
+        return apps.utils.views.error_view(request,collections)
+
     collection = _get_collection(collections[0], collId)
-    print(collection.keys())
 
     title_desc = ''
     title_desc += '<p><b>%s</b> (%s)</p>' % (collection['colName'], collId)
     if 'description' in collection:
         title_desc += '<p id="long_text_%s">%s</p>' % (collId, collection['description'])
+
+    #Add collection of data on last saved page (aka recent)
+    recent = t.collection_recent(request,collId)
+    if isinstance(recent,HttpResponse):
+        return apps.utils.views.error_view(request,recent)
+
+    if recent : 
+        #recent will be a single item array
+        recent = recent[0]
+        if 'pageNr' in recent:
+            title_desc += str(_('Go to <a href="%s">last saved page</a> in this collection')) % reverse('edit:correct', args=[collId,recent.get('docId'),recent.get('pageNr')])
+
 
     return JsonResponse({'titleDesc': title_desc}, safe=False)
 
@@ -326,6 +342,17 @@ def document_statistics(request, collId, docId):
     title_desc += '<p><b>%s</b> (%s)</p>' % (fulldoc['md']['title'], docId)
     if 'desc' in fulldoc['md']:
         title_desc += '<p id="long_text_%s">%s</p>' % (docId, fulldoc['md']['desc'])
+
+    #Add collection of data on last saved page (aka recent)
+    recent = t.document_recent(request,docId)
+    if isinstance(recent,HttpResponse):
+        return apps.utils.views.error_view(request,recent)
+
+    if recent : 
+        #recent will be a single item array
+        recent = recent[0]
+        if 'pageNr' in recent:
+            title_desc += str(_('Go to <a href="%s">last saved page</a> in this document')) % reverse('edit:correct', args=[collId,recent.get('docId'),recent.get('pageNr')])
 
     stat_string = ''
     stat_string += '<p>%s</p>' % docStatString
