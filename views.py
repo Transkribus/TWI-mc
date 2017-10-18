@@ -23,7 +23,6 @@ from apps.utils.utils import crop, t_metadata, t_log
 from apps.utils.services import *
 from apps.utils.views import *
 
-
 #Imports from app (library)
 import settings
 import apps.library.settings
@@ -280,21 +279,31 @@ def collection_metadata(request, collId):
 
     collection = _get_collection(collections[0], collId)
 
+    #Add collection of data on last saved page (aka recent)
+    recent = t.collection_recent(request,{'collId': collId, 'userid' : request.user.tsdata.userId})
+    if isinstance(recent,HttpResponse):
+        return apps.utils.views.error_view(request,recent)
+ 
+    #last save data for the doc (generally... not specific to the current user)
+    recent_save = t.document_recent(request,{'collId': collId})
+    if isinstance(recent_save,HttpResponse):
+        return apps.utils.views.error_view(request,recent_save)
+
     title_desc = ''
     title_desc += '<p><b>%s</b> (%s)</p>' % (collection['colName'], collId)
     if 'description' in collection:
         title_desc += '<p id="long_text_%s">%s</p>' % (collId, collection['description'])
 
-    #Add collection of data on last saved page (aka recent)
-    recent = t.collection_recent(request,collId)
-    if isinstance(recent,HttpResponse):
-        return apps.utils.views.error_view(request,recent)
-    
+    if recent_save : 
+        #recent will be a single item array
+        if 'time' in recent_save[0]:
+            title_desc += str(_('<p>Page %s of %s last saved on %s</p>')) % (recent_save[0].get('pageNr'),recent_save[0].get('docName'),apps.utils.templatetags.str_to_date(recent_save[0].get('time')))
+   
     if recent : 
         #recent will be a single item array
-        recent = recent[0]
-        if 'pageNr' in recent:
-            title_desc += str(_('Go to <a href="%s">last saved page</a> in this collection')) % reverse('edit:correct', args=[collId,recent.get('docId'),recent.get('pageNr')])
+        if 'pageNr' in recent[0]:
+            title_desc += str(_('<p>Go to <i>your</i> <a href="%s">last saved page</a> in this collection.</p>')) % reverse('edit:correct', args=[collId,recent[0].get('docId'),recent[0].get('pageNr')])
+
 
     #Add collection stats from metadata call
     stats = t.collection_metadata(request,{'collId':collId})
@@ -324,23 +333,8 @@ def document_metadata(request, collId, docId):
     import timeit
 
     t = request.user.tsdata.t
-
-    idParam = {'collId': collId, 'docId': docId}
-    personParam = {'collId': collId, 'docId': docId, 'tagName': 'person'}
-    placeParam = {'collId': collId, 'docId': docId, 'tagName': 'place'}
-    dateParam = {'collId': collId, 'docId': docId, 'tagName': 'date'}
-    abbrevParam = {'collId': collId, 'docId': docId, 'tagName': 'abbrev'}
-    otherParam = {'collId': collId, 'docId': docId, 'tagName': 'other'}
-    personCount = t.countDocTags(request,personParam)
-    placeCount = t.countDocTags(request,placeParam)
-    dateCount = t.countDocTags(request,dateParam)
-    abbrevCount = t.countDocTags(request,abbrevParam)
-    otherCount = t.countDocTags(request,otherParam)
-
-    tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
-     #docStat now available in fulldoc.md
-#    docStat = t.docStat(request, idParam)
-#    docStatString = '%i lines, %i words' % (docStat.get('nrOfTranscribedLines'), docStat.get('nrOfWords'))
+    
+    #links direct to the various views of the document
     view_links = '<ul class="list-group list-unstyled text-center twi-view-link-list">'
     view_links += '<li class="list-group-item"><a href="%s?i=i">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Image'))
     view_links += '<li class="list-group-item"><a href="%s?i=lbl">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Line by line'))
@@ -348,29 +342,42 @@ def document_metadata(request, collId, docId):
     view_links += '<li class="list-group-item"><a href="%s?i=t">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Text'))
     view_links += '</ul>'
 
+    #Get data for tags used in this doc
+    personCount = t.countDocTags(request,{'collId': collId, 'docId': docId, 'tagName': 'person'})
+    placeCount = t.countDocTags(request,{'collId': collId, 'docId': docId, 'tagName': 'place'})
+    dateCount = t.countDocTags(request,{'collId': collId, 'docId': docId, 'tagName': 'date'})
+    abbrevCount = t.countDocTags(request,{'collId': collId, 'docId': docId, 'tagName': 'abbrev'})
+    otherCount = t.countDocTags(request,{'collId': collId, 'docId': docId, 'tagName': 'other'})
+    
+    #Most of the metadata can be got from fulldoc now
     fulldoc = t.document(request, collId, docId,-1)
     stats = fulldoc.get('md')
+    
+    #data on last saved page for current user (aka recent)
+    recent = t.document_recent(request,{'id': docId, 'userid' : request.user.tsdata.userId})
+    if isinstance(recent,HttpResponse):
+        return apps.utils.views.error_view(request,recent)
 
+    #last save data for the doc (generally... not specific to the current user)
+    recent_save = t.document_recent(request,{'id': docId})
+    if isinstance(recent_save,HttpResponse):
+        return apps.utils.views.error_view(request,recent_save)
+
+    #title and description
     title_desc = ''
     title_desc += '<p><b>%s</b> (%s)</p>' % (stats.get('title'), docId)
     if 'desc' in stats:
         title_desc += '<p id="long_text_%s">%s</p>' % (docId, stats.get('desc'))
 
-    #Add collection of data on last saved page (aka recent)
-    recent = t.document_recent(request,docId)
-    if isinstance(recent,HttpResponse):
-        return apps.utils.views.error_view(request,recent)
-
+    if recent_save : 
+        #recent will be a single item array
+        if 'time' in recent_save[0]:
+            title_desc += str(_('<p>Page %s last saved on %s</p>')) % (recent_save[0].get('pageNr'),apps.utils.templatetags.str_to_date(recent_save[0].get('time')))
     if recent : 
         #recent will be a single item array
-        recent = recent[0]
-        if 'pageNr' in recent:
-            title_desc += str(_('Go to <a href="%s">last saved page</a> in this document')) % reverse('edit:correct', args=[collId,recent.get('docId'),recent.get('pageNr')])
+        if 'pageNr' in recent[0]:
+            title_desc += str(_('<p>Go to <i>your</i> <a href="%s">last saved page</a> in this document</p>')) % reverse('edit:correct', args=[collId,recent[0].get('docId'),recent[0].get('pageNr')])
 
-#bleh...
-    stat_string = ''
-#    stat_string += '<p>%s</p>' % docStatString
-#    stat_string += '<p>%s</p>' % tagsString
 
     #derive proportion of pages in various states
     total_pages = stats.get('nrOfNew') +  stats.get('nrOfInProgress') + stats.get('nrOfDone') + stats.get('nrOfFinal') + stats.get('nrOfGT')
@@ -380,7 +387,9 @@ def document_metadata(request, collId, docId):
     pc_final = int(round((int(stats.get('nrOfFinal'))/total_pages) * 100))
     pc_gt = int(round((int(stats.get('nrOfGT'))/total_pages) * 100))
 
+    #build a mini table of the stats to embed in the main table
     stats_table = '<table class="embedded-stats-table">'
+
     if stats.get('nrOfTranscribedLines') or stats.get('nrOfWords') : 
         stats_table += '<tr><th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Tanscribed')
     if stats.get('nrOfTranscribedLines') : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Lines'), stats.get('nrOfTranscribedLines'))
@@ -403,9 +412,7 @@ def document_metadata(request, collId, docId):
 
     stats_table += '</table>'
 
-
     return JsonResponse({
-            'statString': stat_string,
             'titleDesc': title_desc,
             'viewLinks': view_links,
             'thumbUrl': stats.get('thumbUrl'),
