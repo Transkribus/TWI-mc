@@ -234,10 +234,11 @@ class TranskribusSession(object):
         return json.loads(r.text)
 
     #t_collection_recent called to get most recently accessed page in a given collection
-    def collection_recent(self,request,collId):
+    def collection_recent(self,request,params) :
         url = settings.TRP_URL+'actions/list'
         t_id = "collection_recent"
-        params = {'collId': collId, 'userid' : request.user.tsdata.userId, 'typeId' : 1, 'nValues' : 1}
+        params['typeId'] = 1
+        params['nValues'] = 1
         return self.request(request,t_id,url,params,"GET")
 
     def collection_recent_handler(self,r,params=None):
@@ -245,10 +246,11 @@ class TranskribusSession(object):
         return json.loads(r.text)
 
     #t_document_recent called to get most recently accessed page in a given document
-    def document_recent(self,request,docId):
+    def document_recent(self,request,params):
         url = settings.TRP_URL+'actions/list'
         t_id = "document_recent"
-        params = {'id': docId, 'userid' : request.user.tsdata.userId, 'typeId' : 1, 'nValues' : 1}
+        params['typeId'] = 1
+        params['nValues'] = 1
         return self.request(request,t_id,url,params,"GET")
 
     def document_recent_handler(self,r,params=None):
