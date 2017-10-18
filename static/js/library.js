@@ -78,6 +78,7 @@ function init_collections_table(){
 					row_data[rowInd].collId = currRow.data().colId;
 					row_data[rowInd].collStat = make_url("/library/coll_metadata/"+row_data[rowInd].collId);
 					row_data[rowInd].img_cell = this;
+					console.log("URL: ",row_data[rowInd].collStat);
 					$.getJSON(row_data[rowInd].collStat, function(metadata){
 						$("td:eq(1)", row_data[rowInd].img_cell).html(metadata.titleDesc);
 						shorten_text("long_text_" + row_data[rowInd].collId);
@@ -129,10 +130,10 @@ function init_documents_table(){
 //		      "searchable": false, 
 //		      "orderable": false
 			},
+		    { "data" : "nrOfPages"},
 		    { "data": null,
 		      "searchable": false ,
-		      "orderable": false},
-		    { "data" : "nrOfPages"}
+		      "orderable": false}
         	];
 
 	var datatable = init_datatable($("#documents_table"),url,columns);
@@ -149,36 +150,23 @@ function init_documents_table(){
 		    this.invalidate('dom');
 		    var currRow = this;
 		    
-/*		    console.log( "rowIdx: ", rowIdx);
-		    console.log( "rowLoop: ", rowLoop);
-		    console.log( "currRow: ", currRow.data().docId);*/
-		    
-		    //this way we can only go throug the indizes of the first page before the change during sort/search
+		    //this way we can only go through the indices of the first page before the change during sort/search
 		    $("#documents_table tbody tr").each(function(rowInd){
 		    	
-		    	//console.log( "rowInd: ", rowInd);
 		    	if (rowLoop == rowInd){
 		    				 
 					row_data[rowInd] = {} ;
 					row_data[rowInd].docId = currRow.data().docId;
-					row_data[rowInd].url = make_url("/utils/thumb/"+ids['collId']+'/'+row_data[rowInd].docId);
 					row_data[rowInd].img_cell = this;
-					$.getJSON(row_data[rowInd].url, function(thumb_data){
-						thumb = loadThumbs(thumb_data.url);
+					row_data[rowInd].stats = make_url("/library/doc_metadata/"+ids['collId']+'/'+row_data[rowInd].docId);
+					$.getJSON(row_data[rowInd].stats, function(metadata){
+						thumb = loadThumbs(metadata.thumbUrl);
 						$("td:eq(0)", row_data[rowInd].img_cell).empty();
 						$("td:eq(0)", row_data[rowInd].img_cell).append(thumb);
 						$("td:eq(0)", row_data[rowInd].img_cell).addClass('text-center');
-					}).done(function(a,b) {
-					    console.log( "Done: ",a, " ",b );
-					}).fail(function( a, b){
-					    console.log( "Fail: ",a, " ",b );
-					});
-
-					row_data[rowInd].stats = make_url("/library/statistics/"+ids['collId']+'/'+row_data[rowInd].docId);
-					$.getJSON(row_data[rowInd].stats, function(stat_data){
-						$("td:eq(2)", row_data[rowInd].img_cell).html(stat_data.titleDesc);
-						$("td:eq(3)", row_data[rowInd].img_cell).html(stat_data.statString);
-						$("td:eq(1)", row_data[rowInd].img_cell).html(stat_data.viewLinks);
+						$("td:eq(1)", row_data[rowInd].img_cell).html(metadata.viewLinks);
+						$("td:eq(2)", row_data[rowInd].img_cell).html(metadata.titleDesc);
+						$("td:eq(4)", row_data[rowInd].img_cell).html(metadata.stats_table);
 						row_data[rowInd].collId = ids['collId'];
 						shorten_text("long_text_" + row_data[rowInd].docId);
 
@@ -195,10 +183,7 @@ function init_documents_table(){
 
 function init_pages_table(){
 
-//	var url = "./table_ajax/pages"+window.location.pathname.replace(/^.*\/(\d+\/\d+)$/, '$1');
 	var url = make_url("/utils/table_ajax/pages"+window.location.pathname.replace(/^.*\/(\d+\/\d+)$/, '$1'));
-
-
 
 	var ids = parse_path();	
 

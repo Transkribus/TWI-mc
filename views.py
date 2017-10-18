@@ -289,7 +289,7 @@ def collection_metadata(request, collId):
     recent = t.collection_recent(request,collId)
     if isinstance(recent,HttpResponse):
         return apps.utils.views.error_view(request,recent)
-
+    
     if recent : 
         #recent will be a single item array
         recent = recent[0]
@@ -297,7 +297,7 @@ def collection_metadata(request, collId):
             title_desc += str(_('Go to <a href="%s">last saved page</a> in this collection')) % reverse('edit:correct', args=[collId,recent.get('docId'),recent.get('pageNr')])
 
     #Add collection stats from metadata call
-    stats = t.collection_stats(request,{'collId':collId})
+    stats = t.collection_metadata(request,{'collId':collId})
     if isinstance(stats,HttpResponse):
         return apps.utils.views.error_view(request,stats)
 
@@ -307,8 +307,6 @@ def collection_metadata(request, collId):
     pc_done = int(round((int(stats.get('nrOfDone'))/total_pages) * 100))
     pc_final = int(round((int(stats.get('nrOfFinal'))/total_pages) * 100))
     pc_gt = int(round((int(stats.get('nrOfGT'))/total_pages) * 100))
-
-    t_log("pc_ip: %s" % pc_ip, logging.WARN)
 
     stats_table = '<table class="embedded-stats-table">'
     if pc_new > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('New'), pc_new)
@@ -340,29 +338,23 @@ def document_metadata(request, collId, docId):
     otherCount = t.countDocTags(request,otherParam)
 
     tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
-
-    docStat = t.docStat(request, idParam)
-    docStatString = '%i lines, %i words' % (docStat.get('nrOfTranscribedLines'), docStat.get('nrOfWords'))
+     #docStat now available in fulldoc.md
+#    docStat = t.docStat(request, idParam)
+#    docStatString = '%i lines, %i words' % (docStat.get('nrOfTranscribedLines'), docStat.get('nrOfWords'))
     view_links = '<ul class="list-group list-unstyled text-center twi-view-link-list">'
-    view_links += '<li class="list-group-item"><a href="%s?i=i">Image</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<li class="list-group-item"><a href="%s?i=lbl">Line by line</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<li class="list-group-item"><a href="%s?i=sbs">Side by side</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
-    view_links += '<li class="list-group-item"><a href="%s?i=t">Text</a></li>' % reverse('edit:correct', args=[collId, docId, 1])
+    view_links += '<li class="list-group-item"><a href="%s?i=i">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Image'))
+    view_links += '<li class="list-group-item"><a href="%s?i=lbl">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Line by line'))
+    view_links += '<li class="list-group-item"><a href="%s?i=sbs">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Side by side'))
+    view_links += '<li class="list-group-item"><a href="%s?i=t">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Text'))
     view_links += '</ul>'
 
-#    view_links = '<div class="btn-group-vertical" role="group">'
-#    view_links += '<a class="btn btn-primary" href="%s?i=i">Image</a>' % reverse('edit:correct', args=[collId, docId, 1])
-#    view_links += '<a class="btn btn-primary" href="%s?i=lbl">Line by line</a>' % reverse('edit:correct', args=[collId, docId, 1])
-#    view_links += '<a class="btn btn-primary" href="%s?i=sbs">Side by side</a>' % reverse('edit:correct', args=[collId, docId, 1])
-#    view_links += '<a class="btn btn-primary" href="%s?i=t">Text</a>' % reverse('edit:correct', args=[collId, docId, 1])
-#    view_links += '</div>'
-
     fulldoc = t.document(request, collId, docId,-1)
+    stats = fulldoc.get('md')
 
     title_desc = ''
-    title_desc += '<p><b>%s</b> (%s)</p>' % (fulldoc['md']['title'], docId)
-    if 'desc' in fulldoc['md']:
-        title_desc += '<p id="long_text_%s">%s</p>' % (docId, fulldoc['md']['desc'])
+    title_desc += '<p><b>%s</b> (%s)</p>' % (stats.get('title'), docId)
+    if 'desc' in stats:
+        title_desc += '<p id="long_text_%s">%s</p>' % (docId, stats.get('desc'))
 
     #Add collection of data on last saved page (aka recent)
     recent = t.document_recent(request,docId)
@@ -375,14 +367,49 @@ def document_metadata(request, collId, docId):
         if 'pageNr' in recent:
             title_desc += str(_('Go to <a href="%s">last saved page</a> in this document')) % reverse('edit:correct', args=[collId,recent.get('docId'),recent.get('pageNr')])
 
+#bleh...
     stat_string = ''
-    stat_string += '<p>%s</p>' % docStatString
-    stat_string += '<p>%s</p>' % tagsString
+#    stat_string += '<p>%s</p>' % docStatString
+#    stat_string += '<p>%s</p>' % tagsString
+
+    #derive proportion of pages in various states
+    total_pages = stats.get('nrOfNew') +  stats.get('nrOfInProgress') + stats.get('nrOfDone') + stats.get('nrOfFinal') + stats.get('nrOfGT')
+    pc_new = int(round((int(stats.get('nrOfNew'))/total_pages) * 100))
+    pc_ip = int(round((int(stats.get('nrOfInProgress'))/total_pages) * 100))
+    pc_done = int(round((int(stats.get('nrOfDone'))/total_pages) * 100))
+    pc_final = int(round((int(stats.get('nrOfFinal'))/total_pages) * 100))
+    pc_gt = int(round((int(stats.get('nrOfGT'))/total_pages) * 100))
+
+    stats_table = '<table class="embedded-stats-table">'
+    if stats.get('nrOfTranscribedLines') or stats.get('nrOfWords') : 
+        stats_table += '<tr><th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Tanscribed')
+    if stats.get('nrOfTranscribedLines') : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Lines'), stats.get('nrOfTranscribedLines'))
+    if stats.get('nrOfWords') : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Words'), stats.get('nrOfWords'))
+
+    stats_table += '<tr><th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Status of pages')
+    if pc_new > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('New'), pc_new)
+    if pc_ip > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('In Progress'), pc_ip)
+    if pc_done > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Done'), pc_done)
+    if pc_final > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Final'), pc_final)
+    if pc_gt > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Ground Truth'), pc_gt)
+
+    if personCount or placeCount or dateCount or abbrevCount or otherCount : 
+        stats_table += '<tr><th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Tags')
+    if personCount > 0 : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('People'), personCount)
+    if placeCount > 0 : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Places'), placeCount)
+    if dateCount > 0 : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Dates'), dateCount)
+    if abbrevCount > 0 : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Abbreviations'), abbrevCount)
+    if otherCount > 0 : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Other'), otherCount)
+
+    stats_table += '</table>'
+
 
     return JsonResponse({
             'statString': stat_string,
             'titleDesc': title_desc,
-            'viewLinks': view_links
+            'viewLinks': view_links,
+            'thumbUrl': stats.get('thumbUrl'),
+	    'stats_table' : stats_table
         },safe=False)
 
 @login_required

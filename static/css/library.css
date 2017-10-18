@@ -1,8 +1,12 @@
 .twi-view-link-list li {
 	margin-top:5px;
 }
-.embedded-stats-table {width: 100%;}
+.embedded-stats-table {width: 100%; font-size: 0.75em;}
+.embedded-stats-table th { font-weight: normal;}
+th.embedded-stats-table-heading {text-align: center; font-weight: bold;}
+
 /* Prevent the embedded table from being highlighted on hover */
+#documents_table td table.embedded-stats-table tbody tr:hover, 
 #collections_table td table.embedded-stats-table tbody tr:hover {
     background-color: #fff;
 }
