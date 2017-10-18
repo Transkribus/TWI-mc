@@ -512,8 +512,9 @@ class TranskribusSession(object):
         return r.status_code
 
     # Saves transcripts.
-    def save_transcript(self, request, transcript_xml, collId, docId, page):
-        params = {"status": "NEW"}
+    def save_transcript(self, request, transcript_xml, collId, docId, page, parent):
+        #added transcript id as parent as per Transkribus/TWI-edit#38
+        params = {"status": "NEW", 'parent': parent}
         headers = {"content-type": "application/xml"}
 
         url = settings.TRP_URL+'collections/'+collId+'/'+str(docId)+'/'+str(page)+'/text'
