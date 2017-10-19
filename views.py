@@ -42,7 +42,7 @@ def index(request):
 def collections(request):
     t = request.user.tsdata.t
 
-    collections = t.collections(request)
+    collections = t.collections(request,{'empty':'true'})
     if isinstance(collections,HttpResponse):
         return apps.utils.views.error_view(request,collections)
     return render(request, 'library/collections.html', {'collections': collections} )
@@ -56,7 +56,7 @@ def collection(request, collId):
     t = request.user.tsdata.t
 
     #Avoid this sort of nonsense if possible
-    collections = t.collections(request,{'end':None,'start':None})
+    collections = t.collections(request,{'end':None,'start':None,'empty':'true'})
     if isinstance(collections,HttpResponse):
         return apps.utils.views.error_view(request,collections)
 
