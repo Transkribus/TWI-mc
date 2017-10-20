@@ -268,7 +268,7 @@ class TranskribusSession(object):
         return json.loads(r.text)
 
     def collections(self,request,params=None,ignore_cache=None):
-        url = settings.TRP_URL+'collections/list?empty=true'
+        url = settings.TRP_URL+'collections/list'
         t_id = "collections"
         return self.request(request,t_id,url,params=params,ignore_cache=ignore_cache)
 
