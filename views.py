@@ -30,6 +30,8 @@ from urllib.parse import urlparse
 def register(request):
 #TODO this is generic guff need to extend form for extra fields, send reg data to transkribus and authticate (which will handle the user creation)
 
+    return render(request, 'pages/register.html' )
+
     if request.user.is_authenticated(): #shouldn't really happen but...
 #        return HttpResponseRedirect(request.build_absolute_uri('/library/'))
         return HttpResponseRedirect(request.build_absolute_uri(request.resolver_match.app_name))
@@ -103,99 +105,7 @@ def table_ajax(request,list_name,collId=None,docId=None,page=None,userId=None) :
     if isinstance(data,HttpResponse):
         return data
 
-
     t = request.user.tsdata.t
-
-    #we want to add statistical data to the title column like nr_of_transcribed_lines, nr_of_transkribed_words, tags....
-#===============================================================================
-#     if list_name == 'documents':
-#         for element in data:
-#             #docStat = t_docStat(request,{'collId': collId, 'docId': int(element.get('docId'))})
-#             docId = element.get('docId')  
-#             params2 = {'collId': collId, 'docId': docId}
-#             personParam = {'collId': collId, 'docId': docId, 'tagName': 'person'}
-#             placeParam = {'collId': collId, 'docId': docId, 'tagName': 'place'}
-#             dateParam = {'collId': collId, 'docId': docId, 'tagName': 'date'}
-#             abbrevParam = {'collId': collId, 'docId': docId, 'tagName': 'abbrev'}
-#             otherParam = {'collId': collId, 'docId': docId, 'tagName': 'other'}
-#             #RM These need to check what is returned. If the transkribus call fails for some reason then they will get a HttpRedirect object (specifically a redirect to logout)
-#             personCount = eval("t.countDocTags(request,personParam)")
-#             if isinstance(personCount,HttpResponse):
-#                 return personCount
-#             placeCount = eval("t.countDocTags(request,placeParam)")
-#             if isinstance(placeCount,HttpResponse):
-#                 return placeCount
-#             dateCount = eval("t.countDocTags(request,dateParam)")
-#             if isinstance(dateCount,HttpResponse):
-#                 return dateCount
-#             abbrevCount = eval("t.countDocTags(request,abbrevParam)")
-#             if isinstance(abbrevCount,HttpResponse):
-#                 return abbrevCount
-#             otherCount = eval("t.countDocTags(request,otherParam)")
-#             if isinstance(otherCount,HttpResponse):
-#                 return otherCount
-# 
-# #             print('nr of person tags: ' + str(personCount))
-# #             print('place tags' + str(placeCount))
-# #             print('date tags' + str(dateCount))
-# #             print('abbrev tags' + str(abbrevCount))
-# #             print('other tags' + str(otherCount))
-#             
-#             tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
-#             
-#             docStat = eval("t.docStat(request, params2)")
-#             if isinstance(docStat,HttpResponse):
-#                 return docStat
-# 
-#             #print(docStat)
-#             #TODO call rest service to get the stats
-#             if 'nr_lines_transcribed' not in str(element.get('title')):
-#                 element.update({'title': str(element.get('title'))+'<br/>nr_lines_transcribed: '+ str(docStat.get('nrOfTranscribedLines')) + '<br/>nr_words_transcribed: ' + str(docStat.get('nrOfWords'))}) 
-#                 
-#             if tagsString and 'Tags' not in str(element.get('title')):
-#                 element.update({'title': str(element.get('title'))+tagsString}) 
-#     
-#     #print(data)
-#     
-#     if list_name == 'collections':
-#         for element in data:
-#             collId = element.get('colId') 
-#             params3 = {'collId': collId}
-#             
-#             personParam = {'collId': collId, 'tagName': 'person'}
-#             placeParam = {'collId': collId, 'tagName': 'place'}
-#             dateParam = {'collId': collId, 'tagName': 'date'}
-#             abbrevParam = {'collId': collId, 'tagName': 'abbrev'}
-#             otherParam = {'collId': collId, 'tagName': 'other'}
-#             #RM These need to check what is returned. If the transkribus call fails for some reason then they will get a HttpRedirect object (specifically a redirect to logout)
-#             personCount = eval("t.countCollTags(request,personParam)")
-#             if isinstance(personCount,HttpResponse):
-#                 return personCount
-#             placeCount = eval("t.countCollTags(request,placeParam)")
-#             if isinstance(placeCount,HttpResponse):
-#                 return placeCount
-#             dateCount = eval("t.countCollTags(request,dateParam)")
-#             if isinstance(dateCount,HttpResponse):
-#                 return dateCount
-#             abbrevCount = eval("t.countCollTags(request,abbrevParam)")
-#             if isinstance(abbrevCount,HttpResponse):
-#                 return abbrevCount
-#             otherCount = eval("t.countCollTags(request,otherParam)")
-#             if isinstance(otherCount,HttpResponse):
-#                 return otherCount
-#             
-#             tagsString = getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount)
-#                 
-#             print(tagsString)
-#         
-#             collStat = eval("t.collStat(request, params3)")
-#             
-#             if 'nr_lines_transcribed' not in str(element.get('colName')):
-#                 element.update({'colName': str(element.get('colName'))+'<br/>nr_lines_transcribed: '+ str(collStat.get('nrOfTranscribedLines')) + '<br/>nr_words_transcribed: ' + str(collStat.get('nrOfWords'))}) 
-#                 
-#             if tagsString and 'Tags' not in str(element.get('colName')):
-#                 element.update({'colName': str(element.get('colName'))+tagsString}) 
-#===============================================================================
 
    #TODO pass back the error not the redirect and then process the error according to whether we have been called via ajax or not....
     if isinstance(data,HttpResponse):
