@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-16 12:31+0000\n"
+"POT-Creation-Date: 2017-10-24 13:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:5
@@ -222,8 +222,7 @@ msgstr ""
 msgid "UserId"
 msgstr ""
 
-#: apps/dashboard/templates/dashboard/users_table.html:10
-#: apps/utils/forms.py:9
+#: apps/dashboard/templates/dashboard/users_table.html:10 apps/utils/forms.py:9
 msgid "Given Name"
 msgstr ""
 
@@ -255,139 +254,143 @@ msgstr ""
 msgid "Saving changes..."
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:71
+#: apps/edit/templates/edit/correct.html:51
+msgid "You can not change the page status."
+msgstr ""
+
+#: apps/edit/templates/edit/correct.html:72
 #: apps/library/templates/library/collections_table.html:6
 #: apps/library/templates/library/line.html:34
 #: apps/library/templates/library/page.html:32
 #: apps/library/templates/library/region.html:34
-#: apps/library/templates/library/word.html:34
+#: apps/library/templates/library/word.html:34 apps/library/views.py:339
 msgid "Image"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:72
+#: apps/edit/templates/edit/correct.html:73 apps/library/views.py:340
 msgid "Line by line"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:73
+#: apps/edit/templates/edit/correct.html:74 apps/library/views.py:341
 msgid "Side by side"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:74
+#: apps/edit/templates/edit/correct.html:75
 #: apps/library/templates/library/line.html:32
 #: apps/library/templates/library/region.html:33
-#: apps/library/templates/library/word.html:32
+#: apps/library/templates/library/word.html:32 apps/library/views.py:342
 msgid "Text"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:77
+#: apps/edit/templates/edit/correct.html:78
 msgid "Zoom In"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:78
+#: apps/edit/templates/edit/correct.html:79
 msgid "Zoom Out"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:79
+#: apps/edit/templates/edit/correct.html:80
 msgid "Fit Width"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:80
+#: apps/edit/templates/edit/correct.html:81
 msgid "Fit Height"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:83
+#: apps/edit/templates/edit/correct.html:84
 msgid "First page"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:84
+#: apps/edit/templates/edit/correct.html:85
 msgid "Previous page"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:86
+#: apps/edit/templates/edit/correct.html:87
 msgid "Next page"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:87
+#: apps/edit/templates/edit/correct.html:88
 msgid "Last page"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:88
+#: apps/edit/templates/edit/correct.html:89
 msgid "Thumb overview"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:91
-#: apps/edit/templates/edit/correct.html:460
+#: apps/edit/templates/edit/correct.html:92
+#: apps/edit/templates/edit/correct.html:455
 msgid "Edit"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:91
-#: apps/edit/templates/edit/correct.html:455
+#: apps/edit/templates/edit/correct.html:92
+#: apps/edit/templates/edit/correct.html:450
 msgid "View"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:99
-#: apps/edit/templates/edit/correct.html:118
-#: apps/edit/templates/edit/correct.html:429
-#: apps/edit/templates/edit/correct.html:439
+#: apps/edit/templates/edit/correct.html:100
+#: apps/edit/templates/edit/correct.html:119
+#: apps/edit/templates/edit/correct.html:413
+#: apps/edit/templates/edit/correct.html:426
+#: apps/edit/templates/edit/correct.html:435
+#: apps/edit/templates/edit/correct.html:924
 msgid "Page status: in progress"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:101
-#: apps/edit/templates/edit/correct.html:120
-#: apps/edit/templates/edit/correct.html:423
-#: apps/edit/templates/edit/correct.html:441
+#: apps/edit/templates/edit/correct.html:102
+#: apps/edit/templates/edit/correct.html:121
+#: apps/edit/templates/edit/correct.html:421
+#: apps/edit/templates/edit/correct.html:437
 msgid "Page status: done"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:103
-#: apps/edit/templates/edit/correct.html:122
-#: apps/edit/templates/edit/correct.html:443
+#: apps/edit/templates/edit/correct.html:104
+#: apps/edit/templates/edit/correct.html:123
+#: apps/edit/templates/edit/correct.html:439
 msgid "Page status: final"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:105
-#: apps/edit/templates/edit/correct.html:124
+#: apps/edit/templates/edit/correct.html:106
+#: apps/edit/templates/edit/correct.html:125
 msgid "Page status: ground truth"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:110
+#: apps/edit/templates/edit/correct.html:111 apps/library/views.py:322
+#: apps/library/views.py:400
 msgid "In Progress"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:111
+#: apps/edit/templates/edit/correct.html:112 apps/library/views.py:323
+#: apps/library/views.py:401
 msgid "Done"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:112
+#: apps/edit/templates/edit/correct.html:113 apps/library/views.py:324
+#: apps/library/views.py:402
 msgid "Final"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:128
+#: apps/edit/templates/edit/correct.html:129
 #: apps/edit/templates/edit/correct_modal.html:66
 msgid "Save changes"
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:133
+#: apps/edit/templates/edit/correct.html:134
 msgid ""
 "This page lacks segmentation and cannot be edited. Please use TranskribusX "
 "to create a segmentation first."
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:190
-#: apps/edit/templates/edit/correct.html:284
+#: apps/edit/templates/edit/correct.html:191
+#: apps/edit/templates/edit/correct.html:281
 msgid "Your browser does not support the HTML5 canvas tag."
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:277
+#: apps/edit/templates/edit/correct.html:274
 msgid "The page contains no lines."
 msgstr ""
 
-#: apps/edit/templates/edit/correct.html:433
-#: apps/edit/templates/edit/correct.html:447
-msgid "You can not change the page status."
-msgstr ""
-
-#: apps/edit/templates/edit/correct.html:923
+#: apps/edit/templates/edit/correct.html:917
 msgid "You have unsaved changes. Are you sure you want to leave?"
 msgstr ""
 
@@ -461,17 +464,16 @@ msgstr ""
 msgid "Your version"
 msgstr ""
 
-#: apps/edit/views.py:74 apps/edit/views.py:164
+#: apps/edit/views.py:74 apps/edit/views.py:167
 msgid "Transcript saved!"
 msgstr ""
 
-#: apps/edit/views.py:168
+#: apps/edit/views.py:171
 msgid "Page status changed!"
 msgstr ""
 
 #: apps/library/templates/library/about.html:13
-#: apps/search/templates/search/navi_base.html:47
-#: templates/pages/about.html:13
+#: apps/search/templates/search/navi_base.html:47 templates/pages/about.html:13
 msgid "About"
 msgstr ""
 
@@ -496,6 +498,11 @@ msgstr ""
 
 #: apps/library/templates/library/collections_table.html:9
 msgid "My Role"
+msgstr ""
+
+#: apps/library/templates/library/collections_table.html:10
+#: apps/library/templates/library/documents_table.html:13
+msgid "Stats"
 msgstr ""
 
 #: apps/library/templates/library/create_collection_modal.html:4
@@ -553,15 +560,15 @@ msgid "Document title and description"
 msgstr ""
 
 #: apps/library/templates/library/documents_table.html:12
-msgid "Stats"
-msgstr ""
-
-#: apps/library/templates/library/documents_table.html:13
 msgid "pp."
 msgstr ""
 
+#: apps/library/templates/library/error.html:14
+msgid "We have a slight problem"
+msgstr ""
+
 #: apps/library/templates/library/error.html:17
-msgid "Return to the "
+msgid "Return to the"
 msgstr ""
 
 #: apps/library/templates/library/error.html:17 templates/error.html:14
@@ -569,7 +576,7 @@ msgid "previous page"
 msgstr ""
 
 #: apps/library/templates/library/error.html:18
-msgid "Or to the READ WebUI "
+msgid "Or to the READ WebUI"
 msgstr ""
 
 #: apps/library/templates/library/error.html:18 templates/error.html:15
@@ -794,11 +801,75 @@ msgstr ""
 msgid "This word has some metadata:"
 msgstr ""
 
-#: apps/library/views.py:298
+#: apps/library/views.py:300
+#, python-format
+msgid "Page %(pageNr)s of %(docName)s last saved on %(time)s</p>"
+msgstr ""
+
+#: apps/library/views.py:305
 #, python-format
 msgid ""
-"<p class=\"collection_jumpto\">Go to <a href=\"%s\">last saved page</a> in "
-"this collection</p>"
+"<p>Go to <i>your</i> <a href=\"%s\">last saved page</a> in this collection.</"
+"p>"
+msgstr ""
+
+#: apps/library/views.py:321 apps/library/views.py:399
+msgid "New"
+msgstr ""
+
+#: apps/library/views.py:325 apps/library/views.py:403
+msgid "Ground Truth"
+msgstr ""
+
+#: apps/library/views.py:375
+#, python-format
+msgid "Page %(pageNr)s last saved on %(time)s</p>"
+msgstr ""
+
+#: apps/library/views.py:379
+#, python-format
+msgid ""
+"Go to <i>your</i> <a href=\"%(link)s\">last saved page</a> in this document"
+msgstr ""
+
+#: apps/library/views.py:394
+msgid "Tanscribed"
+msgstr ""
+
+#: apps/library/views.py:395
+msgid "Lines"
+msgstr ""
+
+#: apps/library/views.py:396
+msgid "Words"
+msgstr ""
+
+#: apps/library/views.py:398
+msgid "Status of pages"
+msgstr ""
+
+#: apps/library/views.py:406
+msgid "Tags"
+msgstr ""
+
+#: apps/library/views.py:407
+msgid "People"
+msgstr ""
+
+#: apps/library/views.py:408
+msgid "Places"
+msgstr ""
+
+#: apps/library/views.py:409
+msgid "Dates"
+msgstr ""
+
+#: apps/library/views.py:410
+msgid "Abbreviations"
+msgstr ""
+
+#: apps/library/views.py:411
+msgid "Other"
 msgstr ""
 
 #: apps/navigation/templates/navigation/nav_buttons.html:4
