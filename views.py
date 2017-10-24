@@ -63,7 +63,7 @@ def collection(request, collId):
     navdata = navigation.get_nav(collections,collId,'colId','colName')
     #if we didn't have a focus before navigation call, we'll have one after
     collection = navdata.get("focus")
-    
+
     collIdParam = {'collId': collId}
 
     personParam = {'collId': collId, 'tagName': 'person'}
@@ -171,12 +171,12 @@ def collection_metadata(request, collId):
     if 'description' in collection:
         title_desc += '<p id="long_text_%s">%s</p>' % (collId, collection['description'])
 
-    if recent_save : 
+    if recent_save :
         #recent will be a single item array
         if 'time' in recent_save[0]:
-            title_desc += str(_('<p>Page %s of %s last saved on %s</p>')) % (recent_save[0].get('pageNr'),recent_save[0].get('docName'),apps.utils.templatetags.str_to_date(recent_save[0].get('time')))
-   
-    if recent : 
+            title_desc += '<p>%s</p>' % (_('Page %(pageNr)s of %(docName)s last saved on %(time)s</p>') % {'pageNr': recent_save[0].get('pageNr'), 'docName': recent_save[0].get('docName'), 'time': apps.utils.templatetags.str_to_date(recent_save[0].get('time'))})
+
+    if recent :
         #recent will be a single item array
         if 'pageNr' in recent[0]:
             title_desc += str(_('<p>Go to <i>your</i> <a href="%s">last saved page</a> in this collection.</p>')) % reverse('edit:correct', args=[collId,recent[0].get('docId'),recent[0].get('pageNr')])
@@ -210,7 +210,7 @@ def document_metadata(request, collId, docId):
     import timeit
 
     t = request.user.tsdata.t
-    
+
     #links direct to the various views of the document
     view_links = '<ul class="list-group list-unstyled text-center twi-view-link-list">'
     view_links += '<li class="list-group-item"><a href="%s?i=i">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Image'))
@@ -225,11 +225,11 @@ def document_metadata(request, collId, docId):
     dateCount = t.countDocTags(request,{'collId': collId, 'docId': docId, 'tagName': 'date'})
     abbrevCount = t.countDocTags(request,{'collId': collId, 'docId': docId, 'tagName': 'abbrev'})
     otherCount = t.countDocTags(request,{'collId': collId, 'docId': docId, 'tagName': 'other'})
-    
+
     #Most of the metadata can be got from fulldoc now
     fulldoc = t.document(request, collId, docId,-1)
     stats = fulldoc.get('md')
-    
+
     #data on last saved page for current user (aka recent)
     recent = t.document_recent(request,{'id': docId, 'userid' : request.user.tsdata.userId})
     if isinstance(recent,HttpResponse):
@@ -250,14 +250,14 @@ def document_metadata(request, collId, docId):
     if 'desc' in stats:
         title_desc += '<p id="long_text_%s">%s</p>' % (docId, stats.get('desc'))
 
-    if recent_save : 
+    if recent_save :
         #recent will be a single item array
         if 'time' in recent_save[0]:
-            title_desc += str(_('<p>Page %s last saved on %s</p>')) % (recent_save[0].get('pageNr'),apps.utils.templatetags.str_to_date(recent_save[0].get('time')))
-    if recent : 
+            title_desc += '<p>%s</p>' % (_('Page %(pageNr)s last saved on %(time)s</p>') % {'pageNr': recent_save[0].get('pageNr'), 'time': apps.utils.templatetags.str_to_date(recent_save[0].get('time'))})
+    if recent :
         #recent will be a single item array
         if 'pageNr' in recent[0]:
-            title_desc += str(_('<p>Go to <i>your</i> <a href="%s">last saved page</a> in this document</p>')) % reverse('edit:correct', args=[collId,recent[0].get('docId'),recent[0].get('pageNr')])
+            title_desc += '<p>%s</p>' % (_('Go to <i>your</i> <a href="%(link)s">last saved page</a> in this document') % {'link': reverse('edit:correct', args=[collId,recent[0].get('docId'),recent[0].get('pageNr')])})
 
 
     #derive proportion of pages in various states
@@ -283,7 +283,7 @@ def document_metadata(request, collId, docId):
     if pc_final > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Final'), pc_final)
     if pc_gt > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Ground Truth'), pc_gt)
 
-    if personCount or placeCount or dateCount or abbrevCount or otherCount : 
+    if personCount or placeCount or dateCount or abbrevCount or otherCount :
         stats_table += '<tr><th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Tags')
     if personCount > 0 : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('People'), personCount)
     if placeCount > 0 : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Places'), placeCount)
