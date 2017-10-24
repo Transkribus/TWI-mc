@@ -108,65 +108,6 @@ def collection(request, collId):
 
     return render(request, 'library/collection.html', combidata)
 
-    '''
-    #this is actually a call to collections/{collId}/list and returns only the document objects for a collection
-    docs = t_collection(request,{'collId':collId})
-    #probably a redirect if an HttpResponse
-    if isinstance(docs,HttpResponse):
-        return docs
-
-    collections = t_collections(request)
-    #there is currently no transkribus call for collections/{collId} on its own to fetch just data for collection
-    # so we'll loop through collections and pick out collection level metadata freom there
-    # The same could be achieved using the list of documents (ie pick first doc match collId with member of colList)
-    collection = None
-    for x in collections:
-        if str(x.get("colId")) == str(collId):
-            collection = x
-
-    nav = navigation.up_next_prev(request,"collection",collId,collections)
-
-    #collection view goes down two levels (ie documents and then pages)
-    # data prepared fro fancytree.js representation
-    for doc in docs:
-        doc['collId'] = collId
-        doc['key'] = doc['docId']
-        doc['folder'] = 'true'
-        #fetch full document data with no transcripts for pages //TODO avoid REST request in loop?
-        fulldoc  = t_document(request, collId, doc['docId'], 0)
-        doc['children'] = fulldoc.get('pageList').get("pages")
-        a = len(doc['children']) // 2
-        doc['imgurl2show'] = doc['children'][a]['thumbUrl']
-        t_log("IMAGEURL2SHOW : %s" % doc['imgurl2show'], logging.WARN)
-        #sys.stdout.write("page url : %s \r\n" % doc['imgurl2show'])
-        #sys.stdout.flush()
-        # for x in doc['children']:
-        #   x['title']=x['imgFileName']
-        #   x['collId']=collId
-
-    paginator = Paginator(docs, 10)  # Show 5 docs per page
-    page = request.GET.get('page')
-    try:
-        doclist = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        doclist = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        doclist = paginator.page(paginator.num_pages)
-
-    return render(request, 'library/collection.html', {
-        'collId': collId,
-        'collection': collection,
-        'documents': docs,
-#        'documents_json': json.dumps(docs),
-        'nav_up': nav['up'],
-        'nav_next': nav['next'],
-        'nav_prev': nav['prev'],
-        'doclist': doclist,
-        })
-    '''
-
 
 #/library/{colId}/{docId}
 # view that lists pages in doc and some doc level metadata
@@ -188,82 +129,14 @@ def document(request, collId, docId, page=None):
     #document = navdata.get("focus")
     pagedata = {'document':  fulldoc}
     #merge the dictionaries
-    combidata = pagedata.copy()
-    combidata.update(navdata)
+#    combidata = pagedata.copy()
+#    combidata.update(navdata)
 
-    '''
-    #new for fetching all text regions and text of all pages
-    #
-    #This performs terribly... Suggest paged ajax calls as with thumbs
-    #
-    textpages =[]
-    textregions = []
-    for x in full_doc.get('pageList').get('pages'):
-        current_transcript = t_current_transcript(request, collId, docId, x.get("pageNr"))
-        t_log("CURRENT_TRANS: %s" % current_transcript,logging.WARN)
-        transcript = t_transcript(request, current_transcript.get("tsId"),current_transcript.get("url"))
-        regions=transcript.get("PcGts").get("Page").get("TextRegion");
-
-        if isinstance(regions, dict):
-            regions = [regions]
-
-        strings = []
-        lineList = []
-        if regions:
-            sys.stdout.write("number of regions on this page : %s \r\n" % len(regions))
-            sys.stdout.flush()
-            for y in regions:
-                lines = y.get("TextLine")
-                #region_width = crop(x.get("Coords").get("@points"), 1).get('w')
-                if lines:
-                    if isinstance(lines, dict):
-                        #lines['regionWidth'] = region_width
-                        lineList.extend([lines])
-                    else: # Assume that lines is a list of lines
-                        if lines is not None:
-                            for line in lines:
-                                #line['regionWidth'] = region_width
-                                lineList.extend([line])
-
-                if lineList:
-                    sys.stdout.write("number of lines in this region : %s \r\n" % len(lineList))
-                    sys.stdout.flush()
-                    for z in lineList:
-                        if z.get('TextEquiv') is not None:
-                            unicode_string = z.get('TextEquiv').get('Unicode')
-                        else:
-                            unicode_string = "";
-
-                        strings.append(unicode_string)
-
-                sys.stdout.write("append strings")
-                sys.stdout.flush()
-                textregions.append(strings)
-                strings=[]
-                lineList=[]
-
-        textpages.append(textregions)
-        textregions=[]
-    #new stuff end
-    '''
     #merge the dictionaries
     combidata = pagedata.copy()
     combidata.update(navdata)
 
     return render(request, 'library/document.html', combidata)
-    '''
-    return render(request, 'library/document.html', {
-        'metadata': full_doc.get('md'),
-        'pageList': full_doc.get('pageList'),
-        'textpages': textpages,
-        'collId': int(collId),
-        'nav_up': nav['up'],
-        'nav_next': nav['next'],
-        'nav_prev': nav['prev'],
-        })
-
-
-    '''
 
 def _get_collection(document, collId):
     for collection in document['collectionList']['colList']:
@@ -282,12 +155,16 @@ def collection_metadata(request, collId):
     #Add collection of data on last saved page (aka recent)
     recent = t.collection_recent(request,{'collId': collId, 'userid' : request.user.tsdata.userId})
     if isinstance(recent,HttpResponse):
-        return apps.utils.views.error_view(request,recent)
+        recent = None
+#Don't stop if we don't get recents back from actions/list
+#        return apps.utils.views.error_view(request,recent)
  
     #last save data for the doc (generally... not specific to the current user)
     recent_save = t.document_recent(request,{'collId': collId})
     if isinstance(recent_save,HttpResponse):
-        return apps.utils.views.error_view(request,recent_save)
+        recent_save = None
+#Don't stop if we don't get recents back from actions/list
+#        return apps.utils.views.error_view(request,recent_save)
 
     title_desc = ''
     title_desc += '<p><b>%s</b> (%s)</p>' % (collection['colName'], collId)
@@ -356,12 +233,16 @@ def document_metadata(request, collId, docId):
     #data on last saved page for current user (aka recent)
     recent = t.document_recent(request,{'id': docId, 'userid' : request.user.tsdata.userId})
     if isinstance(recent,HttpResponse):
-        return apps.utils.views.error_view(request,recent)
+#Don't stop if we don't get recents back from actions/list
+        recent = None
+        #return apps.utils.views.error_view(request,recent)
 
     #last save data for the doc (generally... not specific to the current user)
     recent_save = t.document_recent(request,{'id': docId})
     if isinstance(recent_save,HttpResponse):
-        return apps.utils.views.error_view(request,recent_save)
+#Don't stop if we don't get recents back from actions/list
+        recent_save = None
+        #return apps.utils.views.error_view(request,recent_save)
 
     #title and description
     title_desc = ''
@@ -391,7 +272,7 @@ def document_metadata(request, collId, docId):
     stats_table = '<table class="embedded-stats-table">'
 
     if stats.get('nrOfTranscribedLines') or stats.get('nrOfWords') : 
-        stats_table += '<tr><th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Tanscribed')
+        stats_table += '<tr><th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Available for editing')
     if stats.get('nrOfTranscribedLines') : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Lines'), stats.get('nrOfTranscribedLines'))
     if stats.get('nrOfWords') : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Words'), stats.get('nrOfWords'))
 

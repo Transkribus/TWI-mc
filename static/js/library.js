@@ -69,35 +69,34 @@ function init_collections_table(){
 		    this.invalidate('dom');
 		    var currRow = this;
 
-			$("#collections_table tbody tr").each(function(rowInd){
+			$("#collections_table > tbody > tr").each(function(rowInd){
 		    	if (rowLoop == rowInd){
 
-		    		// alert(Object.keys(currRow.data()));
+				row_data[rowInd] = {} ;
+				row_data[rowInd].collId = currRow.data().colId;
+			    	console.log("ROW: ",currRow.data());	
+				row_data[rowInd].collStat = make_url("/library/coll_metadata/"+row_data[rowInd].collId);
+				row_data[rowInd].row_element = this;
+				console.log("URL: ",row_data[rowInd].collStat);
+				$.getJSON(row_data[rowInd].collStat, function(metadata){
+					$("td:eq(1)", row_data[rowInd].row_element).html(metadata.titleDesc);
+					shorten_text("long_text_" + row_data[rowInd].collId);
+					if (metadata.stats.thumbUrl){
+						thumb = loadThumbs(metadata.stats.thumbUrl);
+						$("td:eq(0)", row_data[rowInd].row_element).empty();
+						$("td:eq(0)", row_data[rowInd].row_element).append(thumb);
+						$("td:eq(0)", row_data[rowInd].row_element).addClass('text-center');
+					}else{
+						$("td:eq(0)", row_data[rowInd].row_element).html('No image available');
+					}
+					$("td:eq(4)", row_data[rowInd].row_element).html(metadata.stats_table);
 
-					row_data[rowInd] = {} ;
-					row_data[rowInd].collId = currRow.data().colId;
-					row_data[rowInd].collStat = make_url("/library/coll_metadata/"+row_data[rowInd].collId);
-					row_data[rowInd].img_cell = this;
-					console.log("URL: ",row_data[rowInd].collStat);
-					$.getJSON(row_data[rowInd].collStat, function(metadata){
-						$("td:eq(1)", row_data[rowInd].img_cell).html(metadata.titleDesc);
-						shorten_text("long_text_" + row_data[rowInd].collId);
-						if (metadata.stats.thumbUrl){
-							thumb = loadThumbs(metadata.stats.thumbUrl);
-							$("td:eq(0)", row_data[rowInd].img_cell).empty();
-							$("td:eq(0)", row_data[rowInd].img_cell).append(thumb);
-							$("td:eq(0)", row_data[rowInd].img_cell).addClass('text-center');
-						}else{
-							$("td:eq(0)", row_data[rowInd].img_cell).html('No image available');
-						}
-						$("td:eq(4)", row_data[rowInd].img_cell).html(metadata.stats_table);
-
-					
-					}).done(function(a,b) {
+				
+				}).done(function(a,b) {
 //					    console.log( "Done: ",a, " ",b );
-					}).fail(function( a, b){
-					    console.log( "Fail: ",a, " ",b );
-					});
+				}).fail(function( a, b){
+				    console.log( "Fail: ",a, " ",b );
+				});
 
 		    	}
 			});
@@ -151,22 +150,21 @@ function init_documents_table(){
 		    var currRow = this;
 		    
 		    //this way we can only go through the indices of the first page before the change during sort/search
-		    $("#documents_table tbody tr").each(function(rowInd){
-		    	
+		    $("#documents_table > tbody > tr").each(function(rowInd){
 		    	if (rowLoop == rowInd){
 		    				 
 					row_data[rowInd] = {} ;
 					row_data[rowInd].docId = currRow.data().docId;
-					row_data[rowInd].img_cell = this;
+					row_data[rowInd].row_element = this;
 					row_data[rowInd].stats = make_url("/library/doc_metadata/"+ids['collId']+'/'+row_data[rowInd].docId);
 					$.getJSON(row_data[rowInd].stats, function(metadata){
 						thumb = loadThumbs(metadata.thumbUrl);
-						$("td:eq(0)", row_data[rowInd].img_cell).empty();
-						$("td:eq(0)", row_data[rowInd].img_cell).append(thumb);
-						$("td:eq(0)", row_data[rowInd].img_cell).addClass('text-center');
-						$("td:eq(1)", row_data[rowInd].img_cell).html(metadata.viewLinks);
-						$("td:eq(2)", row_data[rowInd].img_cell).html(metadata.titleDesc);
-						$("td:eq(4)", row_data[rowInd].img_cell).html(metadata.stats_table);
+						$("td:eq(0)", row_data[rowInd].row_element).empty();
+						$("td:eq(0)", row_data[rowInd].row_element).append(thumb);
+						$("td:eq(0)", row_data[rowInd].row_element).addClass('text-center');
+						$("td:eq(1)", row_data[rowInd].row_element).html(metadata.viewLinks);
+						$("td:eq(2)", row_data[rowInd].row_element).html(metadata.titleDesc);
+						$("td:eq(4)", row_data[rowInd].row_element).html(metadata.stats_table);
 						row_data[rowInd].collId = ids['collId'];
 						shorten_text("long_text_" + row_data[rowInd].docId);
 
