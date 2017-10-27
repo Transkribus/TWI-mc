@@ -1157,7 +1157,7 @@ msgstr "Einloggen"
 
 #: templates/registration/login.html:48
 msgid "Lost password?"
-msgstr "Passowrt vergessen?"
+msgstr "Passwort vergessen?"
 
 #, fuzzy
 #~| msgid "Transcribe"
