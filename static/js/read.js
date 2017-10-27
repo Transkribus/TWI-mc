@@ -85,42 +85,54 @@ function init_datatable(table,url, columns){
 		"createdRow": function ( row, data, index ) {
                 	$(row).addClass("clickable");
 			//make rows click through to wheresoever they have an id for (col,doc,page)
-                	$(row).on("click", function(){ 
-				//TODO TODO make these linked rows work for user table
-				//TODO this works but feels messy (need to shift that n/a crap from the data for one)
-				var ids = parse_path();	
-				var colId = null;
-				var url = null;
-				if(data.colId != undefined && data.colId !== "n/a")
-					colId = data.colId;
-				if(ids.collId != undefined && ids.collId)
-					colId = ids.collId;
+                	$(row).on("click", function(e){
+                		// alert(e.target);
 
-				if(colId) url = colId;
-				if(data.docId != undefined && data.docId !== "n/a"){
-					url += '/'+data.docId;
-					if (appbase.includes("library")){
-						appbase = appbase.replace("library", "view")
-						url += '/'+1;
-					}
-				}
-				if(data.pageNr != undefined && data.pageNr !== "n/a"){ //NB will break until we use base url
-					url = serverbase+'/view/'+data.colId+'/'+data.docId+'/'+data.pageNr;	
-					if(serverbase !== "") url = '/'+url;
-				 	window.location.href=url;
-					return false;
-					
-				}
-				//TODO add case for userlist links 
-				if(table.selector.match(/users/)){
-					url += '/u/'+data.userName;
-				}
+		                if ( $(e.target).hasClass("details-control") ) {
+		                	var currRow = datatable.row(this);
 
-				if(url){
-					if(appbase.match(/\/$/)) loc = appbase+url; else loc = appbase+'/'+url;
-					window.location.href=loc;
-				}
-			});
+					        if ( currRow.child.isShown() ) {
+					            currRow.child.hide();
+					            $(row).removeClass('shown');
+					        } else {
+					        	currRow.child.show();
+					            $(row).addClass('shown');
+					        }
+		                } else {
+							var ids = parse_path();	
+							var colId = null;
+							var url = null;
+							if(data.colId != undefined && data.colId !== "n/a")
+								colId = data.colId;
+							if(ids.collId != undefined && ids.collId)
+								colId = ids.collId;
+
+							if(colId) url = colId;
+							if(data.docId != undefined && data.docId !== "n/a"){
+								url += '/'+data.docId;
+								if (appbase.includes("library")){
+									appbase = appbase.replace("library", "view")
+									url += '/'+1;
+								}
+							}
+							if(data.pageNr != undefined && data.pageNr !== "n/a"){ //NB will break until we use base url
+								url = serverbase+'/view/'+data.colId+'/'+data.docId+'/'+data.pageNr;	
+								if(serverbase !== "") url = '/'+url;
+							 	window.location.href=url;
+								return false;
+								
+							}
+							//TODO add case for userlist links 
+							if(table.selector.match(/users/)){
+								url += '/u/'+data.userName;
+							}
+
+							if(url){
+								if(appbase.match(/\/$/)) loc = appbase+url; else loc = appbase+'/'+url;
+								window.location.href=loc;
+							}
+						}
+					});
         	},
 
 	});
