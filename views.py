@@ -212,11 +212,11 @@ def document_metadata(request, collId, docId):
     t = request.user.tsdata.t
 
     #links direct to the various views of the document
-    view_links = '<ul class="list-group list-unstyled text-center twi-view-link-list">'
-    view_links += '<li class="list-group-item"><a href="%s?i=i">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Image'))
-    view_links += '<li class="list-group-item"><a href="%s?i=lbl">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Line by line'))
-    view_links += '<li class="list-group-item"><a href="%s?i=sbs">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Side by side'))
-    view_links += '<li class="list-group-item"><a href="%s?i=t">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Text'))
+    view_links = '<ul class="list-unstyled text-center twi-view-link-list">'
+    view_links += '<li class=""><a href="%s?i=i">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Image'))
+    view_links += '<li class=""><a href="%s?i=lbl">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Line by line'))
+    view_links += '<li class=""><a href="%s?i=sbs">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Side by side'))
+    view_links += '<li class=""><a href="%s?i=t">%s</a></li>' % (reverse('edit:correct', args=[collId, docId, 1]),_('Text'))
     view_links += '</ul>'
 
     #Get data for tags used in this doc
