@@ -115,15 +115,19 @@ function init_documents_table(){
 	var ids = parse_path();	
 
 	var columns =  [
-		    //This column will be for our image which we will not get from the table_ajax/document view
-		    //The columns with null data are loaded by ajax on draw.dt (see below) Becuase of this they cannot be searched or ordered
+			{
+                "className":      'details-control',
+                "orderable":      false,
+                "data":           null,
+                "defaultContent": ''
+            },
 		    { "data": "docId",
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
-		      "searchable": false, 
+		      "searchable": true, 
 		      "orderable": false },
-		    { "data" : null, 
-		      "searchable": false, 
-		      "orderable": false},
+		    // { "data" : null, 
+		    //   "searchable": false, 
+		    //   "orderable": false},
 		    { "data": "title",    //load with title for sorting and ordering (though this gets replaced with secondary ajax (see below)
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
 //		      "searchable": false, 
@@ -159,14 +163,33 @@ function init_documents_table(){
 					row_data[rowInd].stats = make_url("/library/doc_metadata/"+ids['collId']+'/'+row_data[rowInd].docId);
 					$.getJSON(row_data[rowInd].stats, function(metadata){
 						thumb = loadThumbs(metadata.thumbUrl);
-						$("td:eq(0)", row_data[rowInd].row_element).empty();
-						$("td:eq(0)", row_data[rowInd].row_element).append(thumb);
-						$("td:eq(0)", row_data[rowInd].row_element).addClass('text-center');
-						$("td:eq(1)", row_data[rowInd].row_element).html(metadata.viewLinks);
+						$("td:eq(1)", row_data[rowInd].row_element).empty();
+						$("td:eq(1)", row_data[rowInd].row_element).append(thumb);
+						$("td:eq(1)", row_data[rowInd].row_element).addClass('text-center');
+						// $("td:eq(2)", row_data[rowInd].row_element).html(metadata.viewLinks);
 						$("td:eq(2)", row_data[rowInd].row_element).html(metadata.titleDesc);
-						$("td:eq(4)", row_data[rowInd].row_element).html(metadata.stats_table);
+						$("td:eq(4)", row_data[rowInd].row_element).html(metadata.viewLinks);
 						row_data[rowInd].collId = ids['collId'];
 						shorten_text("long_text_" + row_data[rowInd].docId);
+
+						r = document.createElement('tr');
+						td1 = document.createElement('td');
+						td2 = document.createElement('td');
+						td3 = document.createElement('td');
+						td4 = document.createElement('td');
+						td5 = document.createElement('td');
+
+						// td3.html(metadata.big_stats_table);
+						
+						r.append(td1);
+						r.append(td2);
+						r.append(td3);
+						r.append(td4);
+						r.append(td5);
+
+						$("td:eq(2)", r).html(metadata.big_stats_table);
+
+						currRow.child(r);
 
 					}).done(function(a,b) {
 					    console.log( "Done: ",a, " ",b );
@@ -175,8 +198,39 @@ function init_documents_table(){
 					});
 			    }
 		    });
+
+		    // currRow.child.hide();
+	     //    tr.removeClass('shown');
 		});
 	});
+
+	// $('#documents_table tbody').click('td.details-control', function (event) {
+	// 	alert('stopping click...');
+	// 	disabledEventPropagation(event);
+	// 	alert('stopped click!');
+ //    } );
+
+	function format ( d ) {
+		// row_data[rowInd].stats = make_url("/library/doc_metadata/"+ids['collId']+'/'+row_data[rowInd].docId);
+		// $.getJSON(row_data[rowInd].stats, function(metadata){
+		// }
+
+    // `d` is the original data object for the row
+	    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+	        '<tr>'+
+	            '<td>Full name:</td>'+
+	            '<td>hallo</td>'+
+	        '</tr>'+
+	        '<tr>'+
+	            '<td>Extension number:</td>'+
+	            '<td>v^_^</td>'+
+	        '</tr>'+
+	        '<tr>'+
+	            '<td>Extra info:</td>'+
+	            '<td>And any further details here (images etc)...</td>'+
+	        '</tr>'+
+	    '</table>';
+	}
 }
 
 function init_pages_table(){
@@ -274,3 +328,12 @@ function loadThumbs(url) { // Loads all thumbs and shows the ones which are visi
 	return tempImg;
 }
 
+function disabledEventPropagation(event)
+{
+   if (event.stopPropagation){
+       event.stopPropagation();
+   }
+   else if(window.event){
+      window.event.cancelBubble=true;
+   }
+}

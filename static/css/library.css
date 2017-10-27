@@ -10,3 +10,11 @@ th.embedded-stats-table-heading {text-align: center; font-weight: bold;}
 #collections_table td table.embedded-stats-table tbody tr:hover {
     background-color: #fff;
 }
+
+td.details-control {
+    background: url('../images/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('../images/details_close.png') no-repeat center center;
+}
