@@ -19,47 +19,47 @@ msgstr ""
 
 #: apps/dashboard/templates/dashboard/actions_table.html:5
 msgid "Operation"
-msgstr ""
+msgstr "Δράση"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:6
 msgid "Time"
-msgstr ""
+msgstr "Χρόνος"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:7
 msgid "Collection Id"
-msgstr ""
+msgstr "Αριθμός συλλογής"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:8
 #: apps/dashboard/templates/dashboard/collections_table.html:9
 #: apps/dashboard/templates/dashboard/homepage.html:19
 msgid "Collection"
-msgstr ""
+msgstr "Συλλογή"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:9
 msgid "Document ID"
-msgstr ""
+msgstr "Αριθμός εγγράφου"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:10
 #: apps/dashboard/templates/dashboard/collection.html:24
 #: apps/dashboard/templates/dashboard/documents_table.html:9
 #: apps/dashboard/templates/dashboard/homepage.html:20
 msgid "Document"
-msgstr ""
+msgstr "Έγγραφο"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:11
 msgid "Page ID"
-msgstr ""
+msgstr "Αριθμός σελίδας"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:12
 #: apps/library/templates/library/documents_table.html:9
 msgid "Page"
-msgstr ""
+msgstr "Σελίδα"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:13
 #: apps/dashboard/templates/dashboard/users_table.html:9
 #: apps/library/templates/library/profile.html:19 apps/utils/forms.py:12
 msgid "Username"
-msgstr ""
+msgstr "Όνομα χρήστη"
 
 #: apps/dashboard/templates/dashboard/collection.html:6
 #: apps/dashboard/templates/dashboard/document.html:5
@@ -69,71 +69,71 @@ msgstr ""
 #: apps/library/templates/library/collections.html:6
 #: apps/library/templates/library/document.html:8
 msgid "My Collections"
-msgstr ""
+msgstr "Οι συλλογές μου"
 
 #: apps/dashboard/templates/dashboard/collection.html:19
 msgid "My recent document accesses for this collection"
-msgstr ""
+msgstr "Πρόσφατα έγγραφα για αυτή τη συλλογή"
 
 #: apps/dashboard/templates/dashboard/collection.html:27
 #: apps/dashboard/templates/dashboard/document.html:21
 #: apps/dashboard/templates/dashboard/homepage.html:23
 msgid "Access time"
-msgstr ""
+msgstr "Χρόνος προσπέλασης"
 
 #: apps/dashboard/templates/dashboard/collection.html:56
 #: apps/dashboard/templates/dashboard/document.html:47
 msgid "Table"
-msgstr ""
+msgstr "Πίνακας"
 
 #: apps/dashboard/templates/dashboard/collection.html:57
 #: apps/dashboard/templates/dashboard/document.html:48
 msgid "All activities"
-msgstr ""
+msgstr "Όλες οι δραστηριότητες"
 
 #: apps/dashboard/templates/dashboard/collection.html:58
 #: apps/dashboard/templates/dashboard/document.html:49
 #: apps/dashboard/templates/dashboard/homepage.html:40
 #: apps/dashboard/templates/dashboard/homepage.html:51
 msgid "My activities"
-msgstr ""
+msgstr "Οι δραστηριότητές μου"
 
 #: apps/dashboard/templates/dashboard/collection.html:60
 #: apps/dashboard/templates/dashboard/document.html:51
 msgid "Activities for... "
-msgstr ""
+msgstr "Δραστηριότητες για... "
 
 #: apps/dashboard/templates/dashboard/collection.html:63
 msgid "User list loading..."
-msgstr ""
+msgstr "Ο κατάλογος χρηστών φορτώνεται..."
 
 #: apps/dashboard/templates/dashboard/collection.html:66
 #: apps/dashboard/templates/dashboard/document.html:56
 msgid "Most Active Users"
-msgstr ""
+msgstr "Ενεργότεροι χρήστες"
 
 #: apps/dashboard/templates/dashboard/collections_table.html:8
 msgid "ColId"
-msgstr ""
+msgstr "ΣυλId"
 
 #: apps/dashboard/templates/dashboard/collections_table.html:10
 #: apps/library/templates/library/jobs_list.html:8
 #: apps/library/templates/library/jobs_list_compact.html:5
 msgid "Description"
-msgstr ""
+msgstr "Περιγραφή"
 
 #: apps/dashboard/templates/dashboard/collections_table.html:11
 #: apps/dashboard/templates/dashboard/users_table.html:15
 msgid "Role"
-msgstr ""
+msgstr "Ρόλος"
 
 #: apps/dashboard/templates/dashboard/document.html:16
 msgid "My recent document accesses for this document"
-msgstr ""
+msgstr "Πρόσφατες προσπελάσεις αυτού του εγγράφου"
 
 #: apps/dashboard/templates/dashboard/document.html:53
 msgid "Default 4"
-msgstr ""
+msgstr "Τυπικό 4"
 
 #: apps/dashboard/templates/dashboard/documents_table.html:8
 #: apps/dashboard/templates/dashboard/pages_table.html:8
@@ -150,109 +150,109 @@ msgstr ""
 #: apps/library/templates/library/transcript.html:37
 #: apps/library/templates/library/word.html:31
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: apps/dashboard/templates/dashboard/documents_table.html:10
 msgid "Author"
-msgstr ""
+msgstr "Συγγραφέας"
 
 #: apps/dashboard/templates/dashboard/documents_table.html:11
 msgid "Uploaded"
-msgstr ""
+msgstr "Ανεβάστηκε"
 
 #: apps/dashboard/templates/dashboard/documents_table.html:12
 msgid "Uploader"
-msgstr ""
+msgstr "Χρήστης που το ανέβασε"
 
 #: apps/dashboard/templates/dashboard/documents_table.html:13
 msgid "Pages"
-msgstr ""
+msgstr "Σελίδες"
 
 #: apps/dashboard/templates/dashboard/documents_table.html:14
 #: apps/library/templates/library/word.html:33 apps/utils/forms.py:17
 msgid "Language"
-msgstr ""
+msgstr "Γλώσσα"
 
 #: apps/dashboard/templates/dashboard/documents_table.html:15
 #: apps/dashboard/templates/dashboard/homepage.html:96
 #: apps/dashboard/templates/dashboard/pages_table.html:11
 #: apps/library/templates/library/page.html:38
 msgid "Status"
-msgstr ""
+msgstr "Κατάσταση"
 
 #: apps/dashboard/templates/dashboard/homepage.html:5
 msgid "Dashboard"
-msgstr ""
+msgstr "Πίνακας ελέγχου"
 
 #: apps/dashboard/templates/dashboard/homepage.html:14
 msgid "My recent document accesses"
-msgstr ""
+msgstr "Πρόσφατες προσπελάσεις εγγράφου"
 
 #: apps/dashboard/templates/dashboard/homepage.html:52
 msgid "My activities chart"
-msgstr ""
+msgstr "Προσωπικός χάρτης δραστηριοτήτων"
 
 #: apps/dashboard/templates/dashboard/homepage.html:53
 msgid "My most active collections"
-msgstr ""
+msgstr "Ενεργότερες συλλογές"
 
 #: apps/dashboard/templates/dashboard/homepage.html:88
 msgid "My overall activity"
-msgstr ""
+msgstr "Συνολική δραστηριότητα"
 
 #: apps/dashboard/templates/dashboard/homepage.html:92
 msgid "User activity"
-msgstr ""
+msgstr "Δραστηριότητα χρήστη"
 
 #: apps/dashboard/templates/dashboard/pages_table.html:9
 #: apps/library/templates/library/page.html:31
 msgid "Page Number"
-msgstr ""
+msgstr "Αριθμός σελίδας"
 
 #: apps/dashboard/templates/dashboard/pages_table.html:10
 msgid "File"
-msgstr ""
+msgstr "Αρχείο"
 
 #: apps/dashboard/templates/dashboard/pages_table.html:12
 msgid "No. of Transcripts"
-msgstr ""
+msgstr "Αριθμός μεταγραφών"
 
 #: apps/dashboard/templates/dashboard/users_table.html:8
 msgid "UserId"
-msgstr ""
+msgstr "Id χρήστη"
 
 #: apps/dashboard/templates/dashboard/users_table.html:10
 #: apps/utils/forms.py:9
 msgid "Given Name"
-msgstr ""
+msgstr "Όνομα"
 
 #: apps/dashboard/templates/dashboard/users_table.html:11
 #: apps/utils/forms.py:10
 msgid "Family Name"
-msgstr ""
+msgstr "Επίθετο"
 
 #: apps/dashboard/templates/dashboard/users_table.html:12
 #: apps/library/templates/library/profile.html:20
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: apps/dashboard/templates/dashboard/users_table.html:13
 #: apps/library/templates/library/profile.html:24
 msgid "Affiliation"
-msgstr ""
+msgstr "Οργανισμός"
 
 #: apps/dashboard/templates/dashboard/users_table.html:14
 #: apps/library/templates/library/jobs_list.html:8
 msgid "Created"
-msgstr ""
+msgstr "Δημιουργήθηκε"
 
 #: apps/edit/templates/edit/correct.html:43
 msgid "You have unsaved changes."
-msgstr ""
+msgstr "Έχετε αλλαγές που δεν έχουν σωθεί."
 
 #: apps/edit/templates/edit/correct.html:44
 msgid "Saving changes..."
-msgstr ""
+msgstr "Οι αλλαγές σας σώζονται..."
 
 #: apps/edit/templates/edit/correct.html:71
 #: apps/library/templates/library/collections_table.html:6
@@ -261,98 +261,98 @@ msgstr ""
 #: apps/library/templates/library/region.html:34
 #: apps/library/templates/library/word.html:34 apps/library/views.py:216
 msgid "Image"
-msgstr ""
+msgstr "Εικόνα"
 
 #: apps/edit/templates/edit/correct.html:72 apps/library/views.py:217
 msgid "Line by line"
-msgstr ""
+msgstr "Γραμμή-γραμμή"
 
 #: apps/edit/templates/edit/correct.html:73 apps/library/views.py:218
 msgid "Side by side"
-msgstr ""
+msgstr "Πλευρά-πλευρά"
 
 #: apps/edit/templates/edit/correct.html:74
 #: apps/library/templates/library/line.html:32
 #: apps/library/templates/library/region.html:33
 #: apps/library/templates/library/word.html:32 apps/library/views.py:219
 msgid "Text"
-msgstr ""
+msgstr "Κείμενο"
 
 #: apps/edit/templates/edit/correct.html:77
 msgid "Zoom In"
-msgstr ""
+msgstr "Ζουμ μέσα"
 
 #: apps/edit/templates/edit/correct.html:78
 msgid "Zoom Out"
-msgstr ""
+msgstr "Ζουμ έξω"
 
 #: apps/edit/templates/edit/correct.html:79
 msgid "Fit Width"
-msgstr ""
+msgstr "Προσαρμογή στο πλάτος"
 
 #: apps/edit/templates/edit/correct.html:80
 msgid "Fit Height"
-msgstr ""
+msgstr "Προσαρμογή στο ύψος"
 
 #: apps/edit/templates/edit/correct.html:83
 msgid "First page"
-msgstr ""
+msgstr "Πρώτη σελίδα"
 
 #: apps/edit/templates/edit/correct.html:84
 msgid "Previous page"
-msgstr ""
+msgstr "Προηγούμενη σελίδα"
 
 #: apps/edit/templates/edit/correct.html:86
 msgid "Next page"
-msgstr ""
+msgstr "Επόμενη σελίδα"
 
 #: apps/edit/templates/edit/correct.html:87
 msgid "Last page"
-msgstr ""
+msgstr "Τελευταία σελίδα"
 
 #: apps/edit/templates/edit/correct.html:88
 msgid "Thumb overview"
-msgstr ""
+msgstr "Επισκόπηση εικονιδίων"
 
 #: apps/edit/templates/edit/correct.html:91
 #: apps/edit/templates/edit/correct.html:459
 msgid "Edit"
-msgstr ""
+msgstr "Επεξεργασία"
 
 #: apps/edit/templates/edit/correct.html:91
 #: apps/edit/templates/edit/correct.html:452
 msgid "View"
-msgstr ""
+msgstr "Επισκόπηση"
 
 #: apps/edit/templates/edit/correct.html:99
 #: apps/edit/templates/edit/correct.html:118
 #: apps/edit/templates/edit/correct.html:426
 #: apps/edit/templates/edit/correct.html:436
 msgid "Page status: in progress"
-msgstr ""
+msgstr "Κατάσταση σελίδας: σε εξέλιξη"
 
 #: apps/edit/templates/edit/correct.html:101
 #: apps/edit/templates/edit/correct.html:120
 #: apps/edit/templates/edit/correct.html:420
 #: apps/edit/templates/edit/correct.html:438
 msgid "Page status: done"
-msgstr ""
+msgstr "Κατάσταση σελίδας: ολοκληρώθηκε"
 
 #: apps/edit/templates/edit/correct.html:103
 #: apps/edit/templates/edit/correct.html:122
 #: apps/edit/templates/edit/correct.html:440
 msgid "Page status: final"
-msgstr ""
+msgstr "Κατάσταση σελίδας: τελική"
 
 #: apps/edit/templates/edit/correct.html:105
 #: apps/edit/templates/edit/correct.html:124
 msgid "Page status: ground truth"
-msgstr ""
+msgstr "Κατάσταση σελίδας: ground truth"
 
 #: apps/edit/templates/edit/correct.html:110 apps/library/views.py:199
 #: apps/library/views.py:281
 msgid "In Progress"
-msgstr ""
+msgstr "Σε εξέλιξη"
 
 #: apps/edit/templates/edit/correct.html:111 apps/library/views.py:200
 #: apps/library/views.py:282
@@ -362,182 +362,184 @@ msgstr ""
 #: apps/edit/templates/edit/correct.html:112 apps/library/views.py:201
 #: apps/library/views.py:283
 msgid "Final"
-msgstr ""
+msgstr "Τελική"
 
 #: apps/edit/templates/edit/correct.html:128
 #: apps/edit/templates/edit/correct_modal.html:66
 msgid "Save changes"
-msgstr ""
+msgstr "Σώσιμο αλλαγών"
 
 #: apps/edit/templates/edit/correct.html:133
 msgid ""
 "This page lacks segmentation and cannot be edited. Please use TranskribusX "
 "to create a segmentation first."
 msgstr ""
+"Αυτή η σελίδα υπολείπεται κάποιες κατατμήσεις και δεν μπορεί να γίνει η επεξεργασία. Παρακαλώ χρησιμοποιείστε το TranskribusX "
+"για να κατασκευάσετε μια κατάτμηση πρώτα."
 
 #: apps/edit/templates/edit/correct.html:190
 #: apps/edit/templates/edit/correct.html:284
 msgid "Your browser does not support the HTML5 canvas tag."
-msgstr ""
+msgstr "Ο browser σας δεν υποστηρίζει την ετικέτα HTML5 canvas."
 
 #: apps/edit/templates/edit/correct.html:277
 msgid "The page contains no lines."
-msgstr ""
+msgstr "Αυτή η σελίδα δεν περιέχει γραμμές."
 
 #: apps/edit/templates/edit/correct.html:430
 #: apps/edit/templates/edit/correct.html:444
 msgid "You can not change the page status."
-msgstr ""
+msgstr "Δεν μπορείτε να αλλάξετε την κατάσταση της σελίδας."
 
 #: apps/edit/templates/edit/correct.html:928
 msgid "You have unsaved changes. Are you sure you want to leave?"
-msgstr ""
+msgstr "Έχετε κάνει αλλαγές που δεν έχετε σώσει. Είστε σίγουρος ότι θέλετε να φύγετε;"
 
 #: apps/edit/templates/edit/correct_modal.html:5
 msgid "Edit line"
-msgstr ""
+msgstr "Επεξεργασία γραμμής"
 
 #: apps/edit/templates/edit/correct_modal.html:14
 msgid "Add line"
-msgstr ""
+msgstr "Προσθήκη γραμμής"
 
 #: apps/edit/templates/edit/correct_modal.html:17
 msgid "Remove line"
-msgstr ""
+msgstr "Αφαίρεση γραμμής"
 
 #: apps/edit/templates/edit/correct_modal.html:24
 #: apps/edit/templates/edit/option_box.html:7
 msgid "Previous line"
-msgstr ""
+msgstr "Προηγούμενη γραμμή"
 
 #: apps/edit/templates/edit/correct_modal.html:27
 #: apps/edit/templates/edit/option_box.html:10
 msgid "Next line"
-msgstr ""
+msgstr "Επόμενη γραμμή"
 
 #: apps/edit/templates/edit/correct_modal.html:34
 #: apps/edit/templates/edit/option_box.html:17
 msgid "Enlarge text"
-msgstr ""
+msgstr "Διόγκωση κειμένου"
 
 #: apps/edit/templates/edit/correct_modal.html:37
 #: apps/edit/templates/edit/option_box.html:20
 msgid "Shrink text"
-msgstr ""
+msgstr "Σμίκρυνση κειμένου"
 
 #: apps/edit/templates/edit/correct_modal.html:44
 #: apps/edit/templates/edit/option_box.html:27
 msgid "Bold"
-msgstr ""
+msgstr "Bold"
 
 #: apps/edit/templates/edit/correct_modal.html:47
 #: apps/edit/templates/edit/option_box.html:30
 msgid "Italic"
-msgstr ""
+msgstr "Πλάγια"
 
 #: apps/edit/templates/edit/correct_modal.html:50
 #: apps/edit/templates/edit/option_box.html:33
 msgid "Subscript"
-msgstr ""
+msgstr "Δείκτης"
 
 #: apps/edit/templates/edit/correct_modal.html:53
 #: apps/edit/templates/edit/option_box.html:36
 msgid "Superscript"
-msgstr ""
+msgstr "Εκθέτης"
 
 #: apps/edit/templates/edit/correct_modal.html:56
 #: apps/edit/templates/edit/option_box.html:39
 msgid "Underline"
-msgstr ""
+msgstr "Υπογράμμιση"
 
 #: apps/edit/templates/edit/correct_modal.html:59
 #: apps/edit/templates/edit/option_box.html:42
 msgid "Strikethrough"
-msgstr ""
+msgstr "Διαγραφή"
 
 #: apps/edit/templates/edit/proofread.html:6
 msgid "Original version"
-msgstr ""
+msgstr "Πρωτότυπη έκδοση"
 
 #: apps/edit/templates/edit/proofread.html:10
 msgid "Your version"
-msgstr ""
+msgstr "Η δική σας έκδοση"
 
 #: apps/edit/views.py:74 apps/edit/views.py:167
 msgid "Transcript saved!"
-msgstr ""
+msgstr "Η μεταγραφή σώθηκε!"
 
 #: apps/edit/views.py:171
 msgid "Page status changed!"
-msgstr ""
+msgstr "Η κατάσταση της σελίδας άλλαξε!"
 
 #: apps/library/templates/library/about.html:13
 #: apps/search/templates/search/navi_base.html:47
 #: templates/pages/about.html:13
 msgid "About"
-msgstr ""
+msgstr "Σχετικά"
 
 #: apps/library/templates/library/changed_jobs_modal.html:13
 #: apps/library/templates/library/changed_jobs_modal.html:17
 #: apps/library/templates/library/create_collection_modal.html:18
 #: apps/library/templates/library/create_collection_modal.html:25
 msgid "Close"
-msgstr ""
+msgstr "Κλείσιμο"
 
 #: apps/library/templates/library/collections_dropdown.html:4
 msgid "Select collection"
-msgstr ""
+msgstr "Επιλογή συλλογής"
 
 #: apps/library/templates/library/collections_table.html:7
 msgid "Collection Title and description"
-msgstr ""
+msgstr "Τίτλος συλλογής και περιγραφή"
 
 #: apps/library/templates/library/collections_table.html:8
 msgid "No. of Docs"
-msgstr ""
+msgstr "Αριθμός εγγράφων"
 
 #: apps/library/templates/library/collections_table.html:9
 msgid "My Role"
-msgstr ""
+msgstr "Ο ρόλος μου"
 
 #: apps/library/templates/library/collections_table.html:10
 #: apps/library/templates/library/documents_table.html:13
 msgid "Stats"
-msgstr ""
+msgstr "Στατιστικά"
 
 #: apps/library/templates/library/create_collection_modal.html:4
 #: apps/library/templates/library/create_collection_modal.html:11
 msgid "Create a new collection"
-msgstr ""
+msgstr "Κατασκευή νέας συλλογής"
 
 #: apps/library/templates/library/create_collection_modal.html:14
 msgid "New collection name:"
-msgstr ""
+msgstr "Όνομα νέας συλλογής:"
 
 #: apps/library/templates/library/create_collection_modal.html:19
 msgid "Create collection"
-msgstr ""
+msgstr "Δημιουργία συλλογής"
 
 #: apps/library/templates/library/document.html:36
 #: apps/library/templates/library/document_page.html:148
 msgid "This document was uploaded by "
-msgstr ""
+msgstr "Αυτό το έγγραφο ανεβάστηκε από "
 
 #: apps/library/templates/library/document.html:98
 msgid "Page number"
-msgstr ""
+msgstr "Αριθμός σελίδας"
 
 #: apps/library/templates/library/document.html:98
 msgid "Image file name"
-msgstr ""
+msgstr "Όνομα αρχείου εικόνας"
 
 #: apps/library/templates/library/document.html:98
 msgid "Transcripts"
-msgstr ""
+msgstr "Μεταγραφές"
 
 #: apps/library/templates/library/documents.html:14
 msgid "Collections Browse"
-msgstr ""
+msgstr "Αναζήτηση σε συλλογές"
 
 #: apps/library/templates/library/documents.html:113
 msgid ""
@@ -545,6 +547,9 @@ msgid ""
 "expedita, saepe, vero rerum deleniti beatae veniam harum neque nemo "
 "praesentium cum alias asperiores commodi."
 msgstr ""
+"Αὐτῶν δὴ ὦν τούτων καὶ τῆς θεωρίης ἐκδημήσας ὁ Σόλων εἵνεκεν ἐς Αἴγυπτον ἀπίκετο παρὰ Ἄμασιν καὶ δὴ καὶ ἐς Σάρδις παρὰ Κροῖσον. "
+"ἀπικόμενος δὲ ἐξεινίζετο ἐν τοῖσι βασιληίοισι ὑπὸ τοῦ Κροίσου: μετὰ δὲ ἡμέρῃ τρίτῃ ἢ τετάρτῃ κελεύσαντος Κροίσου τὸν Σόλωνα θεράποντες περιῆγον κατὰ τοὺς θησαυρούς, "
+"καὶ ἐπεδείκνυσαν πάντα ἐόντα μεγάλα τε καὶ ὄλβια."
 
 #: apps/library/templates/library/documents.html:116
 #: apps/library/templates/library/homepage.html:102
