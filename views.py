@@ -274,7 +274,7 @@ def document_metadata(request, collId, docId):
     if stats.get('nrOfTranscribedLines') or stats.get('nrOfWords') : 
         stats_table += '<tr><th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Available for editing')
     if stats.get('nrOfTranscribedLines') : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Lines'), stats.get('nrOfTranscribedLines'))
-    if stats.get('nrOfWords') : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Words'), stats.get('nrOfWords'))
+    if stats.get('nrOfWordsInLines') : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Words'), stats.get('nrOfWordsInLines'))
 
     stats_table += '<tr><th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Status of pages')
     if pc_new > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('New'), pc_new)
