@@ -1,117 +1,116 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Finnish translations for Transkribus web.
+# Copyright (C) 2017
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Maria Kallio <maria.kallio@arkisto.fi>, 2017.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-25 14:49+0000\n"
+"POT-Creation-Date: 2017-09-12 08:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:5
 msgid "Operation"
-msgstr ""
+msgstr "Toiminta"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:6
 msgid "Time"
-msgstr ""
+msgstr "Aika"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:7
 msgid "Collection Id"
-msgstr ""
+msgstr "Kokoelman ID"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:8
 #: apps/dashboard/templates/dashboard/collections_table.html:9
 #: apps/dashboard/templates/dashboard/homepage.html:19
 msgid "Collection"
-msgstr ""
+msgstr "Kokoelma"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:9
 msgid "Document ID"
-msgstr ""
+msgstr "Asiakirjan ID"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:10
 #: apps/dashboard/templates/dashboard/collection.html:24
 #: apps/dashboard/templates/dashboard/documents_table.html:9
 #: apps/dashboard/templates/dashboard/homepage.html:20
 msgid "Document"
-msgstr ""
+msgstr "Asiakirja"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:11
 msgid "Page ID"
-msgstr ""
+msgstr "Sivun ID"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:12
-#: apps/library/templates/library/documents_table.html:9
 msgid "Page"
-msgstr ""
+msgstr "Sivu"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:13
 #: apps/dashboard/templates/dashboard/users_table.html:9
 #: apps/library/templates/library/profile.html:19 apps/utils/forms.py:12
 msgid "Username"
-msgstr ""
+msgstr "Käyttäjätunnus"
 
 #: apps/dashboard/templates/dashboard/collection.html:6
 #: apps/dashboard/templates/dashboard/document.html:5
 #: apps/dashboard/templates/dashboard/homepage.html:78
-#: apps/edit/templates/edit/correct.html:7
-#: apps/library/templates/library/collection.html:5
+#: apps/edit/templates/edit/correct.html:8
+#: apps/library/templates/library/collection.html:6
 #: apps/library/templates/library/collections.html:6
 #: apps/library/templates/library/document.html:8
 msgid "My Collections"
-msgstr ""
+msgstr "Omat kokoelmat"
 
 #: apps/dashboard/templates/dashboard/collection.html:19
 msgid "My recent document accesses for this collection"
-msgstr ""
+msgstr "Viimeisin käyttämäni asiakirja tässä kokoelmassa"
 
 #: apps/dashboard/templates/dashboard/collection.html:27
 #: apps/dashboard/templates/dashboard/document.html:21
 #: apps/dashboard/templates/dashboard/homepage.html:23
 msgid "Access time"
-msgstr ""
+msgstr "Käyttöajankohta"
 
 #: apps/dashboard/templates/dashboard/collection.html:56
 #: apps/dashboard/templates/dashboard/document.html:47
 msgid "Table"
-msgstr ""
+msgstr "Taulukko"
 
 #: apps/dashboard/templates/dashboard/collection.html:57
 #: apps/dashboard/templates/dashboard/document.html:48
 msgid "All activities"
-msgstr ""
+msgstr "Kaikki toiminnat"
 
 #: apps/dashboard/templates/dashboard/collection.html:58
 #: apps/dashboard/templates/dashboard/document.html:49
 #: apps/dashboard/templates/dashboard/homepage.html:40
 #: apps/dashboard/templates/dashboard/homepage.html:51
 msgid "My activities"
-msgstr ""
+msgstr "Oma toimintani"
 
 #: apps/dashboard/templates/dashboard/collection.html:60
 #: apps/dashboard/templates/dashboard/document.html:51
 msgid "Activities for... "
-msgstr ""
+msgstr "Toiminta"
 
 #: apps/dashboard/templates/dashboard/collection.html:63
 msgid "User list loading..."
-msgstr ""
+msgstr "Ladataan listaa käyttäjistä"
 
 #: apps/dashboard/templates/dashboard/collection.html:66
 #: apps/dashboard/templates/dashboard/document.html:56
 msgid "Most Active Users"
-msgstr ""
+msgstr "Aktiivisimmat käyttäjät"
 
 #: apps/dashboard/templates/dashboard/collections_table.html:8
 msgid "ColId"
@@ -121,23 +120,24 @@ msgstr ""
 #: apps/library/templates/library/jobs_list.html:8
 #: apps/library/templates/library/jobs_list_compact.html:5
 msgid "Description"
-msgstr ""
+msgstr "Kuvaus"
 
 #: apps/dashboard/templates/dashboard/collections_table.html:11
 #: apps/dashboard/templates/dashboard/users_table.html:15
 msgid "Role"
-msgstr ""
+msgstr "Rooli"
 
 #: apps/dashboard/templates/dashboard/document.html:16
 msgid "My recent document accesses for this document"
-msgstr ""
+msgstr "Viimeisin toimintani tässä asiakirjassa"
 
 #: apps/dashboard/templates/dashboard/document.html:53
 msgid "Default 4"
-msgstr ""
+msgstr "Oletus 4"
 
 #: apps/dashboard/templates/dashboard/documents_table.html:8
 #: apps/dashboard/templates/dashboard/pages_table.html:8
+#: apps/library/templates/library/collections_table.html:7
 #: apps/library/templates/library/document.html:98
 #: apps/library/templates/library/jobs_list.html:8
 #: apps/library/templates/library/jobs_list_compact.html:5
@@ -151,394 +151,366 @@ msgstr ""
 #: apps/library/templates/library/transcript.html:37
 #: apps/library/templates/library/word.html:31
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: apps/dashboard/templates/dashboard/documents_table.html:10
 msgid "Author"
-msgstr ""
+msgstr "Laatija"
 
 #: apps/dashboard/templates/dashboard/documents_table.html:11
 msgid "Uploaded"
-msgstr ""
+msgstr "Ladattu"
 
 #: apps/dashboard/templates/dashboard/documents_table.html:12
 msgid "Uploader"
-msgstr ""
+msgstr "Lataaja"
 
 #: apps/dashboard/templates/dashboard/documents_table.html:13
 msgid "Pages"
-msgstr ""
+msgstr "Sivut"
 
 #: apps/dashboard/templates/dashboard/documents_table.html:14
 #: apps/library/templates/library/word.html:33 apps/utils/forms.py:17
 msgid "Language"
-msgstr ""
+msgstr "Kieli"
 
 #: apps/dashboard/templates/dashboard/documents_table.html:15
 #: apps/dashboard/templates/dashboard/homepage.html:96
 #: apps/dashboard/templates/dashboard/pages_table.html:11
 #: apps/library/templates/library/page.html:38
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: apps/dashboard/templates/dashboard/homepage.html:5
 msgid "Dashboard"
-msgstr ""
+msgstr "Kojelauta"
 
 #: apps/dashboard/templates/dashboard/homepage.html:14
 msgid "My recent document accesses"
-msgstr ""
+msgstr "Viimeisin katsomani asiakirja"
 
 #: apps/dashboard/templates/dashboard/homepage.html:52
 msgid "My activities chart"
-msgstr ""
+msgstr "Kaavio omasta toiminnastani"
 
 #: apps/dashboard/templates/dashboard/homepage.html:53
 msgid "My most active collections"
-msgstr ""
+msgstr "Omat käytetyimmät kokoelmani"
 
 #: apps/dashboard/templates/dashboard/homepage.html:88
 msgid "My overall activity"
-msgstr ""
+msgstr "Oma kokonaisaktiivisuus"
 
 #: apps/dashboard/templates/dashboard/homepage.html:92
 msgid "User activity"
-msgstr ""
+msgstr "Käyttäjäaktiivisuus"
 
 #: apps/dashboard/templates/dashboard/pages_table.html:9
 #: apps/library/templates/library/page.html:31
 msgid "Page Number"
-msgstr ""
+msgstr "Sivunumero"
 
 #: apps/dashboard/templates/dashboard/pages_table.html:10
 msgid "File"
-msgstr ""
+msgstr "Tiedosto"
 
 #: apps/dashboard/templates/dashboard/pages_table.html:12
 msgid "No. of Transcripts"
-msgstr ""
+msgstr "Transkriptioiden määrä"
 
 #: apps/dashboard/templates/dashboard/users_table.html:8
 msgid "UserId"
-msgstr ""
+msgstr "Käyttäjätunnus"
 
-#: apps/dashboard/templates/dashboard/users_table.html:10
-#: apps/utils/forms.py:9
+#: apps/dashboard/templates/dashboard/users_table.html:10 apps/utils/forms.py:9
 msgid "Given Name"
-msgstr ""
+msgstr "Etunimi"
 
 #: apps/dashboard/templates/dashboard/users_table.html:11
 #: apps/utils/forms.py:10
 msgid "Family Name"
-msgstr ""
+msgstr "Sukunimi"
 
 #: apps/dashboard/templates/dashboard/users_table.html:12
 #: apps/library/templates/library/profile.html:20
 msgid "Email"
-msgstr ""
+msgstr "Sähköposti"
 
 #: apps/dashboard/templates/dashboard/users_table.html:13
 #: apps/library/templates/library/profile.html:24
 msgid "Affiliation"
-msgstr ""
+msgstr "Affiliaatio"
 
 #: apps/dashboard/templates/dashboard/users_table.html:14
 #: apps/library/templates/library/jobs_list.html:8
 msgid "Created"
-msgstr ""
+msgstr "Luotu"
 
-#: apps/edit/templates/edit/correct.html:43
-msgid "You have unsaved changes."
-msgstr ""
-
-#: apps/edit/templates/edit/correct.html:44
-msgid "Saving changes..."
-msgstr ""
-
-#: apps/edit/templates/edit/correct.html:71
+#: apps/edit/templates/edit/correct.html:24
 #: apps/library/templates/library/collections_table.html:6
+#: apps/library/templates/library/documents_table.html:9
 #: apps/library/templates/library/line.html:34
 #: apps/library/templates/library/page.html:32
 #: apps/library/templates/library/region.html:34
-#: apps/library/templates/library/word.html:34 apps/library/views.py:216
+#: apps/library/templates/library/word.html:34
 msgid "Image"
-msgstr ""
+msgstr "Kuva"
 
-#: apps/edit/templates/edit/correct.html:72 apps/library/views.py:217
+#: apps/edit/templates/edit/correct.html:25
 msgid "Line by line"
-msgstr ""
+msgstr "Rivikerrallaan"
 
-#: apps/edit/templates/edit/correct.html:73 apps/library/views.py:218
+#: apps/edit/templates/edit/correct.html:26
 msgid "Side by side"
-msgstr ""
+msgstr "Vierekkäinen"
 
-#: apps/edit/templates/edit/correct.html:74
+#: apps/edit/templates/edit/correct.html:27
 #: apps/library/templates/library/line.html:32
 #: apps/library/templates/library/region.html:33
-#: apps/library/templates/library/word.html:32 apps/library/views.py:219
+#: apps/library/templates/library/word.html:32
 msgid "Text"
-msgstr ""
+msgstr "Teksti"
 
-#: apps/edit/templates/edit/correct.html:77
-msgid "Zoom In"
-msgstr ""
+#: apps/edit/templates/edit/correct.html:33
+msgid "Zoom in"
+msgstr "Lähennä"
 
-#: apps/edit/templates/edit/correct.html:78
-msgid "Zoom Out"
-msgstr ""
+#: apps/edit/templates/edit/correct.html:36
+msgid "Zoom out"
+msgstr "Loitonna"
 
-#: apps/edit/templates/edit/correct.html:79
-msgid "Fit Width"
-msgstr ""
+#: apps/edit/templates/edit/correct.html:39
+msgid "Reset image"
+msgstr "Aseta kuva uudelleen"
 
-#: apps/edit/templates/edit/correct.html:80
-msgid "Fit Height"
-msgstr ""
-
-#: apps/edit/templates/edit/correct.html:83
+#: apps/edit/templates/edit/correct.html:47
 msgid "First page"
-msgstr ""
+msgstr "Ensimmäinen sivu"
 
-#: apps/edit/templates/edit/correct.html:84
+#: apps/edit/templates/edit/correct.html:48
 msgid "Previous page"
-msgstr ""
+msgstr "Edellinen sivu"
 
-#: apps/edit/templates/edit/correct.html:86
+#: apps/edit/templates/edit/correct.html:52
 msgid "Next page"
-msgstr ""
+msgstr "Seuraava sivu"
 
-#: apps/edit/templates/edit/correct.html:87
+#: apps/edit/templates/edit/correct.html:53
 msgid "Last page"
-msgstr ""
+msgstr "Viimeinen sivua"
 
-#: apps/edit/templates/edit/correct.html:88
+#: apps/edit/templates/edit/correct.html:55
 msgid "Thumb overview"
-msgstr ""
+msgstr "Pienoiskuvien yleisnäkymä"
 
-#: apps/edit/templates/edit/correct.html:91
-#: apps/edit/templates/edit/correct.html:459
+#: apps/edit/templates/edit/correct.html:61
+#: apps/edit/templates/edit/correct.html:293
 msgid "Edit"
-msgstr ""
+msgstr "Muokkaa"
 
-#: apps/edit/templates/edit/correct.html:91
-#: apps/edit/templates/edit/correct.html:452
-msgid "View"
-msgstr ""
+#: apps/edit/templates/edit/correct.html:68
+msgid "Page status"
+msgstr "Sivun status"
 
-#: apps/edit/templates/edit/correct.html:99
-#: apps/edit/templates/edit/correct.html:118
-#: apps/edit/templates/edit/correct.html:426
-#: apps/edit/templates/edit/correct.html:436
-msgid "Page status: in progress"
-msgstr ""
+#: apps/edit/templates/edit/correct.html:72
+msgid "New"
+msgstr "Uusi"
 
-#: apps/edit/templates/edit/correct.html:101
-#: apps/edit/templates/edit/correct.html:120
-#: apps/edit/templates/edit/correct.html:420
-#: apps/edit/templates/edit/correct.html:438
-msgid "Page status: done"
-msgstr ""
-
-#: apps/edit/templates/edit/correct.html:103
-#: apps/edit/templates/edit/correct.html:122
-#: apps/edit/templates/edit/correct.html:440
-msgid "Page status: final"
-msgstr ""
-
-#: apps/edit/templates/edit/correct.html:105
-#: apps/edit/templates/edit/correct.html:124
-msgid "Page status: ground truth"
-msgstr ""
-
-#: apps/edit/templates/edit/correct.html:110 apps/library/views.py:199
-#: apps/library/views.py:281
+#: apps/edit/templates/edit/correct.html:73
 msgid "In Progress"
-msgstr ""
+msgstr "Työn alla"
 
-#: apps/edit/templates/edit/correct.html:111 apps/library/views.py:200
-#: apps/library/views.py:282
+#: apps/edit/templates/edit/correct.html:74
 msgid "Done"
-msgstr ""
+msgstr "Valmis"
 
-#: apps/edit/templates/edit/correct.html:112 apps/library/views.py:201
-#: apps/library/views.py:283
+#: apps/edit/templates/edit/correct.html:75
 msgid "Final"
-msgstr ""
+msgstr "Lopullinen"
 
 #: apps/edit/templates/edit/correct.html:128
+#: apps/edit/templates/edit/correct.html:76
+msgid "Ground Truth"
+msgstr "Opetusaineisto"
+
+#: apps/edit/templates/edit/correct.html:82
 #: apps/edit/templates/edit/correct_modal.html:66
+#: apps/edit/templates/edit/proofread.html:37
 msgid "Save changes"
-msgstr ""
+msgstr "Tallenna muutokset"
 
-#: apps/edit/templates/edit/correct.html:133
+#: apps/edit/templates/edit/correct.html:89
 msgid ""
-"This page lacks segmentation and cannot be edited. Please use TranskribusX "
-"to create a segmentation first."
-msgstr ""
+"This page lacks segmentation and cannot be edited. Please use the expert "
+"client to create a segmentation first."
+msgstr "Tätä sivua ei ole segmentoitu ja sitä ei sen vuoksi voi muokata. Ole hyvä ja käytä TranskribusX-työkalua segmentoinnin tekemiseen."
 
-#: apps/edit/templates/edit/correct.html:190
-#: apps/edit/templates/edit/correct.html:284
-msgid "Your browser does not support the HTML5 canvas tag."
-msgstr ""
-
-#: apps/edit/templates/edit/correct.html:277
+#: apps/edit/templates/edit/correct.html:181
 msgid "The page contains no lines."
-msgstr ""
+msgstr "Sivulla ei ole rivejä"
 
-#: apps/edit/templates/edit/correct.html:430
-#: apps/edit/templates/edit/correct.html:444
-msgid "You can not change the page status."
-msgstr ""
+#: apps/edit/templates/edit/correct.html:257
+#: apps/edit/templates/edit/proofread.html:71
+msgid "You have unsaved changes."
+msgstr "Sivulla on tallentamattomia muutoksia"
+
+#: apps/edit/templates/edit/correct.html:258
+msgid "Saving changes..."
+msgstr "muutoksia tallennetaan"
 
 #: apps/edit/templates/edit/correct.html:928
+#: apps/edit/templates/edit/correct.html:290
+msgid "View"
+msgstr "katso"
+
+#: apps/edit/templates/edit/correct.html:593
 msgid "You have unsaved changes. Are you sure you want to leave?"
-msgstr ""
+msgstr "Sivulla on tallentamattomia muutoksia. Oletko varma, että haluat poistua?"
 
 #: apps/edit/templates/edit/correct_modal.html:5
 msgid "Edit line"
-msgstr ""
+msgstr "Muokkaa riviä"
 
 #: apps/edit/templates/edit/correct_modal.html:14
 msgid "Add line"
-msgstr ""
+msgstr "Lisää rivi"
 
 #: apps/edit/templates/edit/correct_modal.html:17
 msgid "Remove line"
-msgstr ""
+msgstr "Poista rivi"
 
 #: apps/edit/templates/edit/correct_modal.html:24
 #: apps/edit/templates/edit/option_box.html:7
 msgid "Previous line"
-msgstr ""
+msgstr "Edellinen rivi"
 
 #: apps/edit/templates/edit/correct_modal.html:27
 #: apps/edit/templates/edit/option_box.html:10
 msgid "Next line"
-msgstr ""
+msgstr "Seuraava rivi"
 
 #: apps/edit/templates/edit/correct_modal.html:34
 #: apps/edit/templates/edit/option_box.html:17
 msgid "Enlarge text"
-msgstr ""
+msgstr "Suurenna teksti"
 
 #: apps/edit/templates/edit/correct_modal.html:37
 #: apps/edit/templates/edit/option_box.html:20
 msgid "Shrink text"
-msgstr ""
+msgstr "Kutista teksti"
 
 #: apps/edit/templates/edit/correct_modal.html:44
 #: apps/edit/templates/edit/option_box.html:27
 msgid "Bold"
-msgstr ""
+msgstr "lihavoitu"
 
 #: apps/edit/templates/edit/correct_modal.html:47
 #: apps/edit/templates/edit/option_box.html:30
 msgid "Italic"
-msgstr ""
+msgstr "KUrsiivi"
 
 #: apps/edit/templates/edit/correct_modal.html:50
 #: apps/edit/templates/edit/option_box.html:33
 msgid "Subscript"
-msgstr ""
+msgstr "Alaindeksi"
 
 #: apps/edit/templates/edit/correct_modal.html:53
 #: apps/edit/templates/edit/option_box.html:36
 msgid "Superscript"
-msgstr ""
+msgstr "Yläindeksi"
 
 #: apps/edit/templates/edit/correct_modal.html:56
 #: apps/edit/templates/edit/option_box.html:39
 msgid "Underline"
-msgstr ""
+msgstr "Alleviivaus"
 
 #: apps/edit/templates/edit/correct_modal.html:59
 #: apps/edit/templates/edit/option_box.html:42
 msgid "Strikethrough"
-msgstr ""
+msgstr "Yliviivaus"
 
 #: apps/edit/templates/edit/proofread.html:6
+#: apps/edit/templates/edit/proofread.html:13
+msgid "Proofreading Interface (working title)"
+msgstr "Oikolukunäkymä"
+
+#: apps/edit/templates/edit/proofread.html:21
 msgid "Original version"
-msgstr ""
+msgstr "Alkuperäinen versio"
 
-#: apps/edit/templates/edit/proofread.html:10
+#: apps/edit/templates/edit/proofread.html:29
 msgid "Your version"
-msgstr ""
+msgstr "Oma versio"
 
-#: apps/edit/views.py:74 apps/edit/views.py:167
+#: apps/edit/views.py:74 apps/edit/views.py:158
 msgid "Transcript saved!"
-msgstr ""
+msgstr "Transkriptio tallennettu"
 
-#: apps/edit/views.py:171
+#: apps/edit/views.py:162
 msgid "Page status changed!"
-msgstr ""
+msgstr "Sivun status vaihtunut"
 
 #: apps/library/templates/library/about.html:13
-#: apps/search/templates/search/navi_base.html:47
-#: templates/pages/about.html:13
+#: apps/search/templates/search/navi_base.html:47 templates/pages/about.html:13
 msgid "About"
-msgstr ""
+msgstr "Lisätietoja"
 
 #: apps/library/templates/library/changed_jobs_modal.html:13
 #: apps/library/templates/library/changed_jobs_modal.html:17
 #: apps/library/templates/library/create_collection_modal.html:18
 #: apps/library/templates/library/create_collection_modal.html:25
 msgid "Close"
-msgstr ""
+msgstr "Sulje"
 
 #: apps/library/templates/library/collections_dropdown.html:4
 msgid "Select collection"
-msgstr ""
-
-#: apps/library/templates/library/collections_table.html:7
-msgid "Collection Title and description"
-msgstr ""
+msgstr "valitse kokoelma"
 
 #: apps/library/templates/library/collections_table.html:8
-msgid "No. of Docs"
-msgstr ""
+msgid "Collection Name and description"
+msgstr "Kokoelman nimi ja kuvaus"
 
 #: apps/library/templates/library/collections_table.html:9
-msgid "My Role"
-msgstr ""
+msgid "Documents"
+msgstr "Asiakirjat"
 
 #: apps/library/templates/library/collections_table.html:10
-#: apps/library/templates/library/documents_table.html:13
-msgid "Stats"
-msgstr ""
+msgid "My Role"
+msgstr "Oma rooli"
 
 #: apps/library/templates/library/create_collection_modal.html:4
 #: apps/library/templates/library/create_collection_modal.html:11
 msgid "Create a new collection"
-msgstr ""
+msgstr "Luo uusi kokoelma"
 
 #: apps/library/templates/library/create_collection_modal.html:14
 msgid "New collection name:"
-msgstr ""
+msgstr "Uuden kokoelman nimi"
 
 #: apps/library/templates/library/create_collection_modal.html:19
 msgid "Create collection"
-msgstr ""
+msgstr "Luo kokoelma"
 
 #: apps/library/templates/library/document.html:36
 #: apps/library/templates/library/document_page.html:148
 msgid "This document was uploaded by "
-msgstr ""
+msgstr "Tämän asiakirjan on ladannut"
 
 #: apps/library/templates/library/document.html:98
 msgid "Page number"
-msgstr ""
+msgstr "Sivunumero"
 
 #: apps/library/templates/library/document.html:98
 msgid "Image file name"
-msgstr ""
+msgstr "Kuvatiedoston nimi"
 
 #: apps/library/templates/library/document.html:98
 msgid "Transcripts"
-msgstr ""
+msgstr "Transkriptiot"
 
 #: apps/library/templates/library/documents.html:14
 msgid "Collections Browse"
-msgstr ""
+msgstr "Kokoelmien selaus"
 
 #: apps/library/templates/library/documents.html:113
 msgid ""
@@ -550,148 +522,153 @@ msgstr ""
 #: apps/library/templates/library/documents.html:116
 #: apps/library/templates/library/homepage.html:102
 msgid "More about READ"
-msgstr ""
+msgstr "Lisätietoja READista"
 
 #: apps/library/templates/library/documents_table.html:10
-msgid "Views"
-msgstr ""
+msgid "DocID"
+msgstr "AsiakirjaID"
 
 #: apps/library/templates/library/documents_table.html:11
 msgid "Document title and description"
-msgstr ""
+msgstr "Asiakirjan otsikko ja kuvaus"
 
 #: apps/library/templates/library/documents_table.html:12
-msgid "pp."
-msgstr ""
 
-#: apps/library/templates/library/error.html:14
-msgid "We have a slight problem"
-msgstr ""
+msgid "Annotations"
+msgstr "Lisäykset"
+
+#: apps/library/templates/library/documents_table.html:13
+msgid "pp."
+msgstr "ss"
+
+#: apps/library/templates/library/documents_table.html:14
+msgid "Views"
+msgstr "katsomiskerrat"
 
 #: apps/library/templates/library/error.html:17
-msgid "Return to the"
-msgstr ""
+msgid "Return to the "
+msgstr "Palaa"
 
 #: apps/library/templates/library/error.html:17 templates/error.html:14
 msgid "previous page"
-msgstr ""
+msgstr "edelliselle sivulle"
 
 #: apps/library/templates/library/error.html:18
-msgid "Or to the READ WebUI"
-msgstr ""
+msgid "Or to the READ WebUI "
+msgstr "Tai READ -sivustolle "
 
 #: apps/library/templates/library/error.html:18 templates/error.html:15
 msgid "home page"
-msgstr ""
+msgstr "kotisivu"
 
 #: apps/library/templates/library/homepage.html:14
 msgid "Welcome to the Transkribus Library"
-msgstr ""
+msgstr "Tervetuloa Transkribus-kirjastoon"
 
 #: apps/library/templates/library/homepage.html:30
 msgid "Caption 1"
-msgstr ""
+msgstr "Otsikko 1"
 
 #: apps/library/templates/library/homepage.html:36
 msgid "Caption 2"
-msgstr ""
+msgstr "Otsikko 2"
 
 #: apps/library/templates/library/homepage.html:42
 msgid "Caption 3"
-msgstr ""
+msgstr "Otsikko 3"
 
 #: apps/library/templates/library/homepage.html:49
 #: apps/navigation/templates/navigation/nav_buttons.html:8
 #: apps/navigation/templates/navigation/nav_buttons.html:10
 msgid "Previous"
-msgstr ""
+msgstr "Edellinen"
 
 #: apps/library/templates/library/homepage.html:53
 #: apps/navigation/templates/navigation/nav_buttons.html:16
 #: apps/navigation/templates/navigation/nav_buttons.html:18
 msgid "Next"
-msgstr ""
+msgstr "Seuraava"
 
 #: apps/library/templates/library/homepage.html:61
 msgid "Manage"
-msgstr ""
+msgstr "Hallitse"
 
 #: apps/library/templates/library/homepage.html:65
 #: apps/library/templates/library/homepage.html:76
 #: apps/library/templates/library/homepage.html:87
 msgid "Learn More"
-msgstr ""
+msgstr "Lue lisää"
 
 #: apps/library/templates/library/homepage.html:72
 msgid "Transcribe"
-msgstr ""
+msgstr "Transkriboi"
 
 #: apps/library/templates/library/homepage.html:83
 msgid "Publish"
-msgstr ""
+msgstr "Julkaise"
 
 #: apps/library/templates/library/ingest_mets_url.html:14
 msgid "Ingest METS XML URL"
-msgstr ""
+msgstr "Lataa METS XML URL"
 
 #: apps/library/templates/library/jobs.html:10
 msgid "Your jobs in Transkribus"
-msgstr ""
+msgstr "Työsi Transkribuksessa"
 
 #: apps/library/templates/library/jobs_list.html:4
 msgid "Only show unfinished jobs."
-msgstr ""
+msgstr "Näytä ainoastaan keskeneräiset työt"
 
 #: apps/library/templates/library/jobs_list.html:8
 #: apps/library/templates/library/jobs_list_compact.html:5
 #: apps/library/templates/library/region.html:32
 msgid "Type"
-msgstr ""
+msgstr "Kirjoita"
 
 #: apps/library/templates/library/jobs_list.html:8
 #: apps/library/templates/library/jobs_list_compact.html:5
 msgid "State"
-msgstr ""
+msgstr "Vaihe"
 
 #: apps/library/templates/library/jobs_list.html:15
 msgid "Cancel job"
-msgstr ""
+msgstr "Peruuta työ"
 
 #: apps/library/templates/library/line.html:33
 msgid "Primary language"
-msgstr ""
+msgstr "Pääasiallinen kieli"
 
 #: apps/library/templates/library/line.html:42
 msgid "LETTERS"
-msgstr ""
+msgstr "KIRJAIMET"
 
 #: apps/library/templates/library/line.html:42
 #: apps/library/templates/library/region.html:41
 #: apps/library/templates/library/transcript.html:37
 msgid "COORDS"
-msgstr ""
+msgstr "KOORDINAATIT"
 
 #: apps/library/templates/library/line.html:42
 #: apps/library/templates/library/region.html:41
 msgid "BASELINE"
-msgstr ""
+msgstr "PERUSLINJA"
 
 #: apps/library/templates/library/line.html:42
 #: apps/library/templates/library/region.html:41
 #: apps/library/templates/library/transcript.html:37
 msgid "TEXT"
-msgstr ""
+msgstr "TEKSTI"
 
 #: apps/library/templates/library/line.html:42
 #: apps/library/templates/library/region.html:41
 #: apps/library/templates/library/transcript.html:37
 msgid "METADATA"
-msgstr ""
+msgstr "METADATA"
 
 #: apps/library/templates/library/line.html:42
 #: apps/library/templates/library/region.html:41
 msgid "LANGUAGE"
-msgstr ""
+msgstr "KIELI"
 
 #: apps/library/templates/library/line.html:49
 #: apps/library/templates/library/line.html:50
@@ -699,426 +676,348 @@ msgstr ""
 #: apps/library/templates/library/region.html:48
 #: apps/library/templates/library/transcript.html:45
 msgid "Yes"
-msgstr ""
+msgstr "Kyllä"
 
 #: apps/library/templates/library/line.html:49
 #: apps/library/templates/library/region.html:47
 #: apps/library/templates/library/region.html:48
 #: apps/library/templates/library/transcript.html:45
 msgid "No"
-msgstr ""
+msgstr "Ei"
 
 #: apps/library/templates/library/message_modal.html:14
 msgid "Information"
-msgstr ""
+msgstr "Tietoja"
 
 #: apps/library/templates/library/message_modal.html:24
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: apps/library/templates/library/page.html:38
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: apps/library/templates/library/page.html:38
 msgid "Transcriber"
-msgstr ""
+msgstr "Transkriboija"
 
 #: apps/library/templates/library/page.html:38
 msgid "timestamp"
-msgstr ""
+msgstr "Aikaleima"
 
 #: apps/library/templates/library/profile.html:21
 msgid "Name"
-msgstr ""
+msgstr "Nimi"
 
 #: apps/library/templates/library/profile.html:22
 msgid "Gender"
-msgstr ""
+msgstr "Sukupuoli"
 
 #: apps/library/templates/library/quick_ingest_mets_url.html:14
 msgid "Quick Ingest METS XML URL"
-msgstr ""
+msgstr "METS XML URL:n pikalataus"
 
 #: apps/library/templates/library/quick_ingest_mets_url.html:17
 msgid "Collection Name"
-msgstr ""
+msgstr "Kokoelman nimi"
 
 #: apps/library/templates/library/redirect_from_quick_ingest.html:10
 msgid "Your document is being processed."
-msgstr ""
+msgstr "Asiakirjaa prosessoidaan"
 
 #: apps/library/templates/library/redirect_from_quick_ingest.html:12
 msgid "You're being redirected to where you came from."
-msgstr ""
+msgstr "Sinut ohjataan takaisin lähtösivulle"
 
 #: apps/library/templates/library/region.html:41
 msgid "WORDS"
-msgstr ""
+msgstr "SANAT"
 
 #: apps/library/templates/library/search.html:14
 #: apps/search/templates/search/navi_base.html:23
 msgid "Search"
-msgstr ""
+msgstr "Hae"
 
 #: apps/library/templates/library/transcript.html:34
 msgid "Correct this transcript."
-msgstr ""
+msgstr "Korjaa tämä teksti"
 
 #: apps/library/templates/library/transcript.html:37
 msgid "TYPE"
-msgstr ""
+msgstr "KIRJASIMET"
 
 #: apps/library/templates/library/transcript.html:37
 msgid "TEXTLINES"
-msgstr ""
+msgstr "TEKSTIRIVIT"
 
 #: apps/library/templates/library/transcript.html:46
 msgid "No Text"
-msgstr ""
+msgstr "Ei tekstiä"
 
 #: apps/library/templates/library/user_guide.html:14
 #: apps/search/templates/search/navi_base.html:50
 #: templates/pages/user_guide.html:14
 msgid "User Guide"
-msgstr ""
+msgstr "Käyttöohje"
 
 #: apps/library/templates/library/user_guide.html:17
 #: templates/pages/user_guide.html:17
 msgid "Transkribus User Guide (Desktop)"
-msgstr ""
+msgstr "Transkribus-käyttöohje"
 
 #: apps/library/templates/library/users.html:14
 msgid "Users"
-msgstr ""
+msgstr "Käyttäjät"
 
 #: apps/library/templates/library/users.html:17
 msgid ""
 "Show as much as we are allowed to see about this user (perhaps a lot if we "
 "are a collection owner?)"
-msgstr ""
+msgstr "Näytä kaikki mahdollinen tieto tästä käyttäjästä"
 
 #: apps/library/templates/library/word.html:38
 msgid "This word has some metadata:"
-msgstr ""
-
-#: apps/library/views.py:177
-#, python-format
-msgid "Page %(pageNr)s of %(docName)s last saved on %(time)s</p>"
-msgstr ""
-
-#: apps/library/views.py:182
-#, python-format
-msgid ""
-"<p>Go to <i>your</i> <a href=\"%s\">last saved page</a> in this collection.</"
-"p>"
-msgstr ""
-
-#: apps/library/views.py:198 apps/library/views.py:280
-msgid "New"
-msgstr ""
-
-#: apps/library/views.py:202 apps/library/views.py:284
-msgid "Ground Truth"
-msgstr ""
-
-#: apps/library/views.py:256
-#, python-format
-msgid "Page %(pageNr)s last saved on %(time)s</p>"
-msgstr ""
-
-#: apps/library/views.py:260
-#, python-format
-msgid ""
-"Go to <i>your</i> <a href=\"%(link)s\">last saved page</a> in this document"
-msgstr ""
-
-#: apps/library/views.py:275
-msgid "Available for editing"
-msgstr ""
-
-#: apps/library/views.py:276
-msgid "Lines"
-msgstr ""
-
-#: apps/library/views.py:277
-msgid "Words"
-msgstr ""
-
-#: apps/library/views.py:279
-msgid "Status of pages"
-msgstr ""
-
-#: apps/library/views.py:287
-msgid "Tags"
-msgstr ""
-
-#: apps/library/views.py:288
-msgid "People"
-msgstr ""
-
-#: apps/library/views.py:289
-msgid "Places"
-msgstr ""
-
-#: apps/library/views.py:290
-msgid "Dates"
-msgstr ""
-
-#: apps/library/views.py:291
-msgid "Abbreviations"
-msgstr ""
-
-#: apps/library/views.py:292
-msgid "Other"
-msgstr ""
+msgstr "Tässä sanassa on metadataa"
 
 #: apps/navigation/templates/navigation/nav_buttons.html:4
 msgid "Up"
-msgstr ""
+msgstr "Ylös"
 
 #: apps/search/templates/search/navi_base.html:16
 msgid "Transkribus Search"
-msgstr ""
+msgstr "Transkribus -haku"
 
 #: apps/search/templates/search/navi_base.html:20
 msgid "Collections"
-msgstr ""
+msgstr "Kokoelmat"
 
 #: apps/search/templates/search/navi_base.html:26
 msgid "Ingest documents"
-msgstr ""
+msgstr "Lataa asiakirjoja"
 
 #: apps/search/templates/search/navi_base.html:28
 msgid "Upload METS XML file"
-msgstr ""
+msgstr "Lataa METS XML -tiedosto"
 
 #: apps/search/templates/search/navi_base.html:29
 msgid "Enter URL to METS XML file"
-msgstr ""
+msgstr "Lisää METS XML -tiedoston URL"
 
 #: apps/search/templates/search/navi_base.html:33
 msgid "Profile"
-msgstr ""
+msgstr "Profiili"
 
 #: apps/search/templates/search/navi_base.html:36 templates/navi_base.html:38
 msgid "Logout"
-msgstr ""
+msgstr "Kirjaudu ulos"
 
-#: apps/search/templates/search/navi_base.html:40 templates/navi_base.html:45
+#: apps/search/templates/search/navi_base.html:40 templates/navi_base.html:44
 msgid "Login"
-msgstr ""
+msgstr "Kirjaudu sisään"
 
-#: apps/search/templates/search/navi_base.html:43 templates/navi_base.html:49
-#: templates/pages/register.html:13 templates/registration/register.html:16
+#: apps/search/templates/search/navi_base.html:43 templates/navi_base.html:47
+#: templates/registration/register.html:16
 #: templates/registration/register.html:24
 msgid "Register"
-msgstr ""
+msgstr "Rekisteröidy"
 
 #: apps/search/templates/search/navi_base.html:65
 msgid "Job status changed!"
-msgstr ""
+msgstr "Työn vaihe muuttunut"
 
 #: apps/search/templates/search/navi_base.html:66
 msgid "Details."
-msgstr ""
+msgstr "Lisätiedot"
 
 #: apps/search/templates/search/navi_base.html:96
 msgid "READ - A horizon 2020 e-infrastructure project"
-msgstr ""
+msgstr "READ - horisontti 2020 e-infrastruktuurihanke"
 
 #: apps/utils/forms.py:13
 msgid "Password"
-msgstr ""
+msgstr "Salasana"
 
 #: apps/utils/utils.py:100
 msgid ""
 "Transkribus session is unauthorised, you must log on to Transkribus-web."
-msgstr ""
+msgstr "Käyttö estetty, kirjaudu Transkribus-palvelimelle"
 
 #: apps/utils/utils.py:101
 msgid "You are forbidden to request this data from Transkribus."
-msgstr ""
+msgstr "Pääsy aineistoon kielletty"
 
 #: apps/utils/utils.py:102
 msgid "The requested Transkribus resource does not exist."
-msgstr ""
+msgstr "Pyydettyä tiedostoa ei löydy"
 
 #: apps/utils/utils.py:103
 msgid "A Server error was reported by Transkribus."
-msgstr ""
+msgstr "Palvelinvirhe Transkribuksessa"
 
 #: apps/utils/utils.py:104
 msgid "Could not contact the Transkribus service, please try again later."
-msgstr ""
+msgstr "Ei yhteyttä Transkribus-palvelimeen, ole hyvä ja yritä myöhemmin uudelleen"
 
 #: apps/utils/utils.py:105
 msgid "An unknown error was returned by Transkribus: "
-msgstr ""
+msgstr "Transkribuksessa tunnistamaton virhe"
+
+#: mc/settings/production.py:161
+msgid "Bulgarian"
+msgstr "bulgaria"
+
+#: mc/settings/production.py:162
+msgid "Croatian"
+msgstr "kroatia"
+
+#: mc/settings/production.py:163
+msgid "Czech"
+msgstr "tsekki"
+
+#: mc/settings/production.py:164
+msgid "Danish"
+msgstr "tanska"
+
+#: mc/settings/production.py:165
+msgid "Dutch"
+msgstr "hollanti"
+
+#: mc/settings/production.py:166
+msgid "English"
+msgstr "englanti"
+
+#: mc/settings/production.py:167
+msgid "Estonian"
+msgstr "eesti"
 
 #: mc/settings/production.py:168
-msgid "Bulgarian"
-msgstr ""
+msgid "Finnish"
+msgstr "suomi"
 
 #: mc/settings/production.py:169
-msgid "Croatian"
-msgstr ""
+msgid "French"
+msgstr "ranska"
 
 #: mc/settings/production.py:170
-msgid "Czech"
-msgstr ""
+msgid "German"
+msgstr "saksa"
 
 #: mc/settings/production.py:171
-msgid "Danish"
-msgstr ""
+msgid "Greek"
+msgstr "kreikka"
 
 #: mc/settings/production.py:172
-msgid "Dutch"
-msgstr ""
+msgid "Hungarian"
+msgstr "unkari"
 
 #: mc/settings/production.py:173
-msgid "English"
-msgstr ""
+msgid "Irish"
+msgstr "irlanti"
 
 #: mc/settings/production.py:174
-msgid "Estonian"
-msgstr ""
+msgid "Italian"
+msgstr "italia"
 
 #: mc/settings/production.py:175
-msgid "Finnish"
-msgstr ""
+msgid "Latvian"
+msgstr "latvia"
 
 #: mc/settings/production.py:176
-msgid "French"
-msgstr ""
-
-#: mc/settings/production.py:177
-msgid "German"
-msgstr ""
+msgid "Lithuanian"
+msgstr "liettua"
 
 #: mc/settings/production.py:178
-msgid "Greek"
-msgstr ""
+msgid "Polish"
+msgstr "puola"
 
 #: mc/settings/production.py:179
-msgid "Hungarian"
-msgstr ""
+msgid "Portuguese"
+msgstr "portugali"
 
 #: mc/settings/production.py:180
-msgid "Irish"
-msgstr ""
+msgid "Romanian"
+msgstr "romania"
 
 #: mc/settings/production.py:181
-msgid "Italian"
-msgstr ""
+msgid "Slovak"
+msgstr "slovakki"
 
 #: mc/settings/production.py:182
-msgid "Latvian"
-msgstr ""
+msgid "Slovenian"
+msgstr "slovenia"
 
 #: mc/settings/production.py:183
-msgid "Lithuanian"
-msgstr ""
-
-#: mc/settings/production.py:185
-msgid "Polish"
-msgstr ""
-
-#: mc/settings/production.py:186
-msgid "Portuguese"
-msgstr ""
-
-#: mc/settings/production.py:187
-msgid "Romanian"
-msgstr ""
-
-#: mc/settings/production.py:188
-msgid "Slovak"
-msgstr ""
-
-#: mc/settings/production.py:189
-msgid "Slovenian"
-msgstr ""
-
-#: mc/settings/production.py:190
 msgid "Spanish"
-msgstr ""
+msgstr "espanja"
 
-#: mc/settings/production.py:191
+#: mc/settings/production.py:184
 msgid "Swedish"
-msgstr ""
+msgstr "ruotsi"
 
 #: templates/base.html:130
 msgid "Transkribus is part of the "
-msgstr ""
+msgstr "Transkribus on osa"
 
 #: templates/base.html:130
 msgid "READ project"
-msgstr ""
+msgstr "READ -projektia"
 
 #: templates/base.html:130
 msgid ""
-" and has received funding from the European Unionâ€™s Horizon 2020 Research "
+" and has received funding from the European Union’s Horizon 2020 Research "
 "and Innovation programme under grant agreement no. 674943."
-msgstr ""
+msgstr "ja hanke on saanut rahoitusta Euroopan unionin tutkimuksen ja innovoinnin puiteohjelmasta Horisontti 2020 sopimuksen nro 674943 mukaisesti"
 
 #: templates/error.html:11 templates/registration/login.html:26
 msgid "We have a slight problem: "
-msgstr ""
+msgstr "Meillä on pienoinen ongelma "
 
 #: templates/error.html:13
 msgid "Return to "
-msgstr ""
+msgstr "palaa"
 
 #: templates/error.html:14
 msgid "the "
-msgstr ""
+msgstr "se"
 
 #: templates/error.html:14
 msgid "or"
-msgstr ""
+msgstr "tai"
 
 #: templates/error.html:15
 msgid "the Transkribus-web "
-msgstr ""
+msgstr "Transkribus"
 
 #: templates/pages/crowd_howto.html:10
 msgid "How to start a crowd sourcing project for your collection"
-msgstr ""
-
-#: templates/pages/register.html:14
-msgid ""
-"You will require a Transkribus account to use this service. You can register "
-"for free by going to <a href=\"https://transkribus.eu/\">transkribus.eu</a> "
-"and clicking on \"Register\""
-msgstr ""
+msgstr "Miten käynnistää joukkoistusprojekti omasta kokoelmasta"
 
 #: templates/pages/user_guide.html:18
 msgid "Prepare a collection for crowd-sourcing"
-msgstr ""
+msgstr "Luo kokoelma joukkoistusprojektia varten"
 
 #: templates/registration/login.html:20
 msgid "Your username and password didn't match. Please try again."
-msgstr ""
+msgstr "Käyttäjätunnus ja salasana eivät täsmää. Ole hyvä ja yritä uudestaan"
 
 #: templates/registration/login.html:36
 msgid ""
 "This page requires a transkribus user account for access. If you have a "
 "transkribus user account, please login to continue."
-msgstr ""
+msgstr " Tämä sivu edellyttää kirjautumisen Transkribus-tunnuksella. Jos sinulla on olemassaoleva Transkribus-tunnus, kirjaudu sisään jatkaaksesi"
 
 #: templates/registration/login.html:36
 msgid "If you do not have a transkribus user account, please"
-msgstr ""
+msgstr "jos sinulla ei vielä ole transkribus-tunnusta, ole hyvä"
 
 #: templates/registration/login.html:36
 msgid "register for a free transkribus account."
-msgstr ""
+msgstr "rekisteröidy käyttäjäksi"
 
 #: templates/registration/login.html:43
 msgid "login"
-msgstr ""
+msgstr "kirjautuminen"
 
 #: templates/registration/login.html:48
 msgid "Lost password?"
-msgstr ""
+msgstr "salasana unohtunut?"
