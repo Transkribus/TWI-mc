@@ -102,7 +102,7 @@ msgstr "Meine Aktionen"
 #: apps/dashboard/templates/dashboard/collection.html:60
 #: apps/dashboard/templates/dashboard/document.html:51
 msgid "Activities for... "
-msgstr "Aktionen fÃ¼r ..."
+msgstr "Aktionen für ..."
 
 #: apps/dashboard/templates/dashboard/collection.html:63
 msgid "User list loading..."
@@ -183,7 +183,7 @@ msgstr "Status"
 
 #: apps/dashboard/templates/dashboard/homepage.html:5
 msgid "Dashboard"
-msgstr "Ãœbersicht"
+msgstr "Übersicht"
 
 #: apps/dashboard/templates/dashboard/homepage.html:14
 msgid "My recent document accesses"
@@ -249,11 +249,11 @@ msgstr "Erstellt"
 
 #: apps/edit/templates/edit/correct.html:43
 msgid "You have unsaved changes."
-msgstr "Ã„nderungen wurden noch nicht gespeichert."
+msgstr "Änderungen wurden noch nicht gespeichert."
 
 #: apps/edit/templates/edit/correct.html:44
 msgid "Saving changes..."
-msgstr "Speichere Ã„nderungen..."
+msgstr "Speichere Änderungen..."
 
 #: apps/edit/templates/edit/correct.html:71
 #: apps/library/templates/library/collections_table.html:6
@@ -309,7 +309,7 @@ msgstr "Vorherige Seite"
 
 #: apps/edit/templates/edit/correct.html:86
 msgid "Next page"
-msgstr "NÃ¤chste Seite"
+msgstr "Nächste Seite"
 
 #: apps/edit/templates/edit/correct.html:87
 msgid "Last page"
@@ -374,7 +374,7 @@ msgstr "Final"
 #: apps/edit/templates/edit/correct.html:128
 #: apps/edit/templates/edit/correct_modal.html:66
 msgid "Save changes"
-msgstr "Ã„nderungen speichern"
+msgstr "Änderungen speichern"
 
 #: apps/edit/templates/edit/correct.html:133
 #, fuzzy
@@ -385,27 +385,27 @@ msgid ""
 "This page lacks segmentation and cannot be edited. Please use TranskribusX "
 "to create a segmentation first."
 msgstr ""
-"Diese Seite enthÃ¤lt keine Segmentierung und kann nicht bearbeitet werden. "
+"Diese Seite enthält keine Segmentierung und kann nicht bearbeitet werden. "
 "Bitte segmentieren Sie die Seite zuerst in TranskribusX."
 
 #: apps/edit/templates/edit/correct.html:190
 #: apps/edit/templates/edit/correct.html:284
 msgid "Your browser does not support the HTML5 canvas tag."
-msgstr "Ihr Browser unterstÃ¼tzt keine HTML5 Canvas Tags"
+msgstr "Ihr Browser unterstützt keine HTML5 Canvas Tags"
 
 #: apps/edit/templates/edit/correct.html:277
 msgid "The page contains no lines."
-msgstr "Diese Seite enthÃ¤lt keine Linien."
+msgstr "Diese Seite enthält keine Linien."
 
 #: apps/edit/templates/edit/correct.html:430
 #: apps/edit/templates/edit/correct.html:444
 msgid "You can not change the page status."
-msgstr "Sie kÃ¶nnen den Status der Seite nicht Ã¤ndern."
+msgstr "Sie können den Status der Seite nicht ändern."
 
 #: apps/edit/templates/edit/correct.html:928
 msgid "You have unsaved changes. Are you sure you want to leave?"
 msgstr ""
-"Ihre Ã„nderungen wurden noch nicht gespeichert. Wollen Sie diese Seite wirklich "
+"Ihre Änderungen wurden noch nicht gespeichert. Wollen Sie diese Seite wirklich "
 "verlassen?"
 
 #: apps/edit/templates/edit/correct_modal.html:5
@@ -414,11 +414,11 @@ msgstr "Zeile bearbeiten"
 
 #: apps/edit/templates/edit/correct_modal.html:14
 msgid "Add line"
-msgstr "Zeile hinzufÃ¼gen"
+msgstr "Zeile hinzufügen"
 
 #: apps/edit/templates/edit/correct_modal.html:17
 msgid "Remove line"
-msgstr "Zeile lÃ¶schen"
+msgstr "Zeile löschen"
 
 #: apps/edit/templates/edit/correct_modal.html:24
 #: apps/edit/templates/edit/option_box.html:7
@@ -428,12 +428,12 @@ msgstr "Vorherige Zeile"
 #: apps/edit/templates/edit/correct_modal.html:27
 #: apps/edit/templates/edit/option_box.html:10
 msgid "Next line"
-msgstr "NÃ¤chste Zeile"
+msgstr "Nächste Zeile"
 
 #: apps/edit/templates/edit/correct_modal.html:34
 #: apps/edit/templates/edit/option_box.html:17
 msgid "Enlarge text"
-msgstr "Text vergrÃ¶ÃŸern"
+msgstr "Text vergrößern"
 
 #: apps/edit/templates/edit/correct_modal.html:37
 #: apps/edit/templates/edit/option_box.html:20
@@ -472,7 +472,7 @@ msgstr "Durchgestrichen"
 
 #: apps/edit/templates/edit/proofread.html:6
 msgid "Original version"
-msgstr "UrsprÃ¼ngliche Version"
+msgstr "Ursprüngliche Version"
 
 #: apps/edit/templates/edit/proofread.html:10
 msgid "Your version"
@@ -484,24 +484,24 @@ msgstr "Transkription gespeichert!"
 
 #: apps/edit/views.py:171
 msgid "Page status changed!"
-msgstr "Status der Seite geÃ¤ndert!"
+msgstr "Status der Seite geändert!"
 
 #: apps/library/templates/library/about.html:13
 #: apps/search/templates/search/navi_base.html:47
 #: templates/pages/about.html:13
 msgid "About"
-msgstr "Ãœber"
+msgstr "Über"
 
 #: apps/library/templates/library/changed_jobs_modal.html:13
 #: apps/library/templates/library/changed_jobs_modal.html:17
 #: apps/library/templates/library/create_collection_modal.html:18
 #: apps/library/templates/library/create_collection_modal.html:25
 msgid "Close"
-msgstr "SchlieÃŸen"
+msgstr "Schließen"
 
 #: apps/library/templates/library/collections_dropdown.html:4
 msgid "Select collection"
-msgstr "Sammlung auswÃ¤hlen"
+msgstr "Sammlung auswählen"
 
 #: apps/library/templates/library/collections_table.html:7
 #, fuzzy
@@ -566,7 +566,7 @@ msgid ""
 "expedita, saepe, vero rerum deleniti beatae veniam harum neque nemo "
 "praesentium cum alias asperiores commodi."
 msgstr ""
-"HIER STEHT NOCH AUTOMATISCH GENERIERTER TEXT, DER LÃ„NGST BESEITIGT SEIN "
+"HIER STEHT NOCH AUTOMATISCH GENERIERTER TEXT, DER LÄNGST BESEITIGT SEIN "
 "SOLLTE!"
 
 #: apps/library/templates/library/documents.html:116
@@ -596,7 +596,7 @@ msgstr "Wir haben ein kleines Problem: "
 #, fuzzy
 #| msgid "Return to the "
 msgid "Return to the"
-msgstr "ZurÃ¼ck zu"
+msgstr "Zurück zu"
 
 #: apps/library/templates/library/error.html:17 templates/error.html:14
 msgid "previous page"
@@ -618,7 +618,7 @@ msgstr "Willkommen zur Transkribus Library"
 
 #: apps/library/templates/library/homepage.html:30
 msgid "Caption 1"
-msgstr "Ãœberschrift 1"
+msgstr "Überschrift 1"
 
 #: apps/library/templates/library/homepage.html:36
 msgid "Caption 2"
@@ -638,7 +638,7 @@ msgstr "Vorherige"
 #: apps/navigation/templates/navigation/nav_buttons.html:16
 #: apps/navigation/templates/navigation/nav_buttons.html:18
 msgid "Next"
-msgstr "NÃ¤chste"
+msgstr "Nächste"
 
 #: apps/library/templates/library/homepage.html:61
 msgid "Manage"
@@ -648,7 +648,7 @@ msgstr "Verwalten"
 #: apps/library/templates/library/homepage.html:76
 #: apps/library/templates/library/homepage.html:87
 msgid "Learn More"
-msgstr "NÃ¤here Informationen"
+msgstr "Nähere Informationen"
 
 #: apps/library/templates/library/homepage.html:72
 msgid "Transcribe"
@@ -656,7 +656,7 @@ msgstr "Transkribieren"
 
 #: apps/library/templates/library/homepage.html:83
 msgid "Publish"
-msgstr "VerÃ¶ffentlichen"
+msgstr "Veröffentlichen"
 
 #: apps/library/templates/library/ingest_mets_url.html:14
 msgid "Ingest METS XML URL"
@@ -766,7 +766,7 @@ msgstr "Geschlecht"
 
 #: apps/library/templates/library/quick_ingest_mets_url.html:14
 msgid "Quick Ingest METS XML URL"
-msgstr "Schnelle Eingabe Ã¼ber METS XML URL"
+msgstr "Schnelle Eingabe über METS XML URL"
 
 #: apps/library/templates/library/quick_ingest_mets_url.html:17
 msgid "Collection Name"
@@ -778,11 +778,11 @@ msgstr "Ihr Dokument wird verarbeitet."
 
 #: apps/library/templates/library/redirect_from_quick_ingest.html:12
 msgid "You're being redirected to where you came from."
-msgstr "Sie werden auf die Ausgangsseite zurÃ¼ckgeleitet."
+msgstr "Sie werden auf die Ausgangsseite zurückgeleitet."
 
 #: apps/library/templates/library/region.html:41
 msgid "WORDS"
-msgstr "WÃ–RTER"
+msgstr "WÖRTER"
 
 #: apps/library/templates/library/search.html:14
 #: apps/search/templates/search/navi_base.html:23
@@ -828,7 +828,7 @@ msgstr "SIE SOLLTEN DAS HIER NIEMALS SEHEN"
 
 #: apps/library/templates/library/word.html:38
 msgid "This word has some metadata:"
-msgstr "Dieses Wort enthÃ¤lt Metadaten:"
+msgstr "Dieses Wort enthält Metadaten:"
 
 #: apps/library/views.py:177
 #, python-format
@@ -840,7 +840,7 @@ msgstr "Seite %(pageNr)s von %(docName)s zuletzt gespeichert am %(time)s</p>"
 msgid ""
 "<p>Go to <i>your</i> <a href=\"%s\">last saved page</a> in this collection.</"
 "p>"
-msgstr "<p>ZurÃ¼ck zu <i>Ihrer</i> <a href=\"%s\">zuletzt gespeicherten Seite</a> in dieser Sammlung.</"
+msgstr "<p>Zurück zu <i>Ihrer</i> <a href=\"%s\">zuletzt gespeicherten Seite</a> in dieser Sammlung.</"
 "p>"
 
 #: apps/library/views.py:198 apps/library/views.py:280
@@ -860,11 +860,11 @@ msgstr "Seite %(pageNr)s zuletzt gespeichert am %(time)s</p>"
 #, python-format
 msgid ""
 "Go to <i>your</i> <a href=\"%(link)s\">last saved page</a> in this document"
-msgstr "ZurÃ¼ck zu <i>Ihrer</i> <a href=\"%(link)s\">zuletzt gespeicherten Seite</a> in diesem Dokument"
+msgstr "Zurück zu <i>Ihrer</i> <a href=\"%(link)s\">zuletzt gespeicherten Seite</a> in diesem Dokument"
 
 #: apps/library/views.py:275
 msgid "Available for editing"
-msgstr "VerfÃ¼gbar zur Bearbeitung"
+msgstr "Verfügbar zur Bearbeitung"
 
 #: apps/library/views.py:276
 msgid "Lines"
@@ -872,7 +872,7 @@ msgstr "Zeilen"
 
 #: apps/library/views.py:277
 msgid "Words"
-msgstr "WÃ¶rter"
+msgstr "Wörter"
 
 #: apps/library/views.py:279
 msgid "Status of pages"
@@ -896,7 +896,7 @@ msgstr "Datumsangaben"
 
 #: apps/library/views.py:291
 msgid "Abbreviations"
-msgstr "AbkÃ¼rzungen"
+msgstr "Abkürzungen"
 
 #: apps/library/views.py:292
 msgid "Other"
@@ -946,7 +946,7 @@ msgstr "Registrieren"
 
 #: apps/search/templates/search/navi_base.html:65
 msgid "Job status changed!"
-msgstr "Ã„nderungen im Jobstatus!"
+msgstr "Änderungen im Jobstatus!"
 
 #: apps/search/templates/search/navi_base.html:66
 msgid "Details."
@@ -979,7 +979,7 @@ msgstr "Transkribus meldet einen Serverfehler."
 
 #: apps/utils/utils.py:104
 msgid "Could not contact the Transkribus service, please try again later."
-msgstr "Konnte die Transkribus Services nicht erreichen, bitte versuchen Sie es spÃ¤ter noch einmal."
+msgstr "Konnte die Transkribus Services nicht erreichen, bitte versuchen Sie es später noch einmal."
 
 #: apps/utils/utils.py:105
 msgid "An unknown error was returned by Transkribus: "
@@ -999,11 +999,11 @@ msgstr "Tschechisch"
 
 #: mc/settings/production.py:171
 msgid "Danish"
-msgstr "DÃ¤nisch"
+msgstr "Dänisch"
 
 #: mc/settings/production.py:172
 msgid "Dutch"
-msgstr "NiederlÃ¤ndisch"
+msgstr "Niederländisch"
 
 #: mc/settings/production.py:173
 msgid "English"
@@ -1019,7 +1019,7 @@ msgstr "Finnisch"
 
 #: mc/settings/production.py:176
 msgid "French"
-msgstr "FranzÃ¶sisch"
+msgstr "Französisch"
 
 #: mc/settings/production.py:177
 msgid "German"
@@ -1059,7 +1059,7 @@ msgstr "Portugiesich"
 
 #: mc/settings/production.py:187
 msgid "Romanian"
-msgstr "RumÃ¤nisch"
+msgstr "Rumänisch"
 
 #: mc/settings/production.py:188
 msgid "Slovak"
@@ -1087,11 +1087,11 @@ msgstr "Projektes READ"
 
 #: templates/base.html:130
 msgid ""
-" and has received funding from the European Unionâ€™s Horizon 2020 Research "
+" and has received funding from the European Union’s Horizon 2020 Research "
 "and Innovation programme under grant agreement no. 674943."
 msgstr ""
-" und wird unterstÃ¼tzt vom Horizon 2020 Forschungs- und Innovationsprogramm  "
-"der EuropÃ¤ischen Union unter FÃ¶rdernummer 674943."
+" und wird unterstützt vom Horizon 2020 Forschungs- und Innovationsprogramm  "
+"der Europäischen Union unter Fördernummer 674943."
 
 #: templates/error.html:11 templates/registration/login.html:26
 msgid "We have a slight problem: "
@@ -1099,7 +1099,7 @@ msgstr "Wir haben ein kleines Problem: "
 
 #: templates/error.html:13
 msgid "Return to "
-msgstr "Kehre zurÃ¼ck zu "
+msgstr "Kehre zurück zu "
 
 #: templates/error.html:14
 msgid "the "
@@ -1115,7 +1115,7 @@ msgstr "Transkribus"
 
 #: templates/pages/crowd_howto.html:10
 msgid "How to start a crowd sourcing project for your collection"
-msgstr "Wie Sie ein Crowdsourcing Projekt fÃ¼r Ihre Sammlung starten kÃ¶nnen"
+msgstr "Wie Sie ein Crowdsourcing Projekt für Ihre Sammlung starten können"
 
 #: templates/pages/register.html:14
 msgid ""
@@ -1123,13 +1123,13 @@ msgid ""
 "for free by going to <a href=\"https://transkribus.eu/\">transkribus.eu</a> "
 "and clicking on \"Register\""
 msgstr ""
-"Sie benÃ¶tigen ein Transkribus Benutzerkonto fÃ¼r diesen Service. Bitte registrieren "
+"Sie benötigen ein Transkribus Benutzerkonto für diesen Service. Bitte registrieren "
 "Sie sich kostenlos unter <a href=\"https://transkribus.eu/\">transkribus.eu</a>, "
 "indem Sie dort auf \"Register\" klicken."
 
 #: templates/pages/user_guide.html:18
 msgid "Prepare a collection for crowd-sourcing"
-msgstr "Sammlung fÃ¼r Crowdsourcing vorbereiten"
+msgstr "Sammlung für Crowdsourcing vorbereiten"
 
 #: templates/registration/login.html:20
 msgid "Your username and password didn't match. Please try again."
@@ -1149,7 +1149,7 @@ msgstr "Falls Sie kein Transkribus Benutzerkonto haben, "
 
 #: templates/registration/login.html:36
 msgid "register for a free transkribus account."
-msgstr "registrieren Sie sich bitte fÃ¼r eine kostenloses Transkribuskonto."
+msgstr "registrieren Sie sich bitte für eine kostenloses Transkribuskonto."
 
 #: templates/registration/login.html:43
 msgid "login"
@@ -1165,10 +1165,10 @@ msgstr "Passwort vergessen?"
 #~ msgstr "Transkribieren"
 
 #~ msgid "Proofreading Interface (working title)"
-#~ msgstr "Schnittstelle fÃ¼r Korrektur (Arbeitstitel)"
+#~ msgstr "Schnittstelle für Korrektur (Arbeitstitel)"
 
 #~ msgid "Reset image"
-#~ msgstr "Bild zurÃ¼cksetzen"
+#~ msgstr "Bild zurücksetzen"
 
 #~ msgid "Documents"
 #~ msgstr "Dokumente"
