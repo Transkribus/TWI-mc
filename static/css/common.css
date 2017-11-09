@@ -38,3 +38,6 @@ a.link_disabled {cursor: default;}
 .container {
 	min-height: 600px;
 }
+.inline-ft-search {
+	margin-top: 8px;
+}

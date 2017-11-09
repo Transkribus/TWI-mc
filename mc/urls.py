@@ -33,9 +33,15 @@ urlpatterns = [
     url(r'^dashboard/', include('apps.dashboard.urls', app_name='dashboard', namespace='dashboard')),
     url(r'^library/', include('apps.library.urls', app_name='library', namespace='library')),
     url(r'^search/', include('apps.search.urls', app_name='search', namespace='search')),
+    url(r'^utils/', include('apps.utils.urls', app_name='utils', namespace='utils')),
+  
     url(r'^view/', include('apps.edit.urls', app_name='edit', namespace='edit')),
     url(r'^edit/', include('apps.edit.urls', app_name='edit', namespace='edit')),
-    url(r'^utils/', include('apps.utils.urls', app_name='utils', namespace='utils')),
+   
+#    url(r'^review/', include('apps.reedit.urls', app_name='reedit', namespace='reedit')),
+#    url(r'^reedit/', include('apps.reedit.urls', app_name='reedit', namespace='reedit')),
+
+
 
     ## Project pages for My collection ##
     url(r'^$', mc.views.index, name='index'),

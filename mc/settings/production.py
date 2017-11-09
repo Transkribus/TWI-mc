@@ -70,11 +70,9 @@ INSTALLED_APPS = [
 #READ apps
     'apps.utils',
     'apps.library',
-#    'review',
     'apps.dashboard',
     'apps.edit',
     'apps.search',
-    'apps.navigation'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -87,7 +85,6 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #Added for READ
     'django.middleware.locale.LocaleMiddleware',
-
 ]
 #'django.contrib.auth.middleware.SessionAuthenticationMiddleware' ??
 
@@ -264,7 +261,8 @@ CDNS = {'bootstrap_css' : {'local': "/static/css/bootstrap.min.css", 'cdn' : "//
        'chart_js' : {'local': "/static/js/Chart.bundle.min.js", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.min.js"},
        'bootstrap_notify_css' : {'local' : "/static/css/bootstrap-notify.min.css", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/bootstrap-notify.min.css"}, #this cdn may be out of date!
        'bootstrap_notify_js' : {'local' : "/static/js/bootstrap-notify.min.js", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js" },
-
+	'bootstrap_select_css' : {'local' : "/static/css/bootstrap-select.min.css", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css"},
+	'bootstrap_select_js' : {'local' : "/static/js/bootstrap-select.min.js", 'cdn' : "//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"},
       }
 
 
@@ -272,3 +270,35 @@ PROFILE_LOG_BASE = '/tmp/'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 28800 #8 hours like Transkribus REST session
+
+##########################################
+# Permissions stuff, mostly for apps/edit
+# but useful to be avilable for all apps
+# To check on role/permisions etc
+######################################## 
+
+# Who can edit?
+CAN_EDIT = ['Editor', 'Owner', 'Admin', 'CrowdTranscriber','Transcriber']
+# Who can view?
+CAN_VIEW = ['Editor', 'Owner', 'Admin', 'CrowdTranscriber','Transcriber', 'Reader']
+
+##########################
+# Definition of workflows
+#
+# - perms (list) 	: a list of user types who are allowed to use this workflow
+# - statuses (list) 	: a list of the page statuses that this workflow offers
+
+# Currently the workflows do not mix well between different types of users, it is either or... but that's OK for now
+
+WORKFLOWS = {'linnear' : {'perms' :  ['CrowdTranscriber','Transcriber'], 
+			  'statuses' : ['IN_PROGRESS', 'DONE'] },
+	     'free' : { 'perms' : ['Editor', 'Owner', 'Admin'],
+		       'statuses' : ['IN_PROGRESS', 'DONE', 'FINAL'] },
+	     'default' : { 'perms' : ['Reader'],
+                           'statuses' : None},
+	    }
+#Another possible workflow could allow Amdmin users the rights to/from GT and NEW 
+#	   'uber-free' : {'perms' : ['Admin'],
+#			    'statuses' : ['NEW', 'IN_PROGRESS', 'DONE', 'FINAL', 'GT']}
+
+
