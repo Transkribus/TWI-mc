@@ -15,7 +15,7 @@
     <title>READ Web UI</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="{{ "bootstrap_css"|load_lib }}" rel="stylesheet"/>
+   {{ "bootstrap_css"|load_lib:"css" }}
     <!-- FancyTree CSS -->
 <!--    <link href="{% static "css/ui.fancytree.css" %}" rel="stylesheet"/> -->
     <!-- Sidebar CSS -->
@@ -24,12 +24,10 @@
     <link href="{% static "css/flag-icon.css" %}" rel="stylesheet"/>
     <!-- Carousel CSS (needed?) -->
 <!-- not used   <link href="{% static "css/carousel.css" %}" rel="stylesheet"/> -->
-
-    <link href="{{ "datatables_css"|load_lib  }}" rel="stylesheet"/>
-    <link href="{{ "jquery_ui_css"|load_lib  }}" rel="stylesheet"/>
-    <link href="{{ "bootstrap_notify_css"|load_lib  }}" rel="stylesheet"/>
-    <link href="{{ "bootstrap_select_css"|load_lib }}" rel="stylesheet"/>
-
+    {{ "datatables_css"|load_lib:"css" }}
+    {{ "jquery_ui_css"|load_lib:"css"  }}"
+    {{ "bootstrap_notify_css"|load_lib:"css" }}
+    {{ "bootstrap_select_css"|load_lib:"css" }}
 
     <!-- Local CSS -->
     <link href="{% static "css/read.css" %}" rel="stylesheet"/>
@@ -41,28 +39,21 @@
    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
 
     <!-- jQuery -->
-    <script src="{{ "jquery"|load_lib }}"></script>
-    <script src="{{ "jquery_ui"|load_lib }}"></script>
+    {{ "jquery"|load_lib:"js" }}
+    {{ "jquery_ui"|load_lib:"js" }}
 
     <!-- Bootstrap Core JavaScript -->
-<!--    <script src="{% static "js/bootstrap.min.js" %}"></script> -->
-    <script src="{{ "bootstrap_js"|load_lib }}"></script>
+    {{ "bootstrap_js"|load_lib:"js" }}
 
-    <!-- Fancytree -->
-<!-- not used 
-    <script src="{% static "js/jquery.fancytree-all.min.js" %}"></script>
--->
     <!-- Data tables -->
-    <script src="{{ "datatables_js"|load_lib }}"></script>
+    {{ "datatables_js"|load_lib:"js" }}
     <!-- Chart.js -->
-    <script src="{{ "chart_js"|load_lib }}"></script>
+    {{ "chart_js"|load_lib:"js" }}
     <!-- Bootstrap-notify -->
-    <script src="{{ "bootstrap_notify_js"|load_lib }}"></script>
+    {{ "bootstrap_notify_js"|load_lib:"js" }}
     <!-- Bootstrap-Select -->
-    <script src="{{ "bootstrap_select_js"|load_lib }}"></script>
-
-
-
+    {{ "bootstrap_select_js"|load_lib:"js" }}
+    
     <!-- Local JS -->
 	<script language="javascript">
 		var static_url = "{{ STATIC_URL|escapejs }}";

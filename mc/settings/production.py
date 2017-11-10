@@ -105,7 +105,7 @@ TEMPLATES = [
                 'apps.utils.contexts.appname',
                 'apps.utils.contexts.urlname',
 		'apps.utils.contexts.apphead',
-		'apps.utils.contexts.nav_up',
+#		'apps.utils.contexts.nav_up',
 		'apps.utils.contexts.version',
             ],
             'libraries' : {
@@ -219,7 +219,8 @@ STATICFILES_FINDERS = (
 STATIC_ROOT =  'collected_static'
 MEDIA_ROOT = 'media' #not currently used
 #Step 4 Finally we tell django how to serve the static files
-STATIC_URL = SERVERBASE+'/static/'
+STATIC_PATH = '/static/'
+STATIC_URL = SERVERBASE+STATIC_PATH
 MEDIA_URL =  SERVERBASE+'/media/' #not currently used
 
 ##################### Added for READ ###################
@@ -251,18 +252,18 @@ PAGE_SIZE_DEFAULT = 5
 #Switch to use CDNs or local
 USE_CDNS = True
 # Static Resources (js css etc)
-CDNS = {'bootstrap_css' : {'local': "/static/css/bootstrap.min.css", 'cdn' : "//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" },
-       'bootstrap_js' : {'local': "/static/js/bootstrap.min.js", 'cdn' : "//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"},
-       'datatables_css' : {'local': "/static/css/jquery.dataTables.min.css", 'cdn': "//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"},
-       'datatables_js' : {'local': "/static/js/jquery.dataTables.min.js", 'cdn': "//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"},
-       'jquery' : {'local' : "/static/js/jquery.js", 'cdn': "//code.jquery.com/jquery-1.12.3.js" },
-       'jquery_ui' : {'local' : "/static/js/jquery-ui.min.js", 'cdn': "//code.jquery.com/ui/1.12.1/jquery-ui.min.js" },
-       'jquery_ui_css' : {'local' : "/static/css/jquery-ui.css", 'cdn' : "//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" },
-       'chart_js' : {'local': "/static/js/Chart.bundle.min.js", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.min.js"},
-       'bootstrap_notify_css' : {'local' : "/static/css/bootstrap-notify.min.css", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/bootstrap-notify.min.css"}, #this cdn may be out of date!
-       'bootstrap_notify_js' : {'local' : "/static/js/bootstrap-notify.min.js", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js" },
-	'bootstrap_select_css' : {'local' : "/static/css/bootstrap-select.min.css", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css"},
-	'bootstrap_select_js' : {'local' : "/static/js/bootstrap-select.min.js", 'cdn' : "//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"},
+CDNS = {'bootstrap_css' : {'local': "css/bootstrap.min.css", 'cdn' : "//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" },
+       'bootstrap_js' : {'local': "js/bootstrap.min.js", 'cdn' : "//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"},
+       'datatables_css' : {'local': "css/jquery.dataTables.min.css", 'cdn': "//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"},
+       'datatables_js' : {'local': "js/jquery.dataTables.min.js", 'cdn': "//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"},
+       'jquery' : {'local' : "js/jquery.js", 'cdn': "//code.jquery.com/jquery-1.12.3.js" },
+       'jquery_ui' : {'local' : "js/jquery-ui.min.js", 'cdn': "//code.jquery.com/ui/1.12.1/jquery-ui.min.js" },
+       'jquery_ui_css' : {'local' : "css/jquery-ui.css", 'cdn' : "//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" },
+       'chart_js' : {'local': "js/Chart.bundle.min.js", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.min.js"},
+       'bootstrap_notify_css' : {'local' : "css/bootstrap-notify.min.css", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/bootstrap-notify.min.css"}, #this cdn may be out of date!
+       'bootstrap_notify_js' : {'local' : "js/bootstrap-notify.min.js", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js" },
+	'bootstrap_select_css' : {'local' : "css/bootstrap-select.min.css", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css"},
+	'bootstrap_select_js' : {'local' : "js/bootstrap-select.min.js", 'cdn' : "//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"},
       }
 
 
@@ -290,7 +291,7 @@ CAN_VIEW = ['Editor', 'Owner', 'Admin', 'CrowdTranscriber','Transcriber', 'Reade
 
 # Currently the workflows do not mix well between different types of users, it is either or... but that's OK for now
 
-WORKFLOWS = {'linnear' : {'perms' :  ['CrowdTranscriber','Transcriber'], 
+WORKFLOWS = {'linear' : {'perms' :  ['CrowdTranscriber','Transcriber'], 
 			  'statuses' : ['IN_PROGRESS', 'DONE'] },
 	     'free' : { 'perms' : ['Editor', 'Owner', 'Admin'],
 		       'statuses' : ['IN_PROGRESS', 'DONE', 'FINAL'] },
