@@ -1,3 +1,4 @@
+/* //"deprecated" in favour of js-cookie
 function getCookie(cookieName) {
     var cookieArray = document.cookie.split(';');
     for(var i = 0; i < cookieArray.length; i++) {
@@ -11,9 +12,10 @@ function getCookie(cookieName) {
 	}
 	return "";
 }
-
+*/
 function jobCountsChanged(json) {
-	jobs = getCookie("jobs");
+//	jobs = getCookie("jobs");
+	jobs = Cookie.get("jobs");
 	stringified = JSON.stringify(json);
 	console.log("comparing: " + jobs);
 	console.log(" with " + stringified);
@@ -51,7 +53,7 @@ $(document).ready(function(){
 });			
 
 window.onload = function() {
-	if (getCookie("changes_acknowledged") == "false") // We show this on every page until the user acknowledges the changes by clicking away the alert.
+	if (Cookie.get("changes_acknowledged") == "false") // We show this on every page until the user acknowledges the changes by clicking away the alert.
 		jobStatusAlert();
 		jobCountsPoll();
 	$(".job-notification-close").click(function(event) {
