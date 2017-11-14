@@ -52,13 +52,21 @@
     <!-- Bootstrap-notify -->
     {{ "bootstrap_notify_js"|load_lib:"js" }}
     <!-- Bootstrap-Select -->
-    {{ "bootstrap_select_js"|load_lib:"js" }}
-    
+    {{ "bootstrap_select_js"|load_lib:"js" }} 
+    <!-- js-cookie.js -->
+    {{ "js_cookie"|load_lib:"js" }}
+ 
     <!-- Local JS -->
-	<script language="javascript">
-		var static_url = "{{ STATIC_URL|escapejs }}";
-		var current_userid = "{{ user.tsdata.userId }}";
-	</script>
+    <script language="javascript">
+	var static_url = "{{ STATIC_URL|escapejs }}";
+	var current_userid = "{{ user.tsdata.userId }}";
+    </script>
+    <!-- give the csrf_token to javascript fo any ajax calls that may need it -->
+    {% csrf_token %}
+    <script type="text/javascript">
+	// using jQuery
+	var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+    </script>
     <script src="{% static "js/img_display.js" %}"></script>
     <script src="{% static "js/read.js" %}"></script>
 

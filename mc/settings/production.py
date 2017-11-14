@@ -162,28 +162,28 @@ LANGUAGE_CODE = 'en'
 #Added for READ lang set == official EU languages
 from django.utils.translation import ugettext_lazy as _
 LANGUAGES = [
-        ('bg', _('Bulgarian')),
-        ('hr', _('Croatian')),
-        ('cs', _('Czech')),
-        ('da', _('Danish')),
-        ('nl', _('Dutch')),
+#        ('bg', _('Bulgarian')),
+#        ('hr', _('Croatian')),
+#        ('cs', _('Czech')),
+#        ('da', _('Danish')),
+#        ('nl', _('Dutch')),
         ('en', _('English')),
-        ('et', _('Estonian')),
+#        ('et', _('Estonian')),
         ('fi', _('Finnish')),
         ('fr', _('French')),
         ('de', _('German')),
         ('el', _('Greek')),
-        ('hu', _('Hungarian')),
-        ('ga', _('Irish')),
-        ('it', _('Italian')),
-        ('lv', _('Latvian')),
-        ('lt', _('Lithuanian')),
+#        ('hu', _('Hungarian')),
+#        ('ga', _('Irish')),
+#        ('it', _('Italian')),
+#        ('lv', _('Latvian')),
+#        ('lt', _('Lithuanian')),
 #       ('mt', _('Maltese')), NO MALTESE IN DJANGO!
-        ('pl', _('Polish')),
-        ('pt', _('Portuguese')),
-        ('ro', _('Romanian')),
-        ('sk', _('Slovak')),
-        ('sl', _('Slovenian')),
+#        ('pl', _('Polish')),
+#        ('pt', _('Portuguese')),
+#        ('ro', _('Romanian')),
+#        ('sk', _('Slovak')),
+#        ('sl', _('Slovenian')),
         ('es', _('Spanish')),
         ('sv', _('Swedish')),
 ];
@@ -264,6 +264,7 @@ CDNS = {'bootstrap_css' : {'local': "css/bootstrap.min.css", 'cdn' : "//maxcdn.b
        'bootstrap_notify_js' : {'local' : "js/bootstrap-notify.min.js", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js" },
 	'bootstrap_select_css' : {'local' : "css/bootstrap-select.min.css", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css"},
 	'bootstrap_select_js' : {'local' : "js/bootstrap-select.min.js", 'cdn' : "//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"},
+	'js_cookie' : {'local' : "js/js.cookie.min.js", 'cdn' : "//cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"},
       }
 
 
