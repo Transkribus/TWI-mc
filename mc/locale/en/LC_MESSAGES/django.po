@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-11-14 08:00+0000\n"
+"POT-Creation-Date: 2017-11-15 08:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: apps/dashboard/templates/dashboard/actions_table.html:5
 msgid "Operation"
@@ -349,7 +349,7 @@ msgstr ""
 
 #: apps/edit/templates/edit/correct.html:389
 msgid "IN_PROGRESS"
-msgstr ""
+msgstr "In progress"
 
 #: apps/edit/templates/edit/correct.html:439
 msgid "View"
@@ -445,19 +445,19 @@ msgstr ""
 msgid "No document ID"
 msgstr ""
 
-#: apps/edit/views.py:352
+#: apps/edit/views.py:350
 msgid "Transcript NOT saved"
 msgstr ""
 
-#: apps/edit/views.py:355
+#: apps/edit/views.py:353
 msgid "Transcript saved!"
 msgstr ""
 
-#: apps/edit/views.py:364
+#: apps/edit/views.py:362
 msgid "Page status changed!"
 msgstr ""
 
-#: apps/edit/views.py:368
+#: apps/edit/views.py:366
 msgid "No content or status in post"
 msgstr ""
 
@@ -929,32 +929,8 @@ msgstr ""
 msgid "An unknown error was returned by Transkribus: "
 msgstr ""
 
-#: mc/settings/production.py:165
-msgid "Bulgarian"
-msgstr ""
-
-#: mc/settings/production.py:166
-msgid "Croatian"
-msgstr ""
-
-#: mc/settings/production.py:167
-msgid "Czech"
-msgstr ""
-
-#: mc/settings/production.py:168
-msgid "Danish"
-msgstr ""
-
-#: mc/settings/production.py:169
-msgid "Dutch"
-msgstr ""
-
 #: mc/settings/production.py:170
 msgid "English"
-msgstr ""
-
-#: mc/settings/production.py:171
-msgid "Estonian"
 msgstr ""
 
 #: mc/settings/production.py:172
@@ -973,46 +949,6 @@ msgstr ""
 msgid "Greek"
 msgstr ""
 
-#: mc/settings/production.py:176
-msgid "Hungarian"
-msgstr ""
-
-#: mc/settings/production.py:177
-msgid "Irish"
-msgstr ""
-
-#: mc/settings/production.py:178
-msgid "Italian"
-msgstr ""
-
-#: mc/settings/production.py:179
-msgid "Latvian"
-msgstr ""
-
-#: mc/settings/production.py:180
-msgid "Lithuanian"
-msgstr ""
-
-#: mc/settings/production.py:182
-msgid "Polish"
-msgstr ""
-
-#: mc/settings/production.py:183
-msgid "Portuguese"
-msgstr ""
-
-#: mc/settings/production.py:184
-msgid "Romanian"
-msgstr ""
-
-#: mc/settings/production.py:185
-msgid "Slovak"
-msgstr ""
-
-#: mc/settings/production.py:186
-msgid "Slovenian"
-msgstr ""
-
 #: mc/settings/production.py:187
 msgid "Spanish"
 msgstr ""
@@ -1021,15 +957,15 @@ msgstr ""
 msgid "Swedish"
 msgstr ""
 
-#: templates/base.html:127
+#: templates/base.html:135
 msgid "Transkribus is part of the "
 msgstr ""
 
-#: templates/base.html:127
+#: templates/base.html:135
 msgid "READ project"
 msgstr ""
 
-#: templates/base.html:127
+#: templates/base.html:135
 msgid ""
 " and has received funding from the European Union’s Horizon 2020 Research "
 "and Innovation programme under grant agreement no. 674943."
@@ -1059,11 +995,11 @@ msgstr ""
 msgid "Logout"
 msgstr ""
 
-#: templates/navi_base.html:53
+#: templates/navi_base.html:62
 msgid "Login"
 msgstr ""
 
-#: templates/navi_base.html:57 templates/pages/register.html:13
+#: templates/navi_base.html:66 templates/pages/register.html:13
 #: templates/registration/register.html:16
 #: templates/registration/register.html:24
 msgid "Register"
@@ -1109,3 +1045,29 @@ msgstr ""
 #: templates/registration/login.html:48
 msgid "Lost password?"
 msgstr ""
+
+#: Added manually as maybe evaulated variables not apparetn in templates when running makemessages
+msgid "DONE"
+msgstr "Done"
+
+msgid "FINAL"
+msgstr "Final"
+
+msgid "NEW"
+msgstr "New"
+
+msgid "GT"
+msgstr "Ground truth"
+
+msgid "i"
+msgstr "Image"
+
+msgid "sbs"
+msgstr "Side by side"
+
+msgid "lbl"
+msgstr "Line by line"
+
+msgid "t"
+msgstr "Text"
+

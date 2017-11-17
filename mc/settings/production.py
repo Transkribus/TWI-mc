@@ -303,4 +303,10 @@ WORKFLOWS = {'linear' : {'perms' :  ['CrowdTranscriber','Transcriber'],
 #	   'uber-free' : {'perms' : ['Admin'],
 #			    'statuses' : ['NEW', 'IN_PROGRESS', 'DONE', 'FINAL', 'GT']}
 
+#Which interfaces are available for edit / view
+#INTERFACES = {'edit' : ['i', 'lbl'] , 'view' : ['i', 'lbl', 'sbs', 't' ]}
+
+INTERFACES = {'i': ['edit', 'view'], 'lbl': ['edit','view'], 'sbs' : ['view'], 't': ['view'] }
+
+
 
