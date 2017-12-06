@@ -42,6 +42,7 @@ urlpatterns = [
     url(r'^about/$', mc.views.about, name='about'),
     url(r'^user_guide/$', mc.views.user_guide, name='user_guide'),
     url(r'^crowd/$', mc.views.crowd_howto, name='crowd_howto'),
+    url(r'^browser_compat/$', mc.views.browser_compat, name='browser_compat'),
 
 
     ## Others ##
