@@ -38,3 +38,6 @@ a.link_disabled {cursor: default;}
 .container {
 	min-height: 600px;
 }
+#global-message {
+	margin-top: 0.7em;
+}
