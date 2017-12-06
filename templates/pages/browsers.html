@@ -1,0 +1,28 @@
+{% extends "navi_base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Marketing Icons Section -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">{% trans "Browser compatibility" %}</h1>
+
+				<p>{% trans "The transkribus-web team endevavour to allow all modern browsers to get the best out of the service. However due to the sometimes experimental nature of our work we can't always support all browsers straight away. Below is list of browsers that we are pretty sure will get the best out of the many features of transkribus-web" %}</p>
+
+				<p>{% trans "You are currently using: "%}<span id="user_agent_message"></span></p>
+				<ul>
+							{% for browser in BROWSERS %}
+								<li>{{ browser.browser }}{% for version in browser.versions %} {{version}}{% if not forloop.last %}, {% endif %}{%endfor%}</li>
+							{% endfor %}
+
+				</ul>
+	    </div>
+	</div>
+    </div>	
+
+{% endblock %}
