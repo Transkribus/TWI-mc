@@ -12,3 +12,8 @@ def user_guide(request):
 
 def crowd_howto(request):
     return render(request, 'pages/crowd_howto.html')
+
+def browser_compat(request):
+    return render(request, 'pages/browsers.html')
+
+
