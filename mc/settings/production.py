@@ -110,6 +110,7 @@ TEMPLATES = [
 		'apps.utils.contexts.apphead',
 		'apps.utils.contexts.nav_up',
 		'apps.utils.contexts.version',
+		'apps.utils.contexts.browser_list',
             ],
             'libraries' : {
                 'read_tags': 'apps.utils.templatetags',
@@ -165,28 +166,28 @@ LANGUAGE_CODE = 'en'
 #Added for READ lang set == official EU languages
 from django.utils.translation import ugettext_lazy as _
 LANGUAGES = [
-        ('bg', _('Bulgarian')),
-        ('hr', _('Croatian')),
-        ('cs', _('Czech')),
-        ('da', _('Danish')),
-        ('nl', _('Dutch')),
+#        ('bg', _('Bulgarian')),
+#        ('hr', _('Croatian')),
+#        ('cs', _('Czech')),
+#        ('da', _('Danish')),
+#        ('nl', _('Dutch')),
         ('en', _('English')),
-        ('et', _('Estonian')),
+#        ('et', _('Estonian')),
         ('fi', _('Finnish')),
         ('fr', _('French')),
         ('de', _('German')),
         ('el', _('Greek')),
-        ('hu', _('Hungarian')),
-        ('ga', _('Irish')),
-        ('it', _('Italian')),
-        ('lv', _('Latvian')),
-        ('lt', _('Lithuanian')),
+#        ('hu', _('Hungarian')),
+#        ('ga', _('Irish')),
+#        ('it', _('Italian')),
+#        ('lv', _('Latvian')),
+#        ('lt', _('Lithuanian')),
 #       ('mt', _('Maltese')), NO MALTESE IN DJANGO!
-        ('pl', _('Polish')),
-        ('pt', _('Portuguese')),
-        ('ro', _('Romanian')),
-        ('sk', _('Slovak')),
-        ('sl', _('Slovenian')),
+ #       ('pl', _('Polish')),
+ #       ('pt', _('Portuguese')),
+#        ('ro', _('Romanian')),
+#        ('sk', _('Slovak')),
+#        ('sl', _('Slovenian')),
         ('es', _('Spanish')),
         ('sv', _('Swedish')),
 ];
@@ -272,3 +273,8 @@ PROFILE_LOG_BASE = '/tmp/'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 28800 #8 hours like Transkribus REST session
+
+BROWSERS = [
+		{"browser": "Chrome", "versions": ["60.x"]},
+		{"browser": "Firefox", "versions": ["43.x", "45.x"]}
+]
