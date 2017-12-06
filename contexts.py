@@ -51,3 +51,8 @@ def nav_up(request):
 
 def version(request):
     return {'version': settings.VERSION, 'milestone': settings.MILESTONE, 'deploy_time': time.strftime('%d/%m/%Y', time.gmtime(os.path.getmtime(settings.BASE_DIR+'/wsgi.py'))) }
+
+def browser_list(request):
+    return {'BROWSERS' : settings.BROWSERS}
+
+

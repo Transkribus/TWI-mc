@@ -14,10 +14,56 @@ var serverbase = window.location.pathname.replace(/\/\w+(|\/|\/\d.*)$/g, "");
 console.log("APPBASE: ",appbase);
 console.log("SERVERBASE: ",serverbase);
 
+//TODO config item, TODO add versions
+var supported_browsers = ["Chrome"];
+var message_timeout;
+
+
 $(document).ready(function(){
 	$('#errorModal').modal({ show: false})
+	check_browser_support();
 
 });
+
+function setGlobalMessage(message, type, timeout=true) {
+	clearTimeout(message_timeout);
+	type = type || "warning";
+	$("#global-message").removeClass("btn-muted btn-primary btn-success btn-info btn-warning btn-danger");
+	$("#global-message").html(message);
+	$("#global-message").addClass("btn-" + type);
+	$("#global-message").show();
+	if ( timeout )
+		message_timeout = setTimeout(function() {
+			$("#global-message").html("");
+			$("#global-message").hide();
+		}, 5000);
+}
+function check_browser_support(){
+
+	var supported = false;
+	for( b in supported_browsers ){
+		if(window.navigator.userAgent.indexOf(supported_browsers[b]) >= 0){
+			supported = true;
+			break;
+		}
+	}
+	//window.navigator.userAgent
+	if(!supported)
+		setGlobalMessage($("#browser-compat-text").html(),"warning",false);
+	
+	//remove message if on comapt page:
+	if($("#user_agent_message").length){
+		$("#global-message").html("");
+		$("#global-message").hide();
+		//TODO check why bootstrap class font-weight-bold doesn't work
+		ua_mess = window.navigator.userAgent.replace(/(Firefox.*|Chrome.*)/g, 
+							'<span class="font-weight-bold" style="font-weight: bold;">$1</span>');
+		$("#user_agent_message").html(ua_mess);
+	}
+	
+	return true;
+
+}
 function make_url(url){
 //	appbase = appbase.replace(/\/$/,""); //remove trailing slash from appbase
 //	return appbase+url;
@@ -85,54 +131,42 @@ function init_datatable(table,url, columns){
 		"createdRow": function ( row, data, index ) {
                 	$(row).addClass("clickable");
 			//make rows click through to wheresoever they have an id for (col,doc,page)
-                	$(row).on("click", function(e){
-                		// alert(e.target);
+                	$(row).on("click", function(){ 
+				//TODO TODO make these linked rows work for user table
+				//TODO this works but feels messy (need to shift that n/a crap from the data for one)
+				var ids = parse_path();	
+				var colId = null;
+				var url = null;
+				if(data.colId != undefined && data.colId !== "n/a")
+					colId = data.colId;
+				if(ids.collId != undefined && ids.collId)
+					colId = ids.collId;
 
-		                if ( $(e.target).hasClass("details-control") ) {
-		                	var currRow = datatable.row(this);
+				if(colId) url = colId;
+				if(data.docId != undefined && data.docId !== "n/a"){
+					url += '/'+data.docId;
+					if (appbase.includes("library")){
+						appbase = appbase.replace("library", "view")
+						url += '/'+1;
+					}
+				}
+				if(data.pageNr != undefined && data.pageNr !== "n/a"){ //NB will break until we use base url
+					url = serverbase+'/view/'+data.colId+'/'+data.docId+'/'+data.pageNr;	
+					if(serverbase !== "") url = '/'+url;
+				 	window.location.href=url;
+					return false;
+					
+				}
+				//TODO add case for userlist links 
+				if(table.selector.match(/users/)){
+					url += '/u/'+data.userName;
+				}
 
-					        if ( currRow.child.isShown() ) {
-					            currRow.child.hide();
-					            $(row).removeClass('shown');
-					        } else {
-					        	currRow.child.show();
-					            $(row).addClass('shown');
-					        }
-		                } else {
-							var ids = parse_path();	
-							var colId = null;
-							var url = null;
-							if(data.colId != undefined && data.colId !== "n/a")
-								colId = data.colId;
-							if(ids.collId != undefined && ids.collId)
-								colId = ids.collId;
-
-							if(colId) url = colId;
-							if(data.docId != undefined && data.docId !== "n/a"){
-								url += '/'+data.docId;
-								if (appbase.includes("library")){
-									appbase = appbase.replace("library", "view")
-									url += '/'+1;
-								}
-							}
-							if(data.pageNr != undefined && data.pageNr !== "n/a"){ //NB will break until we use base url
-								url = serverbase+'/view/'+data.colId+'/'+data.docId+'/'+data.pageNr;	
-								if(serverbase !== "") url = '/'+url;
-							 	window.location.href=url;
-								return false;
-								
-							}
-							//TODO add case for userlist links 
-							if(table.selector.match(/users/)){
-								url += '/u/'+data.userName;
-							}
-
-							if(url){
-								if(appbase.match(/\/$/)) loc = appbase+url; else loc = appbase+'/'+url;
-								window.location.href=loc;
-							}
-						}
-					});
+				if(url){
+					if(appbase.match(/\/$/)) loc = appbase+url; else loc = appbase+'/'+url;
+					window.location.href=loc;
+				}
+			});
         	},
 
 	});
