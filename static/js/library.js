@@ -40,7 +40,7 @@ function init_collections_table(){
 		//		return '<a href="'+row.colId+'">'+data+'</a>';
 		//	} --> was after colName
 		    { "data": "colId",
-		      "searchable": false, 
+		      "searchable": true, 
 		      "orderable": false
  		    },
 		    { "data" : "colName",  //insert colName as default for search and order #bigupSchorsch
@@ -119,7 +119,7 @@ function init_documents_table(){
 		    //The columns with null data are loaded by ajax on draw.dt (see below) Becuase of this they cannot be searched or ordered
 		    { "data": "docId",
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
-		      "searchable": false, 
+		      "searchable": true, 
 		      "orderable": false },
 		    { "data" : null, 
 		      "searchable": false, 
