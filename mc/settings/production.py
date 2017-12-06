@@ -206,7 +206,7 @@ USE_TZ = True
 
 #### NB this is the static files setting for the production apache server
 
-SERVERBASE = '/readTest'
+SERVERBASE = '/read'
 
 #Step 1: we store static files in project_root/static
 STATICFILES_DIRS = (
