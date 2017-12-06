@@ -15,7 +15,7 @@ console.log("APPBASE: ",appbase);
 console.log("SERVERBASE: ",serverbase);
 
 //TODO config item, TODO add versions
-var supported_browsers = ["Chrome"];
+var supported_browsers = ["Chrome", "Firefox"];
 var message_timeout;
 
 
