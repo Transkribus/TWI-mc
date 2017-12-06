@@ -24,6 +24,9 @@
 
 		<div class="collapse navbar-collapse" id="ts-app-menu">
 			<ul class="nav navbar-nav navbar-right">
+				{%comment%} For Messages displayed in nav bar. See SetGlobalMessage() {%endcomment%}
+				<li><span id="global-message" class="btn btn-sm pull-right"></span></li>
+				<span id="browser-compat-text" style="display: none;">{% trans "Browser not supported. Some features may not work as well. Please consult the " %}<a href="{%url "browser_compat"%}">{% trans "browser compatibility page" %}</a></span>
 				{% if user.is_authenticated %}
 					<li role="presentation" class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -37,8 +40,33 @@
 							<li>
 								<a href="{% url 'logout' %}?next={{request.path}}">{% trans "Logout" %}</a>
 							</li>
+								<form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+									<input name="next" type="hidden" value="{{ redirect_to }}" />
+									<select name="language">
+										{% get_current_language as LANGUAGE_CODE %}
+										{% get_available_languages as LANGUAGES %}
+										{% get_language_info_list for LANGUAGES as languages %}
+										{% for language in languages %}
+											<option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+												{{ language.name_local }} ({{ language.code }})
+											</option>
+										{% endfor %}
+									</select>
+									<input type="submit" value="Go" />
+								</form>
+<!--
+							{% get_current_language as LANGUAGE_CODE %}
+							{% get_available_languages as LANGUAGES %}
+							{% get_language_info_list for LANGUAGES as languages %}
+							{% for language in languages %}
+								<li>
+								<a class="language_switcher" href="{% url 'set_language' %}" data-language="{{ language.code }}">{% if language.code == LANGUAGE_CODE %}*{% endif %}{{ language.name_local }} ({{ language.code }})</a>
+								</li>
+							{% endfor %}
+-->
 						</ul>
 					</li>
+
 				{% else %}
 					{% if 'login' not in request.path %}
 						<li>
