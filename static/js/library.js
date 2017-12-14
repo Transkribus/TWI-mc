@@ -162,7 +162,7 @@ function init_documents_table(){
 						$("td:eq(0)", row_data[rowInd].row_element).empty();
 						$("td:eq(0)", row_data[rowInd].row_element).append(thumb);
 						$("td:eq(0)", row_data[rowInd].row_element).addClass('text-center');
-						$("td:eq(1)", row_data[rowInd].row_element).html(metadata.viewLinks);
+//						$("td:eq(1)", row_data[rowInd].row_element).html(metadata.viewLinks);
 						$("td:eq(2)", row_data[rowInd].row_element).html(metadata.titleDesc);
 						$("td:eq(4)", row_data[rowInd].row_element).html(metadata.stats_table);
 						row_data[rowInd].collId = ids['collId'];
