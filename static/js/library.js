@@ -121,9 +121,9 @@ function init_documents_table(){
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
 		      "searchable": true, 
 		      "orderable": false },
-		    { "data" : null, 
+/*		    { "data" : null, 
 		      "searchable": false, 
-		      "orderable": false},
+		      "orderable": false},*/
 		    { "data": "title",    //load with title for sorting and ordering (though this gets replaced with secondary ajax (see below)
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
 //		      "searchable": false, 
@@ -162,9 +162,9 @@ function init_documents_table(){
 						$("td:eq(0)", row_data[rowInd].row_element).empty();
 						$("td:eq(0)", row_data[rowInd].row_element).append(thumb);
 						$("td:eq(0)", row_data[rowInd].row_element).addClass('text-center');
-//						$("td:eq(1)", row_data[rowInd].row_element).html(metadata.viewLinks);
-						$("td:eq(2)", row_data[rowInd].row_element).html(metadata.titleDesc);
-						$("td:eq(4)", row_data[rowInd].row_element).html(metadata.stats_table);
+	//					$("td:eq(1)", row_data[rowInd].row_element).html(metadata.viewLinks);
+						$("td:eq(1)", row_data[rowInd].row_element).html(metadata.titleDesc);
+						$("td:eq(3)", row_data[rowInd].row_element).html(metadata.stats_table);
 						row_data[rowInd].collId = ids['collId'];
 						shorten_text("long_text_" + row_data[rowInd].docId);
 
