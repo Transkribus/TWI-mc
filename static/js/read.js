@@ -25,7 +25,8 @@ $(document).ready(function(){
 
 });
 
-function setGlobalMessage(message, type, timeout=true) {
+function setGlobalMessage(message, type, timeout) {
+	if(timeout == undefined) timeout = true;
 	clearTimeout(message_timeout);
 	type = type || "warning";
 	$("#global-message").removeClass("btn-muted btn-primary btn-success btn-info btn-warning btn-danger");
@@ -145,7 +146,7 @@ function init_datatable(table,url, columns){
 				if(colId) url = colId;
 				if(data.docId != undefined && data.docId !== "n/a"){
 					url += '/'+data.docId;
-					if (appbase.includes("library")){
+					if (appbase.indexOf("library")>=0){
 						appbase = appbase.replace("library", "view")
 						url += '/'+1;
 					}
