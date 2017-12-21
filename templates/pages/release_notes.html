@@ -1,0 +1,46 @@
+{% extends "navi_base.html" %}
+{% load i18n %}
+
+{% block content %}
+
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Marketing Icons Section -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">{% trans "Release notes" %}</h1>
+				<h3>Version read-v1.0-beta</h3>
+				<div class="alert alert-success alert-auto">{% trans "Currently available at" %} <a href="{% url "index" %}">https://transkribus.eu/read/</a></div>
+				<p>{% trans "Features include:" %}
+					<ul>
+						<li>{% trans "Browsing of collectons and documents with filtering and sorting." %}</li>
+						<li>{% trans "Image interface for viewing page images." %}</li>
+						<li>{% trans "Editing of transcripts with WISIWIG dialog." %}</li>
+						<li>{% trans "Tagging of words as metadata incluing: abbreviations, dates, people, places." %}</li>
+					</ul>
+				</p>
+				<p>{% trans "Known issues:" %}
+					<ul>
+						<li>{% trans "Placement of dialog to one side when starting on page numbers or other marginalia." %}</li>
+						<li>{% trans "Filtering of collection and documents tables can behave unexpectedly." %}</li>
+						<li>{% trans "Presentation of collection and document tables on mobile devices not optimal." %}</li>
+						<li>{% trans "Currently no ability to use pinch zoom for page images on mobile devices." %}</li>
+					</ul>
+				</p>
+				<h3>Version read-v1.1-beta</h3>
+				<div class="alert alert-info alert-auto">{% trans "Coming soon to " %} https://transkribus.eu/read/</div>
+				<p>{% trans "Features include:" %}
+					<ul>
+						<li>{% trans "Adressing known issues where possible (see above)." %}</li>
+						<li>{% trans "Introduction of line-by-line interface, with all line images and transcript text presented in-line."%}</li>
+						<li>{% trans "Cleaner presentation of collection and document tables." %}</li>
+					</ul>
+				</p>
+
+	    </div>
+	</div>
+    </div>	
+
+{% endblock %}

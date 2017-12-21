@@ -16,4 +16,7 @@ def crowd_howto(request):
 def browser_compat(request):
     return render(request, 'pages/browsers.html')
 
+def release_notes(request):
+    return render(request, 'pages/release_notes.html')
+
 
