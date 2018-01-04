@@ -194,15 +194,30 @@ def collection_metadata(request, collId):
     pc_final = int(round((int(stats.get('nrOfFinal'))/total_pages) * 100))
     pc_gt = int(round((int(stats.get('nrOfGT'))/total_pages) * 100))
 
-    stats_table = '<table class="embedded-stats-table">'
-    if pc_new > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('New'), pc_new)
-    if pc_ip > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('In Progress'), pc_ip)
-    if pc_done > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Done'), pc_done)
-    if pc_final > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Final'), pc_final)
-    if pc_gt > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Ground Truth'), pc_gt)
-    stats_table += '</table>'
+    big_table = ''
+    big_table += '<table class="center-block"><tr>'
+    big_table += '<th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Progress')
 
-    return JsonResponse({'titleDesc': title_desc, 'stats': stats, 'stats_table': stats_table}, safe=False)
+    big_table += _add_row(pc_new, _('New'))
+    big_table += _add_row(pc_ip, _('In progress'))
+    big_table += _add_row(pc_done, _('Done'))
+    big_table += _add_row(pc_final, _('Final'))
+    big_table += _add_row(pc_gt, _('Ground truth'))
+
+    big_table += '</table>'
+
+    return JsonResponse({'titleDesc': title_desc, 'stats': stats, 'big_stats_table': big_table}, safe=False)
+
+
+def _add_row(val, name):
+    html = '<tr>'
+
+    if val > 0:
+        html += '<th>%s</th><td>%s</td>' % (name, val)
+
+    html += '</tr>'
+
+    return html
 
 
 #Fetch a single thumb url from the document referenced
@@ -293,11 +308,75 @@ def document_metadata(request, collId, docId):
 
     stats_table += '</table>'
 
+    edit_fields = []
+    if stats.get('nrOfTranscribedLines'):
+        edit_fields += [(_('Lines'), stats.get('nrOfTranscribedLines'))]
+    if stats.get('nrOfWords'):
+        edit_fields += [(_('Words'), stats.get('nrOfWords'))]
+
+    status_pages = []
+    if pc_new > 0:
+        status_pages += [(_('New'), pc_new)]
+    if pc_ip > 0:
+        status_pages += [(_('In Progress'), pc_ip)]
+    if pc_done > 0:
+        status_pages += [(_('Done'), pc_done)]
+    if pc_final > 0:
+        status_pages += [(_('Final'), pc_final)]
+    if pc_gt > 0:
+        status_pages += [(_('Ground Truth'), pc_gt)]
+    status_pages = [(name, str(val)+'%') for name, val in status_pages]
+
+    tags = []
+    if personCount > 0:
+        tags += [(_('People'), personCount)]
+    if placeCount > 0:
+        tags += [(_('Places'), placeCount)]
+    if dateCount > 0:
+        tags += [(_('Dates'), dateCount)]
+    if abbrevCount > 0:
+        tags += [(_('Abbreviations'), abbrevCount)]
+    if otherCount > 0:
+        tags += [(_('Other'), otherCount)]
+
+    max_vals = max([len(edit_fields), len(status_pages), len(tags)])
+    edit_fields  += [None] * (max_vals-len(edit_fields))
+    status_pages += [None] * (max_vals-len(status_pages))
+    tags         += [None] * (max_vals-len(tags))
+
+    big_table = ''
+    big_table += '<table class="center-block"><tr>'
+    big_table += '<th colspan="2" class="embedded-stats-table-heading">%s</th>'      % _('Available for editing')
+    big_table += '<th colspan="2" class="embedded-stats-table-heading">%s</th>     ' % _('Status of pages')
+    big_table += '<th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Tags')
+
+    for edit_row, status_row, tag_row in zip(edit_fields, status_pages, tags):
+        big_table += '<tr>'
+
+        if edit_row:
+            big_table += '<th>%s</th><td>%s</td>' % edit_row
+        else:
+            big_table += '<th></th><td></td>'
+
+        if status_row:
+            big_table += '<th>%s</th><td>%s</td>' % status_row
+        else:
+            big_table += '<th></th><td></td>'
+
+        if tag_row:
+            big_table += '<th>%s</th><td>%s</td>' % tag_row
+        else:
+            big_table += '<th></th><td></td>'
+
+        big_table += '</tr>'
+    big_table += '</table>'
+
     return JsonResponse({
             'titleDesc': title_desc,
             'viewLinks': view_links,
             'thumbUrl': stats.get('thumbUrl'),
-	    'stats_table' : stats_table
+	        'stats_table': stats_table,
+            'big_stats_table': big_table,
         },safe=False)
 
 @login_required
