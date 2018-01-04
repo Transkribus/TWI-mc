@@ -39,6 +39,12 @@ function init_collections_table(){
 	     // "render" : function(data, type, row){
 		//		return '<a href="'+row.colId+'">'+data+'</a>';
 		//	} --> was after colName
+			{
+                "className":      'details-control',
+                "orderable":      false,
+                "data":           null,
+                "defaultContent": ''
+            },
 		    { "data": "colId",
 		      "searchable": false, 
 		      "orderable": false
@@ -51,11 +57,7 @@ function init_collections_table(){
 		    { "data": "nrOfDocuments" },
        /* nrOfDOcument has disappeared from the data for some reason... until it found render this field as empty to stop warnings
                     { "data": "nrOfDocuments", "data": null, "defaultContent": '<span></span>'},*/
-		    { "data": "role" },
-		    { "data": null,
-		      "searchable": false, 
-		      "orderable": false
-		     },
+		    { "data": "role" }
         	];
 	var datatable = init_datatable($("#collections_table"),url,columns);
 	
@@ -79,19 +81,34 @@ function init_collections_table(){
 				row_data[rowInd].row_element = this;
 				console.log("URL: ",row_data[rowInd].collStat);
 				$.getJSON(row_data[rowInd].collStat, function(metadata){
-					$("td:eq(1)", row_data[rowInd].row_element).html(metadata.titleDesc);
+					$("td:eq(2)", row_data[rowInd].row_element).html(metadata.titleDesc);
 					shorten_text("long_text_" + row_data[rowInd].collId);
 					if (metadata.stats.thumbUrl){
 						thumb = loadThumbs(metadata.stats.thumbUrl);
-						$("td:eq(0)", row_data[rowInd].row_element).empty();
-						$("td:eq(0)", row_data[rowInd].row_element).append(thumb);
-						$("td:eq(0)", row_data[rowInd].row_element).addClass('text-center');
+						$("td:eq(1)", row_data[rowInd].row_element).empty();
+						$("td:eq(1)", row_data[rowInd].row_element).append(thumb);
+						$("td:eq(1)", row_data[rowInd].row_element).addClass('text-center');
 					}else{
-						$("td:eq(0)", row_data[rowInd].row_element).html('No image available');
+						$("td:eq(1)", row_data[rowInd].row_element).html('No image available');
 					}
-					$("td:eq(4)", row_data[rowInd].row_element).html(metadata.stats_table);
 
-				
+					r = document.createElement("tr");
+					td1 = document.createElement("td");
+					td2 = document.createElement("td");
+					td3 = document.createElement("td");
+					td4 = document.createElement("td");
+					td5 = document.createElement("td");
+
+					r.appendChild(td1);
+					r.appendChild(td2);
+					r.appendChild(td3);
+					r.appendChild(td4);
+					r.appendChild(td5);
+
+					$("td:eq(2)", r).html(metadata.big_stats_table);
+
+					currRow.child(r);
+
 				}).done(function(a,b) {
 //					    console.log( "Done: ",a, " ",b );
 				}).fail(function( a, b){
@@ -172,20 +189,18 @@ function init_documents_table(){
 						row_data[rowInd].collId = ids['collId'];
 						shorten_text("long_text_" + row_data[rowInd].docId);
 
-						r = document.createElement('tr');
-						td1 = document.createElement('td');
-						td2 = document.createElement('td');
-						td3 = document.createElement('td');
-						td4 = document.createElement('td');
-						td5 = document.createElement('td');
+						r = document.createElement("tr");
+						td1 = document.createElement("td");
+						td2 = document.createElement("td");
+						td3 = document.createElement("td");
+						td4 = document.createElement("td");
+						td5 = document.createElement("td");
 
-						// td3.html(metadata.big_stats_table);
-						
-						r.append(td1);
-						r.append(td2);
-						r.append(td3);
-						r.append(td4);
-						r.append(td5);
+						r.appendChild(td1);
+						r.appendChild(td2);
+						r.appendChild(td3);
+						r.appendChild(td4);
+						r.appendChild(td5);
 
 						$("td:eq(2)", r).html(metadata.big_stats_table);
 

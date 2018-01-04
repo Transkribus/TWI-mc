@@ -194,15 +194,30 @@ def collection_metadata(request, collId):
     pc_final = int(round((int(stats.get('nrOfFinal'))/total_pages) * 100))
     pc_gt = int(round((int(stats.get('nrOfGT'))/total_pages) * 100))
 
-    stats_table = '<table class="embedded-stats-table">'
-    if pc_new > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('New'), pc_new)
-    if pc_ip > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('In Progress'), pc_ip)
-    if pc_done > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Done'), pc_done)
-    if pc_final > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Final'), pc_final)
-    if pc_gt > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Ground Truth'), pc_gt)
-    stats_table += '</table>'
+    big_table = ''
+    big_table += '<table class="center-block"><tr>'
+    big_table += '<th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Progress')
 
-    return JsonResponse({'titleDesc': title_desc, 'stats': stats, 'stats_table': stats_table}, safe=False)
+    big_table += _add_row(pc_new, _('New'))
+    big_table += _add_row(pc_ip, _('In progress'))
+    big_table += _add_row(pc_done, _('Done'))
+    big_table += _add_row(pc_final, _('Final'))
+    big_table += _add_row(pc_gt, _('Ground truth'))
+
+    big_table += '</table>'
+
+    return JsonResponse({'titleDesc': title_desc, 'stats': stats, 'big_stats_table': big_table}, safe=False)
+
+
+def _add_row(val, name):
+    html = '<tr>'
+
+    if val > 0:
+        html += '<th>%s</th><td>%s</td>' % (name, val)
+
+    html += '</tr>'
+
+    return html
 
 
 #Fetch a single thumb url from the document referenced
