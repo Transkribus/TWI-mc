@@ -32,7 +32,7 @@
 		    <p>Your account doesn't have access to this page. To proceed,
 		    please login with an account that has access.</p>
 		    {% else %}
-		    <p>{% trans "This page requires a transkribus user account for access. If you have a transkribus user account, please login to continue."%}</p><p>{% trans "If you do not have a transkribus user account, please" %} <a href="{% url 'register' %}">{% trans "register for a free transkribus account." %}</a></p>
+		    <p>{% trans "Please login with the details of your Transkribus user account. If you do not have a Transkribus user account, please register for free at the" %} <a href="{% url 'register' %}">{% trans "Transkribus website" %}</a></p>
 		    {% endif %}
 		{% endif %}
 
