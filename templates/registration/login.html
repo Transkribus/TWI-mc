@@ -22,7 +22,7 @@
 		{%comment%} An error code has been passed in from a transkribus request {%endcomment%}
 		{% if request.GET.error %}
 			<div class="alert alert-danger" role="alert">
-				<strong>{% trans 'We have a slight problem: ' %}</strong>{{ request.GET.error|login_error_message|safe }}
+				<strong>{% trans 'Sorry! There was a problem logging in: ' %}</strong>{{ request.GET.error|login_error_message|safe }}
 			</div>
 		{% endif %}
 		
