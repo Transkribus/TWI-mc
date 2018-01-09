@@ -46,7 +46,7 @@ function init_collections_table(){
                 "defaultContent": ''
             },
 		    { "data": "colId",
-		      "searchable": true, 
+		      "searchable": false, 
 		      "orderable": false
  		    },
 		    { "data" : "colName",  //insert colName as default for search and order #bigupSchorsch
@@ -140,7 +140,7 @@ function init_documents_table(){
             },
 		    { "data": "docId",
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
-		      "searchable": true, 
+		      "searchable": false, 
 		      "orderable": false },
 		    // { "data" : null, 
 		    //   "searchable": false, 
