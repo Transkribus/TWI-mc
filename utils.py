@@ -4,6 +4,7 @@ import datetime
 import json
 import hashlib
 from django.utils.translation import ugettext_lazy as _
+from django.http import HttpResponse
 
 from django.conf import settings
 import logging
@@ -21,6 +22,29 @@ def t_log(text,level=logging.INFO):
 
     logger = logging.getLogger('django')
     logger.log(level,text)
+
+def get_ts_session(request) :
+    # The session was given to the user when they authenticated (see backends.py)
+    # We want to simpy return that TranskribusSession object unless some configuraion of django/transkribus expiration has gone on
+    # To try and cover all bases we just check each thing that should have been bestowed to request.user when the user authenticated
+
+    if request.user.is_authenticated():
+        # django thinks we are logged in, #but request.user doesn't have tsdata, which suggests something is up, lets logout and start again
+        if not hasattr(request.user,"tsdata") : 
+            return HttpResponse(status=401)
+        # django thinks we are logged in, #but request.user.tsdata doesn't have t, which suggests something is up, lets logout and start again
+        if not hasattr(request.user.tsdata,"t"): 
+            return HttpResponse(status=401)
+        
+        t = request.user.tsdata.t
+
+    else:
+        # An anonymous transkribus session don't expec too much 
+        t = TranskribusSession()
+
+    # You made this far? have a biscuit!
+    return t
+
 
 def t_gen_request_id(url,params,userid):
     ###### EXCEPTION ######
@@ -104,12 +128,43 @@ def error_message_switch(request=None,x=0):
         503: _('Could not contact the Transkribus service, please try again later.'),
     }.get(x, _('An unknown error was returned by Transkribus: ')+str(x))
 
+def collection_from_collections(collections,collection_id) :
+    for collection in collections:
+        if collection.get("colId") == int(collection_id):
+            return collection
 
 def get_role(request,collId) :
-    t = request.user.tsdata.t
+    t = get_ts_session(request)
 
     collections = t.collections(request)
     for collection in collections:
         if collection.get('colId') == int(collId) :
              return collection.get('role')
- 
+
+def crop_as_imagemap(crop):
+    return [crop.get('tl')[0], 
+		crop.get('tl')[1], 
+		crop.get('tr')[0], 
+		crop.get('tr')[1], 
+		crop.get('br')[0], 
+		crop.get('br')[1],
+		crop.get('bl')[0], 
+		crop.get('bl')[1]
+	    ]
+
+def check_edit(role):
+    if role in settings.CAN_EDIT:
+        return True
+    return False
+
+def get_wf(role):
+    workflows = settings.WORKFLOWS
+
+    for wf_id, wf in workflows.items() :
+        if role in wf['perms'] :
+            return wf
+    
+    #not sure? return a default
+    return workflows['default']
+
+

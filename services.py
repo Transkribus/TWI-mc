@@ -71,8 +71,8 @@ class TranskribusSession(object):
 
     #Make a request for data (possibly) to the transkribus REST service make
     #use of helper functions and calling the appropriate data handler when done
-    def request(self,request,t_id,url,params=None,method=None,headers=None,handler_params=None,ignore_cache=None):
-
+    def request(self,request,t_id,url,params=None,method=None,headers=None,handler_params=None,ignore_cache=None,data=None):
+        #t_log("IN REQUEST t_id: %s  ignore cache: %s" % (t_id,ignore_cache),logging.WARN)
         #Check for cached value and return that
         if ignore_cache is None :
             cache_data = self.check_cache(request, t_id, url, params)
@@ -86,14 +86,14 @@ class TranskribusSession(object):
         #Default method is GET
         try:
             if method == 'POST' :
-                r = self.s.post(url, params=params, verify=False, headers=headers)
+                r = self.s.post(url, params=params, verify=False, headers=headers, data=data)
             else:
                 r = self.s.get(url, params=params, verify=False, headers=headers)
         except requests.exceptions.ConnectionError as e:
             t_log("COULD NOT CONNECT TO TRANSKRIBUS: %s" % (e), logging.WARN)
             return HttpResponse("Service Unavailable", status=503)
 
-
+        #t_log("URL : %s PARAMS : %s" % (url,params), logging.WARN)
         #Check responses,
         #	401: unauth
         #	403+rest+collId: forbidden collection
@@ -355,13 +355,13 @@ class TranskribusSession(object):
     def fulldoc_handler(self,r,params=None):
         return json.loads(r.text)
 
-    def document(self,request, collId, docId, nrOfTranscripts=None):
+    def document(self,request, collId, docId, nrOfTranscripts=None,ignore_cache=None):
         url = settings.TRP_URL+'collections/'+collId+'/'+str(docId)+'/fulldoc'
         t_id = "document"
         params = {}
         if not nrOfTranscripts is None:
             params['nrOfTranscripts'] = nrOfTranscripts
-        return self.request(request,t_id,url)
+        return self.request(request,t_id,url,ignore_cache=ignore_cache)
 
     def document_handler(self,r,params=None):
         t_doc = json.loads(r.text)
@@ -442,6 +442,10 @@ class TranskribusSession(object):
         t_transcript['key'] = t_transcript.get('tsId')
         return t_transcript
 
+    #I think that current_ts_md_for_page woudl be a better name for this one as it doesn't actually return the transcript....
+    def current_ts_md_for_page(self,request,collId, docId, page):
+        return self.current_transcript(request,collId, docId, page)
+
     def transcript(self,request,transcriptId,url):
 
         t_id = "transcript"
@@ -458,7 +462,7 @@ class TranskribusSession(object):
         t_id = "transcript_xml"
         headers = {'content-type': 'application/xml'}
         params = {}
-        return self.request(request,t_id,url,params,headers,{'transcriptId': transcriptId})
+        return self.request(request,t_id,url,params,"GET",headers,{'transcriptId': transcriptId})
 
     def transcript_xml_handler(self,r,params=None):
         return r.text
@@ -511,6 +515,7 @@ class TranskribusSession(object):
     def crowdsourcing_unsubscribe_handler(self,r,params=None):
         return r.status_code
 
+    #TODO find out why the save and status calls are not using t.request like everything else
     # Saves transcripts.
     def save_transcript(self, request, transcript_xml, collId, docId, page, parent):
         #added transcript id as parent as per Transkribus/TWI-edit#38
@@ -518,16 +523,24 @@ class TranskribusSession(object):
         headers = {"content-type": "application/xml"}
 
         url = settings.TRP_URL+'collections/'+collId+'/'+str(docId)+'/'+str(page)+'/text'
-        r = self.s.post(url, verify=False, headers=headers, params=params, data=transcript_xml)
+        t_id = "save_transcript"
 
-        # Remove the old version from cache.
+        # Remove the old version from cache. NB better to do this after the request
         del request.session['current_transcript']
 
-        return None
+        return self.request(request, t_id, url, method="POST", params=params, headers=headers,ignore_cache=True, data=transcript_xml)
+        #r = self.s.post(url, verify=False, headers=headers, params=params, data=transcript_xml)
+#        return None
+
+    def save_transcript_handler(self,r,params=None):
+        t_log("RESPONSE: %s " % r, logging.WARN)
+        return r.status_code
 
     def save_page_status(self, request, status, collId, docId, pageNr, transcriptId):
         params = {'status': status}
         headers = {'content-type': 'text/plain'}
+
+        t_id = "save_page_status"
 
         url = settings.TRP_URL + 'collections/%(collId)s/%(docId)s/%(pageNr)s/%(transcriptId)s' % {
             'collId': collId,
@@ -535,11 +548,22 @@ class TranskribusSession(object):
             'pageNr': pageNr,
             'transcriptId': transcriptId
         }
-        r = self.s.post(url, verify=False, headers=headers, params=params)
-        print(url)
-        print(r)
 
-        return None
+        return self.request(request, t_id, url, method="POST", params=params, headers=headers,ignore_cache=True)
+
+    def save_page_status_handler(self,r,params=None):
+        return r.status_code
+
+
+
+    def fulltext_search(self, request, params=None) :
+        url = settings.TRP_URL+'search/fulltext'
+        t_id = "fulltext_search"
+        return self.request(request,t_id,url,params=params,ignore_cache=True)
+
+    def fulltext_search_handler(self,r,params=None):
+        return json.loads(r.text)
+
 
     ####################################
     # TODO decide what to do with this stuff (ie mets up/downloading, create_collection, etc)
