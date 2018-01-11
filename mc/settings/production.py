@@ -315,7 +315,7 @@ WORKFLOWS = {'linear' : {'perms' :  ['CrowdTranscriber','Transcriber'],
 #Which interfaces are available for edit / view
 #INTERFACES = {'edit' : ['i', 'lbl'] , 'view' : ['i', 'lbl', 'sbs', 't' ]}
 
-INTERFACES = {'i': ['edit', 'view'], 'lbl': ['edit','view'], 'sbs' : ['view'], 't': ['view'] }
+INTERFACES = {'i': ['edit', 'view'], 'lbl': [], 'sbs' : [], 't': [] }
 
 
 
