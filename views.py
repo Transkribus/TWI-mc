@@ -425,8 +425,16 @@ def error_view(request, response) :
 def error_switch(request,x):
     t_log("SERVERBASE IS %s" % settings.SERVERBASE, logging.WARN);
     #If transkribus session becomes unauthorised we need to remove it from the userobject, so we don't get stuck in a 401 state for ever...
-    if x == 401 :
-         TSData.objects.get(user=request.user).delete()
+   # if x == 401 :
+   #      TSData.objects.get(user=request.user).delete()
+    if x == 401 and TSData and hasattr(request.user,'tsdata') :
+         try :
+             tsdata = TSData.objects.get(user=request.user)
+             if tsdata is not None :
+                 tsdata.delete()
+         except :
+             pass
+
 
     return {
         401: HttpResponseRedirect(request.build_absolute_uri(settings.SERVERBASE+"/login?error=401&next=".format(request.get_full_path()))),
