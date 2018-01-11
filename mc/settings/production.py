@@ -255,17 +255,19 @@ PAGE_SIZE_DEFAULT = 5
 #Switch to use CDNs or local
 USE_CDNS = True
 # Static Resources (js css etc)
-CDNS = {'bootstrap_css' : {'local': "/static/css/bootstrap.min.css", 'cdn' : "//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" },
-       'bootstrap_js' : {'local': "/static/js/bootstrap.min.js", 'cdn' : "//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"},
-       'datatables_css' : {'local': "/static/css/jquery.dataTables.min.css", 'cdn': "//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"},
-       'datatables_js' : {'local': "/static/js/jquery.dataTables.min.js", 'cdn': "//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"},
-       'jquery' : {'local' : "/static/js/jquery.js", 'cdn': "//code.jquery.com/jquery-1.12.3.js" },
-       'jquery_ui' : {'local' : "/static/js/jquery-ui.min.js", 'cdn': "//code.jquery.com/ui/1.12.1/jquery-ui.min.js" },
-       'jquery_ui_css' : {'local' : "/static/css/jquery-ui.css", 'cdn' : "//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" },
-       'chart_js' : {'local': "/static/js/Chart.bundle.min.js", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.min.js"},
-       'bootstrap_notify_css' : {'local' : "/static/css/bootstrap-notify.min.css", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/bootstrap-notify.min.css"}, #this cdn may be out of date!
-       'bootstrap_notify_js' : {'local' : "/static/js/bootstrap-notify.min.js", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js" },
-
+CDNS = {'bootstrap_css' : {'local': "css/bootstrap.min.css", 'cdn' : "//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" },
+       'bootstrap_js' : {'local': "js/bootstrap.min.js", 'cdn' : "//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"},
+       'datatables_css' : {'local': "css/jquery.dataTables.min.css", 'cdn': "//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"},
+       'datatables_js' : {'local': "js/jquery.dataTables.min.js", 'cdn': "//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"},
+       'jquery' : {'local' : "js/jquery.js", 'cdn': "//code.jquery.com/jquery-1.12.3.js" },
+       'jquery_ui' : {'local' : "js/jquery-ui.min.js", 'cdn': "//code.jquery.com/ui/1.12.1/jquery-ui.min.js" },
+       'jquery_ui_css' : {'local' : "css/jquery-ui.css", 'cdn' : "//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" },
+       'chart_js' : {'local': "js/Chart.bundle.min.js", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.min.js"},
+       'bootstrap_notify_css' : {'local' : "css/bootstrap-notify.min.css", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/css/bootstrap-notify.min.css"}, #this cdn may be out of date!
+       'bootstrap_notify_js' : {'local' : "js/bootstrap-notify.min.js", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/mouse0270-bootstrap-notify/3.1.7/bootstrap-notify.min.js" },
+    'bootstrap_select_css' : {'local' : "css/bootstrap-select.min.css", 'cdn': "//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css"},
+    'bootstrap_select_js' : {'local' : "js/bootstrap-select.min.js", 'cdn' : "//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"},
+    'js_cookie' : {'local' : "js/js.cookie.min.js", 'cdn' : "//cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.0/js.cookie.min.js"},
       }
 
 
@@ -278,3 +280,42 @@ BROWSERS = [
 		{"browser": "Chrome", "versions": ["60.x"]},
 		{"browser": "Firefox", "versions": ["43.x", "45.x"]}
 ]
+
+
+##########################################
+# Permissions stuff, mostly for apps/edit
+# but useful to be avilable for all apps
+# To check on role/permisions etc
+########################################
+
+# Who can edit?
+CAN_EDIT = ['Editor', 'Owner', 'Admin', 'CrowdTranscriber','Transcriber']
+# Who can view?
+CAN_VIEW = ['Editor', 'Owner', 'Admin', 'CrowdTranscriber','Transcriber', 'Reader']
+
+##########################
+# Definition of workflows
+#
+# - perms (list)    : a list of user types who are allowed to use this workflow
+# - statuses (list)     : a list of the page statuses that this workflow offers
+
+# Currently the workflows do not mix well between different types of users, it is either or... but that's OK for now
+
+WORKFLOWS = {'linear' : {'perms' :  ['CrowdTranscriber','Transcriber'],
+              'statuses' : ['IN_PROGRESS', 'DONE'] },
+         'free' : { 'perms' : ['Editor', 'Owner', 'Admin'],
+               'statuses' : ['IN_PROGRESS', 'DONE', 'FINAL'] },
+         'default' : { 'perms' : ['Reader'],
+                           'statuses' : None},
+        }
+#Another possible workflow could allow Amdmin users the rights to/from GT and NEW
+#      'uber-free' : {'perms' : ['Admin'],
+#               'statuses' : ['NEW', 'IN_PROGRESS', 'DONE', 'FINAL', 'GT']}
+
+#Which interfaces are available for edit / view
+#INTERFACES = {'edit' : ['i', 'lbl'] , 'view' : ['i', 'lbl', 'sbs', 't' ]}
+
+INTERFACES = {'i': ['edit', 'view'], 'lbl': ['edit','view'], 'sbs' : ['view'], 't': ['view'] }
+
+
+
