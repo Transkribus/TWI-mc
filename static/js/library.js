@@ -76,7 +76,10 @@ function init_collections_table(){
 
 				row_data[rowInd] = {} ;
 				row_data[rowInd].collId = currRow.data().colId;
-			    	console.log("ROW: ",currRow.data());	
+                //collId is not a number... continue
+                if(!row_data[rowInd].collId.match(/^\d+$/)){
+                    return true;
+                }
 				row_data[rowInd].collStat = make_url("/library/coll_metadata/"+row_data[rowInd].collId);
 				row_data[rowInd].row_element = this;
 				console.log("URL: ",row_data[rowInd].collStat);
@@ -176,6 +179,10 @@ function init_documents_table(){
 		    				 
 					row_data[rowInd] = {} ;
 					row_data[rowInd].docId = currRow.data().docId;
+                    //docid is not a number... continue
+                    if(!row_data[rowInd].docId.match(/^\d+$/)){
+                        return true;
+                    }
 					row_data[rowInd].row_element = this;
 					row_data[rowInd].stats = make_url("/library/doc_metadata/"+ids['collId']+'/'+row_data[rowInd].docId);
 					$.getJSON(row_data[rowInd].stats, function(metadata){
