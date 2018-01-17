@@ -39,14 +39,8 @@ function init_collections_table(){
 	     // "render" : function(data, type, row){
 		//		return '<a href="'+row.colId+'">'+data+'</a>';
 		//	} --> was after colName
-			{
-                "className":      'details-control',
-                "orderable":      false,
-                "data":           null,
-                "defaultContent": ''
-            },
 		    { "data": "colId",
-		      "searchable": false, 
+		      "searchable": true, 
 		      "orderable": false
  		    },
 		    { "data" : "colName",  //insert colName as default for search and order #bigupSchorsch
@@ -57,7 +51,11 @@ function init_collections_table(){
 		    { "data": "nrOfDocuments" },
        /* nrOfDOcument has disappeared from the data for some reason... until it found render this field as empty to stop warnings
                     { "data": "nrOfDocuments", "data": null, "defaultContent": '<span></span>'},*/
-		    { "data": "role" }
+		    { "data": "role" },
+		    { "data": null,
+		      "searchable": false, 
+		      "orderable": false
+		     },
         	];
 	var datatable = init_datatable($("#collections_table"),url,columns);
 	
@@ -76,42 +74,24 @@ function init_collections_table(){
 
 				row_data[rowInd] = {} ;
 				row_data[rowInd].collId = currRow.data().colId;
-                //collId is not a number... continue
-                if(!row_data[rowInd].collId.match(/^\d+$/)){
-                    return true;
-                }
+			    	console.log("ROW: ",currRow.data());	
 				row_data[rowInd].collStat = make_url("/library/coll_metadata/"+row_data[rowInd].collId);
 				row_data[rowInd].row_element = this;
 				console.log("URL: ",row_data[rowInd].collStat);
 				$.getJSON(row_data[rowInd].collStat, function(metadata){
-					$("td:eq(2)", row_data[rowInd].row_element).html(metadata.titleDesc);
+					$("td:eq(1)", row_data[rowInd].row_element).html(metadata.titleDesc);
 					shorten_text("long_text_" + row_data[rowInd].collId);
 					if (metadata.stats.thumbUrl){
 						thumb = loadThumbs(metadata.stats.thumbUrl);
-						$("td:eq(1)", row_data[rowInd].row_element).empty();
-						$("td:eq(1)", row_data[rowInd].row_element).append(thumb);
-						$("td:eq(1)", row_data[rowInd].row_element).addClass('text-center');
+						$("td:eq(0)", row_data[rowInd].row_element).empty();
+						$("td:eq(0)", row_data[rowInd].row_element).append(thumb);
+						$("td:eq(0)", row_data[rowInd].row_element).addClass('text-center');
 					}else{
-						$("td:eq(1)", row_data[rowInd].row_element).html('No image available');
+						$("td:eq(0)", row_data[rowInd].row_element).html('No image available');
 					}
+					$("td:eq(4)", row_data[rowInd].row_element).html(metadata.stats_table);
 
-					r = document.createElement("tr");
-					td1 = document.createElement("td");
-					td2 = document.createElement("td");
-					td3 = document.createElement("td");
-					td4 = document.createElement("td");
-					td5 = document.createElement("td");
-
-					r.appendChild(td1);
-					r.appendChild(td2);
-					r.appendChild(td3);
-					r.appendChild(td4);
-					r.appendChild(td5);
-
-					$("td:eq(2)", r).html(metadata.big_stats_table);
-
-					currRow.child(r);
-
+				
 				}).done(function(a,b) {
 //					    console.log( "Done: ",a, " ",b );
 				}).fail(function( a, b){
@@ -135,19 +115,15 @@ function init_documents_table(){
 	var ids = parse_path();	
 
 	var columns =  [
-			{
-                "className":      'details-control',
-                "orderable":      false,
-                "data":           null,
-                "defaultContent": ''
-            },
+		    //This column will be for our image which we will not get from the table_ajax/document view
+		    //The columns with null data are loaded by ajax on draw.dt (see below) Becuase of this they cannot be searched or ordered
 		    { "data": "docId",
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
-		      "searchable": false, 
+		      "searchable": true, 
 		      "orderable": false },
-		    // { "data" : null, 
-		    //   "searchable": false, 
-		    //   "orderable": false},
+/*		    { "data" : null, 
+		      "searchable": false, 
+		      "orderable": false},*/
 		    { "data": "title",    //load with title for sorting and ordering (though this gets replaced with secondary ajax (see below)
 		      "defaultContent": '<span class="glyphicon glyphicon-refresh glyphicon-spin"></span>',
 //		      "searchable": false, 
@@ -179,38 +155,23 @@ function init_documents_table(){
 		    				 
 					row_data[rowInd] = {} ;
 					row_data[rowInd].docId = currRow.data().docId;
-                    //docid is not a number... continue
-                    if(!row_data[rowInd].docId.match(/^\d+$/)){
-                        return true;
-                    }
+					//docid is not a number... continue
+					if(!row_data[rowInd].docId.match(/^\d+$/)){
+						return true;
+					}
+					console.log("currRow.data(): ",currRow.data());
 					row_data[rowInd].row_element = this;
 					row_data[rowInd].stats = make_url("/library/doc_metadata/"+ids['collId']+'/'+row_data[rowInd].docId);
 					$.getJSON(row_data[rowInd].stats, function(metadata){
 						thumb = loadThumbs(metadata.thumbUrl);
-						$("td:eq(1)", row_data[rowInd].row_element).empty();
-						$("td:eq(1)", row_data[rowInd].row_element).append(thumb);
-						$("td:eq(1)", row_data[rowInd].row_element).addClass('text-center');
-						$("td:eq(2)", row_data[rowInd].row_element).html(metadata.titleDesc);
-						$("td:eq(4)", row_data[rowInd].row_element).html(metadata.viewLinks);
+						$("td:eq(0)", row_data[rowInd].row_element).empty();
+						$("td:eq(0)", row_data[rowInd].row_element).append(thumb);
+						$("td:eq(0)", row_data[rowInd].row_element).addClass('text-center');
+	//					$("td:eq(1)", row_data[rowInd].row_element).html(metadata.viewLinks);
+						$("td:eq(1)", row_data[rowInd].row_element).html(metadata.titleDesc);
+						$("td:eq(3)", row_data[rowInd].row_element).html(metadata.stats_table);
 						row_data[rowInd].collId = ids['collId'];
 						shorten_text("long_text_" + row_data[rowInd].docId);
-
-						r = document.createElement("tr");
-						td1 = document.createElement("td");
-						td2 = document.createElement("td");
-						td3 = document.createElement("td");
-						td4 = document.createElement("td");
-						td5 = document.createElement("td");
-
-						r.appendChild(td1);
-						r.appendChild(td2);
-						r.appendChild(td3);
-						r.appendChild(td4);
-						r.appendChild(td5);
-
-						$("td:eq(2)", r).html(metadata.big_stats_table);
-
-						currRow.child(r);
 
 					}).done(function(a,b) {
 					    console.log( "Done: ",a, " ",b );
@@ -219,39 +180,8 @@ function init_documents_table(){
 					});
 			    }
 		    });
-
-		    // currRow.child.hide();
-	     //    tr.removeClass('shown');
 		});
 	});
-
-	// $('#documents_table tbody').click('td.details-control', function (event) {
-	// 	alert('stopping click...');
-	// 	disabledEventPropagation(event);
-	// 	alert('stopped click!');
- //    } );
-
-	function format ( d ) {
-		// row_data[rowInd].stats = make_url("/library/doc_metadata/"+ids['collId']+'/'+row_data[rowInd].docId);
-		// $.getJSON(row_data[rowInd].stats, function(metadata){
-		// }
-
-    // `d` is the original data object for the row
-	    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
-	        '<tr>'+
-	            '<td>Full name:</td>'+
-	            '<td>hallo</td>'+
-	        '</tr>'+
-	        '<tr>'+
-	            '<td>Extension number:</td>'+
-	            '<td>v^_^</td>'+
-	        '</tr>'+
-	        '<tr>'+
-	            '<td>Extra info:</td>'+
-	            '<td>And any further details here (images etc)...</td>'+
-	        '</tr>'+
-	    '</table>';
-	}
 }
 
 function init_pages_table(){
@@ -349,12 +279,3 @@ function loadThumbs(url) { // Loads all thumbs and shows the ones which are visi
 	return tempImg;
 }
 
-function disabledEventPropagation(event)
-{
-   if (event.stopPropagation){
-       event.stopPropagation();
-   }
-   else if(window.event){
-      window.event.cancelBubble=true;
-   }
-}

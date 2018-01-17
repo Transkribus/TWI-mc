@@ -19,7 +19,7 @@ from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 
 from apps.utils.decorators import t_login_required_ajax
-from apps.utils.utils import crop, t_metadata, t_log
+from apps.utils.utils import crop, t_metadata, t_log, get_ts_session
 from apps.utils.services import *
 from apps.utils.views import *
 
@@ -40,7 +40,9 @@ def index(request):
 #view that lists available collections for a user
 @login_required
 def collections(request):
-    t = request.user.tsdata.t
+    t = get_ts_session(request)
+    if isinstance(t,HttpResponse) :
+        return error_view(request,t)
 
     collections = t.collections(request,{'empty':'true'})
     if isinstance(collections,HttpResponse):
@@ -53,7 +55,9 @@ def collections(request):
 # - also lists pages for documents
 @login_required
 def collection(request, collId):
-    t = request.user.tsdata.t
+    t = get_ts_session(request)
+    if isinstance(t,HttpResponse) :
+        return error_view(request,t)
 
     #Avoid this sort of nonsense if possible
     collections = t.collections(request,{'end':None,'start':None,'empty':'true'})
@@ -113,7 +117,9 @@ def collection(request, collId):
 # view that lists pages in doc and some doc level metadata
 @login_required
 def document(request, collId, docId, page=None):
-    t = request.user.tsdata.t
+    t = get_ts_session(request)
+    if isinstance(t,HttpResponse) :
+        return error_view(request,t)
 
     collection = t.collection(request, {'collId': collId})
     if isinstance(collection,HttpResponse):
@@ -145,7 +151,9 @@ def _get_collection(document, collId):
 
 
 def collection_metadata(request, collId):
-    t = request.user.tsdata.t
+    t = get_ts_session(request)
+    if isinstance(t,HttpResponse) :
+        return error_view(request,t)
     collections = t.collection(request, {'collId': collId})
     if isinstance(collections,HttpResponse):
         return apps.utils.views.error_view(request,collections)
@@ -194,37 +202,24 @@ def collection_metadata(request, collId):
     pc_final = int(round((int(stats.get('nrOfFinal'))/total_pages) * 100))
     pc_gt = int(round((int(stats.get('nrOfGT'))/total_pages) * 100))
 
-    big_table = ''
-    big_table += '<table class="center-block"><tr>'
-    big_table += '<th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Progress')
+    stats_table = '<table class="embedded-stats-table">'
+    if pc_new > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('New'), pc_new)
+    if pc_ip > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('In Progress'), pc_ip)
+    if pc_done > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Done'), pc_done)
+    if pc_final > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Final'), pc_final)
+    if pc_gt > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Ground Truth'), pc_gt)
+    stats_table += '</table>'
 
-    big_table += _add_row(pc_new, _('New'))
-    big_table += _add_row(pc_ip, _('In progress'))
-    big_table += _add_row(pc_done, _('Done'))
-    big_table += _add_row(pc_final, _('Final'))
-    big_table += _add_row(pc_gt, _('Ground truth'))
-
-    big_table += '</table>'
-
-    return JsonResponse({'titleDesc': title_desc, 'stats': stats, 'big_stats_table': big_table}, safe=False)
-
-
-def _add_row(val, name):
-    html = '<tr>'
-
-    if val > 0:
-        html += '<th>%s</th><td>%s</td>' % (name, val)
-
-    html += '</tr>'
-
-    return html
+    return JsonResponse({'titleDesc': title_desc, 'stats': stats, 'stats_table': stats_table}, safe=False)
 
 
 #Fetch a single thumb url from the document referenced
 def document_metadata(request, collId, docId):
     import timeit
 
-    t = request.user.tsdata.t
+    t = get_ts_session(request)
+    if isinstance(t,HttpResponse) :
+        return error_view(request,t)
 
     #links direct to the various views of the document
     view_links = '<ul class="list-unstyled text-center twi-view-link-list">'
@@ -308,80 +303,18 @@ def document_metadata(request, collId, docId):
 
     stats_table += '</table>'
 
-    edit_fields = []
-    if stats.get('nrOfTranscribedLines'):
-        edit_fields += [(_('Lines'), stats.get('nrOfTranscribedLines'))]
-    if stats.get('nrOfWords'):
-        edit_fields += [(_('Words'), stats.get('nrOfWords'))]
-
-    status_pages = []
-    if pc_new > 0:
-        status_pages += [(_('New'), pc_new)]
-    if pc_ip > 0:
-        status_pages += [(_('In Progress'), pc_ip)]
-    if pc_done > 0:
-        status_pages += [(_('Done'), pc_done)]
-    if pc_final > 0:
-        status_pages += [(_('Final'), pc_final)]
-    if pc_gt > 0:
-        status_pages += [(_('Ground Truth'), pc_gt)]
-    status_pages = [(name, str(val)+'%') for name, val in status_pages]
-
-    tags = []
-    if personCount > 0:
-        tags += [(_('People'), personCount)]
-    if placeCount > 0:
-        tags += [(_('Places'), placeCount)]
-    if dateCount > 0:
-        tags += [(_('Dates'), dateCount)]
-    if abbrevCount > 0:
-        tags += [(_('Abbreviations'), abbrevCount)]
-    if otherCount > 0:
-        tags += [(_('Other'), otherCount)]
-
-    max_vals = max([len(edit_fields), len(status_pages), len(tags)])
-    edit_fields  += [None] * (max_vals-len(edit_fields))
-    status_pages += [None] * (max_vals-len(status_pages))
-    tags         += [None] * (max_vals-len(tags))
-
-    big_table = ''
-    big_table += '<table class="center-block"><tr>'
-    big_table += '<th colspan="2" class="embedded-stats-table-heading">%s</th>'      % _('Available for editing')
-    big_table += '<th colspan="2" class="embedded-stats-table-heading">%s</th>     ' % _('Status of pages')
-    big_table += '<th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Tags')
-
-    for edit_row, status_row, tag_row in zip(edit_fields, status_pages, tags):
-        big_table += '<tr>'
-
-        if edit_row:
-            big_table += '<th>%s</th><td>%s</td>' % edit_row
-        else:
-            big_table += '<th></th><td></td>'
-
-        if status_row:
-            big_table += '<th>%s</th><td>%s</td>' % status_row
-        else:
-            big_table += '<th></th><td></td>'
-
-        if tag_row:
-            big_table += '<th>%s</th><td>%s</td>' % tag_row
-        else:
-            big_table += '<th></th><td></td>'
-
-        big_table += '</tr>'
-    big_table += '</table>'
-
     return JsonResponse({
             'titleDesc': title_desc,
             'viewLinks': view_links,
             'thumbUrl': stats.get('thumbUrl'),
-	        'stats_table': stats_table,
-            'big_stats_table': big_table,
+	    'stats_table' : stats_table
         },safe=False)
 
 @login_required
 def document_page(request, collId, docId, page=None):
-    t = request.user.tsdata.t
+    t = get_ts_session(request)
+    if isinstance(t,HttpResponse) :
+        return error_view(request,t)
 
     collection = t.collection(request, {'collId': collId})
     if isinstance(collection,HttpResponse):
@@ -479,7 +412,9 @@ def document_page(request, collId, docId, page=None):
 # view that lists transcripts in doc and some page level metadata
 @login_required
 def page(request, collId, docId, page):
-    t = request.user.tsdata.t
+    t = get_ts_session(request)
+    if isinstance(t,HttpResponse) :
+        return error_view(request,t)
     #call t_document with noOfTranscript=-1 which will return no transcript data
     full_doc = t.document(request, collId, docId, -1)
     if isinstance(full_doc,HttpResponse):
@@ -516,7 +451,9 @@ def page(request, collId, docId, page):
 # view that lists regions in transcript and some transcript level metadata
 @login_required
 def transcript(request, collId, docId, page, transcriptId):
-    t = request.user.tsdata.t
+    t = get_ts_session(request)
+    if isinstance(t,HttpResponse) :
+        return error_view(request,t)
 
     #t_page returns an array of the transcripts for a page
     pagedata = t.page(request, collId, docId, page)
@@ -566,7 +503,9 @@ def transcript(request, collId, docId, page, transcriptId):
 @login_required
 def region(request, collId, docId, page, transcriptId, regionId):
 
-    t = request.user.tsdata.t
+    t = get_ts_session(request)
+    if isinstance(t,HttpResponse) :
+        return error_view(request,t)
 
     # We need to be able to target a transcript (as mentioned elsewhere)
     # here there is no need for anything over than the pageXML really
@@ -646,7 +585,9 @@ def region(request, collId, docId, page, transcriptId, regionId):
 # view that lists words in line and some line level metadata
 @login_required
 def line(request, collId, docId, page, transcriptId, regionId, lineId):
-    t = request.user.tsdata.t
+    t = get_ts_session(request)
+    if isinstance(t,HttpResponse) :
+        return error_view(request,t)
     # We need to be able to target a transcript (as mentioned elsewhere)
     # here there is no need for anything over than the pageXML really
     # we could get one transcript from ...{page}/curr, but for completeness would
@@ -731,7 +672,9 @@ def line(request, collId, docId, page, transcriptId, regionId, lineId):
 # view that shows some word level metadata
 @login_required
 def word(request, collId, docId, page, transcriptId, regionId, lineId, wordId):
-    t = request.user.tsdata.t
+    t = get_ts_session(request)
+    if isinstance(t,HttpResponse) :
+        return error_view(request,t)
     # booo hiss
     transcripts = t.page(request, collId, docId, page)
     if isinstance(transcripts,HttpResponse):
@@ -811,7 +754,9 @@ def word(request, collId, docId, page, transcriptId, regionId, lineId, wordId):
 # This may be as simple as isPublished(), rather than any analysis on the content
 @login_required
 def rand(request, collId, element):
-    t = request.user.tsdata.t
+    t = get_ts_session(request)
+    if isinstance(t,HttpResponse) :
+        return error_view(request,t)
 
     collection = t.collection(request, {'collId': collId})
 
