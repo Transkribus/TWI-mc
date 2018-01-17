@@ -444,7 +444,7 @@ def error_switch(request,x):
 		'msg' : error_message_switch(request,404) }),
         500: render(request, 'error.html', {
 		'msg' : error_message_switch(request,500) }),
-        503:render(request, 'error.html', {
+        503: render(request, 'error.html', {
 		'msg' : error_message_switch(request,503) }),
     }.get(x, render(request, 'error.html', {
 		'msg' : error_message_switch(x) } ) )
