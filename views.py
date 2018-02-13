@@ -210,11 +210,9 @@ def collection_metadata(request, collId):
 
 
 def _add_row(val, name):
-    html = '<tr>'
-
-    if val > 0:
-        html += '<th>%s</th><td>%s</td>' % (name, val)
-
+    html = ''
+    html += '<tr>'
+    html += '<th>%s</th><td>%s%%</td>' % (name, val)
     html += '</tr>'
 
     return html
@@ -248,7 +246,7 @@ def document_metadata(request, collId, docId):
     #data on last saved page for current user (aka recent)
     recent = t.document_recent(request,{'id': docId, 'userid' : request.user.tsdata.userId})
     if isinstance(recent,HttpResponse):
-#Don't stop if we don't get recents back from actions/list
+        #Don't stop if we don't get recents back from actions/list
         recent = None
         #return apps.utils.views.error_view(request,recent)
 
@@ -286,58 +284,44 @@ def document_metadata(request, collId, docId):
     #build a mini table of the stats to embed in the main table
     stats_table = '<table class="embedded-stats-table">'
 
-    if stats.get('nrOfTranscribedLines') or stats.get('nrOfWords') : 
-        stats_table += '<tr><th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Available for editing')
-    if stats.get('nrOfTranscribedLines') : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Lines'), stats.get('nrOfTranscribedLines'))
-    if stats.get('nrOfWordsInLines') : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Words'), stats.get('nrOfWordsInLines'))
+    stats_table += '<tr><th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Available for editing')
+    stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Lines'), stats.get('nrOfTranscribedLines'))
+    stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Words'), stats.get('nrOfWordsInLines'))
 
     stats_table += '<tr><th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Status of pages')
-    if pc_new > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('New'), pc_new)
-    if pc_ip > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('In Progress'), pc_ip)
-    if pc_done > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Done'), pc_done)
-    if pc_final > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Final'), pc_final)
-    if pc_gt > 0 : stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Ground Truth'), pc_gt)
+    stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('New'), pc_new)
+    stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('In Progress'), pc_ip)
+    stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Done'), pc_done)
+    stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Final'), pc_final)
+    stats_table += '<tr><th>%s</th><td>%s%%</td></tr>' % (_('Ground Truth'), pc_gt)
 
-    if personCount or placeCount or dateCount or abbrevCount or otherCount :
-        stats_table += '<tr><th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Tags')
-    if personCount > 0 : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('People'), personCount)
-    if placeCount > 0 : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Places'), placeCount)
-    if dateCount > 0 : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Dates'), dateCount)
-    if abbrevCount > 0 : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Abbreviations'), abbrevCount)
-    if otherCount > 0 : stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Other'), otherCount)
+    stats_table += '<tr><th colspan="2" class="embedded-stats-table-heading">%s</th></tr>' % _('Tags')
+    stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('People'), personCount)
+    stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Places'), placeCount)
+    stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Dates'), dateCount)
+    stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Abbreviations'), abbrevCount)
+    stats_table += '<tr><th>%s</th><td>%s</td></tr>' % (_('Other'), otherCount)
 
     stats_table += '</table>'
 
     edit_fields = []
-    if stats.get('nrOfTranscribedLines'):
-        edit_fields += [(_('Lines'), stats.get('nrOfTranscribedLines'))]
-    if stats.get('nrOfWords'):
-        edit_fields += [(_('Words'), stats.get('nrOfWords'))]
+    edit_fields += [(_('Lines'), stats.get('nrOfTranscribedLines'))]
+    edit_fields += [(_('Words'), stats.get('nrOfWords'))]
 
     status_pages = []
-    if pc_new > 0:
-        status_pages += [(_('New'), pc_new)]
-    if pc_ip > 0:
-        status_pages += [(_('In Progress'), pc_ip)]
-    if pc_done > 0:
-        status_pages += [(_('Done'), pc_done)]
-    if pc_final > 0:
-        status_pages += [(_('Final'), pc_final)]
-    if pc_gt > 0:
-        status_pages += [(_('Ground Truth'), pc_gt)]
+    status_pages += [(_('New'), pc_new)]
+    status_pages += [(_('In Progress'), pc_ip)]
+    status_pages += [(_('Done'), pc_done)]
+    status_pages += [(_('Final'), pc_final)]
+    status_pages += [(_('Ground Truth'), pc_gt)]
     status_pages = [(name, str(val)+'%') for name, val in status_pages]
 
     tags = []
-    if personCount > 0:
-        tags += [(_('People'), personCount)]
-    if placeCount > 0:
-        tags += [(_('Places'), placeCount)]
-    if dateCount > 0:
-        tags += [(_('Dates'), dateCount)]
-    if abbrevCount > 0:
-        tags += [(_('Abbreviations'), abbrevCount)]
-    if otherCount > 0:
-        tags += [(_('Other'), otherCount)]
+    tags += [(_('People'), personCount)]
+    tags += [(_('Places'), placeCount)]
+    tags += [(_('Dates'), dateCount)]
+    tags += [(_('Abbreviations'), abbrevCount)]
+    tags += [(_('Other'), otherCount)]
 
     max_vals = max([len(edit_fields), len(status_pages), len(tags)])
     edit_fields  += [None] * (max_vals-len(edit_fields))
