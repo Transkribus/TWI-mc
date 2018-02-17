@@ -1,0 +1,190 @@
+.subscribe_one{
+  text-align: center;
+  h4{
+    font-size: 18px;
+    margin-bottom: 30px;
+    text-transform: capitalize;
+    font-weight: 800;
+  }
+  .input-group{
+    max-width: 700px;
+    margin: 0 auto;
+    input{
+      height: 50px;
+      border-top-left-radius: 50px;
+      border-bottom-left-radius: 50px;
+      border: solid 1px #f0f0f0;
+      border-right: 0 solid #000;
+    }
+    .btn{
+      margin: 0;
+      height: 50px;
+      border-top-right-radius: 50px;
+      border-bottom-right-radius: 50px;
+    }
+  }
+
+  .subscribe-info{
+    margin-top: 15px;
+    font-size: 11px;
+    text-transform: capitalize;
+  }
+}
+
+.subscribe_two{
+  text-align: center;
+  h4{
+    font-size: 18px;
+    margin-bottom: 30px;
+    text-transform: capitalize;
+    font-weight: 800;
+  }
+  input{
+    height: 50px;
+  }
+  .btn{
+    margin: 0;
+    display: block;
+    width: 100%;
+  }
+}
+.subscribe_three{
+  background-color: #fff;
+  box-shadow: 0 0 42px rgba(0, 0, 0, 0.12);
+  padding: 75px 25px;
+  max-width: 600px;
+  margin: 0 auto;
+  border-radius: 4px;
+  text-align: center;
+  h4{
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+    font-weight: 800;
+    text-align: center;
+  }
+  p{
+    margin-bottom: 30px;
+    font-weight: 300;
+    color: #000;
+    margin-top: 10px;
+    font-style: italic;
+  }
+  input{
+    height: 50px;
+  }
+  .btn{
+    margin: 0;
+    display: block;
+    width: 100%;
+  }
+}
+
+.subscribe-box{
+  p{
+    font-size: 16px;
+    color: #333;
+    text-transform: capitalize;
+  }
+  form{
+    max-width: 400px;
+    display: block;
+    margin: 10px auto;
+  }
+}
+
+.download_app{
+  padding: 10px 0;
+  a{
+    display: inline-block;
+    margin: 10px;
+    max-width: 150px;
+  }
+}
+
+/* ----------------forms------------------- */
+
+.form-control{
+  font-size: 13px;
+  padding: 12px 15px;
+  height: 44px;
+  border-radius: 4px;
+  border: solid 1px #f7f7f7;
+  margin-bottom: 25px;
+}
+textarea{
+  min-height: 200px;
+}
+.input-group{
+  .form-control{
+    height: 46px;
+    border: solid 1px #f9f9f9;
+  }
+}
+
+
+
+//call out
+
+.callout_one{
+  h2{
+    font-size: 46px;
+    margin-bottom: 15px;
+  }
+  .lead{
+    font-size: 24px;
+    text-transform: capitalize;
+    font-style: italic;
+    font-weight: 300;
+  }
+}
+
+.callout_two{
+  text-align: center;
+  h5{
+    display: inline-block;
+  }
+  a{
+    margin-left: 30px;
+  }
+}
+.callout_img {
+  text-align: center;
+  .callout_content{
+    position: relative;
+    padding: 50px;
+    h5{
+      display: inline-block;
+    }
+    a{
+      margin-left: 30px;
+    }
+  }
+
+}
+.callout_primary{
+  background-color: #0652fd;
+  padding: 30px 25px;
+  border-radius: 4px;
+  display: inline-block;
+  width: 100%;
+  h5{
+    text-align: left;
+    color: #ffffff;
+    float: left;
+    margin-top: 30px;
+  }
+  a{
+    margin-left: 30px;
+    display: inline-block;
+    float: right;
+    background-color: #000;
+    padding: 16px 35px;
+    border: solid 1px #333333;
+    &:hover{
+      background-color: #ffffff;
+      border: solid 1px #ffffff;
+      color: #0652fd;
+    }
+  }
+}

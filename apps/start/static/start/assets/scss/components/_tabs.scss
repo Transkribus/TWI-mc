@@ -1,0 +1,50 @@
+.icon_tabs{
+  position: relative;
+  text-align: center;
+  .tabs_list{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+    position: relative;
+    float: none;
+    margin-bottom:5px;
+    li{
+      display: inline-block;
+      float: none;
+      a{
+        display: block;
+        width: 100%;
+        padding: 25px;
+        color: $color_dark-gray;
+        font-size: 42px;
+        i{
+          margin-bottom: 8px;
+        }
+        h5{
+          color: $color_dark-gray;
+          font-size: 14px;
+          margin: 0;
+          padding: 0;
+          font-weight: 500;
+        }
+      }
+
+      &:hover{
+        a{
+          color: $color-primary;
+          h5{
+            color: $color-primary;
+          }
+        }
+      }
+      a.active{
+          color: $color-primary;
+        h5{
+          color: $color-primary;
+        }
+      }
+    }
+  }
+
+}

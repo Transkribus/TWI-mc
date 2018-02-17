@@ -1,0 +1,152 @@
+.testimonial_box_one {
+  position: relative;
+  margin: 15px;
+  padding: 50px 25px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  text-align: left !important;
+  border:solid 1px #f7f7f7;
+  i{
+    padding: 0 5px;
+    font-size: 46px;
+    display: block;
+    text-align: center;
+    color: $color-primary;
+    margin-bottom: 20px;
+  }
+  h5 {
+    line-height: 1.9;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0;
+    color: #5e6d7b;
+    font-style: italic;
+  }
+  img {
+    height: 60px;
+    width: 60px;
+    display: inline-block !important;
+    margin: 5px 0;
+    border-radius: 3px;
+  }
+  h6{
+    color: $color_black;
+    font-size: 14px;
+    left: 1px;
+    font-weight: 500;
+    margin: 8px 0 0;
+    text-transform: capitalize;
+  }
+  P {
+    font-size: 11px;
+    color: $color-primary;
+    text-transform: capitalize;
+  }
+}
+.testimonial_box_two{
+  position: relative;
+  margin: 25px;
+  padding: 50px 30px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.06);
+  i{
+    padding: 0 5px;
+    font-size: 46px;
+    display: block;
+    text-align: center;
+    color: $color-primary;
+    margin-bottom: 20px;
+  }
+  h5 {
+    line-height: 1.9;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0;
+    color: #5e6d7b;
+    font-style: italic;
+  }
+  img {
+    height: 60px;
+    width: 60px;
+    display: inline-block !important;
+    margin: 5px 0;
+    border-radius: 50px;
+  }
+  h6{
+    color: $color_black;
+    font-size: 14px;
+    left: 1px;
+    font-weight: 500;
+    margin: 8px 0 0;
+    text-transform: capitalize;
+  }
+  P {
+    font-size: 11px;
+    color: $color-primary;
+    text-transform: capitalize;
+  }
+}
+
+.testimonial_box_three{
+  position: relative;
+  margin: 15px 35px;
+  padding: 5px 25px;
+  i{
+    padding: 0 5px;
+    font-size: 46px;
+    display: block;
+    text-align: center;
+    color: $color-primary;
+    margin-bottom: 20px;
+  }
+  h5 {
+    line-height: 1.9;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0;
+    color: #5e6d7b;
+    font-style: italic;
+  }
+  img {
+    height: 60px;
+    width: 60px;
+    display: inline-block !important;
+    margin: 5px 0;
+    border-radius: 50px;
+  }
+  h6{
+    color: $color_black;
+    font-size: 14px;
+    left: 1px;
+    font-weight: 500;
+    margin: 8px 0 0;
+    text-transform: capitalize;
+  }
+  P {
+    font-size: 11px;
+    color: $color-primary;
+    text-transform: capitalize;
+  }
+}
+
+
+.testimonial_box_light{
+  i{
+    color: $color-light;
+  }
+  h5 {
+    line-height: 1.9;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0;
+    color: #ffffff;
+    font-style: italic;
+  }
+  h6{
+    color: $color_light;
+  }
+  P {
+    color: $color-light;
+  }
+}

@@ -1,0 +1,297 @@
+
+/*  ----------------------------------------------------
+. PRICING SECTION
+-------------------------------------------------------- */
+.price_box_one{
+  border-radius: 2px;
+  min-height: 400px;
+  background: #fff;
+  position: relative;
+  text-align: center;
+  margin: 10px 0;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  border: solid 1px #eee;
+  @include single-transition(all,0.3s, ease-in-out);
+  .price_header{
+    padding: 20px 0 10px;
+    text-align: center;
+    @include single-transition(all,0.3s, ease-in-out);
+    h5{
+      color: #000;
+      @include single-transition(all,0.3s, ease-in-out);
+      font-size: 16px;
+      margin-bottom: 5px;
+      padding: 15px;
+      font-weight: 600;
+      text-transform: capitalize;
+    }
+    p{
+      font-size: 14px;
+      font-style: italic;
+      color: #48565d;
+      margin-top: 2px;
+      text-transform: capitalize;
+      @include single-transition(all,0.3s, ease-in-out);
+    }
+  }
+  .price_set{
+    padding: 20px 0;
+    font-size: 12px;
+    text-transform: capitalize;
+    font-style: italic;
+    border-top: 1px solid #f5f5f5;
+    border-bottom: 1px solid #f5f5f5;
+    color: #000;
+    @include single-transition(all,0.3s, ease-in-out);
+    span {
+      color: $color_primary;
+      margin: 10px 0 0;
+      font-size: 64px;
+      margin-right: 1px;
+      font-style: normal;
+      font-weight: 700;
+      @include single-transition(all,0.3s, ease-in-out);
+      sup{
+        font-size: 20px;
+        letter-spacing: 2px;
+        top: -1.6em;
+        font-weight: 600;
+        color: #000;
+      }
+
+    }
+  }
+
+  ul.features  li {
+    border-bottom: 1px solid #f5f5f5;
+    font-size: 13px;
+    color: #555;
+    padding: 10px 20px;
+    text-align: left;
+    @include single-transition(all,0.3s, ease-in-out);
+    i{
+      color: #333333;
+      margin-right: 5px;
+      font-size: 16px;
+      @include single-transition(all,0.3s, ease-in-out);
+    }
+  }
+
+  .pricing_one_footer{
+    padding: 20px 0;
+    @include single-transition(all,0.3s, ease-in-out);
+    .btn {
+      color: $color_primary;
+      border:solid 1px $color_primary;
+      background-color: transparent;
+      @include single-transition(all,0.3s, ease-in-out);
+      &:hover{
+        color: $color-light;
+        border:solid 1px $color_dark;
+        background-color: $color_dark;
+        @include single-transition(all,0.3s, ease-in-out);
+      }
+    }
+
+  }
+
+  &:hover{
+    box-shadow: 0 0 42px 0 rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 0 42px 0 rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 0 42px 0 rgba(0, 0, 0, 0.1);
+    -o-box-shadow: 0 0 42px 0 rgba(0, 0, 0, 0.1);
+  }
+}
+.price_active{
+  box-shadow: 0 0 42px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0 42px 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 0 42px 0 rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 0 0 42px 0 rgba(0, 0, 0, 0.1);
+}
+
+.price_box_two{
+  background-color: #ffffff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 60px 35px;
+  margin-top: 30px;
+  @include box-shadow(0,0,42px ,0 ,rgba(0, 0, 0, 0.09));
+  @include single-transition(all,0.4s, ease-in-out);
+
+  .price_box_header{
+
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(213, 215, 220, 0.37);
+
+    i{
+      display: block;
+      font-size: 56px;
+      margin-bottom: 10px;
+      color: #000000;
+    }
+
+    h5{
+      font-weight: 700;
+      text-transform: capitalize;
+      font-size: 56px;
+      color: #000;
+      margin-bottom: 0;
+      sup{
+        top: -1.5em;
+        font-size: 18px;
+        font-weight: 600;
+        left: 10px;
+      }
+    }
+    h6{
+      font-size: 12px;
+      font-weight: 400;
+      margin-top: 7px;
+      color: #0652fd;
+      margin-bottom: 7px;
+      text-transform: capitalize;
+    }
+    span{
+      padding-left: 0;
+      text-transform: uppercase;
+      color: #000000;
+      font-size: 13px;
+      font-weight: 700;
+      margin: 0;
+    }
+  }
+  .price_box_content{
+    padding: 25px 0;
+    p{
+      text-align: center;
+      text-transform: capitalize;
+      font-size: 13px;
+    }
+    ul{
+      li{
+        padding: 7px 10px;
+        color: #000;
+        font-size: 13px;
+      }
+    }
+  }
+  .price_footer{
+    position: relative;
+    a{
+      padding: 12px 50px;
+      border-radius: 25px;
+      text-transform: capitalize;
+      font-size: 14px;
+      display: block;
+      text-align: center;
+      background-color: $color_primary;
+      color: $color_light;
+      border: solid 1px  $color_primary;
+      &:hover{
+        color: $color_primary;
+        background-color: $color_light;
+        border: solid 1px  $color_primary;
+      }
+    }
+  }
+
+  &:hover{
+    @include box-shadow(0,0,42px ,0 ,rgba(0, 0, 0, 0.12));
+    @include single-transition(all,0.4s, ease-in-out);
+  }
+}
+.price_box_four{
+  background-color: #ffffff;
+  text-align: left;
+  border-radius: 5px;
+  padding: 60px 35px;
+  margin-top: 30px;
+  @include box-shadow(0,0,42px ,0 ,rgba(0, 0, 0, 0.09));
+  @include single-transition(all,0.4s, ease-in-out);
+
+  .price_box_header{
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(213, 215, 220, 0.37);
+    h5{
+      font-weight: 700;
+      text-transform: capitalize;
+      font-size: 56px;
+      color: #000;
+      margin-bottom: 0;
+      sup{
+        top: -1.5em;
+        font-size: 18px;
+        font-weight: 600;
+        left: 10px;
+      }
+    }
+    span{
+      padding-left: 10px;
+      text-transform: uppercase;
+      color: $color-primary;
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+  .price_box_content{
+    padding: 25px 0;
+    p{
+      text-align: center;
+      text-transform: capitalize;
+      font-size: 13px;
+    }
+  }
+  .price_footer{
+    position: relative;
+    a{
+      padding: 12px 50px;
+      border-radius: 25px;
+      text-transform: capitalize;
+      font-size: 14px;
+      display: block;
+      text-align: center;
+      background-color: $color_primary;
+      color: $color_light;
+      border: solid 1px  $color_primary;
+      &:hover{
+        color: $color_primary;
+        background-color: $color_light;
+        border: solid 1px  $color_primary;
+      }
+    }
+  }
+
+  &:hover{
+    @include box-shadow(0,0,42px ,0 ,rgba(0, 0, 0, 0.12));
+    @include single-transition(all,0.4s, ease-in-out);
+  }
+}
+
+
+@media(max-width:767px){
+  .price_box_four{
+    .price_box_header{
+      span{
+       display: block;
+        margin-top: 15px;
+      }
+    }
+  }
+
+  .price_box_two{
+    .price_box_header{
+      h6{
+        margin-bottom: 25px;
+      }
+      span{
+        display: block;
+        margin-top: 15px;
+      }
+      h5{
+        display: inline-block;
+      }
+    }
+  }
+}
