@@ -1,39 +1,120 @@
 from django.shortcuts import render
 from fluent_contents.models import Placeholder
+from django.views.generic.detail import DetailView
+from django.template import loader
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.utils import translation
 
 from . import models as m
+#from .forms import NameForm
+import datetime
+import json
 
-from .forms import NameForm
+from . import Services as serv 
 
-# Create your views here.
 
 def index(request):
-    return render(request, 'start/homepage.html' )
+    template = loader.get_template('start/homepage.html')
+    context = {
+        'articles' : m.Article.objects.filter(language="DE")
+    }
+    return HttpResponse(template.render(context, request))
 
-def admin(request):
-
-        
-    template = loader.get_template()
+def admin(request):   
+    template = loader.get_template('start/admin.html')
+    
+    td = testData()
+    print(td)
+    context = {
+        'articles' : td 
+    }
+    url = static('start/css/admin.css')
+    print(url)
     return HttpResponse(template.render(context, request))
 
 
+def store_admin(request):
+    #TODO limit access to logged in admins
+    title = request.POST.get('title','')
+    content = request.POST.get('content','')
+    id = request.POST.get('id','')
+    lang = request.POST.get('lang','')
+
+    print(content)
+    try:
+      art = m.Article.objects.get(a_key = id, language=lang)
+      art.content = content
+      art.title = title
+      art.save() #add or update
+    except ObjectDoesNotExist:
+      art = m.Article.objects.create(a_key = id, content = content, title=title, language=lang)
+        
+    return HttpResponse('huhu', content_type="text/plain")
+    
+    
+def logout_process(request):
+    s = serv.Services();
+    s.Logout()
+    del request.session['user']
+    request.session.modified = True
+    return HttpResponseRedirect("index")
+ 
+def login_process(request):
+    e = request.POST.get('email','')
+    p = request.POST.get('password','')
+  
+    s = serv.Services();
+    
+    try:
+        request.session['user'] = s.Login(e,p)['trpUserLogin']
+        request.session.modified = True 
+        
+    except:
+        messages.warning(request, "login_failed")
+     
+    return HttpResponseRedirect("index")
+
+    
+def change_lang(request):
+    lang = request.GET.get('lang','en')
+    translation.activate(lang)
+    request.session[translation.LANGUAGE_SESSION_KEY] = lang
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/')) #redirect to same page
+
+        
+# ############################################################
+# ############################################################
+# ############################################################
+    
+    
+    
+def testData():
+    articles = []
+    for i in range(1,9):        
+        articles.append(m.Article(a_key=i, language="DE", title="TD" + str(i), content="<b>content TD" + str(i) + "</b>", changed=datetime.date))
+        #articles.append(m.Article(a_key=i, language="EN", title="TE" + str(i), content="<b>content TE1" + str(i) + "</b>", changed=datetime.date))
+    return articles
+    
+# def arrange(articles):
+#     rearrg = {}
+#     for a in articles:
+#         k = a.a_key
+#         l = []
+#         if k in rearrg:
+#             l = rearrg[k]
+#         l.append(a)
+#         rearrg[k] = l
+#     return rearrg
 
 
+# Handle with care!
+def script(request):
+    for i in range(1,9):        
+        m.Article.objects.create(a_key=i, language="DE", title="TD" + str(i), content="<b>content TD" + str(i) + "</b>", changed=datetime.date)
+        m.Article.objects.create(a_key=i, language="EN", title="TE" + str(i), content="<b>content TE" + str(i) + "</b>", changed=datetime.date)
+    return HttpResponse('done', content_type="text/plain")
 
-def admin(request):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = NameForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            return HttpResponseRedirect('/thanks/')
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = NameForm()
-
-    return render(request, 'start/admin.html', {'form': form})
+    
