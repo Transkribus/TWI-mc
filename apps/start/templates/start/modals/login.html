@@ -1,0 +1,19 @@
+{% load static %}
+{% load i18n %}
+<div class="modal fade" id="login_modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="loginmodal-container">
+            <h1>{% trans 'login_transkribus' %}</h1>
+            <br>
+            <form action="login" method="post">
+                {% csrf_token %}
+                <input type="text" name="email" placeholder="{% trans 'email' %}">
+                <input type="password" name="password" placeholder="Password">
+                <input type="submit" name="login" class="login loginmodal-submit" value="{% trans 'login' %}">
+            </form>
+            <div class="login-help">
+                <a href="https://transkribus.eu" target="_plain">{% trans 'register' %}</a>
+            </div>
+        </div>
+    </div>
+</div>
