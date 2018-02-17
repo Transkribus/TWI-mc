@@ -1,0 +1,755 @@
+{% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_language_info_list for LANGUAGES as languages %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <!-- ========== Meta Tags ========== -->
+    <meta charset="UTF-8">
+    <meta name="description" content="TODO">
+    <meta name="keywords" content="TODO">
+    <meta name="author" content="TODO">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- ========== Title ========== -->
+    <title>{% trans 'Transkribus' %}</title>
+    
+     <!-- Bootstrap CSS -->
+    <link href="{% static 'start/assets/css/bootstrap.min.css' %}" rel="stylesheet" >
+    <!-- Fonts Icon CSS -->
+    <link href="{% static 'start/assets/css/font-awesome.min.css' %}" rel="stylesheet" >
+    <link href="{% static 'start/assets/css/et-line.css' %}" rel="stylesheet" />
+    <!-- Owl Carousel CSS -->
+    <link href="{% static 'start/assets/css/owl.carousel.min.css' %}" rel="stylesheet" >
+    <link href="{% static 'start/assets/css/owl.theme.default.min.css' %}" rel="stylesheet" >
+    <!-- Magnific-popup -->
+    <link rel="stylesheet" href="{% static 'start/assets/css/magnific-popup.css' %}" >
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="{% static 'start/assets/css/animate.min.css' %}" >
+    <!-- Custom styles for this template -->
+    <link href="{% static 'start/assets/css/main.css' %}" rel="stylesheet" > 
+    <!-- Custom modifications -->
+    <link href="{% static 'start/css/homepage.css' %}" rel="stylesheet" >
+     <link href="{% static 'start/css/login.css' %}" rel="stylesheet" >
+     
+    <link rel="shortcut icon" href="{% static 'start/favicon.ico' %}" type="image/x-icon" />
+</head>
+
+
+<body  data-spy="scroll" data-target="header">
+
+<div class="loader">
+    <div class="loader-outter"></div>
+    <div class="loader-inner"></div>
+</div>
+
+<!--header start here -->
+<header class="header navbar fixed-top navbar-expand-md">
+    <div class="container">
+        <a class="navbar-brand logo" href="#">
+            <span>{% trans 'Transkribus' %}</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#headernav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="lnr lnr-text-align-right"></span>
+        </button>
+        <div class="collapse navbar-collapse flex-sm-row-reverse" id="headernav">
+            <ul class=" nav navbar-nav menu">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#home">{% trans 'Projects' %}</a>
+                    <ul class="sub_menu">
+                        <li>
+                            <a href="https://read.transkribus.eu/" target="_plain">{% trans 'READ - Project' %}</a>
+                        </li>
+                        <li>
+                            <a href="https://learn.transkribus.eu" target="_plain">{% trans 'LEARN - Project' %}</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#about">{% trans 'about' %}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#services">{% trans 'Services' %}</a>
+                     <ul class="sub_menu">
+                        <li>
+                            <a href="https://transkribus.eu/TrpServer/rest/downloadLatestGui" target ="_plain">{% trans 'Download GUI' %}</a>
+                        </li>
+                         <li>
+                            <a href="https://transkribus.eu/TrpServer/rest/downloadLatestGui?packageType=mac" target ="_plain">{% trans 'Download GUI for MAC' %}</a>
+                         </li>
+                         <li>
+                            <a href="https://transkribus.eu/wiki/index.php/Main_Page" target ="_plain">{% trans 'Wiki' %}</a>
+                         </li>
+                         <li>
+                            <a href="https://transkribus.eu/wiki/images/7/77/How_to_use_TRANSKRIBUS_-_10_steps.pdf" target ="_plain">{% trans 'How-to guide (pdf)' %}</a>
+                         </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link " href="#blog">{% trans 'Blog' %}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="#contact">{% trans 'contact us' %}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link">{% trans 'account' %}</a>
+                    {% if request.session.user %}
+                     <ul class="sub_menu">
+                        <li>
+                            <a href="#">
+                            {{request.session.user.firstname}} {{request.session.user.lastname}}
+                                ({{request.session.user.userName}})
+                            </a>
+                        </li>
+                        
+                         {% if request.session.user.isAdmin == 'true' %}
+                            <li><a href="fh_admin">{% trans 'admin_page' %}</a></li>
+                        {% endif %}
+                        <li><a href="logout">{% trans 'logout' %}</a></li>
+                        
+                     </ul>
+                     {% else %}
+                    <ul class="multi_col">
+                        <li>
+                            <ul>
+                                <li class="nav-item">
+                                    <a class="nav-link " data-toggle="modal" data-target="#createAccountModal" href="#">{% trans 'register' %}</a>
+                                </li>
+                            </ul>
+                        <li>
+                            <ul>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-toggle="modal" data-target="#login_modal">{% trans 'login' %}</a>
+                                </li>
+                            </ul>
+                        </li>    
+                    </ul>
+                     {% endif %}
+                </li>
+                
+                
+                
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{{LANGUAGE_CODE}} </a>
+                    <ul class="sub_menu">
+                        {% for language in languages %}
+                            {% if language.code == LANGUAGE_CODE %}
+                                <li>X<span class="glyphicon glyphicon-ok check_left"></span> &nbsp; {{ language.name_local }}</li>
+                            {% else %}
+                                <li><a href="change_lang?lang={{language.code}}"><span class="check_left"> &nbsp;</span>{{ language.name_local }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+            </li>
+                
+                
+                
+            </ul>
+        </div>
+    </div>
+</header>
+<!--header end here-->
+
+<!--cover section slider -->
+<section id="home" class="home bg-light">
+    <ul class="hero_carousel owl-carousel owl-theme">
+        <li class="vh100" style="background: url('https://placeholdit.co//i/900x900');">
+            <div class="slider_content">
+                <div class="slider-content-inner">
+                    <div class="container">
+                        <div class="slider-content-left">
+                            <h2>{% trans 'Transcribe. Collaborate. Share…' %}</h2>
+                            <div class="title_divider"></div>
+                            <p>
+                            {% trans '…and benefit from cutting edge research in Handwritten Text Recognition!' %}
+                            </p>
+                            <a href="#" class=" btn btn-rounded btn-light" >
+                                Learn more
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="vh100"  style="background: url('https://placeholdit.co//i/900x900');">
+            <div class="slider_content">
+                <div class="slider-content-inner">
+                    <div class="container">
+                        <div class="slider-content-center">
+                            <h2>We Build Business</h2>
+                            <div class="title_divider"></div>
+                            <p>We work with clients big and small across a range of sectors and we
+                                utilise all forms of media to get your name out there in a way that’s the
+                                best and most suitable for your company.</p>
+                            <a href="#" class=" btn btn-rounded btn-primary " >
+                                View Services
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</section>
+<!--cover section slider end -->
+
+<!--about section -->
+<section id="about" class="bg-light pt120 pb120">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-4 col-lg-4">
+                <div class="icon_box_one text-center fadeInLeft wow animated" data-wow-delay="100ms">
+                    <i class=" icon-tools icon-lg color-green"></i>
+                    <h5>
+                        Mordern Design
+                    </h5>
+                    <p>
+                        Good typography, well balanced elements and attention to details.
+                    </p>
+                </div>
+            </div>
+
+            <div class=" col-md-4 col-lg-4 col-12">
+                <div class="icon_box_one text-center fadeInLeft wow animated" data-wow-delay="100ms">
+                    <i class="  icon-speedometer icon-lg color-blue"></i>
+                    <h5>
+                        Blazing Fast
+                    </h5>
+                    <p>
+                        Very small CSS and JS files and smart loading of necessary resources.
+                    </p>
+                </div>
+            </div>
+
+            <div class=" col-md-4 col-lg-4 col-12">
+                <div class="icon_box_one text-center fadeInLeft wow animated" data-wow-delay="100ms">
+                    <i class="icon-search icon-lg color-red"></i>
+                    <h5>
+                        Easy to Use
+                    </h5>
+                    <p>
+                        Based on a friendly freamwork bootstrap , without clean code .
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-fixed-img pt120 pb120" style="background: url(https://placeholdit.co//i/900x900);">
+    <div class="overlay overlay_primary"></div>
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-12 col-md-9">
+                <h3 class="color-light">
+                    We design beautiful brand identities and build user experiences.
+                </h3>
+                <p  class="color-light">
+                    We’re passionate about clean and intuitive design and
+                    work flexibly with clients to fulfil their needs.
+                </p>
+                <a href="#" class="btn btn-rounded btn-light">
+                    Purchase this great theme now!
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!--about section end-->
+
+<!--our services -->
+<section id="services" class="pt120 pb120 bg-gray">
+    <div class="container">
+        <div class="row justify-content-center mb50">
+            <div class="col-12 col-sm-10 col-md-7">
+                <div class="section_title text-center mb50 fadeInDown wow animated" data-wow-delay="100ms">
+                    <i class="icon-layers"></i>
+                    <h4>
+                        Services
+                    </h4>
+                    <div class="title_divider"></div>
+                    <p>
+                        We work to make your business start effectively working for you.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="icon_box_two text-left fadeInLeft wow animated" data-wow-delay="100ms">
+                    <i class="  icon-strategy"></i>
+                    <div class="content">
+                        <h5>
+                            Consulting
+                        </h5>
+                        <p>
+                            Day handsome addition horrible sensible goodness two contempt. Evening for married summies imperia
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="icon_box_two text-left fadeInLeft wow animated" data-wow-delay="200ms">
+                    <i class=" icon-lightbulb"></i>
+                    <div class="content">
+                        <h5>
+                            Valuable Ideas
+                        </h5>
+                        <p>
+                            Day handsome addition horrible sensible goodness two contempt. Evening for married summies imperia
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="icon_box_two text-left fadeInLeft wow animated" data-wow-delay="300ms">
+                    <i class="  icon-hourglass"></i>
+                    <div class="content">
+                        <h5>
+                            Excellent Timing
+                        </h5>
+                        <p>
+                            Day handsome addition horrible sensible goodness two contempt. Evening for married summies imperia
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="icon_box_two text-left fadeInLeft wow animated" data-wow-delay="100ms">
+                    <i class="  icon-wallet"></i>
+                    <div class="content">
+                        <h5>
+                            Budget Friendly
+                        </h5>
+                        <p>
+                            Day handsome addition horrible sensible goodness two contempt. Evening for married summies imperia
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="icon_box_two text-left fadeInLeft wow animated" data-wow-delay="200ms">
+                    <i class="  icon-key"></i>
+                    <div class="content">
+                        <h5>
+                            Great Solutions
+                        </h5>
+                        <p>
+                            Day handsome addition horrible sensible goodness two contempt. Evening for married summies imperia
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="icon_box_two text-left fadeInLeft wow animated" data-wow-delay="300ms">
+                    <i class="  icon-chat"></i>
+                    <div class="content">
+                        <h5>
+                            Friendly support
+                        </h5>
+                        <p>
+                            Day handsome addition horrible sensible goodness two contempt. Evening for married summies imperia
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!--our services end-->
+
+<!--counter -->
+<section class="pt120 pb120 bg-black">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="counter_box_one counter_light  text-center fadeInLeft wow animated" data-wow-delay="100ms">
+                    <i class="lnr lnr-gift"></i>
+                    <span class="counter">5500</span>
+                    <h5 class="">
+                        Packages Delivered
+                    </h5>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="counter_box_one counter_light  text-center  fadeInUp wow animated" data-wow-delay="200ms">
+                    <i class="lnr  lnr-users"></i>
+                    <span class="counter">3500</span>
+                    <h5 class="">
+                        Repeat Customers
+                    </h5>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="counter_box_one counter_light text-center  fadeInDown wow animated" data-wow-delay="300ms">
+                    <i class="lnr  lnr-apartment"></i>
+                    <span class="counter">6000</span>
+                    <h5 class="">
+                        STORAGE Goods
+                    </h5>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="counter_box_one counter_light text-center fadeInRight wow animated" data-wow-delay="400ms">
+                    <i class="lnr  lnr-clock"></i>
+                    <span class="counter">24</span>
+                    <h5 class="">
+                        Timely Delivery
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--counter end -->
+
+
+
+<!--SECTION BLOG-->
+<section id="blog" class="bg-light pt120 pb120">
+    <div class="container">
+        <div class="row justify-content-center mb20">
+            <div class="col-12 col-sm-10 col-md-6">
+                <div class="section_title text-center mb50 fadeIn wow animated" data-wow-delay="100ms">
+                    <i class="icon-newspaper"></i>
+                    <h4>
+                        Latest News
+                    </h4>
+                    <div class="title_divider"></div>
+                    <p>
+                        We share our best ideas in our blog
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="blog_carousel owl-carousel">
+                    <div class="item">
+                        <article class="blog_box_one">
+                            <div class="blog_box_img">
+                                <img src="https://placeholdit.co//i/200x400" alt="blog">
+                            </div>
+                            <div class="blog_box_body">
+                                <span>February 9, 2017</span>
+                                <a href="#"><h4>Mobile First Approach to Websites</h4></a>
+                                <p>
+                                    Some quick example text to build on the card title and make up the bulk of the card’s content. Some quick example text to build on the card title.
+                                </p>
+                            </div>
+                            <div class="blog_box_footer">
+                                <a href="#">Read More</a>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="item">
+                        <article class="blog_box_one">
+                            <div class="blog_box_img">
+                                <img src="https://placeholdit.co//i/200x400" alt="blog">
+                            </div>
+                            <div class="blog_box_body">
+                                <span>February 9, 2017</span>
+                                <a href="#"><h4>Online Sales and Financial Reports</h4></a>
+                                <p>
+                                    Some quick example text to build on the card title and make up the bulk of the card’s content. Some quick example text to build on the card title.
+                                </p>
+                            </div>
+                            <div class="blog_box_footer">
+                                <a href="#">Read More</a>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="item">
+                        <article class="blog_box_one">
+                            <div class="blog_box_img">
+                                <img src="https://placeholdit.co//i/200x400" alt="blog">
+                            </div>
+                            <div class="blog_box_body">
+                                <span>February 9, 2017</span>
+                                <a href="#"><h4>A new generation of WordPress</h4></a>
+                                <p>
+                                    Some quick example text to build on the card title and make up the bulk of the card’s content. Some quick example text to build on the card title.
+                                </p>
+                            </div>
+                            <div class="blog_box_footer">
+                                <a href="#">Read More</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!--SECTION  BLOG end-->
+
+<!--SECTION TESTIMONIAL-->
+<section class="pt120 pb120 bg-primary">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-10 col-12">
+                <div class="testimonial_carousel_one testimonial_box_light owl-carousel">
+                    <div class="item">
+                        <div class="testimonial_box_three text-center">
+                            <i class="icon-quote"></i>
+                            <h5> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less.</h5>
+                            <img src="https://placeholdit.co//i/100x100" alt="testimonials-user1">
+                            <h6>
+                                Jimmy Page
+                            </h6>
+                            <p>
+                                Front-End Developer
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimonial_box_three text-center">
+                            <i class="icon-quote"></i>
+                            <h5> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less.</h5>
+                            <img src="https://placeholdit.co//i/100x100" alt="testimonials-user2">
+                            <h6> Willie Nichols</h6>
+                            <p>
+                                Developer
+                            </p>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="testimonial_box_three text-center">
+                            <i class="icon-quote"></i>
+                            <h5> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less.</h5>
+                            <img src="https://placeholdit.co//i/100x100"  alt="testimonials-user3">
+                            <h6>chejuev</h6>
+                            <p>
+                                ceo
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--SECTION TESTIMONIAL END -->
+
+<!--contact us -->
+<section id="contact" class="bg-gray pt120 pb120">
+    <div class="container">
+        <div class="row justify-content-center mb50">
+            <div class="col-12 col-sm-12 col-md-7">
+                <div class="section_title text-center mb50  fadeIn wow animated" data-wow-delay="100ms">
+                    <i class="icon-chat"></i>
+                    <h4>
+                        Contact Us
+                    </h4>
+                    <div class="title_divider"></div>
+                    <p>
+                        If you have a specific service or question in mind, please don’t hesitate
+                        to contact us and discuss it with our team of professionals.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10">
+                <div class="contact_box_shadow">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" class="form-control" placeholder="Full Name">
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input type="email" class="form-control" placeholder="Your Email">
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="text" class="form-control" placeholder="Phone Number">
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Your Message</label>
+                                <textarea cols="4" class="form-control" placeholder="Your Message"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <button class="btn btn-primary btn_center">contact us</button>
+                        </div>
+                    </div>
+                     <div class="row justify-content-center" style="padding-top:20px">
+                        <div class="col-12 col-md-6">
+                            TRANSKRIBUS Team at University of Innsbruck <br/>
+                            E-Mail: <a href="mailto:email@transkribus.eu">email@transkribus.eu</a> 
+                         </div>
+                         <div class="col-12 col-md-6">
+                            Digitisation and Digital Preservation group <br/>
+                            University of Innsbruck <br/>
+                            Innrain 52 <br/>
+                            6020 Innsbruck <br/>
+                            Austria <br/>
+                            Phone: 0043-(0)512-507-8454 <br/>
+                            
+                             <a data-toggle="modal" data-target="#impressumModal">Impressum</a> <br/>
+                         </div>
+                     </div>
+                    
+                    
+
+                    
+                    
+                    <div class="row justify-content-center">
+                        <iframe src="https://maps.google.com.ua/maps?q=Universität+Innsbruck+Innrain&amp;hl=en&amp;output=embed" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--contact us end -->
+
+<!--section brand -->
+<div class="bg-light pt120 pb120">
+    <div class="container">
+        <div class="brand_carousel owl-carousel">
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+        </div>
+    </div>
+</div>
+<!--section brand end -->
+
+
+<!--
+You're at home, baby!! <br/>
+
+{% for a in articles %}
+     <b>{{a.title}}</b><br/>
+     {{a.content|safe}}
+     
+     <br/><br/><br/><br/>
+{% endfor %}
+-->
+
+
+<footer class="footer_four footer_dark">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-12 text-center-xs">
+                <ul class="list-inline">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="#about">about</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="#services">services</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="#blog">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="#contact">contact us</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-10 col-12 text-center-xs">
+                <p>
+                    © {% trans 'Copyright 2018 DEA - All Rights Reserved' %}
+                </p>
+                <p>
+                    <img class="eu_logo" src="{% static 'start/img/jaune.jpeg' %}"/>
+                    {% trans 'Transkribus is part of the READ project and has received funding from the European Union’s Horizon 2020 Research and Innovation programme under grant agreement no. 674943.' %}
+                </p> 
+            </div>
+        </div>
+        <!--end of row-->
+    </div>
+    <!--end of container-->
+</footer>
+
+<!-- jquery -->
+<script src="{% static 'start/assets/js/jquery.min.js' %}"></script>
+<!-- bootstrap -->
+<script src="{% static 'start/assets/js/popper.js' %}"></script>
+<script src="{% static 'start/assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'start/assets/js/waypoints.min.js' %}"></script>
+<!-- Owl Carousel js -->
+<script src="{% static 'start/assets/js/owl.carousel.min.js' %}"></script>
+<!-- Owl Carousel js -->
+<script src="{% static 'start/assets/js/parallax.min.js' %}"></script>
+<!-- Magnific-popup -->
+<script src="{% static 'start/assets/js/jquery.magnific-popup.min.js' %}"></script>
+<!-- Jquery easing -->
+<script src="{% static 'start/assets/js/jquery.easing.1.3.min.js' %}"></script>
+<!--Counter-->
+<script src="{% static 'start/assets/js/jquery.counterup.min.js' %}"></script>
+<!-- WOW JS -->
+<script src="{% static 'start/assets/js/wow.min.js' %}"></script>
+<!-- progress bar -->
+<script src="{% static 'start/assets/js/bootstrap-progressbar.min.js' %}"></script>
+<!-- Filterizr JS -->
+<script src="{% static 'start/assets/js/jquery.filterizr.min.js' %}"></script>
+<!-- youtube backround  JS -->
+<script src="{% static 'start/assets/js/youtubebackground.js' %}"></script>
+<!--particel JS -->
+<script src="{% static 'start/assets/js/particles.min.js' %}"></script>
+<script src="{% static 'start/assets/js/init-particles.js' %}"></script>
+<!--typed js -->
+<script src="{% static 'start/assets/js/typed.min.j' %}s"></script>
+
+<!-- Custom js -->
+<script src="{% static 'start/assets/js/main.js' %}"></script>
+
+
+{% include "start/modals/imprint.html" %} 
+{% include "start/modals/login.html" %} 
+{% include "start/modals/register.html" %} 
+</body>
+</html>
