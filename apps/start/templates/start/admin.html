@@ -1,0 +1,69 @@
+{% load staticfiles %}
+{% load i18n %}
+
+<html>
+
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <link href="https://cdn.quilljs.com/1.3.5/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.5/quill.js"></script>  
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>  
+    
+   
+    <link rel="stylesheet" type="text/css" href="{% static 'start/css/admin.css' %}">
+    <style>
+
+    </style>
+</head>
+<body>
+    
+{% for a in articles %}
+    <input type="text" name="editor-title{{a.a_key}}" id ="editor-title{{a.a_key}}" value="{{a.title}}"/> <br/>
+    <div class="editor-container" id="editor-container{{a.a_key}}">
+       {{a.content|safe}}
+    </div>     
+    <button id="{{a.a_key}}" onclick="store(this.id)">store</button>
+    <br/><br/><br/><br/>
+    <script>
+var quill = new Quill('#editor-container{{a.a_key}}', {
+  modules: {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ['bold', 'italic', 'underline'],
+      ['image', 'code-block']
+    ]
+  },
+  placeholder: 'Compose an epic...',
+  theme: 'snow'  // or 'bubble'
+});    
+//quill.pasteHTML('{{a.content}}')
+
+    </script>
+{% endfor %}
+
+<script>
+function store(id)
+{
+    console.log(id);
+    console.log($('#editor-container1'));
+    /* var html = $("#editor-container1").firstChild.innerHTML  */
+    var html = document.getElementById("editor-container" + id).firstChild.innerHTML; /* TODO replace with JQuery */
+    var title = document.getElementById("editor-title" + id).value;  /* TODO replace with JQuery */
+    
+    console.log(html);
+    $.post("store_admin", {title: title, content: html, id: id, lang: "DE", 'csrfmiddlewaretoken': '{{ csrf_token }}'}).done(function(data)
+    {
+        console.log(data);
+    });
+}
+ </script>
+ 
+ 
+</body>
