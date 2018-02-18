@@ -10,5 +10,7 @@ urlpatterns = [
     #url(r'^script', v.script, name='script'),
     url(r'^login$', v.login_process, name='login_process'),
     url(r'^logout$', v.logout_process, name='logout_process'),
-    url(r'^change_lang', v.change_lang , name='change_lang')
+    url(r'^change_lang', v.change_lang , name='change_lang'),
+    url(r'^contact', v.contact , name='contact'),
+    
 ]
