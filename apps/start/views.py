@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.utils import translation
+from django.core.mail import send_mail
 
 from . import models as m
 #from .forms import NameForm
@@ -83,7 +84,17 @@ def change_lang(request):
     request.session[translation.LANGUAGE_SESSION_KEY] = lang
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/')) #redirect to same page
 
-        
+def contact(request):
+    full_name = request.POST.get('full_name','')
+    email = request.POST.get('email','')
+    print (email)
+    phone = request.POST.get('phone','')
+    message = request.POST.get('message','')
+    message += "email:" + email
+    send_mail('website message', message, 'albert.greinoecker@gmail.com', ['albert.greinoecker@gmail.com'], fail_silently=False,
+)
+    
+            
 # ############################################################
 # ############################################################
 # ############################################################
