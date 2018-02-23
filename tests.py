@@ -1,3 +1,8 @@
-from django.test import TestCase
+from .services import LazyJsonClient
 
-# Create your tests here.
+class TestLazyJsonClient(TestCase):
+    def setUp(self):
+        pass
+
+    def test_something(self):
+        pass
