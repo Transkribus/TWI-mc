@@ -1,5 +1,8 @@
-{% load staticfiles %}
+{% load static %}
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_language_info_list for LANGUAGES as languages %}
 
 <html>
 
@@ -7,63 +10,210 @@
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    
+    <title>{% trans 'Transkribus/Admin Page' %}</title>
+   
+     <!-- Bootstrap CSS -->
+    <link href="{% static 'start/assets/css/bootstrap.min.css' %}" rel="stylesheet" >
+    <!-- Fonts Icon CSS -->
+    <link href="{% static 'start/assets/css/font-awesome.min.css' %}" rel="stylesheet" >
+    <link href="{% static 'start/assets/css/et-line.css' %}" rel="stylesheet" />
+    <!-- Owl Carousel CSS -->
+    <link href="{% static 'start/assets/css/owl.carousel.min.css' %}" rel="stylesheet" >
+    <link href="{% static 'start/assets/css/owl.theme.default.min.css' %}" rel="stylesheet" >
+    <!-- Magnific-popup -->
+    <link rel="stylesheet" href="{% static 'start/assets/css/magnific-popup.css' %}" >
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="{% static 'start/assets/css/animate.min.css' %}" >
+    <!-- Custom styles for this template -->
+    <link href="{% static 'start/assets/css/main.css' %}" rel="stylesheet" > 
+    <!-- Custom modifications -->
+   
+   
     <link href="https://cdn.quilljs.com/1.3.5/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.5/quill.js"></script>  
-    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>  
-    
-   
     <link rel="stylesheet" type="text/css" href="{% static 'start/css/admin.css' %}">
-    <style>
-
-    </style>
+    <link href="{% static 'start/css/homepage.css' %}" rel="stylesheet" >
+    
+    <link rel="shortcut icon" href="{% static 'start/favicon.ico' %}" type="image/x-icon" />
 </head>
-<body>
-    
-{% for a in articles %}
-    <input type="text" name="editor-title{{a.a_key}}" id ="editor-title{{a.a_key}}" value="{{a.title}}"/> <br/>
-    <div class="editor-container" id="editor-container{{a.a_key}}">
-       {{a.content|safe}}
-    </div>     
-    <button id="{{a.a_key}}" onclick="store(this.id)">store</button>
-    <br/><br/><br/><br/>
-    <script>
-var quill = new Quill('#editor-container{{a.a_key}}', {
-  modules: {
-    toolbar: [
-      [{ header: [1, 2, false] }],
-      ['bold', 'italic', 'underline'],
-      ['image', 'code-block']
-    ]
-  },
-  placeholder: 'Compose an epic...',
-  theme: 'snow'  // or 'bubble'
-});    
-//quill.pasteHTML('{{a.content}}')
 
-    </script>
-{% endfor %}
+<body  data-spy="scroll" data-target="header">
 
-<script>
-function store(id)
-{
-    console.log(id);
-    console.log($('#editor-container1'));
-    /* var html = $("#editor-container1").firstChild.innerHTML  */
-    var html = document.getElementById("editor-container" + id).firstChild.innerHTML; /* TODO replace with JQuery */
-    var title = document.getElementById("editor-title" + id).value;  /* TODO replace with JQuery */
-    
-    console.log(html);
-    $.post("store_admin", {title: title, content: html, id: id, lang: "DE", 'csrfmiddlewaretoken': '{{ csrf_token }}'}).done(function(data)
-    {
-        console.log(data);
-    });
-}
- </script>
+
+
+<div class="loader">
+    <div class="loader-outter"></div>
+    <div class="loader-inner"></div>
+</div>
+
+<!--header start here -->
+<header class="header navbar fixed-top navbar-expand-md">
+    <div class="container">
+        <a class="navbar-brand logo" href="#">
+            <span class="admin">{% trans 'Transkribus/Admin Page' %}</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#headernav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="lnr lnr-text-align-right"></span>
+        </button>
+        <div class="collapse navbar-collapse flex-sm-row-reverse" id="headernav">
+            <ul class=" nav navbar-nav menu">
+                <li class="nav-item">
+                    <a class="nav-link active" target="_plain" href="index"><span class="admin">{% trans 'Back' %}</span></a>
+                </li>
+      
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><span class="admin">{{LANGUAGE_CODE}} </span></a>
+                    <ul class="sub_menu">
+                        {% for language in languages %}
+                            {% if language.code == LANGUAGE_CODE %}
+                                <li>X<span class="glyphicon glyphicon-ok check_left"></span> &nbsp; {{ language.name_local }}</li>
+                            {% else %}
+                                <li><a href="change_lang?lang={{language.code}}"><span class="check_left"> &nbsp;</span>{{ language.name_local }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+            </li>
+            </ul>
+        </div>
+    </div>
+</header>
+<!--header end here-->
+<section id="about" class="bg-light pt120 pb120">
+    <div class="container">
+        {% for a in articles %}
+            <input type="text" name="editor-title{{a.a_key}}" id ="editor-title{{a.a_key}}" value="{{a.title}}"/> <br/>
+            <div class="editor-container" id="editor-container{{a.a_key}}">
+               {{a.content|safe}}
+            </div>     
+            <button id="{{a.a_key}}" onclick="store(this.id)">store</button>
+            <br/><br/><br/><br/>
+            <script>
+        var toolbarOptions = [
+          ['bold', 'italic', 'underline', 'strike', 'link'],        // toggled buttons
+          ['blockquote', 'code-block'],
+          ['video', 'formula', 'image'],
+          [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+          [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+          [{ 'direction': 'rtl' }],                         // text direction
+        
+          [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        
+          [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+          [{ 'font': [] }],
+          [{ 'align': [] }],
+        
+          ['clean']                                         // remove formatting button
+        ];
+        
+        
+        var quill = new Quill('#editor-container{{a.a_key}}', {
+          modules: {
+            toolbar: toolbarOptions,
+          },
+          placeholder: 'Compose an epic...',
+          formula:true,
+          theme: 'snow'  // or 'bubble'
+        });    
+        //quill.pasteHTML('{{a.content}}')
+        
+            </script>
+        {% endfor %}
+        
+        <script>
+        function store(id)
+        {
+            console.log(id);
+            console.log($('#editor-container1'));
+            /* var html = $("#editor-container1").firstChild.innerHTML  */
+            var html = document.getElementById("editor-container" + id).firstChild.innerHTML; /* TODO replace with JQuery */
+            var title = document.getElementById("editor-title" + id).value;  /* TODO replace with JQuery */
+            
+            console.log(html);
+            $.post("store_admin", {title: title, content: html, id: id, lang: "DE", 'csrfmiddlewaretoken': '{{ csrf_token }}'}).done(function(data)
+            {
+                console.log(data);
+            });
+        }
+         </script>
+    </div>
+</section>
+ 
+ 
+<footer class="footer_four footer_dark">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-12 text-center-xs">
+                <ul class="list-inline">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="#about">about</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="#services">services</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="#blog">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="#contact">contact us</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-10 col-12 text-center-xs">
+                <p>
+                    © {% trans 'Copyright 2018 DEA - All Rights Reserved' %}
+                </p>
+                <p>
+                    <img class="eu_logo" src="{% static 'start/img/jaune.jpeg' %}"/>
+                    {% trans 'Transkribus is part of the READ project and has received funding from the European Union’s Horizon 2020 Research and Innovation programme under grant agreement no. 674943.' %}
+                </p> 
+            </div>
+        </div>
+        <!--end of row-->
+    </div>
+    <!--end of container-->
+</footer>
+
+<!-- jquery -->
+<script src="{% static 'start/assets/js/jquery.min.js' %}"></script>
+<!-- bootstrap -->
+<script src="{% static 'start/assets/js/popper.js' %}"></script>
+<script src="{% static 'start/assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'start/assets/js/waypoints.min.js' %}"></script>
+<!-- Owl Carousel js -->
+<script src="{% static 'start/assets/js/owl.carousel.min.js' %}"></script>
+<!-- Owl Carousel js -->
+<script src="{% static 'start/assets/js/parallax.min.js' %}"></script>
+<!-- Magnific-popup -->
+<script src="{% static 'start/assets/js/jquery.magnific-popup.min.js' %}"></script>
+<!-- Jquery easing -->
+<script src="{% static 'start/assets/js/jquery.easing.1.3.min.js' %}"></script>
+<!--Counter-->
+<script src="{% static 'start/assets/js/jquery.counterup.min.js' %}"></script>
+<!-- WOW JS -->
+<script src="{% static 'start/assets/js/wow.min.js' %}"></script>
+<!-- progress bar -->
+<script src="{% static 'start/assets/js/bootstrap-progressbar.min.js' %}"></script>
+<!-- Filterizr JS -->
+<script src="{% static 'start/assets/js/jquery.filterizr.min.js' %}"></script>
+<!-- youtube backround  JS -->
+<script src="{% static 'start/assets/js/youtubebackground.js' %}"></script>
+<!--particel JS -->
+<script src="{% static 'start/assets/js/particles.min.js' %}"></script>
+<script src="{% static 'start/assets/js/init-particles.js' %}"></script>
+<!--typed js -->
+<script src="{% static 'start/assets/js/typed.min.j' %}s"></script>
+
+<!-- Custom js -->
+<script src="{% static 'start/assets/js/main.js' %}"></script>
+
+
  
  
 </body>
