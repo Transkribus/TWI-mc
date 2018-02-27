@@ -31,8 +31,9 @@
     <!-- Custom styles for this template -->
     <link href="{% static 'start/assets/css/main.css' %}" rel="stylesheet" > 
     <!-- Custom modifications -->
+    
     <link href="{% static 'start/css/homepage.css' %}" rel="stylesheet" >
-     <link href="{% static 'start/css/login.css' %}" rel="stylesheet" >
+    <link href="{% static 'start/css/login.css' %}" rel="stylesheet" >
      
     <link rel="shortcut icon" href="{% static 'start/favicon.ico' %}" type="image/x-icon" />
 </head>
@@ -91,6 +92,11 @@
                 <li class="nav-item">
                     <a class="nav-link " href="#blog">{% trans 'Blog' %}</a>
                 </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link " href="#calendar">{% trans 'Calendar' %}</a>
+                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link " href="#contact">{% trans 'contact us' %}</a>
                 </li>
@@ -106,7 +112,7 @@
                         </li>
                         
                          {% if request.session.user.isAdmin == 'true' %}
-                            <li><a href="fh_admin">{% trans 'admin_page' %}</a></li>
+                            <li><a href="start_admin">{% trans 'admin_page' %}</a></li>
                         {% endif %}
                         <li><a href="logout">{% trans 'logout' %}</a></li>
                         
@@ -142,9 +148,6 @@
                         {% endfor %}
                     </ul>
             </li>
-                
-                
-                
             </ul>
         </div>
     </div>
@@ -154,7 +157,7 @@
 <!--cover section slider -->
 <section id="home" class="home bg-light">
     <ul class="hero_carousel owl-carousel owl-theme">
-        <li class="vh100" style="background: url('https://placeholdit.co//i/900x900');">
+        <li class="vh100" style="background: url('{% static 'start/img/lem.jpeg' %}');">
             <div class="slider_content">
                 <div class="slider-content-inner">
                     <div class="container">
@@ -172,24 +175,26 @@
                 </div>
             </div>
         </li>
-        <li class="vh100"  style="background: url('https://placeholdit.co//i/900x900');">
+        
+ 
+ {% for a in articles %} 
+      <li class="vh100"  style="background: url('{% static 'start/img/blurry.png' %}');">
             <div class="slider_content">
                 <div class="slider-content-inner">
                     <div class="container">
                         <div class="slider-content-center">
-                            <h2>We Build Business</h2>
+                            <h2>{{a.title}}</h2>
                             <div class="title_divider"></div>
-                            <p>We work with clients big and small across a range of sectors and we
-                                utilise all forms of media to get your name out there in a way that’s the
-                                best and most suitable for your company.</p>
+                            <p> {{a.content|safe}}</p>
                             <a href="#" class=" btn btn-rounded btn-primary " >
-                                View Services
+                                View Details
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
         </li>
+{% endfor %}        
     </ul>
 </section>
 <!--cover section slider end -->
@@ -553,8 +558,7 @@
                     </h4>
                     <div class="title_divider"></div>
                     <p>
-                        {% trans 'If you have a specific service or question in mind, please don’t hesitate
-                        to contact us and discuss it with our team of professionals.' %}
+                        {% trans 'If you have a specific service or question in mind, please don’t hesitate to contact us and discuss it with our team of professionals.' %}
                     </p>
                 </div>
             </div>
@@ -614,11 +618,7 @@
                              <a data-toggle="modal" data-target="#impressumModal">Impressum</a> <br/>
                          </div>
                      </div>
-                    
-                    
 
-                    
-                    
                     <div class="row justify-content-center">
                         <iframe src="https://maps.google.com.ua/maps?q=Universität+Innsbruck+Innrain&amp;hl=en&amp;output=embed" allowfullscreen></iframe>
                     </div>
@@ -661,20 +661,16 @@
         </div>
     </div>
 </div>
+
+
+<!--Calendar-->
+<section id="calendar" class="bg-light pt120 pb120">
+    <div class="container">
+        <iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=478cij0o4oahfug9f1tg64t55k%40group.calendar.google.com&amp;color=%230F4B38&amp;ctz=Europe%2FBerlin" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+    </div>
+</section>
+
 <!--section brand end -->
-
-
-<!--
-You're at home, baby!! <br/>
-
-{% for a in articles %}
-     <b>{{a.title}}</b><br/>
-     {{a.content|safe}}
-     
-     <br/><br/><br/><br/>
-{% endfor %}
--->
-
 
 <footer class="footer_four footer_dark">
     <div class="container">
