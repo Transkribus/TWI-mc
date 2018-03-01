@@ -19,20 +19,19 @@ from . import Services as serv
 def index(request):
     template = loader.get_template('start/homepage.html')
     context = {
-        'articles' : m.Article.objects.filter(language="DE")
+        'articles' : m.Article.objects.filter(language=translation.get_language().upper())
     }
     return HttpResponse(template.render(context, request))
 
 def admin(request):   
     template = loader.get_template('start/admin.html')
-    
+    print(translation.get_language())
     td = testData()
-    print(td)
+    art = m.Article.objects.filter(language=translation.get_language().upper())
     context = {
-        'articles' : td 
+        'articles' : art 
     }
-    url = static('start/css/admin.css')
-    print(url)
+
     return HttpResponse(template.render(context, request))
 
 
@@ -43,7 +42,6 @@ def store_admin(request):
     id = request.POST.get('id','')
     lang = request.POST.get('lang','')
 
-    print(content)
     try:
       art = m.Article.objects.get(a_key = id, language=lang)
       art.content = content
