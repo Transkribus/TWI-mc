@@ -16,5 +16,6 @@ class TSData(models.Model):
     gender = models.CharField(max_length=100)
     affiliation = models.CharField(max_length=100)
     t = PickledObjectField(null=True)
+    sessionId = models.CharField(max_length=100,null=True,blank=True)
     #Add fields for any user data local to app here
     #thingthatappneedstostoreperuser = models.WhateverField();

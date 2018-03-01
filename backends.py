@@ -9,6 +9,8 @@ from apps.utils.utils import t_log
 from .models import TSData
 import sys
 
+import logging
+
 """
 This backend will
 
@@ -53,6 +55,7 @@ class TranskribusBackend(object):
                 # but we need django 1.11 which passes request to the authenticate backend
                 tsdata = TSData.objects.create(user=user,t=t)
             tsdata.gender=t_user['gender']
+            tsdata.sessionId=t_user['sessionId']
             tsdata.affiliation=t_user['affiliation']
             tsdata.userId=t_user['userId']
 
