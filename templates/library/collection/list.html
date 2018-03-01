@@ -1,0 +1,33 @@
+{% extends "navi_base.html" %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="dropdown" id="dropdown">
+        <a href="{% url "index" %}" class="dropdown-toggle navbar-brand" data-toggle="dropdown">{% trans "My Collections" %}</a>
+    </li> 
+{% endblock %}
+
+{% block content %}
+
+ <table class="table table-striped display" id="">
+   <thead>
+	<tr>
+		<th>{% trans "Image" %}</th>
+		<th>{% trans "Collection Title and description" %}</th>
+		<th>{% trans "No. of Docs" %}</th>
+		<th>{% trans "My Role" %}</th>
+	</tr>
+   </thead>
+   <tbody>
+   {% for item in items %}
+	<tr>
+		<td>{{item.id}}</td>
+		<td>{{item.name}} {{item.desc}}</td>
+		<td>{{item.num_children}}</td>
+		<td>{{item.role}}</td>
+	</tr>
+	{%endfor%}
+   </tbody>
+</table>
+
+{% endblock %}

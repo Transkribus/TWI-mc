@@ -32,6 +32,10 @@ import apps.library.settings
 
 #from .forms import RegisterForm, IngestMetsUrlForm, MetsFileForm, QuickIngestMetsUrlForm
 
+from django.core.paginator import Paginator
+
+from .services import LazyJsonClient
+
 def index(request):
     return render(request, 'library/homepage.html' )
 
@@ -48,6 +52,38 @@ def collections(request):
     if isinstance(collections,HttpResponse):
         return apps.utils.views.error_view(request,collections)
     return render(request, 'library/collections.html', {'collections': collections} )
+
+@login_required
+def collection_list(request):
+
+   # retrieve TrpServer session id for this user
+   session_id = request.user.tsdata.sessionId
+
+#   client = LazyJsonClient(settings.TRP_URL, headers={'Accept': 'application/json', 'JSESSIONID': session_id})
+
+   client = LazyJsonClient(settings.TRP_URL, headers={'Accept': 'application/json' })
+   #TODO better way to pass session id as a cookie to client
+   client._request_factory._cookies = {'JSESSIONID': session_id}
+
+   col_list = client.get_col_list()
+   t_log("COL_LIST: %s " % col_list , logging.WARN)  
+   paginator = Paginator(col_list, 10)
+   #TODO col_list is a LazyList, LazyList has not len(), paginator croaks
+   '''
+   page = request.GET.get('page')
+   try:
+        cols = paginator.page(page)
+   except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        cols = paginator.page(1)
+   except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        cols = paginator.page(paginator.num_pages)
+   '''
+  # decouple TrpServer response data type from names in template
+   context = {'items': [{'name': item.colName, 'id': item.colId, 'desc': item.description, 'num_children': item.nrOfDocuments, 'role': item.role } for item in col_list]}
+
+   return render(request, template_name='library/collection/list.html', context=context)
 
 #/library/{colId}
 #view that

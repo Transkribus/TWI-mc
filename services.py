@@ -4,8 +4,6 @@ import functools
 from urllib import parse
 import requests
 
-
-
 @functools.lru_cache(maxsize=256)
 def camelize(string):
     return ''.join(
@@ -32,7 +30,7 @@ class CamelCaseDict:
         if '_' in key:
             return self._data[camelize(key)]
 
-        return self._data[key]
+        return self._data.get(key)
 
     def __repr__(self):
         return "<%r: %s>" % (self.__class__.__name__, repr(self._data))
@@ -178,8 +176,6 @@ class LazyObject(CamelCaseDict):
     def __init__(self, request):
         self._req = request
         self._data = None
-
-
 
 def main():
 
