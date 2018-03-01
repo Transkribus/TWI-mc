@@ -2,6 +2,8 @@ import warnings
 import functools
 
 from urllib import parse
+import requests
+
 
 
 @functools.lru_cache(maxsize=256)
@@ -111,19 +113,19 @@ class LazyJsonClient:
 
     def post_login(self, username, password):
         assert username and password
-        return self._build_object('POST', '/auth/login', {
+        return self._build_object('POST', 'auth/login', {
             'user': username,
             'pw': password
         })
 
     def get_col_list(self):
-        return self._build_list('GET', '/collections/list')
+        return self._build_list('GET', 'collections/list')
 
     def get_doc_list(self, col_id):
-        return self._build_list('GET', '/collections/%d/list' % col_id)
+        return self._build_list('GET', 'collections/%d/list' % col_id)
 
     def get_doc_meta_data(self, col_id, doc_id):
-        return self._build_object('GET', '/collections/%d/%d/metadata' % (col_id, doc_id))
+        return self._build_object('GET', 'collections/%d/%d/metadata' % (col_id, doc_id))
 
 
 class LazyJsonRequest:
@@ -133,8 +135,7 @@ class LazyJsonRequest:
         self._url = url
         self._kwargs = kwargs
 
-    def execute(self, params=None):
-
+    def execute(self, params=None ):
         r = requests.request(self._method, self._url, params=params, **self._kwargs)
         r.raise_for_status()
 
