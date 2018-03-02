@@ -29,8 +29,9 @@ Found {{ counter }} results for {{ search }}
 <table class="table table-striped display" id="">
   <thead>
     <tr>
+	  <th></th>
       <th>{% trans "Title" %}</th>
-      <!-- <th>{% trans "Description" %}</th> -->
+      <th>{% trans "Description" %}</th>
       <!-- <th>{% trans "Documents" %}</th> -->
       <!-- <th>{% trans "Role" %}</th> -->
     </tr>
@@ -38,11 +39,10 @@ Found {{ counter }} results for {{ search }}
   <tbody>
     {% for item in items %}
     <tr>
-      <!-- <td>{{ item.description }}</td> -->
-      <!-- <td>{{ item.num_children }}</td> -->
-      <!-- <td>{{ item.role }}</td> -->
+      <td><img src="{{ item.thumb_url }}"/></td>
       <td><a href="{% url 'library:collection-detail' item.id %}">{{ item.title }}</a></td>
-      <td><a href="{% url 'library:document-list' item.id %}">Documents ({{ item.document_count }}) </a></td>
+      <td>{{ item.description }}</td>
+      <td><a href="{% url 'library:document-list' item.id %}">View {{ item.document_count }} document{{ item.document_count|pluralize }} </a></td>
 
     </tr>
     {%endfor%}
@@ -52,7 +52,7 @@ Found {{ counter }} results for {{ search }}
 <div class="pagination">
   <span class="step-links">
     {% if page.has_previous %}
-    <a "href="?page=1">&laquo; first</a>
+    <a href="?page=1">&laquo; first</a>
     <a href="?page={{ page.previous_page_number }}">previous</a>
     {% endif %}
 
