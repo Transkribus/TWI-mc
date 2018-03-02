@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from fluent_contents.models import Placeholder
 from django.views.generic.detail import DetailView
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
