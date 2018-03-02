@@ -34,8 +34,6 @@ import apps.library.settings
 
 from django.core.paginator import Paginator
 
-from .services import LazyJsonClient
-
 def index(request):
     return render(request, 'library/homepage.html' )
 
@@ -53,23 +51,64 @@ def collections(request):
         return apps.utils.views.error_view(request,collections)
     return render(request, 'library/collections.html', {'collections': collections} )
 
-@login_required
+# @login_required
+
 def collection_list(request):
-    
+
+    # testing only
+    import time
+    _time_start = time.time()
+
     from .services import Helpers
+    from . import forms
+
+    form = forms.ListForm(request.GET)
+
+    if form.is_valid():
+        pass # do nothing
+
+    params = form.cleaned_data
+
+    page_num = params.get('page')
+    page_size = params.get('size')
+
+    if page_size is None:
+        page_size = forms.ListForm.SIZE_DEFAULT
+
+    page_size = min(forms.ListForm.SIZE_MAX, page_size)
+
+    sort_by = params.get('sort_by', forms.ListForm.SORT_BY_DEFAULT)
+
+    search = params.get('search')
+
+
+    # testing only
+    from unittest import mock
+    with mock.patch('apps.library.services.Helpers') as Helpers:
+        MockClient = mock.Mock()
+        Helpers.create_client_from_request.return_value = MockClient
+
+        from .services import CamelCaseDict
+        class FakeList:
+            def __slice__(self, *args, **kwargs):
+                return DATA
+            def __len__(self):
+                return 100
+
+        DATA = [
+            CamelCaseDict({
+                'colId': 1,
+                'colName': 'Test Collection',
+                'descr': "Descripton for Test Collection",
+                'nrOfDocuments': 42,
+                'role': 'Reader'
+            })
+        ] * 100
+        MockClient.get_col_list.return_value = DATA
+
 
     client = Helpers.create_client_from_request(request)
-
-    collections = client.get_col_list()
-
-    page_num = request.GET.get('page')
-    page_size = request.GET.get('size', '')
-
-    # NOTE: django paginator does not sanitize page size
-    if not page_size.isdigit():
-        page_size = 10
-
-    page_size = min(100, page_size)
+    collections = client.get_col_list(sort_by=params)
 
     paginator = Paginator(collections, page_size)
 
@@ -80,19 +119,39 @@ def collection_list(request):
     except EmptyPage:
         paginated_collections = paginator.page(paginator.num_pages)
 
+    _time_elapsed = time.time() - _time_start
+
     context = {
+        'search': search,
+        'page': paginated_collections,
+        'page_num': page,
+        'item_count': len(collections),
+        'form': form,
         'items': [
             {
-                'name': item.col_name,
+                'title': item.col_name,
                 'id': item.col_id,
-                'description': item.description,
-                'num_children': item.nrOfDocuments,
+                'description': item.descr,
+                'document_count': item.nr_of_documents,
                 'role': item.role
             } for item in paginated_collections
-        ]
+        ],
+        # testing onlyx
+        'time_elapsed': round(1000 * _time_elapsed, 2)
     }
 
     return render(request, template_name='library/collection/list.html', context=context)
+
+def collection_detail(request, col_id):
+    from django.http import HttpResponse
+    return HttpResponse(status=501)
+
+def document_list(request, col_id):
+    from django.http import HttpResponse
+    return HttpResponse(status=501)
+
+def document_detail(request, col_id, doc_id):
+    raise NotImplemented
 
 #/library/{colId}
 #view that
