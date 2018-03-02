@@ -59,7 +59,7 @@ def collection_list(request):
     import time
     _time_start = time.time()
 
-    from .services import Helpers, LazyJsonClient
+    from .services import Helpers
     from . import forms
 
     form = forms.ListForm(request.GET)
