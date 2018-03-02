@@ -19,7 +19,7 @@ from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 
 from apps.utils.decorators import t_login_required_ajax
-from apps.utils.utils import crop, t_metadata, t_log, get_ts_session
+from apps.utils.utils import crop, t_metadata, t_log #, get_ts_session
 from apps.utils.services import *
 from apps.utils.views import *
 
@@ -44,7 +44,7 @@ def index(request):
 #view that lists available collections for a user
 @login_required
 def collections(request):
-    t = get_ts_session(request)
+    # t = get_ts_session(request)
     if isinstance(t,HttpResponse) :
         return error_view(request,t)
 
@@ -55,35 +55,44 @@ def collections(request):
 
 @login_required
 def collection_list(request):
+    
+    from .services import Helpers
 
-   # retrieve TrpServer session id for this user
-   session_id = request.user.tsdata.sessionId
+    client = Helpers.create_client_from_request(request)
 
-#   client = LazyJsonClient(settings.TRP_URL, headers={'Accept': 'application/json', 'JSESSIONID': session_id})
+    collections = client.get_col_list()
 
-   client = LazyJsonClient(settings.TRP_URL, headers={'Accept': 'application/json' })
-   #TODO better way to pass session id as a cookie to client
-   client._request_factory._cookies = {'JSESSIONID': session_id}
+    page_num = request.GET.get('page')
+    page_size = request.GET.get('size', '')
 
-   col_list = client.get_col_list()
-   t_log("COL_LIST: %s " % col_list , logging.WARN)  
-   paginator = Paginator(col_list, 10)
-   #TODO col_list is a LazyList, LazyList has not len(), paginator croaks
-   '''
-   page = request.GET.get('page')
-   try:
-        cols = paginator.page(page)
-   except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        cols = paginator.page(1)
-   except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        cols = paginator.page(paginator.num_pages)
-   '''
-  # decouple TrpServer response data type from names in template
-   context = {'items': [{'name': item.colName, 'id': item.colId, 'desc': item.description, 'num_children': item.nrOfDocuments, 'role': item.role } for item in col_list]}
+    # NOTE: django paginator does not sanitize page size
+    if not page_size.isdigit():
+        page_size = 10
 
-   return render(request, template_name='library/collection/list.html', context=context)
+    page_size = min(100, page_size)
+
+    paginator = Paginator(collections, page_size)
+
+    try:
+        paginated_collections = paginator.page(page_num)
+    except PageNotAnInteger:
+        paginated_collections = paginator.page(1)
+    except EmptyPage:
+        paginated_collections = paginator.page(paginator.num_pages)
+
+    context = {
+        'items': [
+            {
+                'name': item.col_name,
+                'id': item.col_id,
+                'description': item.description,
+                'num_children': item.nrOfDocuments,
+                'role': item.role
+            } for item in paginated_collections
+        ]
+    }
+
+    return render(request, template_name='library/collection/list.html', context=context)
 
 #/library/{colId}
 #view that
@@ -91,7 +100,7 @@ def collection_list(request):
 # - also lists pages for documents
 @login_required
 def collection(request, collId):
-    t = get_ts_session(request)
+    # t = get_ts_session(request)
     if isinstance(t,HttpResponse) :
         return error_view(request,t)
 
@@ -153,7 +162,7 @@ def collection(request, collId):
 # view that lists pages in doc and some doc level metadata
 @login_required
 def document(request, collId, docId, page=None):
-    t = get_ts_session(request)
+    # t = get_ts_session(request)
     if isinstance(t,HttpResponse) :
         return error_view(request,t)
 
@@ -187,7 +196,7 @@ def _get_collection(document, collId):
 
 
 def collection_metadata(request, collId):
-    t = get_ts_session(request)
+    # t = get_ts_session(request)
     if isinstance(t,HttpResponse) :
         return error_view(request,t)
     collections = t.collection(request, {'collId': collId})
