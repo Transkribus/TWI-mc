@@ -32,10 +32,10 @@ class CamelCaseDict:
         else:
             camelized = key
 
-        if camelized not in self._data:
-            raise AttributeError(key)
+#        if camelized not in self._data:
+#            raise AttributeError(key)
 
-        return self._data[camelized]
+        return self._data.get(camelized)
 
     def __repr__(self):
         return "<%r: %s>" % (self.__class__.__name__, repr(self._data))
@@ -78,18 +78,18 @@ class LazyJsonRequestFactory:
 
 class LazyJsonClient:
 
-    def __init__(self, base_url, headers=None):
+    def __init__(self, base_url, headers=None, cookies=None):
 
         self._url = base_url.rstrip('/')
 
         if not isinstance(headers, dict):
             headers = {}
 
-        assert all(key.istitle() for key in headers)
+#        assert all(key.istitle() for key in headers)
 
         headers.update({'Accept': 'application/json'})
 
-        self._request_factory = LazyJsonRequestFactory(headers)
+        self._request_factory = LazyJsonRequestFactory(headers,cookies)
         self._list_class = LazyList
         self._object_class = LazyObject
         self._headers = headers
@@ -268,4 +268,4 @@ class Helpers:
     def create_client_from_request(self, req):
         from django.conf import settings
         assert hasattr(settings, 'TRP_URL')
-        return LazyJsonClient(settings.TRP_URL, {'JSESSIONID': session_id})
+        return LazyJsonClient(settings.TRP_URL, {}, {'JSESSIONID': self.get_session_id(self,req)})
