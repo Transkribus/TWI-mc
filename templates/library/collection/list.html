@@ -1,33 +1,72 @@
-{% extends "navi_base.html" %}
 {% load i18n %}
 
 {% block breadcrumb %}
-    <li class="dropdown" id="dropdown">
-        <a href="{% url "index" %}" class="dropdown-toggle navbar-brand" data-toggle="dropdown">{% trans "My Collections" %}</a>
-    </li> 
+<li class="dropdown" id="dropdown">
+  <a href="{% url "index" %}" class="dropdown-toggle navbar-brand" data-toggle="dropdown">{% trans "My Collections" %}</a>
+</li> 
 {% endblock %}
 
 {% block content %}
 
- <table class="table table-striped display" id="">
-   <thead>
-	<tr>
-		<th>{% trans "Image" %}</th>
-		<th>{% trans "Collection Title and description" %}</th>
-		<th>{% trans "No. of Docs" %}</th>
-		<th>{% trans "My Role" %}</th>
-	</tr>
-   </thead>
-   <tbody>
-   {% for item in items %}
-	<tr>
-		<td>{{item.id}}</td>
-		<td>{{item.name}} {{item.desc}}</td>
-		<td>{{item.num_children}}</td>
-		<td>{{item.role}}</td>
-	</tr>
-	{%endfor%}
-   </tbody>
+<form action="{% url 'library:collection-list' %}" method="get">
+
+  <label for="search">
+    Search: <input id="search" name="search" type="search">
+  </label>
+
+  {{ form.sort_by.label_tag }} {{ form.sort_by }}
+
+</form>
+
+{% if search %}
+{% blocktrans count counter=item_count %}
+Found one result for <span class="">{{ search }}</span>
+{% plural %}
+Found {{ counter }} results for {{ search }}
+{% endblocktrans %}
+{% endif %}
+
+<table class="table table-striped display" id="">
+  <thead>
+    <tr>
+      <th>{% trans "Title" %}</th>
+      <!-- <th>{% trans "Description" %}</th> -->
+      <!-- <th>{% trans "Documents" %}</th> -->
+      <!-- <th>{% trans "Role" %}</th> -->
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <!-- <td>{{ item.description }}</td> -->
+      <!-- <td>{{ item.num_children }}</td> -->
+      <!-- <td>{{ item.role }}</td> -->
+      <td><a href="{% url 'library:collection-detail' item.id %}">{{ item.title }}</a></td>
+      <td><a href="{% url 'library:document-list' item.id %}">Documents ({{ item.document_count }}) </a></td>
+
+    </tr>
+    {%endfor%}
+  </tbody>
 </table>
+
+<div class="pagination">
+  <span class="step-links">
+    {% if page.has_previous %}
+    <a "href="?page=1">&laquo; first</a>
+    <a href="?page={{ page.previous_page_number }}">previous</a>
+    {% endif %}
+
+    <span class="current">
+      Page {{ page.number }} of {{ page.paginator.num_pages }}.
+    </span>
+
+    {% if page.has_next %}
+    <a href="?page={{ page.next_page_number }}">next</a>
+    <a href="?page={{ page.paginator.num_pages }}">last &raquo;</a>
+    {% endif %}
+  </span>
+</div>
+
+{{ time_elapsed }}ms
 
 {% endblock %}

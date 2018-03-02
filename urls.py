@@ -8,7 +8,14 @@ urlpatterns = [
 # Start using /library/number the level is implicit in the number of ids supplied
 
 #collections and index become one
+
     url(r'^$', views.collection_list, name='index'),
+    url(r'^collections/$', views.collection_list, name='collection-list'),
+    url(r'^collections/(?P<col_id>\d+)/$', views.collection_detail, name='collection-detail'),
+
+    url(r'^collections/(?P<col_id>\d+)/documents/detail/$', views.document_list, name='document-list'),
+    url(r'^collections/(?P<col_id>\d+)/documents/(?P<doc_id>\d+)/$', views.document_detail, name='document-detail'),
+
 #    url(r'^collections$', views.collections, name='collections'),
     url(r'^([\-0-9]+)$', views.collection, name='collection'),
 #    url(r'^([\-0-9]+)/([0-9]+)$', views.document, name='document'),
