@@ -81,8 +81,8 @@ def collection_list(request):
 
     search = params.get('search')
 
+    # testing only
     if request.GET.get('test') == '1' :
-        # testing only
         from unittest import mock
         with mock.patch('apps.library.services.Helpers') as Helpers:
             MockClient = mock.Mock()
@@ -106,14 +106,9 @@ def collection_list(request):
             ] * 100
             MockClient.get_col_list.return_value = DATA
 
-        client = Helpers.create_client_from_request(request)
-    else : 
-        h = Helpers()
-        client = h.create_client_from_request(request)
+    client = Helpers.create_client_from_request(request)
 
-#    collections = client.get_col_list(sort_by=params)
-    collections = client.get_col_list()
-
+    collections = client.get_col_list(sort_by=sort_by)
 
     paginator = Paginator(collections, page_size)
 
@@ -134,14 +129,14 @@ def collection_list(request):
         'form': form,
         'items': [
             {
-                'title': item.col_name,
-                'id': item.col_id,
-                'description': item.description,
-                'document_count': item.nr_of_documents,
-                'role': item.role
+                'title': item.get('col_name'),
+                'id': item.get('col_id'),
+                'description': item.get('description'),
+                'document_count': item.get('nr_of_documents'),
+                'role': item.get('role')
             } for item in paginated_collections
         ],
-        # testing onlyx
+        # testing only
         'time_elapsed': round(1000 * _time_elapsed, 2)
     }
 

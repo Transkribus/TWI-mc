@@ -32,10 +32,16 @@ class CamelCaseDict:
         else:
             camelized = key
 
-#        if camelized not in self._data:
-#            raise AttributeError(key)
+        if camelized not in self._data:
+            raise AttributeError(key)
 
-        return self._data.get(camelized)
+        return self._data[camelized]
+
+    def get(self, key, default=None):
+        try:
+            return self.__getattr__(key)
+        except AttributeError:
+            return default
 
     def __repr__(self):
         return "<%r: %s>" % (self.__class__.__name__, repr(self._data))
@@ -78,18 +84,19 @@ class LazyJsonRequestFactory:
 
 class LazyJsonClient:
 
-    def __init__(self, base_url, headers=None, cookies=None):
+    def __init__(self, base_url, headers=None):
 
         self._url = base_url.rstrip('/')
 
         if not isinstance(headers, dict):
             headers = {}
 
-#        assert all(key.istitle() for key in headers)
+        # NOTE: do not remove this, ambiguous Accept header might result
+        assert all(key.istitle() for key in headers)
 
         headers.update({'Accept': 'application/json'})
 
-        self._request_factory = LazyJsonRequestFactory(headers,cookies)
+        self._request_factory = LazyJsonRequestFactory(headers)
         self._list_class = LazyList
         self._object_class = LazyObject
         self._headers = headers
@@ -141,7 +148,9 @@ class LazyJsonClient:
             'pw': password
         })
 
-    def get_col_list(self):
+    def get_col_list(self, **kwargs):
+        if len(kwargs) > 0:
+            warnings.warn("Sorting not implemented")
         return self._build_list_with_count('GET', [
             '/collections/list', '/collections/count'])
 
@@ -179,12 +188,18 @@ class LazyJsonRequest(Request):
         self._method = method
         self._url = url
         self._kwargs = kwargs
+        self._result = None
 
     def execute(self, params=None ):
+
+        if self._result is not None:
+            return self._result
+
         r = requests.request(self._method, self._url, params=params, **self._kwargs)
         r.raise_for_status()
 
-        return r.json()
+        self._result = r.json()
+        return self._result
 
     def __repr__(self):
         return '<%r: {"url": %r}>' % (self.__class__.__name__, self._url);
@@ -262,10 +277,12 @@ class LazyObject(CamelCaseDict):
 class Helpers:
 
     @staticmethod
-    def get_session_id(self, req):
+    def get_session_id(req):
         return req.user.tsdata.sessionId
 
-    def create_client_from_request(self, req):
+    @staticmethod
+    def create_client_from_request(req):
         from django.conf import settings
         assert hasattr(settings, 'TRP_URL')
-        return LazyJsonClient(settings.TRP_URL, {}, {'JSESSIONID': self.get_session_id(self,req)})
+        session_id = Helpers.get_session_id(req)
+        return LazyJsonClient(settings.TRP_URL, {'Cookie': 'JSESSIONID=%s' % session_id})
