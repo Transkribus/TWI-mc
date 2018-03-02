@@ -15,7 +15,7 @@ def camelize(string):
 class CamelCaseDict:
 
     def __init__(self, data):
-        assert isinstance(data, dict)
+        assert isinstance(data, dict), type(data)
         self._data = data
 
     def __contains__(self, key):
@@ -28,9 +28,14 @@ class CamelCaseDict:
             self._data = self._req.execute()
 
         if '_' in key:
-            return self._data[camelize(key)]
+            camelized = camelize(key)
+        else:
+            camelized = key
 
-        return self._data.get(key)
+        if camelized not in self._data:
+            raise AttributeError(key)
+
+        return self._data[camelized]
 
     def __repr__(self):
         return "<%r: %s>" % (self.__class__.__name__, repr(self._data))
@@ -75,16 +80,19 @@ class LazyJsonClient:
 
     def __init__(self, base_url, headers=None):
 
-        self._url = base_url
+        self._url = base_url.rstrip('/')
 
-        if isinstance(headers, dict):
-            self._headers = headers
-        else:
-            self._headers = {}
+        if not isinstance(headers, dict):
+            headers = {}
+
+        assert all(key.istitle() for key in headers)
+
+        headers.update({'Accept': 'application/json'})
 
         self._request_factory = LazyJsonRequestFactory(headers)
         self._list_class = LazyList
         self._object_class = LazyObject
+        self._headers = headers
 
         self.__assert()
 
@@ -94,7 +102,11 @@ class LazyJsonClient:
         assert u.netloc
 
     def _build_url(self, path):
-        return parse.urljoin(self._url, path)
+
+        assert not self._url.endswith('/'), self._url
+        assert path.startswith('/'), path
+
+        return self._url + path
 
     def _build_object(self, method, path, data=None):
         return self._object_class(
@@ -106,27 +118,62 @@ class LazyJsonClient:
             self._request_factory(
                 method, self._build_url(path), headers=self._headers))
 
+    def _build_list_with_count(self, method, paths):
+
+        list_, count = paths
+
+        return LazyListWithCount(
+            CompositeRequest(
+                list_=self._request_factory(
+                    method, self._build_url(list_), headers=self._headers),
+                count=self._request_factory(
+                    method, self._build_url(count), headers=self._headers)
+            )
+        )
+
     def set_header_default(self, key, value):
         self._headers[key] = value
 
     def post_login(self, username, password):
         assert username and password
-        return self._build_object('POST', 'auth/login', {
+        return self._build_object('POST', '/auth/login', {
             'user': username,
             'pw': password
         })
 
     def get_col_list(self):
-        return self._build_list('GET', 'collections/list')
+        return self._build_list_with_count('GET', [
+            '/collections/list', '/collections/count'])
 
     def get_doc_list(self, col_id):
-        return self._build_list('GET', 'collections/%d/list' % col_id)
+        return self._build_list_with_count('GET', [
+            '/collections/%d/list' % col_id,
+            '/collections/%d/count' % col_id
+        ])
 
     def get_doc_meta_data(self, col_id, doc_id):
-        return self._build_object('GET', 'collections/%d/%d/metadata' % (col_id, doc_id))
+        return self._build_object('GET', '/collections/%d/%d/metadata' % (col_id, doc_id))
 
 
-class LazyJsonRequest:
+class Request:
+
+    def __init__(self, *args, **kwargs):
+        raise NotImplemented
+
+    def execute(self):
+        raise NotImplemented
+
+    def __repr__(self):
+        raise NotImplemented
+
+
+class CompositeRequest(Request):
+
+    def __init__(self, **kwargs):
+        self.__dict__.update(kwargs)
+
+
+class LazyJsonRequest(Request):
 
     def __init__(self, method, url, **kwargs):
         self._method = method
@@ -143,17 +190,48 @@ class LazyJsonRequest:
         return '<%r: {"url": %r}>' % (self.__class__.__name__, self._url);
 
 
-class LazyList:
+class List:
+
+    def __init__(self, *args, **kwargs):
+        raise NotImplemented
+
+    def __iter__(self):
+        raise NotImplemented
+
+    def __getitem__(self, maybe_slice):
+        raise NotImplemented
+
+    def __len__(self):
+        raise NotImplemented
+
+
+class LazyList(List):
 
     def __init__(self, request):
         self._req = request
-        self._items = None
 
     def __iter__(self):
         warnings.warn("Iterating over *all* list items ...")
         return (CamelCaseDict(data) for data in self._req.execute())
 
     def __getitem__(self, maybe_slice):
+        raise NotImplemented
+
+    def __len__(self):
+        raise NotImplemented
+
+
+class LazyListWithCount(List):
+
+    def __init__(self, request):
+        self._req = request
+
+    def __iter__(self):
+        warnings.warn("Iterating over *all* list items ...")
+        return (CamelCaseDict(data) for data in self._req.list_.execute())
+
+    def __getitem__(self, maybe_slice):
+
         if not isinstance(maybe_slice, slice):
             raise NotImplementedError
         slice_ = maybe_slice
@@ -161,14 +239,17 @@ class LazyList:
         if None in (slice_.start, slice_.stop):
             raise NotImplementedError("Index must be of type %r" % int)
 
-        self._items = self._req.execute({
+        items = self._req.list_.execute({
             'index': slice_.start,
             'nValues': slice_.stop - slice_.start
         })
 
-        assert isinstance(self._items, (tuple, list))
+        assert isinstance(items, (tuple, list))
 
-        return [CamelCaseDict(data) for data in self._items]
+        return [CamelCaseDict(data) for data in items]
+
+    def __len__(self):
+        return self._req.count.execute()
 
 
 class LazyObject(CamelCaseDict):
@@ -177,84 +258,14 @@ class LazyObject(CamelCaseDict):
         self._req = request
         self._data = None
 
-def main():
 
-    from mock import requests
+class Helpers:
 
-    import logging
+    @staticmethod
+    def get_session_id(self, req):
+        return req.user.tsdata.sessionId
 
-    logging.basicConfig(level=logging.INFO)
-
-    req = LazyJsonRequest('GET', 'https://whatever.org/collections/list')
-
-    print(req)
-
-    req.execute()
-
-    factory = LazyJsonRequestFactory()
-
-    req = factory.make('GET', 'https://whatever.org/collections/list')
-
-    lazy_list = LazyList(req)
-    r = lazy_list[0:1]
-
-    for i in r:
-        print(i.url)
-
-        try:
-            i.does_not_exist
-        except KeyError:
-            pass
-        else:
-            assert False, "Should have thrown an exception"
-
-    print(r)
-
-    client = LazyJsonClient('https://api.example.org', headers={'Accept': 'application/json'})
-    r = client.get_col_list()
-
-    for i in r:
-        print(i.url)
-
-    r = client.get_doc_list(2805)
-
-    r = client.post_login('john.doe', 1243)
-    print(r)
-
-    print(r.firstname)
-
-    print(r.sessionId)
-    print(r.session_id)
-
-    print('session_id' in r)    
-
-
-    r = client.get_doc_meta_data(2805, 6320)
-    r.meh
-
-    return
-
-    s = LazyList(request)
-    print(s[0:5])
-    print(s[0:10])
-    print(s[10:20])
-
-    print(s[50:60])
-
-
-    print(s[95:100])
-    print(s[95:105])
-    print(s[95:1000])
-    print(s[95:1000])
-
-    o = LazyObject()
-
-    print(o.value)
-
-    try:
-        print(o.meh)
-    except AttributeError as e:
-        print(e)
-
-if __name__ == '__main__':
-    main()
+    def create_client_from_request(self, req):
+        from django.conf import settings
+        assert hasattr(settings, 'TRP_URL')
+        return LazyJsonClient(settings.TRP_URL, {'JSESSIONID': session_id})
