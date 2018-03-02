@@ -133,7 +133,8 @@ def collection_list(request):
                 'id': item.get('col_id'),
                 'description': item.get('description'),
                 'document_count': item.get('nr_of_documents'),
-                'role': item.get('role')
+                'role': item.get('role'),
+                'thumb_url': item.get('thumb_url'),
             } for item in paginated_collections
         ],
         # testing only
@@ -147,8 +148,94 @@ def collection_detail(request, col_id):
     return HttpResponse(status=501)
 
 def document_list(request, col_id):
-    from django.http import HttpResponse
-    return HttpResponse(status=501)
+    # testing only
+    import time
+    _time_start = time.time()
+
+
+    from .services import Helpers
+    from . import forms
+
+    form = forms.ListForm(request.GET)
+
+    if form.is_valid():
+        pass # do nothing
+
+    params = form.cleaned_data
+
+    page_num = params.get('page')
+    page_size = params.get('size')
+
+    if page_size is None:
+        page_size = forms.ListForm.SIZE_DEFAULT
+
+    page_size = min(forms.ListForm.SIZE_MAX, page_size)
+
+    sort_by = params.get('sort_by', forms.ListForm.SORT_BY_DEFAULT)
+
+    search = params.get('search')
+
+    # testing only
+    if request.GET.get('test') == '1' :
+        from unittest import mock
+        with mock.patch('apps.library.services.Helpers') as Helpers:
+            MockClient = mock.Mock()
+            Helpers.create_client_from_request.return_value = MockClient
+
+            from .services import CamelCaseDict
+            class FakeList:
+                def __slice__(self, *args, **kwargs):
+                    return DATA
+                def __len__(self):
+                    return 100
+
+            DATA = [
+                CamelCaseDict({
+                'docId': 1,
+                'title': 'Test Document',
+                'nrOfPages': 132,
+                })
+            ] * 100
+            MockClient.get_col_list.return_value = DATA
+
+    client = Helpers.create_client_from_request(request)
+
+    documents = client.get_doc_list(col_id)
+
+    paginator = Paginator(documents, page_size)
+
+    try:
+        paginated_documents = paginator.page(page_num)
+    except PageNotAnInteger:
+        paginated_documents = paginator.page(1)
+    except EmptyPage:
+        paginated_documents = paginator.page(paginator.num_pages)
+
+    _time_elapsed = time.time() - _time_start
+
+    context = {
+        'search': search,
+        'page': paginated_documents,
+        'page_num': page,
+        'item_count': len(documents),
+        'form': form,
+        'col_id' : col_id,
+        'items': [
+            {
+                'title': item.get('title'),
+                'id': item.get('doc_id'),
+                'thumb_url': item.get('thumb_url'),
+                'author' : item.get('author'),
+                'genre' : item.get('genre'),
+                'page_count': item.get('nr_of_pages'),
+            } for item in paginated_documents
+        ],
+        # testing onlyx
+        'time_elapsed': round(1000 * _time_elapsed, 2)
+    }
+
+    return render(request, template_name='library/document/list.html', context=context)
+
 
 def document_detail(request, col_id, doc_id):
     raise NotImplemented
