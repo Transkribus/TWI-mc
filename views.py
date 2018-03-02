@@ -59,7 +59,7 @@ def collection_list(request):
     import time
     _time_start = time.time()
 
-    from .services import Helpers
+    from .services import Helpers, LazyJsonClient
     from . import forms
 
     form = forms.ListForm(request.GET)
@@ -81,34 +81,39 @@ def collection_list(request):
 
     search = params.get('search')
 
+    if request.GET.get('test') == '1' :
+        # testing only
+        from unittest import mock
+        with mock.patch('apps.library.services.Helpers') as Helpers:
+            MockClient = mock.Mock()
+            Helpers.create_client_from_request.return_value = MockClient
 
-    # testing only
-    from unittest import mock
-    with mock.patch('apps.library.services.Helpers') as Helpers:
-        MockClient = mock.Mock()
-        Helpers.create_client_from_request.return_value = MockClient
+            from .services import CamelCaseDict
+            class FakeList:
+                def __slice__(self, *args, **kwargs):
+                    return DATA
+                def __len__(self):
+                    return 100
 
-        from .services import CamelCaseDict
-        class FakeList:
-            def __slice__(self, *args, **kwargs):
-                return DATA
-            def __len__(self):
-                return 100
-
-        DATA = [
-            CamelCaseDict({
+            DATA = [
+                CamelCaseDict({
                 'colId': 1,
                 'colName': 'Test Collection',
                 'descr': "Descripton for Test Collection",
                 'nrOfDocuments': 42,
                 'role': 'Reader'
-            })
-        ] * 100
-        MockClient.get_col_list.return_value = DATA
+                })
+            ] * 100
+            MockClient.get_col_list.return_value = DATA
 
+        client = Helpers.create_client_from_request(request)
+    else : 
+        h = Helpers()
+        client = h.create_client_from_request(request)
 
-    client = Helpers.create_client_from_request(request)
-    collections = client.get_col_list(sort_by=params)
+#    collections = client.get_col_list(sort_by=params)
+    collections = client.get_col_list()
+
 
     paginator = Paginator(collections, page_size)
 
@@ -131,7 +136,7 @@ def collection_list(request):
             {
                 'title': item.col_name,
                 'id': item.col_id,
-                'description': item.descr,
+                'description': item.description,
                 'document_count': item.nr_of_documents,
                 'role': item.role
             } for item in paginated_collections
