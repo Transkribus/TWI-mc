@@ -155,9 +155,10 @@ class LazyJsonClient:
             '/collections/list', '/collections/count'])
 
     def get_doc_list(self, col_id):
+        assert isinstance(col_id, int)
         return self._build_list_with_count('GET', [
-            '/collections/%d/list' % int(col_id),
-            '/collections/%d/count' % int(col_id)
+            '/collections/%d/list' % col_id,
+            '/collections/%d/count' % col_id)
         ])
 
     def get_doc_meta_data(self, col_id, doc_id):
