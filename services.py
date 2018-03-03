@@ -158,7 +158,7 @@ class LazyJsonClient:
         assert isinstance(col_id, int)
         return self._build_list_with_count('GET', [
             '/collections/%d/list' % col_id,
-            '/collections/%d/count' % col_id)
+            '/collections/%d/count' % col_id
         ])
 
     def get_doc_meta_data(self, col_id, doc_id):
@@ -279,11 +279,54 @@ class Helpers:
 
     @staticmethod
     def get_session_id(req):
-        return req.user.tsdata.sessionId
+        return getattr(req.user.tsdata, 'session_id', getattr(
+            req.user.tsdata, 'sessionId'))
 
     @staticmethod
     def create_client_from_request(req):
         from django.conf import settings
-        assert hasattr(settings, 'TRP_URL')
-        session_id = Helpers.get_session_id(req)
-        return LazyJsonClient(settings.TRP_URL, {'Cookie': 'JSESSIONID=%s' % session_id})
+
+        if req.GET.get('test') != '1':
+            assert hasattr(settings, 'TRP_URL')
+            session_id = Helpers.get_session_id(req)
+            return LazyJsonClient(settings.TRP_URL, {'Cookie': 'JSESSIONID=%s' % session_id})
+
+        # prepare test client
+
+        from unittest import mock
+        MockClient = mock.Mock()
+
+        class DocumentList:
+            def __slice__(self, *args, **kwargs):
+                return DOC_LIST
+            def __len__(self):
+                return 100
+
+        class CollectionList:
+            def __slice__(self, *args, **kwargs):
+                return COL_LIST
+            def __len__(self):
+                    return 100
+
+        DOC_LIST = [
+            CamelCaseDict({
+                'docId': 1,
+                'title': 'Test Document',
+                'nrOfPages': 132,
+            })
+        ] * 100
+
+        COL_LIST = [
+            CamelCaseDict({
+                'colId': 1,
+                'colName': 'Test Collection',
+                'descr': "Descripton for Test Collection",
+                'nrOfDocuments': 42,
+                'role': 'Reader'
+            })
+        ] * 100
+
+        MockClient.get_col_list.return_value = COL_LIST
+        MockClient.get_doc_list.return_value = COL_LIST
+
+        return MockClient
