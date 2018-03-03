@@ -8,7 +8,7 @@
 
 {% block content %}
 
-<form action="{% url 'library:collection-list' %}" method="get">
+<form action="{% url 'library:document-list' col_id %}" method="get">
   <label for="search">
     Search: <input id="search" name="search" type="search">
   </label>
