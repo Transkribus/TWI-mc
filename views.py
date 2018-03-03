@@ -152,9 +152,10 @@ def document_list(request, col_id):
     import time
     _time_start = time.time()
 
-
     from .services import Helpers
     from . import forms
+
+    col_id = int(col_id)
 
     form = forms.ListForm(request.GET)
 
@@ -196,7 +197,7 @@ def document_list(request, col_id):
                 'nrOfPages': 132,
                 })
             ] * 100
-            MockClient.get_col_list.return_value = DATA
+            MockClient.get_doc_list.return_value = DATA
 
     client = Helpers.create_client_from_request(request)
 
