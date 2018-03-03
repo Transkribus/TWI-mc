@@ -22,6 +22,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
 
+from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from apps.utils.decorators import t_login_required_ajax
@@ -36,8 +37,55 @@ from apps.navigation import navigation
 def index(request):
     return render(request, 'library/homepage.html' )
 
+
+class CollectionListView(ListView):
+    template_name = 'library/collection/list2.html'
+    paginate_by = 10
+
+    def __init__(self, *args, **kwargs):
+        self._time_start = time.time()
+        super( CollectionListView, self).__init__(*args, **kwargs)
+
+    def get_queryset(self):
+        client = services.Helpers.create_client_from_request(self.request)
+        # TODO: handle search / order params here
+
+        form = forms.ListForm(self.request.GET)
+        assert form.is_valid(), form.errors
+
+        self.form = form
+
+        return client.get_col_list()
+
+    def get_context_data(self, **kwargs):
+        context = super(ListView, self).get_context_data(**kwargs)
+        items = [
+            {
+                'title': item.get('col_name'),
+                'id': item.get('col_id'),
+                'description': item.get('description'),
+                'document_count': item.get('nr_of_documents'),
+                'role': item.get('role'),
+                'thumb_url': item.get('thumb_url'),
+            } for item in context.pop('object_list')
+        ]
+
+        page = context.pop('page_obj')
+
+        _time_elapsed = time.time() - self._time_start
+
+        context.update({
+            'items': items,
+            'search': self.form.cleaned_data['search'],
+            'form': self.form,
+            'page': page,
+            'time_elapsed': round(1000 * _time_elapsed, 2)
+        })
+
+        return context
+
 @login_required
-def collection_list(request):
+def collection_list2(request):
     # testing
     _time_start = time.time()
 

@@ -1,4 +1,5 @@
 from django.conf.urls import include, url
+from django.contrib.auth.decorators import login_required
 
 from . import views
 
@@ -9,8 +10,8 @@ urlpatterns = [
 
 #collections and index become one
 
-    url(r'^$', views.collection_list, name='index'),
-    url(r'^collections/$', views.collection_list, name='collection-list'),
+    url(r'^$', login_required(views.CollectionListView.as_view()), name='index'),
+    url(r'^collections/$', login_required(views.CollectionListView.as_view()), name='collection-list'),
     url(r'^collections/(?P<col_id>\d+)/$', views.collection_detail, name='collection-detail'),
 
     url(r'^collections/(?P<col_id>\d+)/documents/$', views.document_list, name='document-list'),
