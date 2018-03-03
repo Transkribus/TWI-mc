@@ -148,7 +148,59 @@ def collection_detail(request, col_id):
     from django.http import HttpResponse
     return HttpResponse("Not Implemented", status=501)
 
-def document_list(request, col_id):
+class DocumentListView(ListView):
+    template_name = 'library/document/list2.html'
+    paginate_by = 10
+
+    def __init__(self, *args, **kwargs):
+        self._time_start = time.time()
+        super( DocumentListView, self).__init__(*args, **kwargs)
+
+    def get_queryset(self):
+        client = services.Helpers.create_client_from_request(self.request)
+
+        # TODO: handle search / order params here
+
+        form = forms.ListForm(self.request.GET)
+        assert form.is_valid(), form.errors
+
+        self.form = form
+        self.col_id = int(self.kwargs['col_id'])
+
+        return client.get_doc_list(self.col_id)
+
+    def get_context_data(self, **kwargs):
+        context = super(ListView, self).get_context_data(**kwargs)
+
+        items = [
+            {
+                'title': item.get('title'),
+                'id': item.get('doc_id'),
+#                'description': item.get('description'),
+                'page_count': item.get('nr_of_pages'),
+                'author': item.get('author'),
+                'genre': item.get('genre'),
+                'thumb_url': item.get('thumb_url'),
+            } for item in context.pop('object_list')
+        ]
+
+        page = context.pop('page_obj')
+
+        _time_elapsed = time.time() - self._time_start
+
+        context.update({
+            'items': items,
+            'col_id': self.col_id,
+            'search': self.form.cleaned_data['search'],
+            'form': self.form,
+            'page': page,
+            'time_elapsed': round(1000 * _time_elapsed, 2)
+        })
+
+        return context
+
+
+def document_list2(request, col_id):
     # testing only
     _time_start = time.time()
 
@@ -174,7 +226,6 @@ def document_list(request, col_id):
 
     client = services.Helpers.create_client_from_request(request)
     documents = client.get_doc_list(col_id)
-
     paginator = Paginator(documents, page_size)
 
     try:
