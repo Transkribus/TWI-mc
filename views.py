@@ -98,7 +98,7 @@ def collection_list(request):
 
 def collection_detail(request, col_id):
     from django.http import HttpResponse
-    return HttpResponse(status=501)
+    return HttpResponse("Not Implemented", status=501)
 
 def document_list(request, col_id):
     # testing only
@@ -162,7 +162,8 @@ def document_list(request, col_id):
     return render(request, template_name='library/document/list.html', context=context)
 
 def document_detail(request, col_id, doc_id):
-    raise NotImplemented
+    from django.http import HttpResponse
+    return HttpResponse("Not Implemented", status=501)
 
 #/library
 #view that lists available collections for a user
