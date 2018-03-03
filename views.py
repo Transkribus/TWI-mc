@@ -1,12 +1,17 @@
-#imports of python modules
-import json
-#import sys
+import time
+
+from django.conf import settings
+from django.core.paginator import Paginator
+
+from . import services
+from . import forms
+
+# imports for old version
 import re
+import json
 import random
-#import os
 import sys
 
-#Imports of django modules
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.utils import translation
@@ -14,58 +19,31 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.template.loader import render_to_string
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from apps.utils.decorators import t_login_required_ajax
 from apps.utils.utils import crop, t_metadata, t_log #, get_ts_session
 from apps.utils.services import *
 from apps.utils.views import *
 
-#Imports from app (library)
-import settings
-import apps.library.settings
+#from .forms import RegisterForm, IngestMetsUrlForm, MetsFileForm, QuickIngestMetsUrlForm
 from apps.navigation import navigation
 
-import apps.library.settings
-
-#from .forms import RegisterForm, IngestMetsUrlForm, MetsFileForm, QuickIngestMetsUrlForm
-
-from django.core.paginator import Paginator
 
 def index(request):
     return render(request, 'library/homepage.html' )
 
-
-#/library
-#view that lists available collections for a user
 @login_required
-def collections(request):
-    # t = get_ts_session(request)
-    if isinstance(t,HttpResponse) :
-        return error_view(request,t)
-
-    collections = t.collections(request,{'empty':'true'})
-    if isinstance(collections,HttpResponse):
-        return apps.utils.views.error_view(request,collections)
-    return render(request, 'library/collections.html', {'collections': collections} )
-
-# @login_required
-
 def collection_list(request):
-
-    # testing only
-    import time
+    # testing
     _time_start = time.time()
-
-    from .services import Helpers
-    from . import forms
 
     form = forms.ListForm(request.GET)
 
-    if form.is_valid():
-        pass # do nothing
+    assert form.is_valid(), form.errors
 
     params = form.cleaned_data
 
@@ -81,32 +59,7 @@ def collection_list(request):
 
     search = params.get('search')
 
-    # testing only
-    if request.GET.get('test') == '1' :
-        from unittest import mock
-        with mock.patch('apps.library.services.Helpers') as Helpers:
-            MockClient = mock.Mock()
-            Helpers.create_client_from_request.return_value = MockClient
-
-            from .services import CamelCaseDict
-            class FakeList:
-                def __slice__(self, *args, **kwargs):
-                    return DATA
-                def __len__(self):
-                    return 100
-
-            DATA = [
-                CamelCaseDict({
-                'colId': 1,
-                'colName': 'Test Collection',
-                'descr': "Descripton for Test Collection",
-                'nrOfDocuments': 42,
-                'role': 'Reader'
-                })
-            ] * 100
-            MockClient.get_col_list.return_value = DATA
-
-    client = Helpers.create_client_from_request(request)
+    client = services.Helpers.create_client_from_request(request)
 
     collections = client.get_col_list(sort_by=sort_by)
 
@@ -137,7 +90,7 @@ def collection_list(request):
                 'thumb_url': item.get('thumb_url'),
             } for item in paginated_collections
         ],
-        # testing only
+        # testing
         'time_elapsed': round(1000 * _time_elapsed, 2)
     }
 
@@ -149,18 +102,13 @@ def collection_detail(request, col_id):
 
 def document_list(request, col_id):
     # testing only
-    import time
     _time_start = time.time()
-
-    from .services import Helpers
-    from . import forms
 
     col_id = int(col_id)
 
     form = forms.ListForm(request.GET)
 
-    if form.is_valid():
-        pass # do nothing
+    assert form.is_valid(), form.errors
 
     params = form.cleaned_data
 
@@ -176,31 +124,7 @@ def document_list(request, col_id):
 
     search = params.get('search')
 
-    # testing only
-    if request.GET.get('test') == '1' :
-        from unittest import mock
-        with mock.patch('apps.library.services.Helpers') as Helpers:
-            MockClient = mock.Mock()
-            Helpers.create_client_from_request.return_value = MockClient
-
-            from .services import CamelCaseDict
-            class FakeList:
-                def __slice__(self, *args, **kwargs):
-                    return DATA
-                def __len__(self):
-                    return 100
-
-            DATA = [
-                CamelCaseDict({
-                'docId': 1,
-                'title': 'Test Document',
-                'nrOfPages': 132,
-                })
-            ] * 100
-            MockClient.get_doc_list.return_value = DATA
-
-    client = Helpers.create_client_from_request(request)
-
+    client = services.Helpers.create_client_from_request(request)
     documents = client.get_doc_list(col_id)
 
     paginator = Paginator(documents, page_size)
@@ -231,16 +155,29 @@ def document_list(request, col_id):
                 'page_count': item.get('nr_of_pages'),
             } for item in paginated_documents
         ],
-        # testing onlyx
+        # testing
         'time_elapsed': round(1000 * _time_elapsed, 2)
     }
 
     return render(request, template_name='library/document/list.html', context=context)
 
-
 def document_detail(request, col_id, doc_id):
     raise NotImplemented
 
+#/library
+#view that lists available collections for a user
+@login_required
+def collections(request):
+    # t = get_ts_session(request)
+    if isinstance(t,HttpResponse) :
+        return error_view(request,t)
+
+    collections = t.collections(request,{'empty':'true'})
+    if isinstance(collections,HttpResponse):
+        return apps.utils.views.error_view(request,collections)
+    return render(request, 'library/collections.html', {'collections': collections} )
+
+# @login_required
 #/library/{colId}
 #view that
 # - lists documents
