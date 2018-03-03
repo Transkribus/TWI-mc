@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^collections/$', views.collection_list, name='collection-list'),
     url(r'^collections/(?P<col_id>\d+)/$', views.collection_detail, name='collection-detail'),
 
-    url(r'^collections/(?P<col_id>\d+)/documents/detail/$', views.document_list, name='document-list'),
+    url(r'^collections/(?P<col_id>\d+)/documents/$', views.document_list, name='document-list'),
     url(r'^collections/(?P<col_id>\d+)/documents/(?P<doc_id>\d+)/$', views.document_detail, name='document-detail'),
 
 #    url(r'^collections$', views.collections, name='collections'),
