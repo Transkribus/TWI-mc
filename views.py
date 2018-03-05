@@ -86,6 +86,7 @@ class DocumentListView(LoginRequiredMixin, ListView):
         else:
             results = client.get_doc_list(col_id, sort_by=sort_by)
 
+
         self.form = form
         self.col_id = col_id
         self.search = search
@@ -111,6 +112,9 @@ class DocumentListView(LoginRequiredMixin, ListView):
 
                 'thumb_url': item.get('thumb_url'),
 
+                'col_list': item.get('collection_list').get('colList'),
+
+
                 # 'upload_timestamp':1472468970284,
                 # 'uploader':'testuser@example.org',
                 # 'uploader_id':42,
@@ -126,9 +130,17 @@ class DocumentListView(LoginRequiredMixin, ListView):
 
         page = context.pop('page_obj')
 
+        # collection metadata is buried in the item.collectionList.colList
+        # TODO this in service.py? (unsully the view of camelCase)
+        for c in items[0].get('col_list') :
+            if c.get('colId') == self.col_id : 
+                col_name = c.get('colName')
+                break
+
         context.update({
             'items': items,
-            'col_id': self.col_id,
+            'id': self.col_id,
+            'title': col_name,
             'search': self.search,
             'form': self.form,
             'page': page,
