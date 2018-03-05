@@ -5,7 +5,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from . import services
 from . import forms
-from . import utils
 
 from .legacy_views import *
 
