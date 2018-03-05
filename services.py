@@ -94,7 +94,8 @@ class LazyJsonClient:
         # NOTE: do not remove this, ambiguous Accept header might result
         assert all(key.istitle() for key in headers)
 
-        headers.update({'Accept': 'application/json'})
+        if 'Accept' not in headers:
+            headers.update({'Accept': 'application/json'})
 
         self._request_factory = LazyJsonRequestFactory(headers)
         self._list_class = LazyList
@@ -125,16 +126,16 @@ class LazyJsonClient:
             self._request_factory(
                 method, self._build_url(path), headers=self._headers))
 
-    def _build_list_with_count(self, method, paths):
+    def _build_list_with_count(self, method, paths, params):
 
         list_, count = paths
 
         return LazyListWithCount(
             CompositeRequest(
                 list_=self._request_factory(
-                    method, self._build_url(list_), headers=self._headers),
+                    method, self._build_url(list_), headers=self._headers, params=params),
                 count=self._request_factory(
-                    method, self._build_url(count), headers=self._headers)
+                    method, self._build_url(count), headers=self._headers, params=params)
             )
         )
 
@@ -164,6 +165,24 @@ class LazyJsonClient:
     def get_doc_meta_data(self, col_id, doc_id):
         return self._build_object('GET', '/collections/%d/%d/metadata' % (col_id, doc_id))
 
+    def find_collections(self, *args, **kwargs):
+        raise NotImplemented('https://github.com/Transkribus/TranskribusServer/issues/35')
+
+    def find_documents(self, col_id, query):
+        params = {
+            'collId': col_id,
+            'title': query,
+            'description': query,
+            'author': query,
+            'writer': query,
+            'exactMatch': False,
+            'caseSensitive': False
+        }
+        return self._build_list_with_count('GET', [
+            '/collections/findDocuments',
+            '/collections/countFindDocuments'
+        ], params)
+
 
 class Request:
 
@@ -188,13 +207,20 @@ class LazyJsonRequest(Request):
     def __init__(self, method, url, **kwargs):
         self._method = method
         self._url = url
+        self._params = kwargs.pop('params', {})
         self._kwargs = kwargs
         self._result = None
 
-    def execute(self, params=None ):
+    def execute(self, params=None):
 
         if self._result is not None:
             return self._result
+
+        if params is None:
+            params = {}
+        else:
+            params = params.copy()
+        params.update(self._params)
 
         r = requests.request(self._method, self._url, params=params, **self._kwargs)
         r.raise_for_status()
