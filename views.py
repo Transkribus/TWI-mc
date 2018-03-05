@@ -29,9 +29,11 @@ class CollectionListView(LoginRequiredMixin, ListView):
             'sort_by', self.form_class.SORT_BY_DEFAULT)
 
         if search not in ('', None):
-            results = client.find_collections(query=search)
+            results = client.find_collections(
+                query=search, sort_by=sort_by)
+
         else:
-            results = client.get_col_list()
+            results = client.get_col_list(sort_by=sort_by)
 
         return results
 
@@ -80,9 +82,10 @@ class DocumentListView(LoginRequiredMixin, ListView):
             'sort_by', self.form_class.SORT_BY_DEFAULT)
 
         if search is not None:
-            results = client.find_documents(col_id, query=search)
+            results = client.find_documents(
+                col_id, query=search, sort_by=sort_by)
         else:
-            results = client.get_doc_list(col_id)
+            results = client.get_doc_list(col_id, sort_by=sort_by)
 
         self.form = form
         self.col_id = col_id

@@ -153,17 +153,24 @@ class LazyJsonClient:
         })
 
     def get_col_list(self, **kwargs):
-        if len(kwargs) > 0:
-            warnings.warn("Sorting not implemented")
+        sort_by = kwargs.get('sort_by')
+        params = {
+            'sortColumn': 'colName',
+            'sortDirection': 'DESC' if sort_by == 'td' else 'ASC'
+        }
         return self._build_list_with_count('GET', [
-            '/collections/list', '/collections/count'])
+            '/collections/list', '/collections/count'], params)
 
-    def get_doc_list(self, col_id):
+    def get_doc_list(self, col_id, sort_by=None):
         assert isinstance(col_id, int)
+        params = {
+            'sortColumn': 'colName',
+            'sortDirection': 'DESC' if sort_by == 'td' else 'ASC'
+        }
         return self._build_list_with_count('GET', [
             '/collections/%d/list' % col_id,
             '/collections/%d/count' % col_id
-        ])
+        ], params)
 
     def get_doc_meta_data(self, col_id, doc_id):
         return self._build_object('GET', '/collections/%d/%d/metadata' % (col_id, doc_id))
@@ -171,7 +178,7 @@ class LazyJsonClient:
     def find_collections(self, *args, **kwargs):
         raise NotImplemented('https://github.com/Transkribus/TranskribusServer/issues/35')
 
-    def find_documents(self, col_id, query):
+    def find_documents(self, col_id, query, sort_by=None):
         params = {
             'collId': col_id,
             'title': query,
@@ -180,7 +187,9 @@ class LazyJsonClient:
             # 'author': query,
             # 'writer': query,
             'exactMatch': False,
-            'caseSensitive': False
+            'caseSensitive': False,
+            'sortColumn': 'title',
+            'sortDirection': 'DESC' if sort_by == 'td' else 'ASC'
         }
         return self._build_list_with_count('GET', [
             '/collections/findDocuments',
