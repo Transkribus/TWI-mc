@@ -293,6 +293,8 @@ class Helpers:
 
         # prepare test client
 
+        import random
+
         from unittest import mock
         MockClient = mock.Mock()
 
@@ -316,15 +318,21 @@ class Helpers:
             })
         ] * 100
 
-        COL_LIST = [
-            CamelCaseDict({
+        COL_LIST = []
+        for _ in range(100):
+            COL_LIST.append(CamelCaseDict({
                 'colId': 1,
                 'colName': 'Test Collection',
                 'descr': "Descripton for Test Collection",
-                'nrOfDocuments': 42,
-                'role': 'Reader'
-            })
-        ] * 100
+                'nrOfDocuments': random.randint(1, 1000),
+                'role': 'Reader',
+                'thumbUrl': random.choice([
+                    'https://dbis-thure.uibk.ac.at/f/Get?id=ERPDNPGLDFALSYJFLARZDNOX&fileType=thumb',
+                    'https://dbis-thure.uibk.ac.at/f/Get?id=FKAYHOLJPWQRUYKMROKQLPEH&fileType=thumb'
+                ]),
+                'elearning': True if random.random() > 0.5 else False,
+                'crowdsourcing': True if random.random() > 0.5 else False
+            }))
 
         MockClient.get_col_list.return_value = COL_LIST
         MockClient.get_doc_list.return_value = COL_LIST
