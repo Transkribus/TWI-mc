@@ -25,6 +25,15 @@
     </style>
 
     <header>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ol class="breadcrumb">
+            <li class="active">Collections</li>
+          </ol>
+        </div>
+      </div>
+
       <div class="row">
         <form action="{% url 'library:collection-list' %}" method="get">
           <div class="col-md-9">
@@ -48,6 +57,15 @@
           {% endif %}
         </div>
       </div>
+      {% if paginator.count > 1 %}
+      <div class="row">
+        <div class="col-md-12">
+          {% blocktrans with form=page.start_index to=page.end_index total=paginator.count %}
+          Showing items {{ from }} to {{ to }} of {{ total }}
+          {% endblocktrans %}
+        </div>
+      </div>
+      {% endif %}
     </header>
     <main class="list">
       {% for item in items %}
@@ -85,23 +103,27 @@
         </div>
         <div class="col-md-10 text-right">
           {% if is_paginated %}
-          <div class="pagination">
-            <span class="step-links">
-              {% if page.has_previous %}
-              <a href="?page=1">&laquo; first</a>
-              <a href="?page={{ page.previous_page_number }}">previous</a>
-              {% endif %}
-              <span class="current">
-                Page {{ page.number }} of {{ page.paginator.num_pages }}.
-              </span>
-              {% if page.has_next %}
-              <a href="?page={{ page.next_page_number }}">next</a>
-              <a href="?page={{ page.paginator.num_pages }}">last &raquo;</a>
-              {% endif %}
-            </span>
-          </div>
-      </div>
-      {% endif %}
+          <nav>
+            <ul class="pagination">
+              <li>
+                <a {% if page.has_previous %}class="disabled" href="?page={{ page.previous_page_number }}" {% endif %}aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              {% for page_num in page.paginator.page_range %}
+              <li{% if page_num  == page.number %} class="active"{% endif %}>
+                <a href="?page={{ page_num }}">{{ page_num }}</a>
+              </li>
+              {% endfor %}
+              <li>
+                <a {% if page.has_next %}class="disabled" href="?page={{ page.next_page_number }}" {% endif %}aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        {% endif %}
     </footer>
   </section>
 </div>
