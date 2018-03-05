@@ -126,7 +126,10 @@ class LazyJsonClient:
             self._request_factory(
                 method, self._build_url(path), headers=self._headers))
 
-    def _build_list_with_count(self, method, paths, params):
+    def _build_list_with_count(self, method, paths, params=None):
+
+        if params is None:
+            params = {}
 
         list_, count = paths
 
