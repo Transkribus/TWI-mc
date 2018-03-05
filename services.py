@@ -173,8 +173,9 @@ class LazyJsonClient:
             'collId': col_id,
             'title': query,
             'description': query,
-            'author': query,
-            'writer': query,
+            # NOTE: commented out because trp api returns bogus results
+            # 'author': query,
+            # 'writer': query,
             'exactMatch': False,
             'caseSensitive': False
         }
@@ -216,10 +217,12 @@ class LazyJsonRequest(Request):
         if self._result is not None:
             return self._result
 
+        # NOTE: combine url params from init and execute
         if params is None:
             params = {}
         else:
             params = params.copy()
+
         params.update(self._params)
 
         r = requests.request(self._method, self._url, params=params, **self._kwargs)
@@ -339,8 +342,9 @@ class Helpers:
         DOC_LIST = [
             CamelCaseDict({
                 'docId': 1,
-                'title': 'Test Document',
-                'nrOfPages': 132,
+                'title': "Test Document",
+                'nrOfPages': random.randint(1, 1000),
+                'desc': "Document description goes here"
             })
         ] * 100
 
