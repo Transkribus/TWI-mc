@@ -8,11 +8,14 @@
 
 {% block content %}
 
-<form action="{% url 'library:document-list' col_id %}" method="get">
+<form action="{% url 'library:collection-list' %}" method="get">
+
   <label for="search">
     Search: <input id="search" name="search" type="search">
   </label>
+
   {{ form.sort_by.label_tag }} {{ form.sort_by }}
+
 </form>
 
 {% if search %}
@@ -23,32 +26,30 @@ Found {{ counter }} results for {{ search }}
 {% endblocktrans %}
 {% endif %}
 
-<style>
- .img {
-   display: inline-block;
-   height: 120px;
- }
-</style>
+<table class="table table-striped display" id="">
+  <thead>
+    <tr>
+	  <th></th>
+      <th>{% trans "Title" %}</th>
+      <th>{% trans "Author" %}</th>
+      <th>{% trans "Genre" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <td><img src="{{ item.thumb_url }}"/></td>
+      <td><a href="{% url 'library:document-detail' col_id item.id %}">{{ item.title }}</a></td>
+      <td>{{ item.author }}</td>
+      <td>{{ item.genre }}</td>
+{%comment%}
+      <td><a href="{% url 'library:page-list' col_id item.id %}">Pages ({{ item.page_count }}) </a></td>
+{%endcomment%}
+    </tr>
+    {%endfor%}
+  </tbody>
+</table>
 
-<div class="container">
-  {% for item in items %}
-  <div class="media">
-    <div class="media-left">
-      <img class="img" src="{{ item.thumb_url }}"/>
-    </div>
-    <div class="media-body">
-      <h4 class="media-heading">{{ item.name }} [no such thing as name?]</h4>
-      {% if item.author %}<p>{{ item.author }}</p>{%endif%}
-      {% if item.genre %}<p>{{ item.genre }}</p>{%endif%}
-      <p><a href="{% url 'library:collection-detail' item.id %}">{{ item.title }}</a></p>
-
-      <p><a href="{% url 'library:document-list' item.id %}">View {{ item.page_count }} page{{ item.page_count|pluralize }}</a></p>
-    </div>
-  </div>
-  {% endfor %}
-</div>
-
-{% if is_paginated %}
 <div class="pagination">
   <span class="step-links">
     {% if page.has_previous %}
@@ -66,7 +67,6 @@ Found {{ counter }} results for {{ search }}
     {% endif %}
   </span>
 </div>
-{% endif %}
 
 {{ time_elapsed }}ms
 
