@@ -67,11 +67,8 @@ class DocumentListView(LoginRequiredMixin, ListView):
     form_class = forms.ListForm
     paginate_by = 10
 
-    def __init__(self, *args, **kwargs):
-        self._time_start = time.time()
-        super(DocumentListView, self).__init__(*args, **kwargs)
-
     def get_queryset(self):
+
         client = services.Helpers.create_client_from_request(self.request)
 
         form = self.form_class(self.request.GET)
@@ -94,6 +91,8 @@ class DocumentListView(LoginRequiredMixin, ListView):
         return results
 
     def get_context_data(self, **kwargs):
+        then = time.time()
+
         context = super(ListView, self).get_context_data(**kwargs)
 
         items = [
@@ -125,15 +124,13 @@ class DocumentListView(LoginRequiredMixin, ListView):
 
         page = context.pop('page_obj')
 
-        _time_elapsed = time.time() - self._time_start
-
         context.update({
             'items': items,
             'col_id': self.col_id,
             'search': self.search,
             'form': self.form,
             'page': page,
-            'time_elapsed': round(1000 * _time_elapsed, 2)
+            'time_elapsed': round(1000 * (time.time() - then), 2)
         })
 
         return context
