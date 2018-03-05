@@ -63,14 +63,12 @@ class CollectionListView(ListView):
             {
                 'title': item.get('col_name'),
                 'id': item.get('col_id'),
-                'description': item.get('description'),
+                'description': item.get('descr'),
                 'document_count': item.get('nr_of_documents'),
                 'role': item.get('role'),
                 'thumb_url': item.get('thumb_url'),
             } for item in context.pop('object_list')
         ]
-
-        page = context.pop('page_obj')
 
         _time_elapsed = time.time() - self._time_start
 
@@ -78,7 +76,7 @@ class CollectionListView(ListView):
             'items': items,
             'search': self.form.cleaned_data['search'],
             'form': self.form,
-            'page': page,
+            'page': context.pop('page_obj'),
             'time_elapsed': round(1000 * _time_elapsed, 2)
         })
 
