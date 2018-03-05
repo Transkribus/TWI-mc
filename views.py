@@ -38,9 +38,12 @@ def index(request):
     return render(request, 'library/homepage.html' )
 
 
+
 class CollectionListView(ListView):
     template_name = 'library/collection/list2.html'
     paginate_by = 10
+
+    form_class = forms.ListForm
 
     def __init__(self, *args, **kwargs):
         self._time_start = time.time()
@@ -50,7 +53,7 @@ class CollectionListView(ListView):
         client = services.Helpers.create_client_from_request(self.request)
         # TODO: handle search / order params here
 
-        form = forms.ListForm(self.request.GET)
+        form = self.form_class(self.request.GET)
         assert form.is_valid(), form.errors
 
         self.form = form
@@ -146,9 +149,12 @@ def collection_detail(request, col_id):
     from django.http import HttpResponse
     return HttpResponse("Not Implemented", status=501)
 
+
 class DocumentListView(ListView):
     template_name = 'library/document/list2.html'
     paginate_by = 10
+
+    form_class = forms.ListForm
 
     def __init__(self, *args, **kwargs):
         self._time_start = time.time()
@@ -159,13 +165,22 @@ class DocumentListView(ListView):
 
         # TODO: handle search / order params here
 
-        form = forms.ListForm(self.request.GET)
+        form = self.form_class(self.request.GET)
         assert form.is_valid(), form.errors
 
-        self.form = form
-        self.col_id = int(self.kwargs['col_id'])
+        col_id = self.kwargs['col_id'] = int(self.kwargs['col_id'])
+        search = form.cleaned_data.get('search')
 
-        return client.get_doc_list(self.col_id)
+        if search is not None:
+            results = client.find_documents(col_id, query=search)
+        else:
+            results = client.get_doc_list(col_id)
+
+        self.form = form
+        self.col_id = col_id
+        self.search = search
+
+        return results
 
     def get_context_data(self, **kwargs):
         context = super(ListView, self).get_context_data(**kwargs)
@@ -174,11 +189,26 @@ class DocumentListView(ListView):
             {
                 'title': item.get('title'),
                 'id': item.get('doc_id'),
-#                'description': item.get('description'),
+                'description': item.get('desc'),
                 'page_count': item.get('nr_of_pages'),
+                'script_type': item.get('script_type'),
+                'language': item.get('language'),
                 'author': item.get('author'),
+                'writer': item.get('writer'),
                 'genre': item.get('genre'),
+
                 'thumb_url': item.get('thumb_url'),
+
+                # 'upload_timestamp':1472468970284,
+                # 'uploader':'testuser@example.org',
+                # 'uploader_id':42,
+                # 'url':'https://dbis-thure.uibk.ac.at/f/Get?id=ERPDNPGLDFALSYJFLARZDNOX&fileType=view',
+
+                # 'status': 0,
+                # 'created_from_timestamp':-5993089570326,
+                # 'created_to_timestamp':-5961467170326,
+                # 'collection_list'
+
             } for item in context.pop('object_list')
         ]
 
@@ -189,7 +219,7 @@ class DocumentListView(ListView):
         context.update({
             'items': items,
             'col_id': self.col_id,
-            'search': self.form.cleaned_data['search'],
+            'search': self.search,
             'form': self.form,
             'page': page,
             'time_elapsed': round(1000 * _time_elapsed, 2)
