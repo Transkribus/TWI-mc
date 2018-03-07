@@ -29,8 +29,7 @@ class CollectionListView(LoginRequiredMixin, ListView):
 
         if search not in ('', None):
             results = client.find_collections(
-                query=search, sort_by=sort_by)
-
+                query=search, sort_by=sort_by)  
         else:
             results = client.get_col_list(sort_by=sort_by)
 
@@ -132,10 +131,11 @@ class DocumentListView(LoginRequiredMixin, ListView):
 
         # collection metadata is buried in the item.collectionList.colList
         # TODO this in service.py? (unsully the view of camelCase)
-        for c in items[0].get('col_list') :
-            if c.get('colId') == self.col_id : 
-                col_name = c.get('colName')
-                break
+        if items :
+            for c in items[0].get('col_list') :
+                if c.get('colId') == self.col_id : 
+                    col_name = c.get('colName')
+                    break
 
         context.update({
             'items': items,
