@@ -29,8 +29,8 @@
       <div class="row">
         <div class="col-md-12">
           <ol class="breadcrumb">
-            <li><a href="{% url "index" %}">Collections</a></li>
-		    <li class="active">{{ title }} <small>{{ id }}</small></li>
+            <li class="breadcrumb-item"><a href="{% url "index" %}">{% trans 'Collections'%}</a></li>
+		    <li class="breadcrumb-item active">{{ title }} <small>{{ id }}</small></li>
           </ol>
         </div>
       </div>
