@@ -7,6 +7,7 @@ class Blog(models.Model):
   title = models.CharField("Title", max_length=200)
   content = models.TextField()
   changed = models.DateField(auto_now_add=True)
+  image = models.FilePathField(max_length=512, null=True)
   
   class Meta:
       unique_together = (("a_key", "language"),)
