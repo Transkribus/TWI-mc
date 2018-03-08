@@ -172,8 +172,14 @@ class LazyJsonClient:
             '/collections/%d/count' % col_id
         ], params)
 
+    def get_page_list(self, **kwargs):
+        raise NotImplemented('https://github.com/Transkribus/TranskribusServer/issues/36')
+
     def get_doc_meta_data(self, col_id, doc_id):
         return self._build_object('GET', '/collections/%d/%d/metadata' % (col_id, doc_id))
+
+    def get_col_meta_data(self, col_id):
+        return self._build_object('GET', '/collections/%d/metadata' % col_id)
 
     def find_collections(self, *args, **kwargs):
         raise NotImplemented('https://github.com/Transkribus/TranskribusServer/issues/35')
