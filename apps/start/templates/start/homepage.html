@@ -30,10 +30,14 @@
     <link rel="stylesheet" href="{% static 'start/assets/css/animate.min.css' %}" >
     <!-- Custom styles for this template -->
     <link href="{% static 'start/assets/css/main.css' %}" rel="stylesheet" > 
+
+    
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     <!-- Custom modifications -->
     
     <link href="{% static 'start/css/homepage.css' %}" rel="stylesheet" >
-    <link href="{% static 'start/css/login.css' %}" rel="stylesheet" >
+   
+    <link href="{% static 'start/css/modal.css' %}" rel="stylesheet" > 
      
     <link rel="shortcut icon" href="{% static 'start/favicon.ico' %}" type="image/x-icon" />
 </head>
@@ -114,24 +118,23 @@
                          {% if request.session.user.isAdmin == 'true' %}
                             <li><a href="start_admin">{% trans 'admin_page' %}</a></li>
                         {% endif %}
+                        
+                         <li>
+                            <a class="nav-link " data-toggle="modal" data-target="#modifyAccountModal" href="#">{% trans 'modify account' %}</a>
+                        </li>
                         <li><a href="logout">{% trans 'logout' %}</a></li>
                         
                      </ul>
                      {% else %}
-                    <ul class="multi_col">
+                    <ul class="sub_menu"> 
                         <li>
-                            <ul>
-                                <li class="nav-item">
-                                    <a class="nav-link " data-toggle="modal" data-target="#createAccountModal" href="#">{% trans 'register' %}</a>
-                                </li>
-                            </ul>
+                            <a class="nav-link " data-toggle="modal" data-target="#createAccountModal" href="#">{% trans 'register' %}</a>
+                        </li>
+                            
                         <li>
-                            <ul>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#" data-toggle="modal" data-target="#login_modal">{% trans 'login' %}</a>
-                                </li>
-                            </ul>
-                        </li>    
+                            <a class="nav-link" href="#" data-toggle="modal" data-target="#login_modal">{% trans 'login' %}</a>
+                        </li>
+                                
                     </ul>
                      {% endif %}
                 </li>
@@ -742,10 +745,11 @@
 
 <!-- Custom js -->
 <script src="{% static 'start/assets/js/main.js' %}"></script>
-
+ 
 
 {% include "start/modals/imprint.html" %} 
 {% include "start/modals/login.html" %} 
 {% include "start/modals/register.html" %} 
+{% include "start/modals/modifyaccount.html" %} 
 </body>
 </html>
