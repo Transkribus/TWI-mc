@@ -25,15 +25,14 @@
     </style>
 
     <header>
-
       <div class="row">
         <div class="col-md-12">
           <ol class="breadcrumb">
-            <li class="active">Collections</li>
+            <li class="breadcrumb-item"><a href="{% url 'library:collection-list' %}"><span class="glyphicon glyphicon-home"></span> {% trans 'Home'%}</a></li>
+            <li class="breadcrumb-item active">{% trans 'Collections'%}</li>
           </ol>
         </div>
       </div>
-
       <div class="row">
         <form action="{% url 'library:collection-list' %}" method="get">
           <div class="col-md-9">

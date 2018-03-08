@@ -4,6 +4,9 @@
 <li class="dropdown" id="dropdown">
   <a href="{% url "index" %}" class="dropdown-toggle navbar-brand" data-toggle="dropdown">{% trans "My Collections" %}</a>
 </li> 
+<li>
+  <a href="{% url "library:document-list" id%}">{{title}}</a>
+</li>
 {% endblock %}
 
 {% block content %}
@@ -39,7 +42,7 @@ Found {{ counter }} results for {{ search }}
     {% for item in items %}
     <tr>
       <td><img src="{{ item.thumb_url }}"/></td>
-      <td><a href="{% url 'library:document-detail' col_id item.id %}">{{ item.title }}</a></td>
+      <td><a href="{% url 'library:document-detail' id item.id %}">{{ item.title }}</a></td>
       <td>{{ item.author }}</td>
       <td>{{ item.genre }}</td>
 {%comment%}

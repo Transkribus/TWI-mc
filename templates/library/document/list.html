@@ -1,75 +1,131 @@
-{% extends 'navi_base.html' %}
+{% extends 'base.html' %}
 {% load i18n %}
 
-
-{% block breadcrumb %}
-<li class="dropdown" id="dropdown">
-  <a href="{% url "index" %}" class="dropdown-toggle navbar-brand" data-toggle="dropdown">{% trans "My Collections" %}</a>
-</li> 
-{% endblock %}
-
-{% block content %}
-
-<form action="{% url 'library:document-list' col_id %}" method="get">
-  <label for="search">
-    Search: <input id="search" name="search" type="search">
-  </label>
-  {{ form.sort_by.label_tag }} {{ form.sort_by }}
-</form>
-
-{% if search %}
-{% blocktrans count counter=item_count %}
-Found one result for <span class="">{{ search }}</span>
-{% plural %}
-Found {{ counter }} results for {{ search }}
-{% endblocktrans %}
-{% endif %}
-
-<style>
- .img {
-   display: inline-block;
-   height: 120px;
- }
-</style>
-
+{% block body_content %}
 <div class="container">
-  {% for item in items %}
-  <div class="media">
-    <div class="media-left">
-      <img class="img" src="{{ item.thumb_url }}"/>
-    </div>
-    <div class="media-body">
-      <h4 class="media-heading">{{ item.title }}</h4>
-      {% if item.author %}<p>{{ item.author }}</p>{% endif %}
-      {% if item.genre %}<p>{{ item.genre }}</p>{% endif %}
-      <p><a href="{% url 'library:collection-detail' item.id %}">{{ item.title }}</a></p>
+  <section class="documents">
+    <style>
+     .documents {
+       padding: 2em 0;
+     }
 
-      <p><a href="{% url 'library:document-list' item.id %}">View {{ item.page_count }} Page{{ item.page_count|pluralize }}</a></p>
-    </div>
-  </div>
-  {% endfor %}
+     .documents .list > .item > .media-left {
+       text-align: center;
+     }
+
+     .documents .list > .item > .media-left > .img {
+       display: block;
+       width: auto;
+       min-width: 85px;
+       height: 120px;
+       background-color: rgba(0, 0, 0, 0.05);
+     }
+
+    </style>
+
+    <header>
+      <div class="row">
+        <div class="col-md-12">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'library:collection-list' %}"><span class="glyphicon glyphicon-home"></span> {% trans 'Home'%}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'library:collection-list' %}">{% trans 'Collections'%}</a></li>
+	    <li class="breadcrumb-item active">{{ title }} ({{ id }})</li>
+          </ol>
+        </div>
+      </div>
+      <div class="row">
+        <form action="{% url 'library:document-list' id %}" method="get">
+          <div class="col-md-9">
+            <label for="search">
+              Search for: <input id="search" name="search" type="search" value="{{search}}">
+            </label>
+          </div>
+          <div class="col-md-3">
+            {{ form.sort_by.label_tag }} {{ form.sort_by }}
+          </div>
+        </form>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          {% if search %}
+          {% blocktrans count counter=paginator.count %}
+          Found one result for <span class="">{{ search }}</span>
+          {% plural %}
+          Found {{ counter }} results for {{ search }}
+          {% endblocktrans %}
+          {% endif %}
+        </div>
+      </div>
+      {% if paginator.count > 1 %}
+      <div class="row">
+        <div class="col-md-12">
+          {% blocktrans with form=page.start_index to=page.end_index total=paginator.count %}
+          Showing items {{ from }} to {{ to }} of {{ total }}
+          {% endblocktrans %}
+        </div>
+      </div>
+      {% endif %}
+    </header>
+    <main class="list">
+      {% for item in items %}
+      <hr>
+      <div class="item media">
+        <div class="media-left media-top">
+          <img class="img" src="{{ item.thumb_url }}" alt="{{ item.title }}"/>
+        </div>
+        <div class="media-body">
+          <h4 class="media-heading">{{ item.title }}</h4>
+          <p>{% if item.description %}{{ item.description }}{% else %}<!-- {% trans 'No description provided' %} -->{% endif %}</p>
+     	  {% if item.author %}<p>{{ item.author }}</p>{% endif %}
+      	  {% if item.genre %}<p>{{ item.genre }}</p>{% endif %}
+          {% comment %}
+          <p>
+            <a href="{% url 'library:page-list' id item.id %}">
+              {% blocktrans count counter=item.document_count %}
+              Show one page
+              {% plural %}
+              Show {{ counter }} pages
+              {% endblocktrans %}
+            </a>
+          </p>
+          {% endcomment %}
+          <p><a href="{% url 'library:document-detail' id item.id %}">Show Details</a></p>
+        </div>
+        {% if forloop.last %}
+        <hr>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </main>
+    <footer>
+      <div class="row">
+        <div class="col-md-2">
+          {{ time_elapsed }}ms
+        </div>
+        <div class="col-md-10 text-right">
+          {% if is_paginated %}
+          <nav>
+            <ul class="pagination">
+              <li>
+                <a {% if page.has_previous %}class="disabled" href="?page={{ page.previous_page_number }}" {% endif %}aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              {% for page_num in page.paginator.page_range %}
+              <li{% if page_num  == page.number %} class="active"{% endif %}>
+                <a href="?page={{ page_num }}">{{ page_num }}</a>
+              </li>
+              {% endfor %}
+              <li>
+                <a {% if page.has_next %}class="disabled" href="?page={{ page.next_page_number }}" {% endif %}aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        {% endif %}
+    </footer>
+  </section>
 </div>
-
-{% if is_paginated %}
-<div class="pagination">
-  <span class="step-links">
-    {% if page.has_previous %}
-    <a href="?page=1">&laquo; first</a>
-    <a href="?page={{ page.previous_page_number }}">previous</a>
-    {% endif %}
-
-    <span class="current">
-      Page {{ page.number }} of {{ page.paginator.num_pages }}.
-    </span>
-
-    {% if page.has_next %}
-    <a href="?page={{ page.next_page_number }}">next</a>
-    <a href="?page={{ page.paginator.num_pages }}">last &raquo;</a>
-    {% endif %}
-  </span>
-</div>
-{% endif %}
-
-{{ time_elapsed }}ms
-
 {% endblock %}
