@@ -7,13 +7,16 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.utils import translation
 from django.core.mail import send_mail
 
+from apps.utils.services import TranskribusSession
+ 
 from . import models as m
 #from .forms import NameForm
 import datetime
 import json
 
-from . import Services as serv 
+#from . import Services as serv 
 
+ts = TranskribusSession()
 
 def index(request):
     template = loader.get_template('start/homepage.html')
@@ -49,12 +52,11 @@ def store_admin(request):
     except ObjectDoesNotExist:
       art = m.Article.objects.create(a_key = id, content = content, title=title, language=lang)
         
-    return HttpResponse('huhu', content_type="text/plain")
+    return HttpResponseRedirect("admin")
     
     
 def logout_process(request):
-    s = serv.Services();
-    s.Logout()
+    ts.invalidate()
     del request.session['user']
     request.session.modified = True
     return HttpResponseRedirect("index")
@@ -62,11 +64,9 @@ def logout_process(request):
 def login_process(request):
     e = request.POST.get('email','')
     p = request.POST.get('password','')
-  
-    s = serv.Services();
-    
+      
     try:
-        request.session['user'] = s.Login(e,p)['trpUserLogin']
+        request.session['user'] = ts.login(e,p)
         request.session.modified = True 
         
     except:
@@ -74,6 +74,17 @@ def login_process(request):
      
     return HttpResponseRedirect("index")
 
+def register_process(request):
+#     user = request.POST.get('user')
+#     pw = request.POST.get('pw')
+#     pw_again = request.POST.get('pw_again')
+#     firstName = request.POST.get('firstName')
+#     lastName = request.POST.get('lastName')
+#     orcid = request.POST.get('orcid')
+#     gender = request.POST.get('gender')
+    
+    #TODO currently not working
+    ts.register(request)
     
 def change_lang(request):
     lang = request.GET.get('lang','en')
