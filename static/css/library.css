@@ -18,3 +18,7 @@ td.details-control {
 tr.shown td.details-control {
     background: url('../images/details_close.png') no-repeat center center;
 }
+
+.library > .collections,
+.library > .documents {
+}
