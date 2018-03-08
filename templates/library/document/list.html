@@ -1,4 +1,6 @@
+{% extends 'navi_base.html' %}
 {% load i18n %}
+
 
 {% block breadcrumb %}
 <li class="dropdown" id="dropdown">
@@ -37,12 +39,12 @@ Found {{ counter }} results for {{ search }}
       <img class="img" src="{{ item.thumb_url }}"/>
     </div>
     <div class="media-body">
-      <h4 class="media-heading">{{ item.name }} [no such thing as name?]</h4>
-      {% if item.author %}<p>{{ item.author }}</p>{%endif%}
-      {% if item.genre %}<p>{{ item.genre }}</p>{%endif%}
+      <h4 class="media-heading">{{ item.title }}</h4>
+      {% if item.author %}<p>{{ item.author }}</p>{% endif %}
+      {% if item.genre %}<p>{{ item.genre }}</p>{% endif %}
       <p><a href="{% url 'library:collection-detail' item.id %}">{{ item.title }}</a></p>
 
-      <p><a href="{% url 'library:document-list' item.id %}">View {{ item.page_count }} page{{ item.page_count|pluralize }}</a></p>
+      <p><a href="{% url 'library:document-list' item.id %}">View {{ item.page_count }} Page{{ item.page_count|pluralize }}</a></p>
     </div>
   </div>
   {% endfor %}

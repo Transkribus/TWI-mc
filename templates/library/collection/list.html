@@ -37,8 +37,8 @@
       <div class="row">
         <form action="{% url 'library:collection-list' %}" method="get">
           <div class="col-md-9">
-            <label for="search">
-              Search for: <input id="search" name="search" type="search">
+            <label for="{{ form.search.id }}">
+              Search for: {{ form.search }}
             </label>
           </div>
           <div class="col-md-3">
