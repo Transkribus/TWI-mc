@@ -3,7 +3,10 @@
 <div class="modal fade" id="login_modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="loginmodal-container">
-            <h1>{% trans 'login_transkribus' %}</h1>
+            
+            <h4>
+                <span class="glyphicon glyphicon-log-in"></span>
+                {% trans 'login_transkribus' %}</h4>
             <br>
             <form action="login" method="post">
                 {% csrf_token %}
