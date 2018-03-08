@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^logout$', v.logout_process, name='logout_process'),
     url(r'^change_lang', v.change_lang , name='change_lang'),
     url(r'^contact', v.contact , name='contact'),
+    url(r'^register_process', v.contact , name='contact'),
     
 ]
