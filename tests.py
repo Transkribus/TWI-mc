@@ -103,7 +103,7 @@ class TestServices(TestCase):
 
 class TestPagination(TestCase):
 
-    @unitest.skip("check if django paginator sanitizes page_size param")
+    @unittest.skip("check if django paginator sanitizes page_size param")
     def test_page_size_is_none(self):
 
         from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger        
