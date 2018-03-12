@@ -19,3 +19,6 @@
 [submodule "apps/edit"]
 	path = apps/edit
 	url = https://github.com/Transkribus/TWI-edit.git
+[submodule "apps/sandbox"]
+	path = apps/sandbox
+	url = git@bitbucket.org:bejohu/twi-sandbox.git

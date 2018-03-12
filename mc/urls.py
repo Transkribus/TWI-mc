@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^view/', include('apps.edit.urls', app_name='edit', namespace='edit')),
     url(r'^edit/', include('apps.edit.urls', app_name='edit', namespace='edit')),
     url(r'^utils/', include('apps.utils.urls', app_name='utils', namespace='utils')),
+    url(r'^sandbox/', include('apps.sandbox.urls', app_name='sandbox', namespace='sandbox')),
 
     ## Project pages for My collection ##
     url(r'^$', mc.views.index, name='index'),
