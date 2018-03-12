@@ -243,7 +243,7 @@ class LazyJsonRequest(Request):
 
         params.update(self._params)
 
-        r = requests.request(self._method, self._url, params=params, timeout=0.3, **self._kwargs)
+        r = requests.request(self._method, self._url, params=params, timeout=1.5, **self._kwargs)
         r.raise_for_status()
 
         self._result = r.json()
@@ -386,3 +386,34 @@ class Helpers:
         MockClient.get_doc_list.return_value = COL_LIST
 
         return MockClient
+
+    def get_page_list(col_id, doc_id):
+        import random
+        images = [
+            'https://dbis-thure.uibk.ac.at/f/Get?id=FKAYHOLJPWQRUYKMROKQLPEH&fileType=thumb',
+            'thumbUrl":"https://dbis-thure.uibk.ac.at/f/Get?id=HAURSECXVZZOKNTZVZLUDLXR&fileType=thumb'
+        ]
+        return [
+            CamelCaseDict({
+                'pageId': random.randint(1, 1000),
+                'pageNr': index + 1,
+                'docId': doc_id,
+                'thumbUrl': random.choice(images),
+                'width': 2480,
+                'height': 3507,
+                'created': '2016-09-26T15:02:07+02:00',
+                'indexed': random.choice([True, False]),
+                'currentTranscript': CamelCaseDict({
+                    'status': 'DONE',
+                    'timestamp': 1502636811285,
+                    'nrOfRegions': random.randint(0, 1000),
+                    'nrOfTranscribedRegions': random.randint(0, 1000),
+                    'nrOfWordsInRegions': random.randint(0, 1000),
+                    'nrOfLines': random.randint(0, 1000),
+                    'nrOfTranscribedLines': random.randint(0, 1000),
+                    'nrOfWordsInLines': random.randint(0, 1000),
+                    'nrOfWords': random.randint(0, 1000),
+                    'nrOfTranscribedWords': random.randint(0, 1000)
+                })
+            }) for index in range(0, random.randint(1, 1000))
+        ]

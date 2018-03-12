@@ -5,11 +5,15 @@ from . import views
 urlpatterns = [
 
     url(r'^$', views.CollectionListView.as_view(), name='index'),
+
     url(r'^collections/$', views.CollectionListView.as_view(), name='collection-list'),
     url(r'^collections/(?P<col_id>\d+)/$', views.collection_detail, name='collection-detail'),
     url(r'^collections/(?P<col_id>\d+)/documents/$', views.DocumentListView.as_view(), name='document-list'),
     url(r'^collections/(?P<col_id>\d+)/documents/(?P<doc_id>\d+)/$', views.document_detail, name='document-detail'),
-    url(r'^(?P<col_id>\d+)/$', views.DocumentListView.as_view(), name='document-list--short'),
+    url(r'^collections/(?P<col_id>\d+)/documents/(?P<doc_id>\d+)/pages/$', views.page_list, name='page-list'),
+
+    url(r'^(?P<col_id>\d+)/$', views.DocumentListView.as_view(), name='document-list--compat'),
+
 
 #    url(r'^collections$', views.collections, name='collections'),
     # url(r'^([\-0-9]+)$', views.collection, name='collection'),

@@ -45,7 +45,7 @@ class CollectionListView(LoginRequiredMixin, ListView):
                 'title': item.get('col_name'),
                 'id': item.get('col_id'),
                 'description': item.get('descr'),
-                'document_count': item.get('nr_of_documents'),
+                'item_count': item.get('nr_of_documents'),
                 'role': item.get('role'),
                 'thumb_url': item.get('thumb_url')
             } for item in context.pop('object_list')
@@ -103,7 +103,7 @@ class DocumentListView(LoginRequiredMixin, ListView):
                 'title': item.get('title'),
                 'id': item.get('doc_id'),
                 'description': item.get('desc'),
-                'page_count': item.get('nr_of_pages'),
+                'item_count': item.get('nr_of_pages'),
                 'script_type': item.get('script_type'),
                 'language': item.get('language'),
                 'author': item.get('author'),
@@ -217,6 +217,11 @@ class PageListView(LoginRequiredMixin, ListView):
 
         return context
 
+
+def page_list(request, col_id, doc_id):
+    items = services.Helpers.get_page_list(col_id, doc_id)
+    context = {}
+    return render(request, template_name='library/page/list.html', context=context)
 
 def collection_detail(request, col_id):
     from django.http import HttpResponse
