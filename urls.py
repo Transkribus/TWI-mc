@@ -16,9 +16,7 @@ urlpatterns = [
 
 
 #    url(r'^collections$', views.collections, name='collections'),
-    url(r'^([\-0-9]+)$', views.collection, name='collection'),
-	#While we use edit/master with refato branch, we need the library/master to respond to both new and old view names
-    url(r'^([\-0-9]+)$', views.collection, name='document-list'),
+    # url(r'^([\-0-9]+)$', views.collection, name='collection'),
 #    url(r'^([\-0-9]+)/([0-9]+)$', views.document, name='document'),
     url(r'^([\-0-9]+)/([0-9]+)/([0-9]+)$', views.document_page, name='document_page'),
     url(r'^([\-0-9]+)/([0-9]+)$', views.document_page, name='document_page'),
