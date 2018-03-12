@@ -88,6 +88,7 @@
             </a>
           </p>
           <p><a href="{% url 'library:document-detail' id item.id %}">Show Details</a></p>
+          <p><a href="{% url 'edit:document-view' id item.id %}">View or edit Document</a></p>
         </div>
         {% if forloop.last %}
         <hr>
