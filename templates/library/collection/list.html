@@ -78,7 +78,7 @@
           <p>{% if item.description %}{{ item.description }}{% else %}<!-- {% trans 'No description provided' %} -->{% endif %}</p>
           <p>
             <a href="{% url 'library:document-list' item.id %}">
-              {% blocktrans count counter=item.document_count %}
+              {% blocktrans count counter=item.item_count %}
               Show one document
               {% plural %}
               Show {{ counter }} documents
