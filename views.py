@@ -157,12 +157,13 @@ class PageListView(LoginRequiredMixin, ListView):
         col_id = self.kwargs['col_id'] = int(self.kwargs['col_id'])
         doc_id = self.kwargs['doc_id'] = int(self.kwargs['doc_id'])
 
-        results = client.get_doc_list(col_id, sort_by=sort_by)
+        results = services.Helpers.get_page_list(col_id, doc_id)
 
         self.meta_data = {
             'col': client.get_col_meta_data(col_id),
             'doc': client.get_doc_meta_data(col_id, doc_id)
         }
+
         self.form = form
         self.col_id = col_id
         self.doc_id = doc_id
@@ -176,52 +177,24 @@ class PageListView(LoginRequiredMixin, ListView):
 
         items = [
             {
-                'title': item.get('title'),
-                'id': item.get('doc_id'),
-                'description': item.get('desc'),
-                'page_count': item.get('nr_of_pages'),
-                'script_type': item.get('script_type'),
-                'language': item.get('language'),
-                'author': item.get('author'),
-                'writer': item.get('writer'),
-                'genre': item.get('genre'),
-
-                'thumb_url': item.get('thumb_url'),
-
-                # 'upload_timestamp':1472468970284,
-                # 'uploader':'testuser@example.org',
-                # 'uploader_id':42,
-                # 'url':'https://dbis-thure.uibk.ac.at/f/Get?id=ERPDNPGLDFALSYJFLARZDNOX&fileType=view',
-
-                # 'status': 0,
-                # 'created_from_timestamp':-5993089570326,
-                # 'created_to_timestamp':-5961467170326,
-                # 'collection_list'
+                'id': item.page_id,
+                'thumb_url': item.thumb_url,
 
             } for item in context.pop('object_list')
         ]
 
         page = context.pop('page_obj')
 
-        col_name = self.meta_data.col_name
-
         context.update({
             'items': items,
-            'id': self.col_id,
-            'title': col_name,
-            'search': self.search,
+            'doc_id': self.doc_id,
+            'col_id': self.col_id,
             'form': self.form,
             'page': page,
             'time_elapsed': round(1000 * (time.time() - then), 2)
         })
 
         return context
-
-
-def page_list(request, col_id, doc_id):
-    items = services.Helpers.get_page_list(col_id, doc_id)
-    context = {}
-    return render(request, template_name='library/page/list.html', context=context)
 
 def collection_detail(request, col_id):
     from django.http import HttpResponse
