@@ -1,8 +1,9 @@
-Django==1.10.3
-django-bootstrap3==7.1.0
+Django==1.11
+django-bootstrap3==9.1.0
 django-picklefield==0.3.2
 django-recaptcha==1.1.0
 python-dateutil==2.6.0
+pytz==2018.3
 requests==2.11.1
 six==1.10.0
 xmltodict==0.10.2
