@@ -37,7 +37,30 @@ def admin(request):
     return HttpResponse(template.render(context, request))
 
 
+def store_admin_blog(request):
+    print("store_admin_blog")
+    id = request.POST.get('id',0)
+    print("id:" + id)
+    if id == "0":
+        title_de = request.POST.get('title_de','')
+        title_en = request.POST.get('title_en','')
+        subtitle_de = request.POST.get('subtitle_de','')
+        subtitle_en = request.POST.get('subtitle_en','')
+        content_de = request.POST.get('content_de','')
+        content_en = request.POST.get('content_en','')
+        print()
+        #TODO image storage if available
+        b = m.Blog.objects.create()
+        
+        e_de =m.BlogEntry.objects.create(title=title_de, subtitle=subtitle_de, content=content_de, blog=b, lang="de")
+        e_en = m.BlogEntry.objects.create(title=title_de, subtitle=subtitle_de, content=content_de, blog=b, lang="en")  
+        print(e_de)
+        print(e_en)      
+    #return HttpResponseRedirect("start_admin")
+    return HttpResponse('ok', content_type="text/plain")
+
 def store_admin(request):
+    print("store_admin")
     #TODO limit access to logged in admins
     title = request.POST.get('title','')
     content = request.POST.get('content','')
