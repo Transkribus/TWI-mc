@@ -25,7 +25,7 @@ class Command(BaseCommand):
 
         import ast
 
-        import astunparse
+        # import astunparse
 
         module = ast.parse(source)
 
@@ -35,8 +35,9 @@ class Command(BaseCommand):
             if isinstance(node, ast.ClassDef):
                 class_names.append(node.name)
 
-        source = astunparse.unparse(module)
+        # source = astunparse.unparse(module)
 
+        # TODO: make changes via ast
         lines = []
         for line in source.split('\n'):
 
