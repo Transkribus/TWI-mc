@@ -1,11 +1,15 @@
 from django.db import models
 
+from . import helpers
+
+# NOTE: original commit e7963dadc3ca02fe09634dbeeb429d1218178bb1
+
 
 class AbbrevTag(models.Model):
     id = models.FloatField(primary_key=True)
     docid = models.ForeignKey('Document', models.DO_NOTHING, db_column='docid', blank=True, null=True)
-    pageid = models.ForeignKey('Pages', models.DO_NOTHING, db_column='pageid', blank=True, null=True)
-    tsid = models.ForeignKey('Transcripts', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
+    pageid = models.ForeignKey('Page', models.DO_NOTHING, db_column='pageid', blank=True, null=True)
+    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
     regionid = models.CharField(max_length=256, blank=True, null=True)
     offset = models.FloatField(blank=True, null=True)
     length = models.FloatField(blank=True, null=True)
@@ -19,8 +23,7 @@ class AbbrevTag(models.Model):
         managed = False
         db_table = 'abbrev_tag'
 
-
-class ActionTypes(models.Model):
+class ActionType(models.Model):
     type_id = models.FloatField(primary_key=True)
     type = models.CharField(unique=True, max_length=255)
 
@@ -28,17 +31,16 @@ class ActionTypes(models.Model):
         managed = False
         db_table = 'action_types'
 
-
-class Actions(models.Model):
+class Action(models.Model):
     action_id = models.FloatField(primary_key=True)
-    type = models.ForeignKey(ActionTypes, models.DO_NOTHING)
+    type = models.ForeignKey(ActionType, models.DO_NOTHING)
     user_id = models.FloatField()
     user_name = models.CharField(max_length=255)
     time = models.DateTimeField()
     col = models.ForeignKey('Collection', models.DO_NOTHING, blank=True, null=True)
     doc = models.ForeignKey('Document', models.DO_NOTHING, blank=True, null=True)
-    page = models.ForeignKey('Pages', models.DO_NOTHING, blank=True, null=True)
-    client = models.ForeignKey('Clients', models.DO_NOTHING, blank=True, null=True)
+    page = models.ForeignKey('Page', models.DO_NOTHING, blank=True, null=True)
+    client = models.ForeignKey('Client', models.DO_NOTHING, blank=True, null=True)
     session_history = models.ForeignKey('SessionHistory', models.DO_NOTHING, blank=True, null=True)
     user_role = models.CharField(max_length=20, blank=True, null=True)
 
@@ -46,15 +48,13 @@ class Actions(models.Model):
         managed = False
         db_table = 'actions'
 
-
-class Clients(models.Model):
+class Client(models.Model):
     client_id = models.FloatField(primary_key=True)
     client_name = models.CharField(unique=True, max_length=127)
 
     class Meta:
         managed = False
         db_table = 'clients'
-
 
 class Collection(models.Model):
     name = models.CharField(max_length=140)
@@ -63,14 +63,21 @@ class Collection(models.Model):
     default_for_app = models.CharField(max_length=20, blank=True, null=True)
     is_crowdsourcing = models.FloatField()
     is_elearning = models.FloatField()
-    page = models.ForeignKey('Pages', models.DO_NOTHING, blank=True, null=True)
+    page = models.ForeignKey('Page', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'collection'
 
+    def __str__(self):
+        return "%s" % self.name
 
-class CollectionLabels(models.Model):
+    @property
+    def thumb_url(self):
+        helpers.get_thumb_url(self.page.imagekey)
+
+
+class CollectionLabel(models.Model):
     label_id = models.FloatField(primary_key=True)
     collection = models.ForeignKey(Collection, models.DO_NOTHING)
     label = models.CharField(unique=True, max_length=50)
@@ -78,7 +85,6 @@ class CollectionLabels(models.Model):
     class Meta:
         managed = False
         db_table = 'collection_labels'
-
 
 class CrowdProject(models.Model):
     proj_id = models.FloatField(primary_key=True)
@@ -88,7 +94,6 @@ class CrowdProject(models.Model):
     class Meta:
         managed = False
         db_table = 'crowd_project'
-
 
 class CrowdProjectMessage(models.Model):
     id = models.BigIntegerField(primary_key=True)
@@ -103,9 +108,8 @@ class CrowdProjectMessage(models.Model):
         managed = False
         db_table = 'crowd_project_message'
 
-
 class CrowdProjectMilestone(models.Model):
-    id = models.IntegerField(primary_key=True)  # AutoField?
+    id = models.IntegerField(primary_key=True)
     project = models.ForeignKey(CrowdProject, models.DO_NOTHING, blank=True, null=True)
     title = models.CharField(max_length=300, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
@@ -116,12 +120,11 @@ class CrowdProjectMilestone(models.Model):
         managed = False
         db_table = 'crowd_project_milestone'
 
-
 class DateTag(models.Model):
     id = models.FloatField(primary_key=True)
-    pageid = models.ForeignKey('Pages', models.DO_NOTHING, db_column='pageid', blank=True, null=True)
+    pageid = models.ForeignKey('Page', models.DO_NOTHING, db_column='pageid', blank=True, null=True)
     docid = models.ForeignKey('Document', models.DO_NOTHING, db_column='docid', blank=True, null=True)
-    tsid = models.ForeignKey('Transcripts', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
+    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
     regionid = models.CharField(max_length=256, blank=True, null=True)
     offset = models.FloatField(blank=True, null=True)
     length = models.FloatField(blank=True, null=True)
@@ -139,7 +142,6 @@ class DateTag(models.Model):
         managed = False
         db_table = 'date_tag'
 
-
 class Dict(models.Model):
     dict_id = models.FloatField(primary_key=True)
     name = models.CharField(max_length=50)
@@ -152,7 +154,6 @@ class Dict(models.Model):
         managed = False
         db_table = 'dict'
 
-
 class DictCollection(models.Model):
     dict = models.ForeignKey(Dict, models.DO_NOTHING)
     collection = models.ForeignKey(Collection, models.DO_NOTHING)
@@ -160,7 +161,6 @@ class DictCollection(models.Model):
     class Meta:
         managed = False
         db_table = 'dict_collection'
-
 
 class Document(models.Model):
     docid = models.FloatField(primary_key=True)
@@ -181,13 +181,12 @@ class Document(models.Model):
     createdto = models.CharField(max_length=20, blank=True, null=True)
     uploaderid = models.FloatField(blank=True, null=True)
     origdocid = models.FloatField(blank=True, null=True)
-    img = models.ForeignKey('Images', models.DO_NOTHING, blank=True, null=True)
-    page = models.ForeignKey('Pages', models.DO_NOTHING, blank=True, null=True)
+    img = models.ForeignKey('Image', models.DO_NOTHING, blank=True, null=True)
+    page = models.ForeignKey('Page', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'doc_md'
-
 
 class DocumentCollection(models.Model):
     docid = models.OneToOneField(Document, models.DO_NOTHING, db_column='docid', primary_key=True)
@@ -198,8 +197,7 @@ class DocumentCollection(models.Model):
         db_table = 'document_collection'
         unique_together = (('docid', 'collection'),)
 
-
-class EdFeatures(models.Model):
+class EdFeature(models.Model):
     feature_id = models.FloatField(primary_key=True)
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=255, blank=True, null=True)
@@ -209,29 +207,26 @@ class EdFeatures(models.Model):
         managed = False
         db_table = 'ed_features'
 
-
-class EdOptions(models.Model):
+class EdOption(models.Model):
     option_id = models.FloatField(primary_key=True)
-    feature = models.ForeignKey(EdFeatures, models.DO_NOTHING)
+    feature = models.ForeignKey(EdFeature, models.DO_NOTHING)
     text = models.CharField(max_length=255)
 
     class Meta:
         managed = False
         db_table = 'ed_options'
 
-
 class EditDeclaration(models.Model):
-    feature = models.OneToOneField(EdFeatures, models.DO_NOTHING, primary_key=True)
+    feature = models.OneToOneField(EdFeature, models.DO_NOTHING, primary_key=True)
     doc = models.ForeignKey(Document, models.DO_NOTHING)
-    option = models.ForeignKey(EdOptions, models.DO_NOTHING)
+    option = models.ForeignKey(EdOption, models.DO_NOTHING)
 
     class Meta:
         managed = False
         db_table = 'edit_declaration'
         unique_together = (('feature', 'doc'),)
 
-
-class Events(models.Model):
+class Event(models.Model):
     event_id = models.FloatField()
     time = models.DateTimeField()
     message = models.CharField(max_length=4000)
@@ -240,7 +235,6 @@ class Events(models.Model):
     class Meta:
         managed = False
         db_table = 'events'
-
 
 class Fimgstore(models.Model):
     storeid = models.FloatField(primary_key=True)
@@ -253,7 +247,6 @@ class Fimgstore(models.Model):
     class Meta:
         managed = False
         db_table = 'fimgstore'
-
 
 class History(models.Model):
     history_id = models.FloatField(primary_key=True)
@@ -271,7 +264,6 @@ class History(models.Model):
         managed = False
         db_table = 'history'
 
-
 class Htr(models.Model):
     htr_id = models.FloatField(primary_key=True)
     name = models.CharField(max_length=100)
@@ -281,7 +273,7 @@ class Htr(models.Model):
     train_gt_docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='train_gt_docid', blank=True, null=True)
     description = models.CharField(max_length=2048, blank=True, null=True)
     base_htr = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True)
-    train_job = models.ForeignKey('Jobs', models.DO_NOTHING, blank=True, null=True)
+    train_job = models.ForeignKey('Job', models.DO_NOTHING, blank=True, null=True)
     test_gt_docid = models.FloatField(blank=True, null=True)
     language = models.CharField(max_length=50, blank=True, null=True)
     is_preset = models.FloatField(blank=True, null=True)
@@ -293,7 +285,6 @@ class Htr(models.Model):
         managed = False
         db_table = 'htr'
 
-
 class HtrCollection(models.Model):
     collection = models.ForeignKey(Collection, models.DO_NOTHING)
     htr = models.ForeignKey(Htr, models.DO_NOTHING)
@@ -302,8 +293,7 @@ class HtrCollection(models.Model):
         managed = False
         db_table = 'htr_collection'
 
-
-class HtrModels(models.Model):
+class HtrModel(models.Model):
     model_id = models.FloatField(primary_key=True)
     model_name = models.CharField(unique=True, max_length=100)
     label = models.CharField(max_length=1024, blank=True, null=True)
@@ -318,22 +308,20 @@ class HtrModels(models.Model):
         managed = False
         db_table = 'htr_models'
 
-
 class HtrOutput(models.Model):
     htr_output_id = models.FloatField(primary_key=True)
-    pageid = models.ForeignKey('Pages', models.DO_NOTHING, db_column='pageid')
+    pageid = models.ForeignKey('Page', models.DO_NOTHING, db_column='pageid')
     lineid = models.CharField(max_length=60, blank=True, null=True)
     key = models.CharField(max_length=24)
     htr = models.ForeignKey(Htr, models.DO_NOTHING)
     provider = models.CharField(max_length=60)
-    tsid = models.ForeignKey('Transcripts', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
+    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'htr_output'
 
-
-class Images(models.Model):
+class Image(models.Model):
     image_id = models.FloatField(primary_key=True)
     imagekey = models.CharField(max_length=24)
     imgfilename = models.CharField(max_length=1024)
@@ -345,14 +333,13 @@ class Images(models.Model):
         managed = False
         db_table = 'images'
 
-
-class JobErrors(models.Model):
+class JobError(models.Model):
     job_err_id = models.FloatField(primary_key=True)
-    jobid = models.ForeignKey('Jobs', models.DO_NOTHING, db_column='jobid')
+    jobid = models.ForeignKey('Job', models.DO_NOTHING, db_column='jobid')
     docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid')
-    pageid = models.ForeignKey('Pages', models.DO_NOTHING, db_column='pageid')
+    pageid = models.ForeignKey('Page', models.DO_NOTHING, db_column='pageid')
     pagenr = models.FloatField(blank=True, null=True)
-    tsid = models.ForeignKey('Transcripts', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
+    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
     msg = models.CharField(max_length=2048)
     ex_class = models.CharField(max_length=2048)
     stacktrace = models.TextField()
@@ -360,7 +347,6 @@ class JobErrors(models.Model):
     class Meta:
         managed = False
         db_table = 'job_errors'
-
 
 class JobImplRegistry(models.Model):
     job_impl_registry_id = models.FloatField(primary_key=True)
@@ -372,7 +358,6 @@ class JobImplRegistry(models.Model):
     class Meta:
         managed = False
         db_table = 'job_impl_registry'
-
 
 class JobModule(models.Model):
     url = models.CharField(primary_key=True, max_length=1024)
@@ -388,8 +373,7 @@ class JobModule(models.Model):
         managed = False
         db_table = 'job_module'
 
-
-class Jobs(models.Model):
+class Job(models.Model):
     jobid = models.FloatField(primary_key=True)
     docid = models.FloatField(blank=True, null=True)
     type = models.CharField(max_length=60)
@@ -433,12 +417,11 @@ class Jobs(models.Model):
         managed = False
         db_table = 'jobs'
 
-
 class OtherTag(models.Model):
     id = models.FloatField(primary_key=True)
     docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', blank=True, null=True)
-    pageid = models.ForeignKey('Pages', models.DO_NOTHING, db_column='pageid', blank=True, null=True)
-    tsid = models.ForeignKey('Transcripts', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
+    pageid = models.ForeignKey('Page', models.DO_NOTHING, db_column='pageid', blank=True, null=True)
+    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
     regionid = models.CharField(max_length=256, blank=True, null=True)
     offset = models.FloatField(blank=True, null=True)
     length = models.FloatField(blank=True, null=True)
@@ -453,10 +436,9 @@ class OtherTag(models.Model):
         managed = False
         db_table = 'other_tag'
 
-
-class PageImageVersions(models.Model):
+class PageImageVersion(models.Model):
     page_image_versions_id = models.FloatField(primary_key=True)
-    pageid = models.ForeignKey('Pages', models.DO_NOTHING, db_column='pageid')
+    pageid = models.ForeignKey('Page', models.DO_NOTHING, db_column='pageid')
     type = models.CharField(max_length=255)
     description = models.CharField(max_length=2048, blank=True, null=True)
     translation_x = models.FloatField(blank=True, null=True)
@@ -465,7 +447,7 @@ class PageImageVersions(models.Model):
     scaling_y = models.FloatField(blank=True, null=True)
     rotation = models.FloatField(blank=True, null=True)
     imagekey = models.CharField(max_length=24)
-    tsid = models.ForeignKey('Transcripts', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
+    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
     created = models.DateTimeField()
 
     class Meta:
@@ -473,14 +455,13 @@ class PageImageVersions(models.Model):
         db_table = 'page_image_versions'
         unique_together = (('pageid', 'type', 'tsid'),)
 
-
-class Pages(models.Model):
-    docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid')
+class Page(models.Model):
+    docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', related_name='+')
     pagenr = models.FloatField()
     imagekey = models.CharField(max_length=24, blank=True, null=True)
     imgfilename = models.CharField(max_length=1024, blank=True, null=True)
     pageid = models.FloatField(primary_key=True)
-    image = models.ForeignKey(Images, models.DO_NOTHING)
+    image = models.ForeignKey(Image, models.DO_NOTHING)
     is_indexed = models.FloatField()
     tags_stored = models.DateTimeField(blank=True, null=True)
     img_problem = models.CharField(max_length=2048, blank=True, null=True)
@@ -489,8 +470,7 @@ class Pages(models.Model):
         managed = False
         db_table = 'pages'
 
-
-class Permissions(models.Model):
+class Permission(models.Model):
     docid = models.OneToOneField(Document, models.DO_NOTHING, db_column='docid', primary_key=True)
     username = models.CharField(max_length=320, blank=True, null=True)
     role = models.CharField(max_length=20)
@@ -501,12 +481,11 @@ class Permissions(models.Model):
         db_table = 'permissions'
         unique_together = (('docid', 'userid'),)
 
-
 class PersonTag(models.Model):
     id = models.FloatField(primary_key=True)
     docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', blank=True, null=True)
-    pageid = models.ForeignKey(Pages, models.DO_NOTHING, db_column='pageid', blank=True, null=True)
-    tsid = models.ForeignKey('Transcripts', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
+    pageid = models.ForeignKey(Page, models.DO_NOTHING, db_column='pageid', blank=True, null=True)
+    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
     regionid = models.CharField(max_length=256, blank=True, null=True)
     offset = models.CharField(max_length=256, blank=True, null=True)
     length = models.CharField(max_length=256, blank=True, null=True)
@@ -528,12 +507,11 @@ class PersonTag(models.Model):
         managed = False
         db_table = 'person_tag'
 
-
 class PlaceTag(models.Model):
     id = models.FloatField(primary_key=True)
     docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', blank=True, null=True)
-    pageid = models.ForeignKey(Pages, models.DO_NOTHING, db_column='pageid', blank=True, null=True)
-    tsid = models.ForeignKey('Transcripts', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
+    pageid = models.ForeignKey(Page, models.DO_NOTHING, db_column='pageid', blank=True, null=True)
+    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
     regionid = models.CharField(max_length=256, blank=True, null=True)
     offset = models.FloatField(blank=True, null=True)
     length = models.FloatField(blank=True, null=True)
@@ -546,7 +524,6 @@ class PlaceTag(models.Model):
     class Meta:
         managed = False
         db_table = 'place_tag'
-
 
 class SessionHistory(models.Model):
     session_id = models.CharField(max_length=128)
@@ -564,10 +541,9 @@ class SessionHistory(models.Model):
         db_table = 'session_history'
         unique_together = (('session_id', 'created'),)
 
-
-class TagDefs(models.Model):
+class TagDef(models.Model):
     id = models.FloatField(primary_key=True)
-    def_field = models.CharField(db_column='def', max_length=2048, blank=True, null=True)  # Field renamed because it was a Python reserved word.
+    def_field = models.CharField(db_column='def', max_length=2048, blank=True, null=True)
     color = models.CharField(max_length=20, blank=True, null=True)
     col_id = models.FloatField(blank=True, null=True)
     description = models.CharField(max_length=2048, blank=True, null=True)
@@ -576,8 +552,7 @@ class TagDefs(models.Model):
         managed = False
         db_table = 'tag_defs'
 
-
-class TagDefsCollection(models.Model):
+class TagDefCollection(models.Model):
     collid = models.OneToOneField(Collection, models.DO_NOTHING, db_column='collid', primary_key=True)
     tagdefs = models.BinaryField()
 
@@ -585,8 +560,7 @@ class TagDefsCollection(models.Model):
         managed = False
         db_table = 'tag_defs_collection'
 
-
-class Transcripts(models.Model):
+class Transcript(models.Model):
     xmlkey = models.CharField(max_length=24)
     docid = models.FloatField(blank=True, null=True)
     pagenr = models.FloatField(blank=True, null=True)
@@ -595,7 +569,7 @@ class Transcripts(models.Model):
     timestamp = models.FloatField()
     user_id = models.FloatField(blank=True, null=True)
     toolname = models.CharField(max_length=2048, blank=True, null=True)
-    pageid = models.ForeignKey(Pages, models.DO_NOTHING, db_column='pageid')
+    pageid = models.ForeignKey(Page, models.DO_NOTHING, db_column='pageid')
     tsid = models.FloatField(primary_key=True)
     parent_tsid = models.FloatField(blank=True, null=True)
     note = models.CharField(max_length=1023, blank=True, null=True)
@@ -612,8 +586,7 @@ class Transcripts(models.Model):
         managed = False
         db_table = 'transcripts'
 
-
-class Uploads(models.Model):
+class Upload(models.Model):
     upload_id = models.FloatField(primary_key=True)
     created = models.DateTimeField()
     finished = models.DateTimeField(blank=True, null=True)
@@ -628,7 +601,6 @@ class Uploads(models.Model):
         managed = False
         db_table = 'uploads'
 
-
 class UserCollection(models.Model):
     user_id = models.FloatField(primary_key=True)
     collection = models.ForeignKey(Collection, models.DO_NOTHING)
@@ -640,16 +612,15 @@ class UserCollection(models.Model):
         db_table = 'user_collection'
         unique_together = (('user_id', 'collection'),)
 
-
-class Wordgraphs(models.Model):
+class Wordgraph(models.Model):
     docid = models.FloatField(blank=True, null=True)
     wordgraphkey = models.CharField(max_length=24)
     text = models.CharField(max_length=255, blank=True, null=True)
     lineid = models.CharField(primary_key=True, max_length=100)
     pagenr = models.FloatField(blank=True, null=True)
     nbestkey = models.CharField(max_length=24, blank=True, null=True)
-    model = models.ForeignKey(HtrModels, models.DO_NOTHING, blank=True, null=True)
-    pageid = models.ForeignKey(Pages, models.DO_NOTHING, db_column='pageid')
+    model = models.ForeignKey(HtrModel, models.DO_NOTHING, blank=True, null=True)
+    pageid = models.ForeignKey(Page, models.DO_NOTHING, db_column='pageid')
 
     class Meta:
         managed = False
