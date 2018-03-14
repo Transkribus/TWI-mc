@@ -5,3 +5,5 @@ mc/settings/local.py
 tmp/db.sqlite3
 collected_static
 mc/logfile*
+/.project
+/.pydevproject
