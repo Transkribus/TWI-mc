@@ -32,9 +32,13 @@
     <link href="https://cdn.quilljs.com/1.3.5/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.5/quill.js"></script>  
     
-    <!-- for uploading images -->
-    <link rel="stylesheet" type="text/css" href="{% static 'fh/css/dropzone.min.css' %}">
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     
+    <!-- for uploading images -->
+    <link rel="stylesheet" type="text/css" href="{% static 'start/css/dropzone.min.css' %}">
+    <script src="{% static 'start/js/dropzone.min.js' %}"></script>
+
     <link rel="stylesheet" type="text/css" href="{% static 'start/css/admin.css' %}">
     <link href="{% static 'start/css/homepage.css' %}" rel="stylesheet" >
     
@@ -84,6 +88,58 @@
 <!--header end here-->
 
     <script>
+    $(document).ready(function()
+    {
+        openBlog('editor-blog-tab-de');
+        
+        $( "#blog_options" ).change(function() {
+            alert( "Handler for .change() called." + $(this).val() + "X");
+            $.post("change_admin_blog", {'id': $(this).val(), 'csrfmiddlewaretoken': '{{ csrf_token }}'}).done( function(data)
+                {
+                    console.log(data);
+                });
+        });
+    });
+       
+    Dropzone.options.MyDropzone = 
+            {
+                dictDefaultMessage: "{% trans 'put_your_file_here' %}",
+                init: function()
+                {
+                    /* Called once the file has been processed. It could have failed or succeded */
+                    this.on("complete", function(file){
+                        //var img = file.xhr.responseText;
+                        //img = img.replace(/"/g,"");
+                        //img_form = img_templ.replace(/@link/g, img);
+                        //$("#img_container").append(img_form);
+                        //id++;
+                        
+                        //hide the upload container, not needed anymore
+                        //$("#MyDropzone").hide();
+                        //$("#desc_1").hide();
+                        
+                        //show the new data entry fields
+                        //$("#step_3").show();
+                        //$("#desc_2").show();
+                    });
+                    
+                    /* Called after the file is uploaded and sucessful */
+                    this.on("sucess", function(file){
+                      //  console.log(file);
+                    });
+                    
+                    /* Called before the file is being sent */
+                    this.on("sending", function(file){
+                      //  console.log("sending");
+                    });
+                    
+                    /* Called before the file is being sent */
+                    this.on("addedfile", function(file){
+                      //  console.log("addedfile");
+                    });
+                }
+            };  
+    
     var toolbarOptions = [
           ['bold', 'italic', 'underline', 'strike', 'link'],        // toggled buttons
           ['blockquote', 'code-block'],
@@ -106,26 +162,35 @@
         
         
         
-        function openBlog(evt, lang) 
+        function openBlog(lang, evt) 
         {
-           //console.log(evt)
-           var i, tabcontent, tablinks;
-           tabcontent = document.getElementsByClassName("tabcontent");
-           for (i = 0; i < tabcontent.length; i++) 
-           {
-               tabcontent[i].style.display = "none";
-           }
-           tablinks = document.getElementsByClassName("tablinks");
-           for (i = 0; i < tablinks.length; i++) 
-           {
-               tablinks[i].className = tablinks[i].className.replace(" active", "");
-           }
-           document.getElementById(lang).style.display = "block";
-           evt.currentTarget.className += " active";
+            //console.log(evt)
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) 
+            {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) 
+            {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(lang).style.display = "block";
+            if (evt)
+            {
+                console.log("if" + evt)
+                evt.currentTarget.className += " active";
+            } else
+            {
+                console.log("else" + evt)
+                tablinks[0].className += " active";
+            }
         }
         
         function store_blog()
         {
+            console.log("1")
             var html_de = document.getElementById("editor-container-blog-de").firstChild.innerHTML; /* TODO replace with JQuery */
             var html_en = document.getElementById("editor-container-blog-en").firstChild.innerHTML; /* TODO replace with JQuery */
             var title_de = document.getElementById("editor-title-blog-de").value;  /* TODO replace with JQuery */
@@ -153,18 +218,22 @@
         <h1>{% trans 'Blog entries' %}</h1>
         
         {% include "start/includes/quill_edit.html" with key="myval" key2="myval2" %}
-         
+        
+   
         <input type="hidden" name="editor-id-blog" id= "editor-id-blog" value="0"> <!-- change when a document ist loaded for editing -->
         {% trans 'stored blog entries' %} 
         <select name="blog_options" id="blog_options">
              {% for b in blogs %}
-                <option value="{{b.b_id}}">{{b.title}} - {{b.changed}}</option>
+                <option value="{{b.pk}}">{{b.title}} - {{b.blog.changed}}</option>
             {% endfor %}
         </select>
-        <br/>
+        <br/><br/>
+        <form class="dropzone" action="upload_blog_img" method="post" enctype="multipart/form-data" id="blog_dropzone">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+        </form>
         <div class="tab">
-            <button class="tablinks" onclick="openBlog(event, 'editor-blog-tab-de')">DE</button>
-            <button class="tablinks" onclick="openBlog(event, 'editor-blog-tab-en')">EN</button>
+            <button class="tablinks" onclick="openBlog('editor-blog-tab-de', event)">DE</button>
+            <button class="tablinks" onclick="openBlog('editor-blog-tab-en', event)">EN</button>
         </div>
         
         {% for l in LANGUAGES %}
@@ -308,8 +377,7 @@
     <!--end of container-->
 </footer>
 
-<!-- jquery -->
-<script src="{% static 'start/assets/js/jquery.min.js' %}"></script>
+
 <!-- bootstrap -->
 <script src="{% static 'start/assets/js/popper.js' %}"></script>
 <script src="{% static 'start/assets/js/bootstrap.min.js' %}"></script>
@@ -338,8 +406,7 @@
 <!--typed js -->
 <script src="{% static 'start/assets/js/typed.min.j' %}s"></script>
 
-<!-- for uploading images -->
-<script src="{% static 'fh/js/dropzone.min.js' %}"></script>
+
 
 <!-- Custom js -->
 <script src="{% static 'start/assets/js/main.js' %}"></script>
