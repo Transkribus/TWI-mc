@@ -6,9 +6,14 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.utils import translation
 from django.core.mail import send_mail
+from django.core import serializers
+from django.conf import settings
+from django.core.files.base import ContentFile
 
 from apps.utils.services import TranskribusSession
- 
+from django.core.files.storage import default_storage
+import uuid 
+import os
 from . import models as m
 #from .forms import NameForm
 import datetime
@@ -27,18 +32,17 @@ def index(request):
 
 def admin(request):   
     template = loader.get_template('start/admin.html')
-    print(translation.get_language())
-    td = testData()
-    art = m.Article.objects.filter(language=translation.get_language().upper())
+    #print(translation.get_language())
+    #td = testData()
+    b = m.BlogEntry.objects.filter(lang=translation.get_language())
     context = {
-        'articles' : art 
+        'blogs' : b 
     }
 
     return HttpResponse(template.render(context, request))
 
 
 def store_admin_blog(request):
-    print("store_admin_blog")
     id = request.POST.get('id',0)
     print("id:" + id)
     if id == "0":
@@ -48,35 +52,46 @@ def store_admin_blog(request):
         subtitle_en = request.POST.get('subtitle_en','')
         content_de = request.POST.get('content_de','')
         content_en = request.POST.get('content_en','')
-        print()
+        
         #TODO image storage if available
-        b = m.Blog.objects.create()
+        fname = request.session["blog_fname"]
+        b = m.Blog.objects.create(image=fname)
+        del request.session["blog_fname"]
         
-        e_de =m.BlogEntry.objects.create(title=title_de, subtitle=subtitle_de, content=content_de, blog=b, lang="de")
-        e_en = m.BlogEntry.objects.create(title=title_de, subtitle=subtitle_de, content=content_de, blog=b, lang="en")  
-        print(e_de)
-        print(e_en)      
-    #return HttpResponseRedirect("start_admin")
-    return HttpResponse('ok', content_type="text/plain")
-
-def store_admin(request):
-    print("store_admin")
-    #TODO limit access to logged in admins
-    title = request.POST.get('title','')
-    content = request.POST.get('content','')
-    id = request.POST.get('id','')
-    lang = request.POST.get('lang','')
-
-    try:
-      art = m.Article.objects.get(a_key = id, language=lang)
-      art.content = content
-      art.title = title
-      art.save() #add or update
-    except ObjectDoesNotExist:
-      art = m.Article.objects.create(a_key = id, content = content, title=title, language=lang)
+        e_de = m.BlogEntry.objects.create(title=title_de, subtitle=subtitle_de, content=content_de, blog=b, lang="de")
+        e_en = m.BlogEntry.objects.create(title=title_en, subtitle=subtitle_en, content=content_en, blog=b, lang="en")  
         
-    return HttpResponseRedirect("admin")
+    b = m.BlogEntry.objects.filter(lang=translation.get_language())  
+    data = serializers.serialize('json', b)    
+    print(json.dumps(json.loads(data), indent=4)) 
+    return HttpResponse(data, content_type="application/json")
+
+def change_admin_blog(request):
+    id = request.POST.get('id',0)
+    b = m.BlogEntry.objects.filter(blog=id).prefetch_related('blog')
+    data = serializers.serialize('json', b)    
+    print(json.dumps(json.loads(data), indent=4)) 
+    return HttpResponse(data, content_type="application/json")
     
+
+# def store_admin(request):
+#     print("store_admin")
+#     #TODO limit access to logged in admins
+#     title = request.POST.get('title','')
+#     content = request.POST.get('content','')
+#     id = request.POST.get('id','')
+#     lang = request.POST.get('lang','')
+# 
+#     try:
+#       art = m.Article.objects.get(a_key = id, language=lang)
+#       art.content = content
+#       art.title = title
+#       art.save() #add or update
+#     except ObjectDoesNotExist:
+#       art = m.Article.objects.create(a_key = id, content = content, title=title, language=lang)
+#         
+#     return HttpResponseRedirect("admin")
+#     
     
 def logout_process(request):
     ts.invalidate()
@@ -127,7 +142,22 @@ def contact(request):
     
             
 # ############################################################
+# Services
 # ############################################################
+
+def upload_blog_img(request):
+    file = request.FILES['file']
+    blog_id = request.POST.get('blog_id')
+    fname = str(uuid.uuid4()) + "." + os.path.splitext(str(file))[1][1:].strip() 
+    path = default_storage.save(settings.IMG_DIR + fname, ContentFile(file.read()))
+    request.session["blog_fname"] = fname
+    request.session.modified = True
+    
+    print("path:" + path)
+    print("fname:" + fname)
+    
+    return HttpResponse(json.dumps(fname), content_type="application/json") 
+
 # ############################################################
     
     
