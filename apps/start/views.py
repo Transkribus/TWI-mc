@@ -15,6 +15,8 @@ from django.core.files.storage import default_storage
 import uuid 
 import os
 from . import models as m
+from itertools import chain
+
 #from .forms import NameForm
 import datetime
 import json
@@ -68,8 +70,15 @@ def store_admin_blog(request):
 
 def change_admin_blog(request):
     id = request.POST.get('id',0)
-    b = m.BlogEntry.objects.filter(blog=id).prefetch_related('blog')
-    data = serializers.serialize('json', b)    
+    print("id:" + id)
+    be = m.BlogEntry.objects.filter(blog=id)
+    print(be.first().blog.changed)
+    b = m.Blog.objects.filter(pk=id)
+    
+    
+    combined = list(chain(b, be))
+    data = serializers.serialize('json', combined)    
+
     print(json.dumps(json.loads(data), indent=4)) 
     return HttpResponse(data, content_type="application/json")
     

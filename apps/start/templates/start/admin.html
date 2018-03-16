@@ -88,16 +88,47 @@
 <!--header end here-->
 
     <script>
+    
+    function getBlogEntryByLang(arr, lang)
+    {
+        for (var i = 1; i < arr.length;i++)
+        {
+            console.log(arr[i]);
+            if (arr[i].fields.lang == lang)
+            {
+                return arr[i];
+            }
+        }
+        return null;
+    }
+    
+    
     $(document).ready(function()
     {
         openBlog('editor-blog-tab-de');
         
         $( "#blog_options" ).change(function() {
-            alert( "Handler for .change() called." + $(this).val() + "X");
-            $.post("change_admin_blog", {'id': $(this).val(), 'csrfmiddlewaretoken': '{{ csrf_token }}'}).done( function(data)
-                {
-                    console.log(data);
-                });
+            if ($(this).val() != 0)
+            {
+                $.post("change_admin_blog", {'id': $(this).val(), 'csrfmiddlewaretoken': '{{ csrf_token }}'}).done( function(data)
+                    {
+                        var img = data[0].fields.image;
+                        console.log("IMG:" + img);
+                        var de = getBlogEntryByLang(data, "de");
+                        
+                        console.log("CONTENT:" + de.fields.content);
+                        //$("#editor-container-blog-de").html(de.fields.content);
+                        quills['de'].setText(de.fields.content);
+                        $("#editor-title-blog-de").val(de.fields.title);
+                        $("#editor-subtitle-blog-de").val(de.fields.subtitle);
+                        
+                        var en = getBlogEntryByLang(data, "en");
+                        quills['en'].setText(en.fields.content);
+                        $("#editor-title-blog-en").val(en.fields.title);
+                        $("#editor-subtitle-blog-en").val(en.fields.subtitle);
+                        
+                    });
+            }
         });
     });
        
@@ -164,7 +195,6 @@
         
         function openBlog(lang, evt) 
         {
-            //console.log(evt)
             var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) 
@@ -179,18 +209,15 @@
             document.getElementById(lang).style.display = "block";
             if (evt)
             {
-                console.log("if" + evt)
                 evt.currentTarget.className += " active";
             } else
             {
-                console.log("else" + evt)
                 tablinks[0].className += " active";
             }
         }
         
         function store_blog()
         {
-            console.log("1")
             var html_de = document.getElementById("editor-container-blog-de").firstChild.innerHTML; /* TODO replace with JQuery */
             var html_en = document.getElementById("editor-container-blog-en").firstChild.innerHTML; /* TODO replace with JQuery */
             var title_de = document.getElementById("editor-title-blog-de").value;  /* TODO replace with JQuery */
@@ -223,8 +250,9 @@
         <input type="hidden" name="editor-id-blog" id= "editor-id-blog" value="0"> <!-- change when a document ist loaded for editing -->
         {% trans 'stored blog entries' %} 
         <select name="blog_options" id="blog_options">
+            <option value="0" selected>{% trans 'new blog entry' %}...</option>
              {% for b in blogs %}
-                <option value="{{b.pk}}">{{b.title}} - {{b.blog.changed}}</option>
+                <option value="{{b.blog.pk}}">{{b.title}} - {{b.blog.changed}}</option>
             {% endfor %}
         </select>
         <br/><br/>
@@ -255,7 +283,8 @@
                 </div> 
             </div>
             <script>
-                var quill = new Quill('#editor-container-blog-{{l.0}}', {
+                var quills = [];
+                quills['{{l.0}}'] = new Quill('#editor-container-blog-{{l.0}}', {
                   modules: {
                     toolbar: toolbarOptions,
                   },

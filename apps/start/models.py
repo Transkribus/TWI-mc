@@ -11,7 +11,7 @@ class BlogEntry(models.Model):
   subtitle = models.CharField("Title", max_length=512, null=True)
   content = models.TextField()
   lang = models.CharField(max_length=2)
-  blog = models.ForeignKey(Blog, on_delete=models.CASCADE, blank=True, null=True)
+  blog = models.ForeignKey(Blog, on_delete=models.CASCADE, blank=True, null=True, related_name='blog')
 
 
 
