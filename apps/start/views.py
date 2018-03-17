@@ -69,18 +69,24 @@ def store_admin_blog(request):
     return HttpResponse(data, content_type="application/json")
 
 def change_admin_blog(request):
-    id = request.POST.get('id',0)
-    print("id:" + id)
-    be = m.BlogEntry.objects.filter(blog=id)
+    idb = request.POST.get('id',0)
+    print("id:" + idb)
+    be = m.BlogEntry.objects.filter(blog=idb)
     print(be.first().blog.changed)
-    b = m.Blog.objects.filter(pk=id)
-    
-    
+    b = m.Blog.objects.filter(pk=idb)
+        
     combined = list(chain(b, be))
     data = serializers.serialize('json', combined)    
 
     print(json.dumps(json.loads(data), indent=4)) 
     return HttpResponse(data, content_type="application/json")
+    
+def delete_admin_blog(request):
+    idb = request.POST.get('id',0)
+    print("id:" + idb)
+    print("delete_admin_blog")
+    m.Blog.objects.filter(pk=idb).delete()
+    return HttpResponse("ok", content_type="text/plain")
     
 
 # def store_admin(request):

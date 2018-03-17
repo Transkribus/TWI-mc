@@ -102,6 +102,17 @@
         return null;
     }
     
+    function editorBlogDelete()
+    {
+        var id = $("#blog_options").val();
+        alert(id);
+        
+        $.post("delete_admin_blog", {'id': id, 'csrfmiddlewaretoken': '{{ csrf_token }}'}).done( function(data)
+        {
+            console.log($("#blog_options[value=id]"));
+            $("#blog_options[value=id]").remove();
+        });
+    }
     
     $(document).ready(function()
     {
@@ -111,30 +122,31 @@
             if ($(this).val() != 0)
             {
                 $.post("change_admin_blog", {'id': $(this).val(), 'csrfmiddlewaretoken': '{{ csrf_token }}'}).done( function(data)
-                    {
-                        var img = data[0].fields.image;
-                        
-                        console.log("IMG:" + img);
-                        
-                        $("#editor-blog-img").removeClass("invisible");
-                        //$("#editor-blog-img").addClass("visible");
-                        $("#editor-blog-img").attr("src", "../static/start/img/upload/" + img );
-                        $("#editor-blog-img").attr("width","80px");
-                        var de = getBlogEntryByLang(data, "de");
-                        
-                        //console.log("CONTENT:" + de.fields.content);
-                        //$("#editor-container-blog-de").html(de.fields.content);
-                        quills['de'].clipboard.dangerouslyPasteHTML(de.fields.content);
-                        $("#editor-title-blog-de").val(de.fields.title);
-                        $("#editor-subtitle-blog-de").val(de.fields.subtitle);
-                        
-                        var en = getBlogEntryByLang(data, "en");
-                        quills['en'].clipboard.dangerouslyPasteHTML(en.fields.content);
-                        $("#editor-title-blog-en").val(en.fields.title);
-                        $("#editor-subtitle-blog-en").val(en.fields.subtitle);   
-                    });
+                {
+                    var img = data[0].fields.image;
+                    
+                    console.log("IMG:" + img);
+                    
+                    $("#editor-blog-img").removeClass("invisible");
+                    $("#editor-blog-btn-delete").removeClass("invisible");
+                    $("#editor-blog-img").attr("src", "../static/start/img/upload/" + img );
+                    $("#editor-blog-img").attr("width","80px");
+                    var de = getBlogEntryByLang(data, "de");
+                    
+                    //console.log("CONTENT:" + de.fields.content);
+                    //$("#editor-container-blog-de").html(de.fields.content);
+                    quills['de'].clipboard.dangerouslyPasteHTML(de.fields.content);
+                    $("#editor-title-blog-de").val(de.fields.title);
+                    $("#editor-subtitle-blog-de").val(de.fields.subtitle);
+                    
+                    var en = getBlogEntryByLang(data, "en");
+                    quills['en'].clipboard.dangerouslyPasteHTML(en.fields.content);
+                    $("#editor-title-blog-en").val(en.fields.title);
+                    $("#editor-subtitle-blog-en").val(en.fields.subtitle);   
+                });
             } else
             {
+                $("#editor-blog-btn-delete").addClass("invisible");
                 $("#editor-blog-img").addClass("invisible");
             }
         });
@@ -264,6 +276,8 @@
             {% endfor %}
         </select>
         <img id="editor-blog-img" class="invisible" src="" /> 
+        
+        <button id="editor-blog-btn-delete" class="invisible" onclick="editorBlogDelete()">{% trans 'delete' %}</button> 
         
         <br/><br/>
         <form class="dropzone" action="upload_blog_img" method="post" enctype="multipart/form-data" id="blog_dropzone">
