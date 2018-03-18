@@ -55,18 +55,19 @@ def store_admin_blog(request):
         subtitle_en = request.POST.get('subtitle_en','')
         content_de = request.POST.get('content_de','')
         content_en = request.POST.get('content_en','')
-        
+        fname = None
         #TODO image storage if available
-        fname = request.session["blog_fname"]
+        if "blog_name" in request.session:
+            fname = request.session["blog_fname"]
+            del request.session["blog_fname"]
         b = m.Blog.objects.create(image=fname)
-        del request.session["blog_fname"]
-        
-        e_de = m.BlogEntry.objects.create(title=title_de, subtitle=subtitle_de, content=content_de, blog=b, lang="de")
-        e_en = m.BlogEntry.objects.create(title=title_en, subtitle=subtitle_en, content=content_en, blog=b, lang="en")  
+       
+        m.BlogEntry.objects.create(title=title_de, subtitle=subtitle_de, content=content_de, blog=b, lang="de")
+        m.BlogEntry.objects.create(title=title_en, subtitle=subtitle_en, content=content_en, blog=b, lang="en")  
         
     b = m.BlogEntry.objects.filter(lang=translation.get_language())  
     data = serializers.serialize('json', b)    
-    print(json.dumps(json.loads(data), indent=4)) 
+    #print(json.dumps(json.loads(data), indent=4)) 
     return HttpResponse(data, content_type="application/json")
 
 def change_admin_blog(request):
