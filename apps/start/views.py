@@ -46,9 +46,9 @@ def admin(request):
 
 
 def store_admin_blog(request):
-    id = request.POST.get('id',0)
-    print("id:" + id)
-    if id == "0":
+    idb = request.POST.get('id',0)
+    print("id:" + idb)
+    if idb == "0":
         title_de = request.POST.get('title_de','')
         title_en = request.POST.get('title_en','')
         subtitle_de = request.POST.get('subtitle_de','')
@@ -56,7 +56,6 @@ def store_admin_blog(request):
         content_de = request.POST.get('content_de','')
         content_en = request.POST.get('content_en','')
         fname = None
-        #TODO image storage if available
         if "blog_name" in request.session:
             fname = request.session["blog_fname"]
             del request.session["blog_fname"]
