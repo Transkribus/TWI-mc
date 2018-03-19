@@ -29,14 +29,26 @@ ts = TranskribusSession()
 def index(request):
     template = loader.get_template('start/homepage.html')
     context = {
-        'articles' : m.Article.objects.filter(language=translation.get_language().upper())
+        'blogs' : m.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed')
     }
+    return HttpResponse(template.render(context, request))
+
+
+def blog_detail(request):
+    idb = request.POST.get('id',0)
+    template = loader.get_template('start/blog_detail.html')
+    be = m.BlogEntry.objects.get(blog=idb, lang=translation.get_language()).select_related()
+    #b = m.Blog.objects.get(pk=idb)
+
+    context = {
+        #'blog' : b,
+        'entry' : be
+    }
+    
     return HttpResponse(template.render(context, request))
 
 def admin(request):   
     template = loader.get_template('start/admin.html')
-    #print(translation.get_language())
-    #td = testData()
     b = m.BlogEntry.objects.filter(lang=translation.get_language())
     context = {
         'blogs' : b 
@@ -47,7 +59,6 @@ def admin(request):
 
 def store_admin_blog(request):
     idb = request.POST.get('id',0)
-    print("id:" + idb)
     if idb == "0":
         title_de = request.POST.get('title_de','')
         title_en = request.POST.get('title_en','')
@@ -64,28 +75,33 @@ def store_admin_blog(request):
         m.BlogEntry.objects.create(title=title_de, subtitle=subtitle_de, content=content_de, blog=b, lang="de")
         m.BlogEntry.objects.create(title=title_en, subtitle=subtitle_en, content=content_en, blog=b, lang="en")  
         
-    b = m.BlogEntry.objects.filter(lang=translation.get_language())  
-    data = serializers.serialize('json', b)    
+    #b = m.BlogEntry.objects.filter(lang=translation.get_language())  
+    #data = serializers.serialize('json', b)    
     #print(json.dumps(json.loads(data), indent=4)) 
-    return HttpResponse(data, content_type="application/json")
+    title = (title_de, title_en)[translation.get_language() == 'de']
+    json = '{"id" : ' + str(b.pk) + ', "title " : "' + title  + '", "changed" : "' + str(b.changed) + '"}'
+    print (json)
+    return HttpResponse(json, content_type="application/json")
+
+'''
+Find a Blog Entry and return as json
+This special task is necessary because joined tables cannot be fully serialized
+'''
+def get_blog_entry(idb):
+    be = m.BlogEntry.objects.filter(blog=idb)
+    b = m.Blog.objects.filter(pk=idb)
+    combined = list(chain(b, be))
+    return serializers.serialize('json', combined)
 
 def change_admin_blog(request):
     idb = request.POST.get('id',0)
-    print("id:" + idb)
-    be = m.BlogEntry.objects.filter(blog=idb)
-    print(be.first().blog.changed)
-    b = m.Blog.objects.filter(pk=idb)
-        
-    combined = list(chain(b, be))
-    data = serializers.serialize('json', combined)    
+    data = get_blog_entry(idb)  
 
     print(json.dumps(json.loads(data), indent=4)) 
     return HttpResponse(data, content_type="application/json")
     
 def delete_admin_blog(request):
     idb = request.POST.get('id',0)
-    print("id:" + idb)
-    print("delete_admin_blog")
     m.Blog.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
     
