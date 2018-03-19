@@ -428,11 +428,11 @@
                 <div class="section_title text-center mb50 fadeIn wow animated" data-wow-delay="100ms">
                     <i class="icon-newspaper"></i>
                     <h4>
-                        Latest News
+                        {% trans 'Latest News' %}
                     </h4>
                     <div class="title_divider"></div>
                     <p>
-                        We share our best ideas in our blog
+                        {% trans 'We share our best ideas in our blog' %}
                     </p>
                 </div>
             </div>
@@ -440,59 +440,26 @@
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="blog_carousel owl-carousel">
-                    <div class="item">
-                        <article class="blog_box_one">
-                            <div class="blog_box_img">
-                                <img src="https://placeholdit.co//i/200x400" alt="blog">
-                            </div>
-                            <div class="blog_box_body">
-                                <span>February 9, 2017</span>
-                                <a href="#"><h4>Mobile First Approach to Websites</h4></a>
-                                <p>
-                                    Some quick example text to build on the card title and make up the bulk of the card’s content. Some quick example text to build on the card title.
-                                </p>
-                            </div>
-                            <div class="blog_box_footer">
-                                <a href="#">Read More</a>
-                            </div>
-                        </article>
-                    </div>
-
-                    <div class="item">
-                        <article class="blog_box_one">
-                            <div class="blog_box_img">
-                                <img src="https://placeholdit.co//i/200x400" alt="blog">
-                            </div>
-                            <div class="blog_box_body">
-                                <span>February 9, 2017</span>
-                                <a href="#"><h4>Online Sales and Financial Reports</h4></a>
-                                <p>
-                                    Some quick example text to build on the card title and make up the bulk of the card’s content. Some quick example text to build on the card title.
-                                </p>
-                            </div>
-                            <div class="blog_box_footer">
-                                <a href="#">Read More</a>
-                            </div>
-                        </article>
-                    </div>
-
-                    <div class="item">
-                        <article class="blog_box_one">
-                            <div class="blog_box_img">
-                                <img src="https://placeholdit.co//i/200x400" alt="blog">
-                            </div>
-                            <div class="blog_box_body">
-                                <span>February 9, 2017</span>
-                                <a href="#"><h4>A new generation of WordPress</h4></a>
-                                <p>
-                                    Some quick example text to build on the card title and make up the bulk of the card’s content. Some quick example text to build on the card title.
-                                </p>
-                            </div>
-                            <div class="blog_box_footer">
-                                <a href="#">Read More</a>
-                            </div>
-                        </article>
-                    </div>
+                    {% for b in blogs %} 
+                        <div class="item">
+                            <article class="blog_box_one">
+                                <div class="blog_box_img">
+                                    <img src="../static/start/img/upload/{{b.blog.image}}" alt="{{b.title}}" >
+                                </div>
+                                <div class="blog_box_body">
+                                    <span>{{b.changed}}</span>
+                                    <a href="#"><h4>{{b.title}}</h4></a>
+                                    <p>
+                                        {{b.subtitle}}
+                                    </p>
+                                </div>
+                                <div class="blog_box_footer">
+                                    <a href="#">{% trans 'Read More' %}</a>
+                                </div>
+                            </article>
+                        </div>
+                    {% endfor %}
+                   
                 </div>
             </div>
         </div>
