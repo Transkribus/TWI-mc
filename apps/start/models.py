@@ -20,7 +20,7 @@ class Institutions(models.Model):
     lat= models.DecimalField(decimal_places=4, max_digits=12) #latitude
     lng= models.DecimalField(decimal_places=4, max_digits=12) #longitude
     loclabel=models.CharField(max_length=30) #the label of the location for displaying on the map
-    desc = models.TextField()
+    desc = models.TextField() # full description
     link = models.CharField(max_length=512, null=False) #the link to the institution
 
 class InstitutionsProjects(models.Model):
