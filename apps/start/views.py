@@ -35,9 +35,10 @@ def index(request):
 
 
 def blog_detail(request):
-    idb = request.POST.get('id',0)
+    idb = request.GET.get('id',0)
+    print(idb +  ":" + translation.get_language())
     template = loader.get_template('start/blog_detail.html')
-    be = m.BlogEntry.objects.get(blog=idb, lang=translation.get_language()).select_related()
+    be = m.BlogEntry.objects.get(blog=idb, lang=translation.get_language())
     #b = m.Blog.objects.get(pk=idb)
 
     context = {

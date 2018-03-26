@@ -36,7 +36,8 @@ urlpatterns = [
     url(r'^view/', include('apps.edit.urls', app_name='edit', namespace='edit')),
     url(r'^edit/', include('apps.edit.urls', app_name='edit', namespace='edit')),
     url(r'^utils/', include('apps.utils.urls', app_name='utils', namespace='utils')),
-
+    url(r'^start/', include('apps.start.urls', app_name='start', namespace='start')),
+    
     ## Project pages for My collection ##
     url(r'^$', mc.views.index, name='index'),
     url(r'^about/$', mc.views.about, name='about'),
@@ -53,6 +54,5 @@ urlpatterns = [
     url(r'^logout/$', apps.utils.views.logout_view, name='logout'),
     url('', include('django.contrib.auth.urls')),
     url(r'^i18n/', include('django.conf.urls.i18n')),
-
 ]
 

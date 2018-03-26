@@ -5,34 +5,36 @@
 <html lang="en">
 <head>
     <!-- ========== Meta Tags ========== -->
-   !-- ========== Meta Tags ========== -->
     <meta charset="UTF-8">
     <meta name="description" content="TODO">
     <meta name="keywords" content="TODO">
     <meta name="author" content="TODO">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <!-- ========== Title ========== -->
-    <title>{% trans 'Transkribus Blog' %}{{entry.title}}</title>
+    <title>{% trans 'Transkribus Blog' %} - {{entry.title}}</title>
 
     <!-- Bootstrap CSS -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'start/assets/css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Fonts Icon CSS -->
-    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
-    <link href="assets/css/et-line.css" rel="stylesheet">
+    <link href="{% static 'start/assets/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'start/assets/css/et-line.css' %}" rel="stylesheet">
     <!-- Owl Carousel CSS -->
-    <link href="assets/css/owl.carousel.min.css" rel="stylesheet">
-    <link href="assets/css/owl.theme.default.min.css" rel="stylesheet">
+    <link href="{% static 'start/assets/css/owl.carousel.min.css' %}" rel="stylesheet">
+    <link href="{% static 'start/assets/css/owl.theme.default.min.css' %}" rel="stylesheet">
     <!-- Magnific-popup -->
-    <link rel="stylesheet" href="assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="{% static 'start/assets/css/magnific-popup.css' %}">
     <!-- Animate CSS -->
-    <link rel="stylesheet" href="assets/css/animate.min.css">
+    <link rel="stylesheet" href="{% static 'start/assets/css/animate.min.css' %}">
     <!-- Custom styles for this template -->
-    <link href="assets/css/main.css" rel="stylesheet">
+    <link href="{% static 'start/assets/css/main.css' %}" rel="stylesheet">
+    <link href="{% static 'start/css/homepage.css' %}" rel="stylesheet" >
 </head>
 
 <body  data-spy="scroll" data-target="header">
 
 {{entry.title}}
+
+{{entry.blog.changed}}
 
 {% include "start/includes/footer.html" %} 
 

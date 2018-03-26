@@ -16,8 +16,11 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(BASE_DIR))
 
+
+IMG_DIR = "/home/albert/gitstage/TWI-mc/apps/start/static/start/img/upload/"
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False #TODO check correct ALLOWED_HOSTS settings for transkribus.eu
+DEBUG = True #TODO check correct ALLOWED_HOSTS settings for transkribus.eu
 
 LOGGING = {
     'version': 1,
@@ -74,7 +77,8 @@ INSTALLED_APPS = [
     'apps.dashboard',
     'apps.edit',
     'apps.search',
-    'apps.navigation'
+    'apps.navigation',
+    'apps.start'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -173,10 +177,10 @@ LANGUAGES = [
 #        ('nl', _('Dutch')),
         ('en', _('English')),
 #        ('et', _('Estonian')),
-        ('fi', _('Finnish')),
-        ('fr', _('French')),
+#        ('fi', _('Finnish')),
+#        ('fr', _('French')),
         ('de', _('German')),
-        ('el', _('Greek')),
+#        ('el', _('Greek')),
 #        ('hu', _('Hungarian')),
 #        ('ga', _('Irish')),
 #        ('it', _('Italian')),
@@ -188,8 +192,8 @@ LANGUAGES = [
 #        ('ro', _('Romanian')),
 #        ('sk', _('Slovak')),
 #        ('sl', _('Slovenian')),
-        ('es', _('Spanish')),
-        ('sv', _('Swedish')),
+#        ('es', _('Spanish')),
+#        ('sv', _('Swedish')),
 ];
 
 TIME_ZONE = 'UTC'
@@ -221,7 +225,7 @@ STATICFILES_FINDERS = (
 #Step 3 We run python manage.py collectstatic it will collect the static files from the locations defined above
 # and store them in the location defined by STATIC_ROOT (cannot be the same as any of the STATFILES_DIRS)
 STATIC_ROOT =  'collected_static'
-MEDIA_ROOT = 'media' #not currently used
+#MEDIA_ROOT = 'media' #not currently used
 #Step 4 Finally we tell django how to serve the static files
 STATIC_URL = SERVERBASE+'/static/'
 MEDIA_URL =  SERVERBASE+'/media/' #not currently used
