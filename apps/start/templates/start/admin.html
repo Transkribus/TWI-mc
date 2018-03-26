@@ -12,8 +12,41 @@
     
     <title>{% trans 'Transkribus/Admin Page' %}</title>
    
-     <!-- Bootstrap CSS -->
+       <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    
+    <!-- Bootstrap CSS -->
     <link href="{% static 'start/assets/css/bootstrap.min.css' %}" rel="stylesheet" >
+    
+       <!-- bootstrap -->
+    <script src="{% static 'start/assets/js/popper.js' %}"></script>
+    <script src="{% static 'start/assets/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'start/assets/js/waypoints.min.js' %}"></script>
+    <!-- Owl Carousel js -->
+    <script src="{% static 'start/assets/js/owl.carousel.min.js' %}"></script>
+    <!-- Owl Carousel js -->
+    <script src="{% static 'start/assets/js/parallax.min.js' %}"></script>
+    <!-- Magnific-popup -->
+    <script src="{% static 'start/assets/js/jquery.magnific-popup.min.js' %}"></script>
+    <!-- Jquery easing -->
+    <script src="{% static 'start/assets/js/jquery.easing.1.3.min.js' %}"></script>
+    <!--Counter-->
+    <script src="{% static 'start/assets/js/jquery.counterup.min.js' %}"></script>
+    <!-- WOW JS -->
+    <script src="{% static 'start/assets/js/wow.min.js' %}"></script>
+    <!-- progress bar -->
+    <script src="{% static 'start/assets/js/bootstrap-progressbar.min.js' %}"></script>
+    <!-- Filterizr JS -->
+    <script src="{% static 'start/assets/js/jquery.filterizr.min.js' %}"></script>
+    <!-- youtube backround  JS -->
+    <script src="{% static 'start/assets/js/youtubebackground.js' %}"></script>
+    <!--particel JS -->
+    <script src="{% static 'start/assets/js/particles.min.js' %}"></script>
+    <script src="{% static 'start/assets/js/init-particles.js' %}"></script>
+    <!--typed js -->
+    <script src="{% static 'start/assets/js/typed.min.js' %}s"></script>
+
+    
     <!-- Fonts Icon CSS -->
     <link href="{% static 'start/assets/css/font-awesome.min.css' %}" rel="stylesheet" >
     <link href="{% static 'start/assets/css/et-line.css' %}" rel="stylesheet" />
@@ -26,14 +59,12 @@
     <link rel="stylesheet" href="{% static 'start/assets/css/animate.min.css' %}" >
     <!-- Custom styles for this template -->
     <link href="{% static 'start/assets/css/main.css' %}" rel="stylesheet" > 
-    <!-- Custom modifications -->
-   
+    <!-- Custom modifications -->   
    
     <link href="https://cdn.quilljs.com/1.3.5/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.5/quill.js"></script>  
     
-    <!-- jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     
     <!-- for uploading images -->
     <link rel="stylesheet" type="text/css" href="{% static 'start/css/dropzone.min.css' %}">
@@ -44,12 +75,15 @@
     
     <link rel="shortcut icon" href="{% static 'start/favicon.ico' %}" type="image/x-icon" />
     <!-- Custom js -->
-<script src="{% static 'start/assets/js/main.js' %}"></script>
+    <script src="{% static 'start/assets/js/main.js' %}"></script>
+    <script src="{% static 'start/js/admin.js' %}"></script>
 </head>
 
 <body data-spy="scroll" data-target="header">
 
-
+<script>
+var csrf_token = '{{ csrf_token }}';
+</script>
 
 <div class="loader">
     <div class="loader-outter"></div>
@@ -146,20 +180,11 @@
                   formula:true,
                   theme: 'snow'  // or 'bubble'
                 });  
-                
             </script>
-           
-        {% endfor %}
-
-            
+        {% endfor %}            
         <button id="editor-store-blog" onclick="store_blog()">{% trans 'store' %}</button>
-   
     </div>
 </section>
-
-
-
-
 
 <br/><br/><br/><br/>
 <section id="about" class="bg-light pt120 pb120">
@@ -245,31 +270,5 @@
 </footer>
 
 
-<!-- bootstrap -->
-<script src="{% static 'start/assets/js/popper.js' %}"></script>
-<script src="{% static 'start/assets/js/bootstrap.min.js' %}"></script>
-<script src="{% static 'start/assets/js/waypoints.min.js' %}"></script>
-<!-- Owl Carousel js -->
-<script src="{% static 'start/assets/js/owl.carousel.min.js' %}"></script>
-<!-- Owl Carousel js -->
-<script src="{% static 'start/assets/js/parallax.min.js' %}"></script>
-<!-- Magnific-popup -->
-<script src="{% static 'start/assets/js/jquery.magnific-popup.min.js' %}"></script>
-<!-- Jquery easing -->
-<script src="{% static 'start/assets/js/jquery.easing.1.3.min.js' %}"></script>
-<!--Counter-->
-<script src="{% static 'start/assets/js/jquery.counterup.min.js' %}"></script>
-<!-- WOW JS -->
-<script src="{% static 'start/assets/js/wow.min.js' %}"></script>
-<!-- progress bar -->
-<script src="{% static 'start/assets/js/bootstrap-progressbar.min.js' %}"></script>
-<!-- Filterizr JS -->
-<script src="{% static 'start/assets/js/jquery.filterizr.min.js' %}"></script>
-<!-- youtube backround  JS -->
-<script src="{% static 'start/assets/js/youtubebackground.js' %}"></script>
-<!--particel JS -->
-<script src="{% static 'start/assets/js/particles.min.js' %}"></script>
-<script src="{% static 'start/assets/js/init-particles.js' %}"></script>
-<!--typed js -->
-<script src="{% static 'start/assets/js/typed.min.js' %}s"></script>
+
 </body>
