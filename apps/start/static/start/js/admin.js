@@ -76,7 +76,7 @@ function editorBlogDelete()
     var id = $("#blog_options").val();
    
     
-    $.post("delete_admin_blog", {'id': id, 'csrfmiddlewaretoken': '{{ csrf_token }}'}).done( function(data)
+    $.post("delete_admin_blog", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
     {
         $("#blog_options option[value='" + id + "']").remove();
     });
@@ -123,7 +123,7 @@ function editorBlogDelete()
                 subtitle_en: subtitle_en,
                 content_de: html_de, 
                 content_en: html_en,  
-                'csrfmiddlewaretoken': '{{ csrf_token }}'}).done(function(data)
+                'csrfmiddlewaretoken':  csrf_token }).done(function(data)
                     {
                         console.log(data);
                     });
@@ -135,7 +135,7 @@ $(document).ready(function()
         $( "#blog_options" ).change(function() {
             if ($(this).val() !== 0)
             {
-                $.post("change_admin_blog", {'id': $(this).val(), 'csrfmiddlewaretoken': '{{ csrf_token }}'}).done( function(data)
+                $.post("change_admin_blog", {'id': $(this).val(), 'csrfmiddlewaretoken': csrf_token }).done( function(data)
                 {
                     var img = data[0].fields.image;
                     
