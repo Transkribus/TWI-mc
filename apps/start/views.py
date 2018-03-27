@@ -182,10 +182,11 @@ def contact(request):
 
 def upload_img(request):
     file = request.FILES['file']
-    blog_id = request.POST.get('blog_id')
+    type = request.POST.get('type')
+    #blog_id = request.POST.get('blog_id')
     fname = str(uuid.uuid4()) + "." + os.path.splitext(str(file))[1][1:].strip() 
     path = default_storage.save(settings.IMG_DIR + fname, ContentFile(file.read()))
-    request.session["blog_fname"] = fname
+    request.session[type + "_fname"] = fname
     request.session.modified = True
     
     print("path:" + path)

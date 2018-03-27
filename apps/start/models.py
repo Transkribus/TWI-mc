@@ -15,21 +15,26 @@ class BlogEntry(models.Model):
 
 
 
-class Institutions(models.Model):
+class Institution(models.Model):
     name = models.CharField( max_length=200)
     lat= models.DecimalField(decimal_places=4, max_digits=12) #latitude
     lng= models.DecimalField(decimal_places=4, max_digits=12) #longitude
     loclabel=models.CharField(max_length=30) #the label of the location for displaying on the map
-    desc = models.TextField() # full description
     link = models.CharField(max_length=512, null=False) #the link to the institution
 
-class InstitutionsProjects(models.Model):
-    inst = models.ForeignKey(Blog, on_delete=models.CASCADE, blank=True, null=True)
+class InstitutionDescription(models.Model):
+    desc = models.TextField() # full description
+    lang = models.CharField(max_length=2)
+    inst = models.ForeignKey(Institution, on_delete=models.CASCADE, blank=True, null=True)
     
-class InstitutionsProjectsEntries(models.Model):
+class InstitutionProject(models.Model):
+    inst = models.ForeignKey(Institution, on_delete=models.CASCADE, blank=True, null=True)
+    
+class InstitutionProjectEntries(models.Model):
     title = models.CharField("Title", max_length=200)
     desc = models.TextField() # full description
     lang = models.CharField(max_length=2)
+    project = models.ForeignKey(InstitutionProject, on_delete=models.CASCADE, blank=True, null=True)
     
     
 #-------------------------------------------------------------------------------

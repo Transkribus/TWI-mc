@@ -81,7 +81,16 @@
 
 <body data-spy="scroll" data-target="header">
 
+<!-- write template variables to javascript vars -->
 <script>
+
+/* write the available language codes for further usage*/
+var langs = [] ;
+{% for l in LANGUAGES %}
+    langs.push('{{l.0}}');
+{% endfor %}
+
+
 var csrf_token = '{{ csrf_token }}';
 </script>
 
@@ -132,7 +141,7 @@ var csrf_token = '{{ csrf_token }}';
         
    
         <input type="hidden" name="editor-id-blog" id= "editor-id-blog" value="0"> <!-- change when a document ist loaded for editing -->
-        {% trans 'stored blog entries' %} 
+        {% trans 'stored blog entries' %} :
         <select name="blog_options" id="blog_options">
             <option value="0" selected>{% trans 'new blog entry' %}...</option>
              {% for b in blogs %}
@@ -144,16 +153,17 @@ var csrf_token = '{{ csrf_token }}';
         <button id="editor-blog-btn-delete" class="invisible" onclick="editorBlogDelete()">{% trans 'delete' %}</button> 
         
         <br/><br/>
-        <form class="dropzone" action="upload_blog_img" method="post" enctype="multipart/form-data" id="blog_dropzone">
+        <form class="dropzone" action="upload_img" method="post" enctype="multipart/form-data" id="blog_dropzone">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+            <input type="hidden" name="type" value="blog" />
         </form>
         <div class="tab">
-            <button class="tablinks" onclick="openBlog('editor-blog-tab-de', event)">DE</button>
-            <button class="tablinks" onclick="openBlog('editor-blog-tab-en', event)">EN</button>
+            <button class="tablinks_blog" onclick="openTabs('editor-blog-tab-de', 'blog', event)">DE</button>
+            <button class="tablinks_blog" onclick="openTabs('editor-blog-tab-en', 'blog', event)">EN</button>
         </div>
         
         {% for l in LANGUAGES %}
-             <div class="editor-blog-tab-{{l.0}} tabcontent" id="editor-blog-tab-{{l.0}}">
+             <div class="editor-blog-tab-{{l.0}} tabcontent_blog" id="editor-blog-tab-{{l.0}}">
                 <div class="form-group">
                    <label for="editor-title-blog-{{l.0}}">
                         {% language "{{l.0}}" %}main title{% endlanguage %}
@@ -171,7 +181,7 @@ var csrf_token = '{{ csrf_token }}';
                 </div> 
             </div>
             <script>
-                var quills = [];
+                
                 quills['{{l.0}}'] = new Quill('#editor-container-blog-{{l.0}}', {
                   modules: {
                     toolbar: toolbarOptions,
@@ -185,6 +195,127 @@ var csrf_token = '{{ csrf_token }}';
         <button id="editor-store-blog" onclick="store_blog()">{% trans 'store' %}</button>
     </div>
 </section>
+
+<section id="institutions" class="bg-light pt120 pb120">
+    <div class="container">
+        <h1>{% trans 'Institutions' %}</h1>
+        {% trans 'select institution' %}: 
+        <select name="inst_options" id="inst_options">
+            <option value="0" selected>{% trans 'new institution' %}...</option>
+             {% for i in inst %}
+                <option value="{{i.pk}}">{{i.name}}</option>
+            {% endfor %}
+        </select>
+        <br/><br/>
+        <form class="dropzone" action="upload_img" method="post" enctype="multipart/form-data" id="inst_dropzone">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+            <input type="hidden" name="type" value="blog" />
+        </form>
+        <br/>
+        <label for="inst_name">
+            {% trans 'name' %}
+        </label>
+        <input class="form-control" type="text" name="inst_name" id ="inst_name" />
+        <label for="loc_name">
+            {% trans 'location name' %}
+        </label>
+        <input class="form-control" type="text" name="loc_name" id ="loc_name" />
+         <label for="loc_coords_lat">
+            {% trans 'location coordinates' %}
+        </label>
+        <div class="row justify-content-center">
+            <input class="form-control col-12 col-md-6" type="text" name="loc_coord_long" id ="loc_coord_long" placeholder="{% trans 'longitude' %}" pattern="^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$" />
+            <input class="form-control col-12 col-md-6" type="text" name="loc_coord_lat" id ="loc_coord_lat"  placeholder="{% trans 'latitude' %}" pattern="^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$"/>
+        </div>
+         <label for="loc_name">
+            {% trans 'URL' %}
+        </label>
+        <input class="form-control" type="url" name="inst_url" id ="inst_url" />
+        
+        <div class="tab">
+            <button class="tablinks_inst" onclick="openTabs('editor-inst-tab-de', 'inst', event)">DE</button>
+            <button class="tablinks_inst" onclick="openTabs('editor-inst-tab-en', 'inst', event)">EN</button>
+        </div>
+        
+        
+         {% for l in LANGUAGES %}
+             <div class="editor-inst-tab-{{l.0}} tabcontent_inst" id="editor-inst-tab-{{l.0}}">
+       
+                 <div class="editor-container" id="editor-container-inst-{{l.0}}">
+                   {{a.content|safe}}{{l.0}}
+                </div> 
+            </div>
+            <script>
+                quills['{{l.0}}'] = new Quill('#editor-container-inst-{{l.0}}', {
+                  modules: {
+                    toolbar: toolbarOptions,
+                  },
+                  placeholder: 'Compose an epic...',
+                  formula:true,
+                  theme: 'snow'  // or 'bubble'
+                });  
+            </script>
+        {% endfor %}            
+        <button id="editor-store-inst" onclick="store_blog()">{% trans 'store' %}</button>
+    </div>    
+</section>
+
+<section id="institutions_projects" class="bg-light pt120 pb120">
+     <div class="container">
+        <h1>{% trans 'Institution - Projects' %}</h1>
+        
+        {% trans 'select institution' %}: 
+        <select name="inst_options" id="inst_proj_inst_options">
+             {% for i in inst %}
+                <option value="{{i.pk}}">{{i.name}}</option>
+            {% endfor %}
+        </select>
+        
+         {% trans 'select project' %}: 
+        <select name="inst_options" id="inst_proj_proj_options">
+             {% for i in inst %}
+                <option value="{{i.pk}}">{{i.name}}</option>
+            {% endfor %}
+        </select>
+        
+         <div class="tab">
+            <button class="tablinks_inst_proj" onclick="openTabs('editor-inst-proj-tab-de', 'inst_proj', event)">DE</button>
+            <button class="tablinks_inst_proj" onclick="openTabs('editor-inst-proj-tab-en', 'inst_proj', event)">EN</button>
+        </div>
+        
+        
+        {% for l in LANGUAGES %}
+             <div class="editor-inst-proj-tab-{{l.0}} tabcontent_inst_proj" id="editor-inst-proj-tab-{{l.0}}">
+                 <div class="form-group">
+                   <label for="editor-title-inst-proj-{{l.0}}">
+                        {% language "{{l.0}}" %}main title{% endlanguage %}
+                    </label>
+                   <input class="form-control" type="text" name="editor-title-inst-proj-{{l.0}}" id ="editor-title-inst-proj-{{l.0}}" />
+                </div>
+             
+             
+                 <div class="editor-container" id="editor-container-inst-proj-{{l.0}}">
+                   {{a.content|safe}}{{l.0}}
+                </div> 
+            </div>
+            <script>
+                quills['{{l.0}}'] = new Quill('#editor-container-inst-proj-{{l.0}}', {
+                  modules: {
+                    toolbar: toolbarOptions,
+                  },
+                  placeholder: 'Compose an epic...',
+                  formula:true,
+                  theme: 'snow'  // or 'bubble'
+                });  
+            </script>
+        {% endfor %}            
+        <button id="editor-store-inst-proj" onclick="store_blog()">{% trans 'store' %}</button>
+    </div> 
+</section>
+
+
+
+
 
 <br/><br/><br/><br/>
 <section id="about" class="bg-light pt120 pb120">

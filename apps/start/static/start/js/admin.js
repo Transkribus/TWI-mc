@@ -1,3 +1,6 @@
+/* this holds all quill editors of the page */
+var quills = [];
+
 /* general toolbar options for the quill.js editor */
 var toolbarOptions = [
   ['bold', 'italic', 'underline', 'strike', 'link'],        // toggled buttons
@@ -82,56 +85,64 @@ function editorBlogDelete()
     });
 }
 
- function openBlog(lang, evt) 
-        {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) 
-            {
-                tabcontent[i].style.display = "none";
-            }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) 
-            {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-            document.getElementById(lang).style.display = "block";
-            if (evt)
-            {
-                evt.currentTarget.className += " active";
-            } else
-            {
-                tablinks[0].className += " active";
-            }
-        }
+function openTabs(lang,type, evt) 
+{
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent_" + type);
+    for (i = 0; i < tabcontent.length; i++) 
+    {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks_" + type);
+    for (i = 0; i < tablinks.length; i++) 
+    {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(lang).style.display = "block";
+    if (evt)
+    {
+        evt.currentTarget.className += " active";
+    } else
+    {
+        tablinks[0].className += " active";
+    }
+}
+
+function generateQuillObjects(type)
+{
+    
+}
         
-        function store_blog()
-        {
-            var html_de = document.getElementById("editor-container-blog-de").firstChild.innerHTML; /* TODO replace with JQuery */
-            var html_en = document.getElementById("editor-container-blog-en").firstChild.innerHTML; /* TODO replace with JQuery */
-            var title_de = document.getElementById("editor-title-blog-de").value;  /* TODO replace with JQuery */
-            var title_en = document.getElementById("editor-title-blog-en").value;  /* TODO replace with JQuery */
-            var subtitle_de = document.getElementById("editor-subtitle-blog-de").value;  /* TODO replace with JQuery */
-            var subtitle_en = document.getElementById("editor-subtitle-blog-en").value;  /* TODO replace with JQuery */
-            //var id =  document.getElementById("editor-id-blog")
-            // console.log(html);
-            $.post("store_admin_blog", 
-                {id : 0, 
-                title_de: title_de, 
-                subtitle_de: subtitle_de,
-                title_en: title_en, 
-                subtitle_en: subtitle_en,
-                content_de: html_de, 
-                content_en: html_en,  
-                'csrfmiddlewaretoken':  csrf_token }).done(function(data)
-                    {
-                        console.log(data);
-                    });
-        }    
+function store_blog()
+{
+    var html_de = document.getElementById("editor-container-blog-de").firstChild.innerHTML; /* TODO replace with JQuery */
+    var html_en = document.getElementById("editor-container-blog-en").firstChild.innerHTML; /* TODO replace with JQuery */
+    var title_de = document.getElementById("editor-title-blog-de").value;  /* TODO replace with JQuery */
+    var title_en = document.getElementById("editor-title-blog-en").value;  /* TODO replace with JQuery */
+    var subtitle_de = document.getElementById("editor-subtitle-blog-de").value;  /* TODO replace with JQuery */
+    var subtitle_en = document.getElementById("editor-subtitle-blog-en").value;  /* TODO replace with JQuery */
+    //var id =  document.getElementById("editor-id-blog")
+    // console.log(html);
+    $.post("store_admin_blog", 
+        {id : 0, 
+        title_de: title_de, 
+        subtitle_de: subtitle_de,
+        title_en: title_en, 
+        subtitle_en: subtitle_en,
+        content_de: html_de, 
+        content_en: html_en,  
+        'csrfmiddlewaretoken':  csrf_token }).done(function(data)
+            {
+                console.log(data);
+            });
+}    
+
 $(document).ready(function()
     {
-        openBlog('editor-blog-tab-de');
-        
+        openTabs('editor-blog-tab-de','blog');
+        openTabs('editor-inst-tab-de','inst');
+        openTabs('editor-inst-proj-tab-de','inst_proj');
+            
         $( "#blog_options" ).change(function() {
             if ($(this).val() !== 0)
             {
