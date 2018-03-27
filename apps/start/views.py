@@ -51,8 +51,10 @@ def blog_detail(request):
 def admin(request):   
     template = loader.get_template('start/admin.html')
     b = m.BlogEntry.objects.filter(lang=translation.get_language())
+    i = m.Institution.objects.all()
     context = {
-        'blogs' : b 
+        'blogs' : b,
+        'inst' : i 
     }
 
     return HttpResponse(template.render(context, request))
@@ -178,7 +180,7 @@ def contact(request):
 # Services
 # ############################################################
 
-def upload_blog_img(request):
+def upload_img(request):
     file = request.FILES['file']
     blog_id = request.POST.get('blog_id')
     fname = str(uuid.uuid4()) + "." + os.path.splitext(str(file))[1][1:].strip() 
