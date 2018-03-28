@@ -142,7 +142,7 @@ var csrf_token = '{{ csrf_token }}';
    
         <input type="hidden" name="editor-id-blog" id= "editor-id-blog" value="0"> <!-- change when a document ist loaded for editing -->
         {% trans 'stored blog entries' %} :
-        <select name="blog_options" id="blog_options">
+        <select name="blog-options" id="blog-options">
             <option value="0" selected>{% trans 'new blog entry' %}...</option>
              {% for b in blogs %}
                 <option value="{{b.blog.pk}}">{{b.title}} - {{b.blog.changed}}</option>
@@ -158,12 +158,12 @@ var csrf_token = '{{ csrf_token }}';
             <input type="hidden" name="type" value="blog" />
         </form>
         <div class="tab">
-            <button class="tablinks_blog" onclick="openTabs('editor-blog-tab-de', 'blog', event)">DE</button>
-            <button class="tablinks_blog" onclick="openTabs('editor-blog-tab-en', 'blog', event)">EN</button>
+            <button class="tablinks-blog" onclick="openTabs('editor-blog-tab-de', 'blog', event)">DE</button>
+            <button class="tablinks-blog" onclick="openTabs('editor-blog-tab-en', 'blog', event)">EN</button>
         </div>
         
         {% for l in LANGUAGES %}
-             <div class="editor-blog-tab-{{l.0}} tabcontent_blog" id="editor-blog-tab-{{l.0}}">
+             <div class="editor-blog-tab-{{l.0}} tabcontent-blog" id="editor-blog-tab-{{l.0}}">
                 <div class="form-group">
                    <label for="editor-title-blog-{{l.0}}">
                         {% language "{{l.0}}" %}main title{% endlanguage %}
@@ -180,17 +180,6 @@ var csrf_token = '{{ csrf_token }}';
                    {{a.content|safe}}{{l.0}}
                 </div> 
             </div>
-            <script>
-                
-                quills['{{l.0}}'] = new Quill('#editor-container-blog-{{l.0}}', {
-                  modules: {
-                    toolbar: toolbarOptions,
-                  },
-                  placeholder: 'Compose an epic...',
-                  formula:true,
-                  theme: 'snow'  // or 'bubble'
-                });  
-            </script>
         {% endfor %}            
         <button id="editor-store-blog" onclick="store_blog()">{% trans 'store' %}</button>
     </div>
@@ -200,7 +189,7 @@ var csrf_token = '{{ csrf_token }}';
     <div class="container">
         <h1>{% trans 'Institutions' %}</h1>
         {% trans 'select institution' %}: 
-        <select name="inst_options" id="inst_options">
+        <select name="inst-options" id="inst-options">
             <option value="0" selected>{% trans 'new institution' %}...</option>
              {% for i in inst %}
                 <option value="{{i.pk}}">{{i.name}}</option>
@@ -209,28 +198,28 @@ var csrf_token = '{{ csrf_token }}';
         <br/><br/>
         <form class="dropzone" action="upload_img" method="post" enctype="multipart/form-data" id="inst_dropzone">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
-            <input type="hidden" name="type" value="blog" />
+            <input type="hidden" name="type" value="inst" />
         </form>
         <br/>
-        <label for="inst_name">
+        <label for="inst-name">
             {% trans 'name' %}
         </label>
-        <input class="form-control" type="text" name="inst_name" id ="inst_name" />
-        <label for="loc_name">
+        <input class="form-control" type="text" name="inst-name" id ="inst-name" />
+        <label for="loc-name">
             {% trans 'location name' %}
         </label>
-        <input class="form-control" type="text" name="loc_name" id ="loc_name" />
-         <label for="loc_coords_lat">
+        <input class="form-control" type="text" name="loc-name" id ="loc-name" />
+         <label for="loc-coords-lat">
             {% trans 'location coordinates' %}
         </label>
         <div class="row justify-content-center">
-            <input class="form-control col-12 col-md-6" type="text" name="loc_coord_long" id ="loc_coord_long" placeholder="{% trans 'longitude' %}" pattern="^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$" />
-            <input class="form-control col-12 col-md-6" type="text" name="loc_coord_lat" id ="loc_coord_lat"  placeholder="{% trans 'latitude' %}" pattern="^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$"/>
+            <input class="form-control col-12 col-md-6" type="text" name="loc-coord-long" id ="loc-coord-long" placeholder="{% trans 'longitude' %}" pattern="^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$" />
+            <input class="form-control col-12 col-md-6" type="text" name="loc-coord-lat" id ="loc-coord-lat"  placeholder="{% trans 'latitude' %}" pattern="^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$"/>
         </div>
-         <label for="loc_name">
+         <label for="loc-name">
             {% trans 'URL' %}
         </label>
-        <input class="form-control" type="url" name="inst_url" id ="inst_url" />
+        <input class="form-control" type="url" name="inst-url" id ="inst-url" />
         
         <div class="tab">
             <button class="tablinks_inst" onclick="openTabs('editor-inst-tab-de', 'inst', event)">DE</button>
@@ -245,16 +234,6 @@ var csrf_token = '{{ csrf_token }}';
                    {{a.content|safe}}{{l.0}}
                 </div> 
             </div>
-            <script>
-                quills['{{l.0}}'] = new Quill('#editor-container-inst-{{l.0}}', {
-                  modules: {
-                    toolbar: toolbarOptions,
-                  },
-                  placeholder: 'Compose an epic...',
-                  formula:true,
-                  theme: 'snow'  // or 'bubble'
-                });  
-            </script>
         {% endfor %}            
         <button id="editor-store-inst" onclick="store_blog()">{% trans 'store' %}</button>
     </div>    
@@ -265,27 +244,27 @@ var csrf_token = '{{ csrf_token }}';
         <h1>{% trans 'Institution - Projects' %}</h1>
         
         {% trans 'select institution' %}: 
-        <select name="inst_options" id="inst_proj_inst_options">
+        <select name="inst-options" id="inst-proj-inst-options">
              {% for i in inst %}
                 <option value="{{i.pk}}">{{i.name}}</option>
             {% endfor %}
         </select>
         
          {% trans 'select project' %}: 
-        <select name="inst_options" id="inst_proj_proj_options">
+        <select name="inst-proj-proj-options" id="inst-proj-proj-options">
              {% for i in inst %}
                 <option value="{{i.pk}}">{{i.name}}</option>
             {% endfor %}
         </select>
         
          <div class="tab">
-            <button class="tablinks_inst_proj" onclick="openTabs('editor-inst-proj-tab-de', 'inst_proj', event)">DE</button>
-            <button class="tablinks_inst_proj" onclick="openTabs('editor-inst-proj-tab-en', 'inst_proj', event)">EN</button>
+            <button class="tablinks-inst-proj" onclick="openTabs('editor-inst-proj-tab-de', 'inst-proj', event)">DE</button>
+            <button class="tablinks-inst-proj" onclick="openTabs('editor-inst-proj-tab-en', 'inst-proj', event)">EN</button>
         </div>
         
         
         {% for l in LANGUAGES %}
-             <div class="editor-inst-proj-tab-{{l.0}} tabcontent_inst_proj" id="editor-inst-proj-tab-{{l.0}}">
+             <div class="editor-inst-proj-tab-{{l.0}} tabcontent-inst-proj" id="editor-inst-proj-tab-{{l.0}}">
                  <div class="form-group">
                    <label for="editor-title-inst-proj-{{l.0}}">
                         {% language "{{l.0}}" %}main title{% endlanguage %}
@@ -298,24 +277,10 @@ var csrf_token = '{{ csrf_token }}';
                    {{a.content|safe}}{{l.0}}
                 </div> 
             </div>
-            <script>
-                quills['{{l.0}}'] = new Quill('#editor-container-inst-proj-{{l.0}}', {
-                  modules: {
-                    toolbar: toolbarOptions,
-                  },
-                  placeholder: 'Compose an epic...',
-                  formula:true,
-                  theme: 'snow'  // or 'bubble'
-                });  
-            </script>
         {% endfor %}            
         <button id="editor-store-inst-proj" onclick="store_blog()">{% trans 'store' %}</button>
     </div> 
 </section>
-
-
-
-
 
 <br/><br/><br/><br/>
 <section id="about" class="bg-light pt120 pb120">

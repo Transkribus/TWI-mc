@@ -81,19 +81,19 @@ function editorBlogDelete()
     
     $.post("delete_admin_blog", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
     {
-        $("#blog_options option[value='" + id + "']").remove();
+        $("#blog-options option[value='" + id + "']").remove();
     });
 }
 
 function openTabs(lang,type, evt) 
 {
     var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent_" + type);
+    tabcontent = document.getElementsByClassName("tabcontent-" + type);
     for (i = 0; i < tabcontent.length; i++) 
     {
         tabcontent[i].style.display = "none";
     }
-    tablinks = document.getElementsByClassName("tablinks_" + type);
+    tablinks = document.getElementsByClassName("tablinks-" + type);
     for (i = 0; i < tablinks.length; i++) 
     {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
@@ -108,9 +108,23 @@ function openTabs(lang,type, evt)
     }
 }
 
+/*  type (blog, inst,...) serves as a prefix for the key of the array which stores the quill objects 
+    objects are generated for each language and type
+*/
 function generateQuillObjects(type)
 {
-    
+    for (var i = 0; i < langs.length;i++)
+    {
+        var l = langs[i];
+        quills[type + "-" + l] = new Quill('#editor-container-' + type + '-' + l, {
+            modules: {
+              toolbar: toolbarOptions,
+            },
+            placeholder: 'Compose an epic...',
+            formula:true,
+            theme: 'snow'  // or 'bubble'
+            });  
+    }
 }
         
 function store_blog()
@@ -141,9 +155,13 @@ $(document).ready(function()
     {
         openTabs('editor-blog-tab-de','blog');
         openTabs('editor-inst-tab-de','inst');
-        openTabs('editor-inst-proj-tab-de','inst_proj');
+        openTabs('editor-inst-proj-tab-de','inst-proj');
+        
+        generateQuillObjects('blog');
+        generateQuillObjects('inst');
+        generateQuillObjects('inst-proj');
             
-        $( "#blog_options" ).change(function() {
+        $( "#blog-options" ).change(function() {
             if ($(this).val() !== 0)
             {
                 $.post("change_admin_blog", {'id': $(this).val(), 'csrfmiddlewaretoken': csrf_token }).done( function(data)
@@ -152,17 +170,17 @@ $(document).ready(function()
                     
                     $("#editor-blog-img").removeClass("invisible");
                     $("#editor-blog-btn-delete").removeClass("invisible");
-                    $("#editor-blog-img").attr("src", "../static/start/img/upload/" + img );
+                    $("#editor-blog-img").attr("src", "../static/start/img/upload/" + img ); //TODO: change path
                     $("#editor-blog-img").attr("width","80px");
                     var de = getBlogEntryByLang(data, "de");
                     
                     //$("#editor-container-blog-de").html(de.fields.content);
-                    quills['de'].clipboard.dangerouslyPasteHTML(de.fields.content);
+                    quills['blog-de'].clipboard.dangerouslyPasteHTML(de.fields.content);
                     $("#editor-title-blog-de").val(de.fields.title);
                     $("#editor-subtitle-blog-de").val(de.fields.subtitle);
                     
                     var en = getBlogEntryByLang(data, "en");
-                    quills['en'].clipboard.dangerouslyPasteHTML(en.fields.content);
+                    quills['blog-en'].clipboard.dangerouslyPasteHTML(en.fields.content);
                     $("#editor-title-blog-en").val(en.fields.title);
                     $("#editor-subtitle-blog-en").val(en.fields.subtitle);   
                 });
