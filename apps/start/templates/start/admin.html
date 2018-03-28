@@ -150,7 +150,7 @@ var csrf_token = '{{ csrf_token }}';
         </select>
         <img id="editor-blog-img" class="invisible" src="" /> 
         
-        <button id="editor-blog-btn-delete" class="invisible" onclick="editorBlogDelete()">{% trans 'delete' %}</button> 
+        <button id="editor-blog-btn-delete" class="invisible" onclick="delete_blog()">{% trans 'delete' %}</button> 
         
         <br/><br/>
         <form class="dropzone" action="upload_img" method="post" enctype="multipart/form-data" id="blog_dropzone">
