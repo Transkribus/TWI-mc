@@ -17,5 +17,6 @@ urlpatterns = [
     url(r'^upload_img', v.upload_img, name='upload_img'),
     url(r'^change_admin_blog', v.change_admin_blog, name='change_admin_blog'),
     url(r'^delete_admin_blog', v.delete_admin_blog, name='delete_admin_blog'),
-    url(r'^blog_detail', v.blog_detail, name='blog_detail')
+    url(r'^blog_detail', v.blog_detail, name='blog_detail'),
+    url(r'^store_admin_inst', v.store_admin_inst, name='store_admin_inst')
 ]

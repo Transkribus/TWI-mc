@@ -61,7 +61,10 @@ var toolbarOptions = [
                 }
             };  
     
-    
+
+/* ------------------------------------ */
+/* Common functions */
+/* ------------------------------------ */    
 function getBlogEntryByLang(arr, lang)
 {
     for (var i = 1; i < arr.length;i++)
@@ -72,17 +75,6 @@ function getBlogEntryByLang(arr, lang)
         }
     }
     return null;
-}
-
-function editorBlogDelete()
-{
-    var id = $("#blog-options").val();
-   
-    
-    $.post("delete_admin_blog", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
-    {
-        $("#blog-options option[value='" + id + "']").remove();
-    });
 }
 
 function openTabs(lang,type, evt) 
@@ -126,6 +118,34 @@ function generateQuillObjects(type)
             });  
     }
 }
+
+/* ------------------------------------ */
+/* Blog functions */
+/* ------------------------------------ */    
+
+/* remove all entries from the blog editor section */
+function clear_blog()
+{
+    $("#editor-container-blog-de").children().first().html(''); 
+    $("#editor-container-blog-en").children().first().html('');
+    $("#editor-title-blog-de").val(''); 
+    $("#editor-title-blog-en").val(''); 
+    $("#editor-subtitle-blog-de").val(''); 
+    $("#editor-subtitle-blog-en").val('');  
+}
+
+function delete_blog()
+{
+    var id = $("#blog-options").val();
+   
+    
+    $.post("delete_admin_blog", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+    {
+        $("#blog-options option[value='" + id + "']").remove();
+    });
+    clear_blog();
+}
+
         
 function store_blog()
 {
@@ -150,6 +170,42 @@ function store_blog()
                 $("#blog-options").append('<option value="' + data.id +'" selected="selected">' + data.title + ' - ' + data.changed + '</option>');
             });
 }    
+
+/* ------------------------------------ */
+/* Institution functions */
+/* ------------------------------------ */    
+
+function store_inst()
+{
+
+var html_de = $("#editor-container-inst-de").children().first().html(); 
+var html_en = $("#editor-container-inst-en").children().first().html();
+var name = $("#inst-name").val();
+var loc_name = $("#loc-name").val();
+var lng = $("#loc-coord-long").val();
+var lat = $("#loc-coord-lat").val();
+var url = $("#inst-url").val();
+
+$.post("store_admin_inst",
+    {id: 0,
+    name: name,
+    loc_name : loc_name,
+    lng : lng,
+    lat : lat,
+    url : url,
+    content_de: html_de, 
+    content_en: html_en, 
+    'csrfmiddlewaretoken':  csrf_token
+    }).done(function(data)
+        {
+            console.log(data);
+            $("#inst-options").append('<option value="' + data.id +'" selected="selected">' + data.name + '</option>');
+
+        });
+}
+/* ------------------------------------ */
+/* Main entry Point                     */
+/* ------------------------------------ */    
 
 $(document).ready(function()
     {

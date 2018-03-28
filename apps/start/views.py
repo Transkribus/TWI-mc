@@ -69,9 +69,7 @@ def store_admin_blog(request):
         subtitle_en = request.POST.get('subtitle_en','')
         content_de = request.POST.get('content_de','')
         content_en = request.POST.get('content_en','')
-        print("CONTENT_DE:" + content_de)
-        print("CONTENT_EN:" + content_en)
-        
+            
         fname = None
         if "blog_name" in request.session:
             fname = request.session["blog_fname"]
@@ -88,6 +86,32 @@ def store_admin_blog(request):
     json = '{"id" : ' + str(b.pk) + ', "title" : "' + title  + '", "changed" : "' + str(b.changed) + '"}'
     print (json)
     return HttpResponse(json, content_type="application/json")
+
+
+def store_admin_inst(request):
+    idb = request.POST.get('id',0)
+    if idb == "0":
+        name = request.POST.get('name','')
+        loc_name = request.POST.get('loc_name','')
+        lng = request.POST.get('lng','')
+        lat = request.POST.get('lat','')
+        url = request.POST.get('url','')
+        
+        fname = None
+        if "blog_name" in request.session:
+            fname = request.session["inst_fname"]
+            del request.session["inst_fname"]
+        
+        inst = m.Institution.objects.create(name=name, loclabel=loc_name, lng=lng, lat=lat, link=url, image=fname)
+        
+        content_de = request.POST.get('content_de','')
+        m.InstitutionDescription.objects.create(desc=content_de, lang='de', inst=inst)
+        
+        content_en = request.POST.get('content_en','')
+        m.InstitutionDescription.objects.create(desc=content_en, lang='en', inst=inst)   
+    json = '{"name" : ' + name + '}'
+    print (json)
+    return HttpResponse(json, content_type="application/json") 
 
 '''
 Find a Blog Entry and return as json
