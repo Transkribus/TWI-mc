@@ -76,7 +76,7 @@ function getBlogEntryByLang(arr, lang)
 
 function editorBlogDelete()
 {
-    var id = $("#blog_options").val();
+    var id = $("#blog-options").val();
    
     
     $.post("delete_admin_blog", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
@@ -129,14 +129,13 @@ function generateQuillObjects(type)
         
 function store_blog()
 {
-    var html_de = document.getElementById("editor-container-blog-de").firstChild.innerHTML; /* TODO replace with JQuery */
-    var html_en = document.getElementById("editor-container-blog-en").firstChild.innerHTML; /* TODO replace with JQuery */
-    var title_de = document.getElementById("editor-title-blog-de").value;  /* TODO replace with JQuery */
-    var title_en = document.getElementById("editor-title-blog-en").value;  /* TODO replace with JQuery */
-    var subtitle_de = document.getElementById("editor-subtitle-blog-de").value;  /* TODO replace with JQuery */
-    var subtitle_en = document.getElementById("editor-subtitle-blog-en").value;  /* TODO replace with JQuery */
-    //var id =  document.getElementById("editor-id-blog")
-    // console.log(html);
+    var html_de = $("#editor-container-blog-de").children().first().html(); 
+    var html_en = $("#editor-container-blog-en").children().first().html();
+    var title_de = $("#editor-title-blog-de").val(); 
+    var title_en = $("#editor-title-blog-en").val(); 
+    var subtitle_de = $("#editor-subtitle-blog-de").val(); 
+    var subtitle_en = $("#editor-subtitle-blog-en").val();  
+
     $.post("store_admin_blog", 
         {id : 0, 
         title_de: title_de, 
@@ -148,6 +147,7 @@ function store_blog()
         'csrfmiddlewaretoken':  csrf_token }).done(function(data)
             {
                 console.log(data);
+                $("#blog-options").append('<option value="' + data.id +'" selected="selected">' + data.title + ' - ' + data.changed + '</option>');
             });
 }    
 

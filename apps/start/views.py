@@ -69,6 +69,9 @@ def store_admin_blog(request):
         subtitle_en = request.POST.get('subtitle_en','')
         content_de = request.POST.get('content_de','')
         content_en = request.POST.get('content_en','')
+        print("CONTENT_DE:" + content_de)
+        print("CONTENT_EN:" + content_en)
+        
         fname = None
         if "blog_name" in request.session:
             fname = request.session["blog_fname"]
@@ -82,7 +85,7 @@ def store_admin_blog(request):
     #data = serializers.serialize('json', b)    
     #print(json.dumps(json.loads(data), indent=4)) 
     title = (title_de, title_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(b.pk) + ', "title " : "' + title  + '", "changed" : "' + str(b.changed) + '"}'
+    json = '{"id" : ' + str(b.pk) + ', "title" : "' + title  + '", "changed" : "' + str(b.changed) + '"}'
     print (json)
     return HttpResponse(json, content_type="application/json")
 
