@@ -326,45 +326,8 @@ var csrf_token = '{{ csrf_token }}';
          </script>
     </div>
 </section>
- 
-<footer class="footer_four footer_dark">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10 col-12 text-center-xs">
-                <ul class="list-inline">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="#about">about</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="#services">services</a>
-                    </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link " href="#blog">Blog</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="#contact">contact us</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-md-10 col-12 text-center-xs">
-                <p>
-                    © {% trans 'Copyright 2018 DEA - All Rights Reserved' %}
-                </p>
-                <p>
-                    <img class="eu_logo" src="{% static 'start/img/jaune.jpeg' %}"/>
-                    {% trans 'Transkribus is part of the READ project and has received funding from the European Union’s Horizon 2020 Research and Innovation programme under grant agreement no. 674943.' %}
-                </p> 
-            </div>
-        </div>
-        <!--end of row-->
-    </div>
-    <!--end of container-->
-</footer>
-
+{% include "start/includes/footer.html" %} 
 
 
 </body>
