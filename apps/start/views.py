@@ -134,6 +134,11 @@ def delete_admin_blog(request):
     idb = request.POST.get('id',0)
     m.Blog.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
+
+def delete_admin_inst(request):
+    idb = request.POST.get('id',0)
+    m.Institution.objects.filter(pk=idb).delete()
+    return HttpResponse("ok", content_type="text/plain")
     
 
 # def store_admin(request):

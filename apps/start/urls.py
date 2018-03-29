@@ -18,5 +18,6 @@ urlpatterns = [
     url(r'^change_admin_blog', v.change_admin_blog, name='change_admin_blog'),
     url(r'^delete_admin_blog', v.delete_admin_blog, name='delete_admin_blog'),
     url(r'^blog_detail', v.blog_detail, name='blog_detail'),
-    url(r'^store_admin_inst', v.store_admin_inst, name='store_admin_inst')
+    url(r'^store_admin_inst', v.store_admin_inst, name='store_admin_inst'),
+    url(r'^delete_admin_inst', v.delete_admin_inst, name='delete_admin_inst')
 ]

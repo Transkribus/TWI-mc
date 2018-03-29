@@ -203,6 +203,30 @@ $.post("store_admin_inst",
 
         });
 }
+
+/* remove all entries from the inst editor section (also from inst-projects if linked) */
+function clear_inst()
+{
+    $("#editor-container-inst-de").children().first().html(''); 
+    $("#editor-container-inst-en").children().first().html('');
+    $("#inst-name").val(''); 
+    $("#loc-name").val(''); 
+    $("#loc-coord-long").val(''); 
+    $("#loc-coord-lat").val('');  
+    //TODO: inst-projects
+}
+
+function delete_inst()
+{
+    var id = $("#inst-options").val();
+    
+    $.post("delete_admin_inst", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+    {
+        $("#inst-options option[value='" + id + "']").remove();
+    });
+    clear_inst();
+}
+
 /* ------------------------------------ */
 /* Main entry Point                     */
 /* ------------------------------------ */    

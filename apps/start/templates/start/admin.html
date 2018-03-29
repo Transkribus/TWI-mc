@@ -195,6 +195,8 @@ var csrf_token = '{{ csrf_token }}';
                 <option value="{{i.pk}}">{{i.name}}</option>
             {% endfor %}
         </select>
+        <button id="editor-inst-btn-delete" class="invisible" onclick="delete_inst()">{% trans 'delete' %}</button> 
+        
         <br/><br/>
         <form class="dropzone" action="upload_img" method="post" enctype="multipart/form-data" id="inst_dropzone">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
