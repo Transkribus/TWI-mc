@@ -115,7 +115,7 @@ def store_admin_inst(request):
 
 '''
 Find a Blog Entry and return as json
-This special task is necessary because joined tables cannot be fully serialized
+This special task is necessary because joined tables cannot be fully serialized as json
 '''
 def get_blog_entry(idb):
     be = m.BlogEntry.objects.filter(blog=idb)
@@ -139,7 +139,24 @@ def delete_admin_inst(request):
     idb = request.POST.get('id',0)
     m.Institution.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
-    
+
+'''
+Find a Institution Entry and return as json
+This special task is necessary because joined tables cannot be fully serialized as json
+'''
+def get_inst_entry(idb):
+    be = m.InstitutionDescription.objects.filter(inst=idb)
+    b = m.Institution.objects.filter(pk=idb)
+    combined = list(chain(b, be))
+    return serializers.serialize('json', combined)
+
+ 
+def change_admin_inst(request):   
+    idb = request.POST.get('id',0)
+    data = get_inst_entry(idb)  
+
+    print(json.dumps(json.loads(data), indent=4)) 
+    return HttpResponse(data, content_type="application/json")
 
 # def store_admin(request):
 #     print("store_admin")

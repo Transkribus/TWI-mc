@@ -171,37 +171,68 @@ function store_blog()
             });
 }    
 
+
+function change_blog(v)
+{
+    if (v !== 0)
+    {
+        $.post("change_admin_blog", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+        {
+            var img = data[0].fields.image;
+            
+            $("#editor-blog-img").removeClass("invisible");
+            $("#editor-blog-btn-delete").removeClass("invisible");
+            $("#editor-blog-img").attr("src", "../static/start/img/upload/" + img ); //TODO: change path
+            $("#editor-blog-img").attr("width","80px");
+            var de = getBlogEntryByLang(data, "de");
+            
+            //$("#editor-container-blog-de").html(de.fields.content);
+            quills['blog-de'].clipboard.dangerouslyPasteHTML(de.fields.content);
+            $("#editor-title-blog-de").val(de.fields.title);
+            $("#editor-subtitle-blog-de").val(de.fields.subtitle);
+            
+            var en = getBlogEntryByLang(data, "en");
+            quills['blog-en'].clipboard.dangerouslyPasteHTML(en.fields.content);
+            $("#editor-title-blog-en").val(en.fields.title);
+            $("#editor-subtitle-blog-en").val(en.fields.subtitle);   
+        });
+    } else
+    {
+        $("#editor-blog-btn-delete").addClass("invisible");
+        $("#editor-blog-img").addClass("invisible");
+    }
+}
+
 /* ------------------------------------ */
 /* Institution functions */
 /* ------------------------------------ */    
 
 function store_inst()
 {
-
-var html_de = $("#editor-container-inst-de").children().first().html(); 
-var html_en = $("#editor-container-inst-en").children().first().html();
-var name = $("#inst-name").val();
-var loc_name = $("#loc-name").val();
-var lng = $("#loc-coord-long").val();
-var lat = $("#loc-coord-lat").val();
-var url = $("#inst-url").val();
-
-$.post("store_admin_inst",
-    {id: 0,
-    name: name,
-    loc_name : loc_name,
-    lng : lng,
-    lat : lat,
-    url : url,
-    content_de: html_de, 
-    content_en: html_en, 
-    'csrfmiddlewaretoken':  csrf_token
-    }).done(function(data)
-        {
-            console.log(data);
-            $("#inst-options").append('<option value="' + data.id +'" selected="selected">' + data.name + '</option>');
-
-        });
+    var html_de = $("#editor-container-inst-de").children().first().html(); 
+    var html_en = $("#editor-container-inst-en").children().first().html();
+    var name = $("#inst-name").val();
+    var loc_name = $("#loc-name").val();
+    var lng = $("#loc-coord-long").val();
+    var lat = $("#loc-coord-lat").val();
+    var url = $("#inst-url").val();
+    
+    $.post("store_admin_inst",
+        {id: 0,
+        name: name,
+        loc_name : loc_name,
+        lng : lng,
+        lat : lat,
+        url : url,
+        content_de: html_de, 
+        content_en: html_en, 
+        'csrfmiddlewaretoken':  csrf_token
+        }).done(function(data)
+            {
+                console.log(data);
+                $("#inst-options").append('<option value="' + data.id +'" selected="selected">' + data.name + '</option>');
+    
+            });
 }
 
 /* remove all entries from the inst editor section (also from inst-projects if linked) */
@@ -227,6 +258,38 @@ function delete_inst()
     clear_inst();
 }
 
+
+function change_inst(v)
+{
+    if (v !== 0)
+    {
+        $.post("change_admin_inst", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+        {
+            var img = data[0].fields.image;
+            
+            $("#editor-blog-img").removeClass("invisible");
+            $("#editor-blog-btn-delete").removeClass("invisible");
+            $("#editor-blog-img").attr("src", "../static/start/img/upload/" + img ); //TODO: change path
+            $("#editor-blog-img").attr("width","80px");
+            var de = getBlogEntryByLang(data, "de");
+            
+            //$("#editor-container-blog-de").html(de.fields.content);
+            quills['blog-de'].clipboard.dangerouslyPasteHTML(de.fields.content);
+            $("#editor-title-blog-de").val(de.fields.title);
+            $("#editor-subtitle-blog-de").val(de.fields.subtitle);
+            
+            var en = getBlogEntryByLang(data, "en");
+            quills['blog-en'].clipboard.dangerouslyPasteHTML(en.fields.content);
+            $("#editor-title-blog-en").val(en.fields.title);
+            $("#editor-subtitle-blog-en").val(en.fields.subtitle);   
+        });
+    } else
+    {
+        $("#editor-blog-btn-delete").addClass("invisible");
+        $("#editor-blog-img").addClass("invisible");
+    }
+}
+
 /* ------------------------------------ */
 /* Main entry Point                     */
 /* ------------------------------------ */    
@@ -241,33 +304,4 @@ $(document).ready(function()
         generateQuillObjects('inst');
         generateQuillObjects('inst-proj');
             
-        $( "#blog-options" ).change(function() {
-            if ($(this).val() !== 0)
-            {
-                $.post("change_admin_blog", {'id': $(this).val(), 'csrfmiddlewaretoken': csrf_token }).done( function(data)
-                {
-                    var img = data[0].fields.image;
-                    
-                    $("#editor-blog-img").removeClass("invisible");
-                    $("#editor-blog-btn-delete").removeClass("invisible");
-                    $("#editor-blog-img").attr("src", "../static/start/img/upload/" + img ); //TODO: change path
-                    $("#editor-blog-img").attr("width","80px");
-                    var de = getBlogEntryByLang(data, "de");
-                    
-                    //$("#editor-container-blog-de").html(de.fields.content);
-                    quills['blog-de'].clipboard.dangerouslyPasteHTML(de.fields.content);
-                    $("#editor-title-blog-de").val(de.fields.title);
-                    $("#editor-subtitle-blog-de").val(de.fields.subtitle);
-                    
-                    var en = getBlogEntryByLang(data, "en");
-                    quills['blog-en'].clipboard.dangerouslyPasteHTML(en.fields.content);
-                    $("#editor-title-blog-en").val(en.fields.title);
-                    $("#editor-subtitle-blog-en").val(en.fields.subtitle);   
-                });
-            } else
-            {
-                $("#editor-blog-btn-delete").addClass("invisible");
-                $("#editor-blog-img").addClass("invisible");
-            }
-        });
     });        

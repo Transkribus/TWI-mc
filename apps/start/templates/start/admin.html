@@ -142,7 +142,7 @@ var csrf_token = '{{ csrf_token }}';
    
         <input type="hidden" name="editor-id-blog" id= "editor-id-blog" value="0"> <!-- change when a document ist loaded for editing -->
         {% trans 'stored blog entries' %} :
-        <select name="blog-options" id="blog-options">
+        <select name="blog-options" id="blog-options"  onchange="change_blog($(this).val())">
             <option value="0" selected>{% trans 'new blog entry' %}...</option>
              {% for b in blogs %}
                 <option value="{{b.blog.pk}}">{{b.title}} - {{b.blog.changed}}</option>
@@ -189,7 +189,7 @@ var csrf_token = '{{ csrf_token }}';
     <div class="container">
         <h1>{% trans 'Institutions' %}</h1>
         {% trans 'select institution' %}: 
-        <select name="inst-options" id="inst-options">
+        <select name="inst-options" id="inst-options" onchange="change_inst($(this).val())">
             <option value="0" selected>{% trans 'new institution' %}...</option>
              {% for i in inst %}
                 <option value="{{i.pk}}">{{i.name}}</option>
@@ -230,7 +230,7 @@ var csrf_token = '{{ csrf_token }}';
         
         
          {% for l in LANGUAGES %}
-             <div class="editor-inst-tab-{{l.0}} tabcontent_inst" id="editor-inst-tab-{{l.0}}">
+             <div class="editor-inst-tab-{{l.0}} tabcontent-inst" id="editor-inst-tab-{{l.0}}">
        
                  <div class="editor-container" id="editor-container-inst-{{l.0}}">
                    {{a.content|safe}}{{l.0}}
