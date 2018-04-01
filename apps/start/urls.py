@@ -20,5 +20,8 @@ urlpatterns = [
     url(r'^blog_detail', v.blog_detail, name='blog_detail'),
     url(r'^store_admin_inst', v.store_admin_inst, name='store_admin_inst'),
     url(r'^delete_admin_inst', v.delete_admin_inst, name='delete_admin_inst'),
-    url(r'^change_admin_inst', v.change_admin_inst, name='change_admin_inst')
+    url(r'^change_admin_inst', v.change_admin_inst, name='change_admin_inst'),
+    url(r'^store_admin_proj', v.store_admin_inst_proj, name='store_admin_inst_proj'),
+    url(r'^change_admin_proj', v.change_admin_inst_proj, name='change_admin_inst_proj'),
+    url(r'^change_admin_pr_inst_selection', v.change_admin_inst_proj_selection, name='change_admin_inst_proj_selection'),
 ]

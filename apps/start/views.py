@@ -10,7 +10,7 @@ from django.core import serializers
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.contrib import messages
-
+from decimal import Decimal
 from apps.utils.services import TranskribusSession
 from django.core.files.storage import default_storage
 import uuid 
@@ -52,9 +52,14 @@ def admin(request):
     template = loader.get_template('start/admin.html')
     b = m.BlogEntry.objects.filter(lang=translation.get_language())
     i = m.Institution.objects.all()
+    
+    ifirst = m.Institution.objects.first()
+    inst_entries = m.InstitutionProjectEntries.objects.filter(project__inst=ifirst.pk, lang=translation.get_language())
+    
     context = {
         'blogs' : b,
-        'inst' : i 
+        'inst' : i,
+        'first_inst_entries' : inst_entries 
     }
 
     return HttpResponse(template.render(context, request))
@@ -89,12 +94,13 @@ def store_admin_blog(request):
 
 
 def store_admin_inst(request):
+    print("store_admin_inst")
     idb = request.POST.get('id',0)
     if idb == "0":
         name = request.POST.get('name','')
         loc_name = request.POST.get('loc_name','')
-        lng = request.POST.get('lng','')
-        lat = request.POST.get('lat','')
+        lng = Decimal(request.POST.get('lng',''))
+        lat = Decimal(request.POST.get('lat',''))
         url = request.POST.get('url','')
         
         fname = None
@@ -112,6 +118,43 @@ def store_admin_inst(request):
     json = '{"name" : ' + name + '}'
     print (json)
     return HttpResponse(json, content_type="application/json") 
+
+def store_admin_inst_proj(request):
+    idb = request.POST.get('id',0)
+    if idb == "0":
+        inst_id = request.POST.get('inst_id',0)
+        title_de = request.POST.get('title_de','')
+        title_en = request.POST.get('title_en','')
+        content_de = request.POST.get('content_de','')
+        content_en = request.POST.get('content_en','')
+        print("inst_id:" + str(inst_id))
+        p = m.InstitutionProject.objects.create(inst=m.Institution.objects.get(pk=inst_id))
+        m.InstitutionProjectEntries.objects.create(title=title_de, desc=content_de, lang='de', project=p)
+        m.InstitutionProjectEntries.objects.create(title=title_en, desc=content_en, lang='en', project=p)        
+ 
+        title = (title_de, title_en)[translation.get_language() == 'de']
+        json = '{"id" : ' + str(p.pk) + ', "title" : "' + title + '"}'
+        return HttpResponse(json, content_type="application/json") 
+
+'''
+is called when another institution is selected in the institution/project area
+'''
+def change_admin_inst_proj(request):
+    idb = request.POST.get('id',0)
+    ipe = m.InstitutionProjectEntries.objects.filter(project__pk=idb, lang=translation.get_language())
+
+    js = serializers.serialize('json',ipe)
+    print(js) 
+    return HttpResponse(js, content_type="application/json")    
+
+
+def change_admin_inst_proj_selection(request):
+    idb = request.POST.get('id',0)
+    ipe = m.InstitutionProjectEntries.objects.filter(project=idb)
+
+    js = serializers.serialize('json',ipe)
+    print(js) 
+    return HttpResponse(js, content_type="application/json")  
 
 '''
 Find a Blog Entry and return as json

@@ -138,7 +138,6 @@ function delete_blog()
 {
     var id = $("#blog-options").val();
    
-    
     $.post("delete_admin_blog", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
     {
         $("#blog-options option[value='" + id + "']").remove();
@@ -229,7 +228,6 @@ function store_inst()
         'csrfmiddlewaretoken':  csrf_token
         }).done(function(data)
             {
-                console.log(data);
                 $("#inst-options").append('<option value="' + data.id +'" selected="selected">' + data.name + '</option>');
     
             });
@@ -288,6 +286,74 @@ function change_inst(v)
         $("#editor-blog-btn-delete").addClass("invisible");
         $("#editor-blog-img").addClass("invisible");
     }
+}
+
+function store_inst_proj()
+{
+    var html_de = $("#editor-container-inst-proj-de").children().first().html(); 
+    var html_en = $("#editor-container-inst-proj-en").children().first().html();
+    var title_de = $("#editor-title-inst-proj-de").val();
+    var title_en = $("#editor-title-inst-proj-en").val();
+    var inst_id = $("#inst-proj-options").val();
+    
+    console.log("inst_id" + inst_id);
+    
+    $.post("store_admin_proj",
+        {id: 0,
+        inst_id : inst_id,
+        title_de: title_de,
+        title_en: title_en,
+        content_de: html_de, 
+        content_en: html_en, 
+        'csrfmiddlewaretoken':  csrf_token
+        }).done(function(data)
+            {
+                $("#inst-proj-proj-options").append('<option value="' + data.id +'" selected="selected">' + data.title + '</option>');
+            });
+}
+
+
+/* switch the selection of the actual institution: the listing of the actual projects are changed */
+function change_inst_proj(v)
+{
+    $.post("change_admin_proj", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+    {
+        $("#inst-proj-proj-options").empty();
+        for (var i = 0; i < data.length;i++)
+        {
+            $("#inst-proj-proj-options").append('<option value="' + data[i].fields.pk +'" selected="selected">' + data[i].fields.title + '</option>');            
+        }
+        if (data.length > 0)
+        {
+            change_inst_proj_proj(data[0].fields.project);
+        }
+    });
+}
+
+
+function getentrybylang(arr, lang)
+{
+    for (var i = 0; i < arr.length;i++)
+    {
+        if (arr[i].fields.lang == lang)
+        {
+            return arr[i];
+        }
+    }
+    return null;
+}
+
+function change_inst_proj_proj(v)
+{
+    $.post("change_admin_pr_inst_selection", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+    {
+        var en = getentrybylang(data,"en");
+        quills['inst-proj-en'].clipboard.dangerouslyPasteHTML(en.fields.desc);
+        $("#editor-title-inst-proj-en").val(en.fields.title);
+        var de = getentrybylang(data,"de");
+        quills['inst-proj-de'].clipboard.dangerouslyPasteHTML(de.fields.desc);
+        $("#editor-title-inst-proj-de").val(de.fields.title);
+    });
 }
 
 /* ------------------------------------ */

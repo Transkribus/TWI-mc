@@ -177,7 +177,7 @@ var csrf_token = '{{ csrf_token }}';
                    <input class="form-control" type="text" name="editor-subtitle-blog-{{l.0}}" id ="editor-subtitle-blog-{{l.0}}" />
                 </div>  
                  <div class="editor-container" id="editor-container-blog-{{l.0}}">
-                   {{a.content|safe}}{{l.0}}
+                   
                 </div> 
             </div>
         {% endfor %}            
@@ -246,19 +246,19 @@ var csrf_token = '{{ csrf_token }}';
         <h1>{% trans 'Institution - Projects' %}</h1>
         
         {% trans 'select institution' %}: 
-        <select name="inst-options" id="inst-proj-inst-options">
+        <select name="inst-proj-options" id="inst-proj-options" onchange="change_inst_proj($(this).val())">
              {% for i in inst %}
                 <option value="{{i.pk}}">{{i.name}}</option>
             {% endfor %}
         </select>
         
-         {% trans 'select project' %}: 
-        <select name="inst-proj-proj-options" id="inst-proj-proj-options">
-             {% for i in inst %}
+        {% trans 'select project' %}: 
+        <select name="inst-proj-proj-options" id="inst-proj-proj-options"  onchange="change_inst_proj_proj($(this).val())">
+             {% for i in inst.0.projects %}
                 <option value="{{i.pk}}">{{i.name}}</option>
             {% endfor %}
         </select>
-        
+        <br/><br/>
          <div class="tab">
             <button class="tablinks-inst-proj" onclick="openTabs('editor-inst-proj-tab-de', 'inst-proj', event)">DE</button>
             <button class="tablinks-inst-proj" onclick="openTabs('editor-inst-proj-tab-en', 'inst-proj', event)">EN</button>
@@ -280,7 +280,7 @@ var csrf_token = '{{ csrf_token }}';
                 </div> 
             </div>
         {% endfor %}            
-        <button id="editor-store-inst-proj" onclick="store_blog()">{% trans 'store' %}</button>
+        <button id="editor-store-inst-proj" onclick="store_inst_proj()">{% trans 'store' %}</button>
     </div> 
 </section>
 
