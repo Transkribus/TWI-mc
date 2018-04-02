@@ -29,7 +29,8 @@ ts = TranskribusSession()
 def index(request):
     template = loader.get_template('start/homepage.html')
     context = {
-        'blogs' : m.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed')
+        'blogs' : m.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed'),
+        'inst' :  m.Institution.objects.all()
     }
     return HttpResponse(template.render(context, request))
 
@@ -43,7 +44,7 @@ def blog_detail(request):
 
     context = {
         #'blog' : b,
-        'entry' : be
+        'entry' : be,
     }
     
     return HttpResponse(template.render(context, request))

@@ -21,6 +21,7 @@ class Institution(models.Model):
     lng= models.DecimalField(decimal_places=4, max_digits=12) #longitude
     loclabel=models.CharField(max_length=30) #the label of the location for displaying on the map
     link = models.CharField(max_length=512, null=False) #the link to the institution
+    image = models.FilePathField(max_length=512, null=True)
 
 class InstitutionDescription(models.Model):
     desc = models.TextField() # full description
