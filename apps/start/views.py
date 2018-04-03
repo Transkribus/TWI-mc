@@ -68,6 +68,7 @@ def admin(request):
     template = loader.get_template('start/admin.html')
     b = m.BlogEntry.objects.filter(lang=translation.get_language())
     i = m.Institution.objects.all()
+    a = m.HomeArticleEntry.objects.filter(lang=translation.get_language())
     
     ifirst = m.Institution.objects.first()
     inst_entries = m.InstitutionProjectEntries.objects.filter(project__inst=ifirst.pk, lang=translation.get_language())
@@ -75,12 +76,37 @@ def admin(request):
     context = {
         'blogs' : b,
         'inst' : i,
-        'first_inst_entries' : inst_entries 
+        'first_inst_entries' : inst_entries,
+        'articles' : a
     }
 
     return HttpResponse(template.render(context, request))
 
-
+def store_admin_article(request):
+    idb = request.POST.get('id',0)
+    if idb == "0":
+        title_de = request.POST.get('title_de','')
+        title_en = request.POST.get('title_en','')
+        subtitle_de = request.POST.get('subtitle_de','')
+        subtitle_en = request.POST.get('subtitle_en','')
+        content_de = request.POST.get('content_de','')
+        content_en = request.POST.get('content_en','')
+            
+        fname = None
+        if "article_fname" in request.session:
+            fname = request.session["article_fname"]
+            del request.session["article_fname"]
+        art = m.HomeArticle.objects.create(image=fname)
+       
+        m.HomeArticleEntry.objects.create(title=title_de, shortdesc=subtitle_de, content=content_de, article=art, lang="de")
+        m.HomeArticleEntry.objects.create(title=title_en, shortdesc=subtitle_en, content=content_en, article=art, lang="en")  
+        
+    title = (title_de, title_en)[translation.get_language() == 'de']
+    json = '{"id" : ' + str(art.pk) + ', "title" : "' + title  + '", "changed" : "' + str(art.changed) + '"}'
+    print (json)
+    return HttpResponse(json, content_type="application/json")
+      
+        
 def store_admin_blog(request):
     idb = request.POST.get('id',0)
     if idb == "0":

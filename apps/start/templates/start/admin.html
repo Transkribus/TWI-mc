@@ -113,7 +113,10 @@ var csrf_token = '{{ csrf_token }}';
                 <li class="nav-item">
                     <a class="nav-link active" target="_plain" href="index"><span class="admin">{% trans 'Back' %}</span></a>
                 </li>
-      
+                <li class="nav-item">
+                    <a class="nav-link " href="#home_articles">{% trans 'Home Articles' %}</a>
+                </li>
+                    
                  <li class="nav-item">
                     <a class="nav-link " href="#blog">{% trans 'Blog' %}</a>
                 </li>
@@ -145,6 +148,61 @@ var csrf_token = '{{ csrf_token }}';
 </header>
 <!--header end here-->
 
+<section id="home_articles" class="bg-light pt120 pb120">
+    <div class="container">
+        <h1>{% trans 'Home Articles' %}</h1>
+        
+         <input type="hidden" name="editor-id-article" id= "editor-id-article" value="0"> <!-- change when a document ist loaded for editing -->
+        {% trans 'stored home articles' %} :
+        <select name="article-options" id="article-options"  onchange="change_article($(this).val())">
+            <option value="0" selected>{% trans 'new home article entry' %}...</option>
+             {% for a in articles %}
+                <option value="{{a.article.pk}}">{{a.title}} - {{a.article.changed}}</option>
+            {% endfor %}
+        </select>
+        <img id="article-blog-img" class="invisible" src="" /> 
+        
+        <button id="editor-article-btn-delete" class="invisible" onclick="delete_article()">{% trans 'delete' %}</button> 
+        
+        <br/><br/>
+        <form class="dropzone" action="upload_img" method="post" enctype="multipart/form-data" id="article_dropzone">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}" />
+            <input type="hidden" name="type" value="article" />
+        </form>
+        <div class="tab">
+            <button class="tablinks-article" onclick="openTabs('editor-article-tab-de', 'article', event)">DE</button>
+            <button class="tablinks-article" onclick="openTabs('editor-article-tab-en', 'article', event)">EN</button>
+        </div>
+        
+        {% for l in LANGUAGES %}
+             <div class="editor-article-tab-{{l.0}} tabcontent-article" id="editor-article-tab-{{l.0}}">
+                <div class="form-group">
+                   <label for="editor-title-article-{{l.0}}">
+                        {% language "{{l.0}}" %}main title{% endlanguage %}
+                    </label>
+                   <input class="form-control" type="text" name="editor-title-article-{{l.0}}" id ="editor-title-article-{{l.0}}" />
+                </div>
+                <div class="form-group">
+                   <label for="editor-container-article-short-{{l.0}}">
+                        {% language "{{l.0}}" %}sub title{% endlanguage %}
+                   </label>
+                  
+                    <div class="editor-container" id="editor-container-article-short-{{l.0}}"> 
+                     {{l.0}} Short
+                    </div>
+                     <label for="editor-container-article-{{l.0}}">
+                        {% language "{{l.0}}" %}Main content{% endlanguage %}
+                   </label>
+                     <div class="editor-container" id="editor-container-article-{{l.0}}">
+                        {{l.0}} Main
+                    </div> 
+                </div>  
+                
+            </div>
+        {% endfor %}            
+        <button id="editor-store-article" onclick="store_article()">{% trans 'store' %}</button>    
+    </div>
+</section>
 
 <section id="blog" class="bg-light pt120 pb120">
     <div class="container">
@@ -152,7 +210,6 @@ var csrf_token = '{{ csrf_token }}';
         
         {% include "start/includes/quill_edit.html" with key="myval" key2="myval2" %}
         
-   
         <input type="hidden" name="editor-id-blog" id= "editor-id-blog" value="0"> <!-- change when a document ist loaded for editing -->
         {% trans 'stored blog entries' %} :
         <select name="blog-options" id="blog-options"  onchange="change_blog($(this).val())">
