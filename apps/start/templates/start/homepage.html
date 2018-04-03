@@ -41,23 +41,6 @@
     <link href="{% static 'start/css/modal.css' %}" rel="stylesheet" > 
      
     <link rel="shortcut icon" href="{% static 'start/favicon.ico' %}" type="image/x-icon" />
-    
-    <style>
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-      #map {
-        height: 650px;
-        <!-- width: 100px; -->
-        
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      
-    </style>
 
 </head>
 
@@ -228,11 +211,11 @@
 
 
 <section id="institutions" class="bg-light pt120 pb120">
-    <div class="container" style="border:1px solid black">
+    <div class="container">
         <h1>{% trans 'Institutions' %}</h1>
-        <div class="row justify-content-center"  style="border:1px solid black">
-            <div class="col-12 col-md-8 "  style="border:1px solid green">
-                 <div id="map"></div>
+        <div class="row justify-content-center" >
+            <div class="col-12 col-md-8">
+                 <div id="map" class="img-rounded"></div>
                 <script>
                     function fitMarkers()
                     {
@@ -277,10 +260,9 @@
             </div>
              
             <div class="col-12 col-md-4">
-                xxxx
                 <ul>
                      {% for i in inst %}
-                        <li>{{i.name}} ({{i.lat|unlocalize}} - {{i.lng|unlocalize}}) </li>
+                        <li><a href="inst_detail?id={{i.pk}}" target="_plain">{{i.name}} </a></li>
                      {% endfor %} 
                 </ul>
             </div>   
