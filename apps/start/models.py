@@ -53,7 +53,15 @@ class InstitutionProjectEntries(models.Model):
     lang = models.CharField(max_length=2)
     project = models.ForeignKey(InstitutionProject, on_delete=models.CASCADE, blank=True, null=True)
     changed = models.DateField(auto_now_add=True)
-    
-    
 
+class Service(models.Model):
+    image_css = models.CharField(max_length=512, null=True)
+    
+class ServiceEntries(models.Model):    
+    title = models.CharField("Title", max_length=200)
+    subtitle = models.CharField("Title", max_length=512, null=True)
+    content = models.TextField()
+    lang = models.CharField(max_length=2)
+    changed = models.DateField(auto_now_add=True)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE, blank=True, null=True)
   
