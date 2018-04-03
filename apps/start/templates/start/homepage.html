@@ -178,7 +178,7 @@
                             {% trans '…and benefit from cutting edge research in Handwritten Text Recognition!' %}
                             </p>
                             <a href="#" class=" btn btn-rounded btn-light" >
-                                Learn more
+                                {% trans 'Learn more' %}
                             </a>
                         </div>
                     </div>
@@ -197,7 +197,7 @@
                             <div class="title_divider"></div>
                             <p> {{a.shortdesc|safe}}</p>
                             <a href="home_article_details?id={{a.article.pk}}" class=" btn btn-rounded btn-primary " >
-                                View Details
+                                {% trans 'View Details' %}
                             </a>
                         </div>
                     </div>
@@ -279,11 +279,15 @@
                 <div class="icon_box_one text-center fadeInLeft wow animated" data-wow-delay="100ms">
                     <i class=" icon-tools icon-lg color-green"></i>
                     <h5>
-                        Mordern Design
+                        {% trans 'READ – H2020 Project' %}
                     </h5>
                     <p>
-                        Good typography, well balanced elements and attention to details.
+                        {% trans 'All started with two EU funded projects' %}
                     </p>
+                    <br/>
+                    <a href="https://read.transkribus.eu/" target="_plain" class="btn btn-rounded btn-light" >
+                        {% trans 'Learn more' %}
+                    </a>
                 </div>
             </div>
 
@@ -291,11 +295,15 @@
                 <div class="icon_box_one text-center fadeInLeft wow animated" data-wow-delay="100ms">
                     <i class="  icon-speedometer icon-lg color-blue"></i>
                     <h5>
-                        Blazing Fast
+                        Transkribus
+
                     </h5>
                     <p>
-                        Very small CSS and JS files and smart loading of necessary resources.
+                        {% trans 'A research infrastructure for digitizing, transcribing, recognizing and searching historical documents of any language and script' %}
                     </p>
+                    <a href="https://read.transkribus.eu/" target="_plain" class="btn btn-rounded btn-light" >
+                        {% trans 'Learn more' %}
+                    </a>
                 </div>
             </div>
 
@@ -303,11 +311,14 @@
                 <div class="icon_box_one text-center fadeInLeft wow animated" data-wow-delay="100ms">
                     <i class="icon-search icon-lg color-red"></i>
                     <h5>
-                        Easy to Use
+                        {% trans 'The future' %}
                     </h5>
                     <p>
-                        Based on a friendly freamwork bootstrap , without clean code .
+                        {% trans 'We are in the transition phase from a project to a permanent service' %}
                     </p>
+                    <a href="https://read.transkribus.eu/" target="_plain" class="btn btn-rounded btn-light" >
+                        {% trans 'Learn more' %}
+                    </a>
                 </div>
             </div>
         </div>
@@ -320,14 +331,13 @@
         <div class="row justify-content-center text-center">
             <div class="col-12 col-md-9">
                 <h3 class="color-light">
-                    We design beautiful brand identities and build user experiences.
+                    {% trans 'Our expert client (TranskribusX) enables you to carry out all Transkribus services by your own. Free of charge with unlimited use of services.' %}
                 </h3>
-                <p  class="color-light">
-                    We’re passionate about clean and intuitive design and
-                    work flexibly with clients to fulfil their needs.
-                </p>
                 <a href="#" class="btn btn-rounded btn-light">
-                    Purchase this great theme now!
+                   {% trans 'Watch a video on YouTube – Read our HowTo guides' %}
+                </a>
+                <a href="#" class="btn btn-rounded btn-light">
+                   {% trans 'Download version 1.4. Download version 1.4 for Mac' %}
                 </a>
             </div>
         </div>
@@ -343,95 +353,34 @@
                 <div class="section_title text-center mb50 fadeInDown wow animated" data-wow-delay="100ms">
                     <i class="icon-layers"></i>
                     <h4>
-                        Services
+                         {% trans 'Services' %}
                     </h4>
                     <div class="title_divider"></div>
                     <p>
-                        We work to make your business start effectively working for you.
+                         {% trans 'Transkribus revolutionizes the way you are accessing and working with historical documents' %}
                     </p>
                 </div>
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="icon_box_two text-left fadeInLeft wow animated" data-wow-delay="100ms">
-                    <i class="  icon-strategy"></i>
-                    <div class="content">
-                        <h5>
-                            Consulting
-                        </h5>
-                        <p>
-                            Day handsome addition horrible sensible goodness two contempt. Evening for married summies imperia
-                        </p>
+             {% for s in service %} 
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
+                        <i class="justify-content-center {{s.service.image_css}}"></i>
+                        <div class="content justify-content-center text-center">
+                            <h5>
+                                {{s.title}}
+                            </h5>
+                            <p>
+                                {{s.subtitle}}
+                            </p>
+                            <a href="service_detail?id={{s.service.pk}}" target="_plain" class="btn btn-rounded btn-light" >
+                                {% trans 'Learn more' %}
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="icon_box_two text-left fadeInLeft wow animated" data-wow-delay="200ms">
-                    <i class=" icon-lightbulb"></i>
-                    <div class="content">
-                        <h5>
-                            Valuable Ideas
-                        </h5>
-                        <p>
-                            Day handsome addition horrible sensible goodness two contempt. Evening for married summies imperia
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="icon_box_two text-left fadeInLeft wow animated" data-wow-delay="300ms">
-                    <i class="  icon-hourglass"></i>
-                    <div class="content">
-                        <h5>
-                            Excellent Timing
-                        </h5>
-                        <p>
-                            Day handsome addition horrible sensible goodness two contempt. Evening for married summies imperia
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="icon_box_two text-left fadeInLeft wow animated" data-wow-delay="100ms">
-                    <i class="  icon-wallet"></i>
-                    <div class="content">
-                        <h5>
-                            Budget Friendly
-                        </h5>
-                        <p>
-                            Day handsome addition horrible sensible goodness two contempt. Evening for married summies imperia
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="icon_box_two text-left fadeInLeft wow animated" data-wow-delay="200ms">
-                    <i class="  icon-key"></i>
-                    <div class="content">
-                        <h5>
-                            Great Solutions
-                        </h5>
-                        <p>
-                            Day handsome addition horrible sensible goodness two contempt. Evening for married summies imperia
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="icon_box_two text-left fadeInLeft wow animated" data-wow-delay="300ms">
-                    <i class="  icon-chat"></i>
-                    <div class="content">
-                        <h5>
-                            Friendly support
-                        </h5>
-                        <p>
-                            Day handsome addition horrible sensible goodness two contempt. Evening for married summies imperia
-                        </p>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
 
         </div>
     </div>
