@@ -30,7 +30,8 @@ def index(request):
     template = loader.get_template('start/homepage.html')
     context = {
         'blogs' : m.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed'),
-        'inst' :  m.Institution.objects.all()
+        'inst' :  m.Institution.objects.all(),
+        'articles' : m.HomeArticleEntry.objects.filter(lang=translation.get_language())
     }
     return HttpResponse(template.render(context, request))
 
@@ -48,7 +49,16 @@ def inst_detail(request):
     }
     
     return HttpResponse(template.render(context, request))
+
+def home_article_details(request):
+    idb = request.GET.get('id',0)
+    context = {
+        'article' : m.HomeArticleEntry.objects.get(article=idb, lang=translation.get_language())
+    }
     
+    template = loader.get_template('start/home_article_detail.html')
+    
+    return HttpResponse(template.render(context, request))
     
 def blog_detail(request):
     idb = request.GET.get('id',0)
