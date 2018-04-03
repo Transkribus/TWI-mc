@@ -31,7 +31,8 @@ def index(request):
     context = {
         'blogs' : m.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed'),
         'inst' :  m.Institution.objects.all(),
-        'articles' : m.HomeArticleEntry.objects.filter(lang=translation.get_language())
+        'articles' : m.HomeArticleEntry.objects.filter(lang=translation.get_language()),
+        'service' : m.ServiceEntries.objects.filter(lang=translation.get_language())
     }
     return HttpResponse(template.render(context, request))
 
@@ -363,10 +364,49 @@ def testData():
 
 # Handle with care!
 def script(request):
-    for i in range(1,9):        
-        m.Article.objects.create(a_key=i, language="DE", title="TD" + str(i), content="<b>content TD" + str(i) + "</b>", changed=datetime.date)
-        m.Article.objects.create(a_key=i, language="EN", title="TE" + str(i), content="<b>content TE" + str(i) + "</b>", changed=datetime.date)
+#     for i in range(1,9):        
+#         m.Article.objects.create(a_key=i, language="DE", title="TD" + str(i), content="<b>content TD" + str(i) + "</b>", changed=datetime.date)
+#         m.Article.objects.create(a_key=i, language="EN", title="TE" + str(i), content="<b>content TE" + str(i) + "</b>", changed=datetime.date)
+    s = m.Service.objects.create(image_css='icon-strategy')
+    m.ServiceEntries.objects.create(title='Discover the power of keyword spotting', subtitle='Keyword spotting is a magic way to search directly in the image. You will be able to explore every word you are looking for in a collection of highly diverse documents', content='C_de', lang='de', service=s)
+    m.ServiceEntries.objects.create(title='Discover the power of keyword spotting', subtitle='Keyword spotting is a magic way to search directly in the image. You will be able to explore every word you are looking for in a collection of highly diverse documents', content='C_en', lang='en', service=s)
+
+    s = m.Service.objects.create(image_css='icon-lightbulb')
+    m.ServiceEntries.objects.create(title='Organize your project', subtitle='Upload as many documents you want, train your specific text recognition models, invite collegues, share your documents and models with colleges, export documents in any format at any time…', content='C_de', lang='de', service=s)
+    m.ServiceEntries.objects.create(title='Organize your project', subtitle='Upload as many documents you want, train your specific text recognition models, invite collegues, share your documents and models with colleges, export documents in any format at any time…', content='C_en', lang='en', service=s)
+
+    s = m.Service.objects.create(image_css='icon-lightbulb')
+    m.ServiceEntries.objects.create(title='Manage your private collection', subtitle='All documents are private in your personal Transkribus collection. Therefore enjoy the benefits of copyright exceptions available for personal use and research. ', content='C_de', lang='de', service=s)
+    m.ServiceEntries.objects.create(title='Manage your private collection', subtitle='All documents are private in your personal Transkribus collection. Therefore enjoy the benefits of copyright exceptions available for personal use and research. ', content='C_en', lang='en', service=s)
+
+    s = m.Service.objects.create(image_css='icon-lightbulb')
+    m.ServiceEntries.objects.create(title='Create your own neural network', subtitle='Transcribe some dozens of pages, train a neural network and recognize hundreds or thousands of documents, or transcribe faster than before…', content='C_de', lang='de', service=s)
+    m.ServiceEntries.objects.create(title='Create your own neural network', subtitle='Transcribe some dozens of pages, train a neural network and recognize hundreds or thousands of documents, or transcribe faster than before…', content='C_en', lang='en', service=s)
+ 
+    s = m.Service.objects.create(image_css='icon-lightbulb')
+    m.ServiceEntries.objects.create(title='Transcribe in a highly standardized way', subtitle='Be it ancient Greek, Arabic or Latin, or a modern language you will be able to create a transcription on the highest scholarly level including annotations and comments.', content='C_de', lang='de', service=s)
+    m.ServiceEntries.objects.create(title='Transcribe in a highly standardized way', subtitle='Be it ancient Greek, Arabic or Latin, or a modern language you will be able to create a transcription on the highest scholarly level including annotations and comments.', content='C_en', lang='en', service=s)
+ 
+    
+    s = m.Service.objects.create(image_css='icon-lightbulb')
+    m.ServiceEntries.objects.create(title='Collaborate with colleagues and share your documents', subtitle='Organize your project as a collaborative effort. Work at different places but in one collection. Export your documents or share them via the web-interface', content='C_de', lang='de', service=s)
+    m.ServiceEntries.objects.create(title='Collaborate with colleagues and share your documents', subtitle='Organize your project as a collaborative effort. Work at different places but in one collection. Export your documents or share them via the web-interface', content='C_en', lang='en', service=s)        
+    
+    s = m.Service.objects.create(image_css='icon-lightbulb')
+    m.ServiceEntries.objects.create(title='Scan your own documents with the smartphone', subtitle='A smartphone as document scanner? Yes, with the ScanTent and DocScan you will be able to scan books and other documents fast, reliable and in an excellent quality.', content='C_de', lang='de', service=s)
+    m.ServiceEntries.objects.create(title='Scan your own documents with the smartphone', subtitle='A smartphone as document scanner? Yes, with the ScanTent and DocScan you will be able to scan books and other documents fast, reliable and in an excellent quality.', content='C_en', lang='en', service=s)        
+    
+    s = m.Service.objects.create(image_css='icon-lightbulb')
+    m.ServiceEntries.objects.create(title='Teach students and volunteers to read ancient scripts', subtitle='Students should, volunteers want to be able to read historical scripts. In both cases the only way to get better is: exercise, exercise, exercise on real world material. And by using the mobile phone…', content='C_de', lang='de', service=s)
+    m.ServiceEntries.objects.create(title='Teach students and volunteers to read ancient scripts', subtitle='Students should, volunteers want to be able to read historical scripts. In both cases the only way to get better is: exercise, exercise, exercise on real world material. And by using the mobile phone…', content='C_en', lang='en', service=s)        
+    
+#     s = m.Service.objects.create(image_css='icon-lightbulb')
+#     m.ServiceEntries.objects.create(title='', subtitle='', content='C_de', lang='de', service=s)
+#     m.ServiceEntries.objects.create(title='', subtitle='', content='C_en', lang='en', service=s)        
+
+    
     return HttpResponse('done', content_type="text/plain")
+    
 
 
     
