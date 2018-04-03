@@ -34,7 +34,22 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
-
+def inst_detail(request):
+    idb = request.GET.get('id',0)
+    template = loader.get_template('start/inst_detail.html')
+    inst = m.Institution.objects.get(pk=idb)
+    desc = m.InstitutionDescription.objects.get(inst=inst, lang=translation.get_language())
+    proj = m.InstitutionProjectEntries.objects.filter(project__inst=inst, lang=translation.get_language())
+    context = {
+        'inst' : inst,
+        'desc' : desc,
+        'proj' : proj
+        
+    }
+    
+    return HttpResponse(template.render(context, request))
+    
+    
 def blog_detail(request):
     idb = request.GET.get('id',0)
     print(idb +  ":" + translation.get_language())

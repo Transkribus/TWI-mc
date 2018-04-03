@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^store_admin_proj', v.store_admin_inst_proj, name='store_admin_inst_proj'),
     url(r'^change_admin_proj', v.change_admin_inst_proj, name='change_admin_inst_proj'),
     url(r'^change_admin_pr_inst_selection', v.change_admin_inst_proj_selection, name='change_admin_inst_proj_selection'),
+    url(r'^inst_detail', v.inst_detail , name='inst_detail')
 ]
