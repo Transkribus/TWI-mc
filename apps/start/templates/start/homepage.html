@@ -195,8 +195,8 @@
                         <div class="slider-content-center">
                             <h2>{{a.title}}</h2>
                             <div class="title_divider"></div>
-                            <p> {{a.content|safe}}</p>
-                            <a href="#" class=" btn btn-rounded btn-primary " >
+                            <p> {{a.shortdesc|safe}}</p>
+                            <a href="home_article_details?id={{a.article.pk}}" class=" btn btn-rounded btn-primary " >
                                 View Details
                             </a>
                         </div>
