@@ -131,6 +131,10 @@ var csrf_token = '{{ csrf_token }}';
                 </li>
       
                 <li class="nav-item">
+                    <a class="nav-link " href="#quotes">{% trans 'quotes' %}</a>
+                </li>
+      
+                <li class="nav-item">
                     <a class="nav-link" href="#"><span class="admin">{{LANGUAGE_CODE}} </span></a>
                     <ul class="sub_menu">
                         {% for language in languages %}
@@ -353,6 +357,59 @@ var csrf_token = '{{ csrf_token }}';
         <button id="editor-store-inst-proj" onclick="store_inst_proj()">{% trans 'store' %}</button>
     </div> 
 </section>
+
+
+
+<section id="quotes" class="bg-light pt120 pb120">
+     <div class="container">
+        <h1>{% trans 'Quotes' %}</h1>
+        
+        {% trans 'select quote' %}: 
+        <select name="quote-options" id="quote-options" onchange="change_quote($(this).val())">
+             {% for q in quotes %}
+                <option value="{{q.quote.pk}}">{{q.quote.name}}</option>
+            {% endfor %}
+        </select>
+        
+
+        <br/><br/>
+        
+        
+         <div class="form-group">
+           <label for="editor-name-quote">
+                {% language "{{l.0}}" %}name{% endlanguage %}
+            </label>
+           <input class="form-control" type="text" name="editor-name-quote" id ="editor-name-quote" />
+        </div>
+        
+         <div class="tab">
+            <button class="tablinks-quote" onclick="openTabs('editor-quote-tab-de', 'quote', event)">DE</button>
+            <button class="tablinks-quote" onclick="openTabs('editor-quote-tab-en', 'quote', event)">EN</button>
+        </div>
+        {% for l in LANGUAGES %}
+             <div class="editor-quote-tab-{{l.0}} tabcontent-quote" id="editor-quote-tab-{{l.0}}">
+                 <div class="form-group">
+                   <label for="editor-role-quote-{{l.0}}">
+                        {% language "{{l.0}}" %}role{% endlanguage %}
+                    </label>
+                   <input class="form-control" type="text" name="editor-role-quote-{{l.0}}" id ="editor-role-quote-{{l.0}}" />
+                </div>
+             
+             
+                 <div class="editor-container" id="editor-container-quote-{{l.0}}">
+                   {{a.content|safe}}{{l.0}}
+                </div> 
+            </div>
+        {% endfor %}            
+        <button id="editor-store-quote" onclick="store_quote()">{% trans 'store' %}</button>
+    </div> 
+</section>
+
+
+
+
+
+<!-- TODO: tb deleted -->
 
 <br/><br/><br/><br/>
 <section id="about" class="bg-light pt120 pb120">

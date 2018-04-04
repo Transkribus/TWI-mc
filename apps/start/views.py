@@ -80,15 +80,18 @@ def admin(request):
     b = m.BlogEntry.objects.filter(lang=translation.get_language())
     i = m.Institution.objects.all()
     a = m.HomeArticleEntry.objects.filter(lang=translation.get_language())
+    q = m.QuoteEntries.objects.filter(lang=translation.get_language())
     
     ifirst = m.Institution.objects.first()
     inst_entries = m.InstitutionProjectEntries.objects.filter(project__inst=ifirst.pk, lang=translation.get_language())
+    
     
     context = {
         'blogs' : b,
         'inst' : i,
         'first_inst_entries' : inst_entries,
-        'articles' : a
+        'articles' : a,
+        'quotes' : q 
     }
 
     return HttpResponse(template.render(context, request))
@@ -157,7 +160,7 @@ def store_admin_inst(request):
         url = request.POST.get('url','')
         
         fname = None
-        if "blog_name" in request.session:
+        if "inst_fname" in request.session:
             fname = request.session["inst_fname"]
             del request.session["inst_fname"]
         
@@ -188,6 +191,31 @@ def store_admin_inst_proj(request):
         title = (title_de, title_en)[translation.get_language() == 'de']
         json = '{"id" : ' + str(p.pk) + ', "title" : "' + title + '"}'
         return HttpResponse(json, content_type="application/json") 
+
+
+def store_admin_quote(request):
+    idb = request.POST.get('id',0)
+    print("ID" + str(idb))
+    #if idb == 0:
+    
+    role_de = request.POST.get('role_de','')
+    role_en = request.POST.get('role_en','')
+    content_de = request.POST.get('content_de','')
+    content_en = request.POST.get('content_en','')
+    name = request.POST.get('name','')
+    
+    fname = None
+    if "quote_fname" in request.session:
+        fname = request.session["quote_fname"]
+        del request.session["quote_fname"]
+    
+    q = m.Quote.objects.create(name=name, image=fname);
+    m.QuoteEntries.objects.create(content=content_de, role=role_de, lang='de', quote=q)
+    m.QuoteEntries.objects.create(content=content_en, role=role_en, lang='en', quote=q)
+    
+#     title = (role_de, role_en)[translation.get_language() == 'de']
+    json = '{"id" : ' + str(q.pk) + ', "title" : "' + name + '"}'
+    return HttpResponse(json, content_type="application/json") 
 
 '''
 is called when another institution is selected in the institution/project area

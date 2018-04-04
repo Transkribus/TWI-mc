@@ -120,6 +120,34 @@ function generateQuillObjects(type)
 }
 
 /* ------------------------------------ */
+/* Home Article functions */
+/* ------------------------------------ */   
+
+function store_article()
+{
+    var html_de = $("#editor-container-article-de").children().first().html(); 
+    var html_en = $("#editor-container-article-en").children().first().html();
+    var html_de_short = $("#editor-container-article-short-de").children().first().html(); 
+    var html_en_short = $("#editor-container-article-short-en").children().first().html();
+    var title_de = $("#editor-title-article-de").val(); 
+    var title_en = $("#editor-title-article-en").val();   
+
+    $.post("store_admin_article", 
+        {id : 0, 
+        title_de: title_de, 
+        subtitle_de: html_de_short,
+        title_en: title_en, 
+        subtitle_en: html_en_short,
+        content_de: html_de, 
+        content_en: html_en,  
+        'csrfmiddlewaretoken':  csrf_token }).done(function(data)
+            {
+                $("#article-options").append('<option value="' + data.id +'" selected="selected">' + data.title + ' - ' + data.changed + '</option>');
+            });
+}
+
+
+/* ------------------------------------ */
 /* Blog functions */
 /* ------------------------------------ */    
 
@@ -296,8 +324,6 @@ function store_inst_proj()
     var title_en = $("#editor-title-inst-proj-en").val();
     var inst_id = $("#inst-proj-options").val();
     
-    console.log("inst_id" + inst_id);
-    
     $.post("store_admin_proj",
         {id: 0,
         inst_id : inst_id,
@@ -357,6 +383,35 @@ function change_inst_proj_proj(v)
 }
 
 /* ------------------------------------ */
+/* Quote - Functions                    */
+/* ------------------------------------ */    
+
+
+function store_quote()
+{
+    var html_de = $("#editor-container-quote-de").children().first().html(); 
+    var html_en = $("#editor-container-quote-en").children().first().html();
+    var role_de = $("#editor-role-quote-de").val();
+    var role_en = $("#editor-role-quote-en").val();
+    var quote_id = $("#quote-options").val();
+    var name = $("#editor-name-quote").val();
+    
+    $.post("store_admin_quote",
+        {id: quote_id,
+        role_de: role_de,
+        role_en: role_en,
+        content_de: html_de, 
+        content_en: html_en, 
+        name : name,
+        'csrfmiddlewaretoken':  csrf_token
+        }).done(function(data)
+            {
+                console.log(data.id + ":" + data.title);
+                $("#quote-options").append('<option value="' + data.id +'" selected="selected">' + data.title + '</option>');
+            });
+}
+
+/* ------------------------------------ */
 /* Main entry Point                     */
 /* ------------------------------------ */    
 
@@ -365,9 +420,14 @@ $(document).ready(function()
         openTabs('editor-blog-tab-de','blog');
         openTabs('editor-inst-tab-de','inst');
         openTabs('editor-inst-proj-tab-de','inst-proj');
+        openTabs('editor-article-tab-de','article');
+        openTabs('editor-quote-tab-de','quote');
         
         generateQuillObjects('blog');
         generateQuillObjects('inst');
         generateQuillObjects('inst-proj');
+        generateQuillObjects('article');
+        generateQuillObjects('article-short');
+        generateQuillObjects('quote');        
             
     });        
