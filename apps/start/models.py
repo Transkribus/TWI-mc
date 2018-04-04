@@ -64,4 +64,13 @@ class ServiceEntries(models.Model):
     lang = models.CharField(max_length=2)
     changed = models.DateField(auto_now_add=True)
     service = models.ForeignKey(Service, on_delete=models.CASCADE, blank=True, null=True)
+ 
+class Quote(models.Model): 
+    name = models.CharField( max_length=200)
+    image = models.FilePathField(max_length=512, null=True)
+ 
+
+class QuoteEntries(models.Model):
+    quote = models.TextField()
+    role = models.CharField( max_length=200)
   
