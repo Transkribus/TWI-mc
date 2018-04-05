@@ -101,7 +101,11 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link " href="#blog">{% trans 'Blog' %}</a>
+                    <a class="nav-link " href="#blog">{% trans 'Latest News' %}</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link " href="#documents">{% trans 'Documents' %}</a>
                 </li>
                 
                 <li class="nav-item">
@@ -485,6 +489,7 @@
 </section>
 <!--SECTION  BLOG end-->
 
+
 <!--SECTION TESTIMONIAL-->
 <section class="pt120 pb120 bg-primary">
     <div class="container">
@@ -512,6 +517,105 @@
     </div>
 </section>
 <!--SECTION TESTIMONIAL END -->
+
+<section id="documents" class="bg-gray pt120 pb120">
+    <div class="container">
+        <div class="section_title text-center mb50 fadeIn wow animated" data-wow-delay="100ms">
+            <i class="icon-newspaper"></i>
+            <h4>
+                {% trans 'Documents' %}
+            </h4>
+            <div class="title_divider"></div>
+            <p>
+                {% trans 'take a closer look at our work' %}
+            </p>
+        </div>
+         <div class="row justify-content-center">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
+                    <i class="justify-content-center {{s.service.image_css}}"></i>
+                    <div class="content justify-content-center text-center">
+                        <h5>
+                            {% trans 'White papers' %}
+                        </h5>
+                        <p>
+                            TODO: List of white papers here
+                        </p>
+                        <a href="service_detail?id={{s.service.pk}}" target="_plain" class="btn btn-rounded btn-light" >
+                            {% trans 'Learn more' %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
+                    <i class="justify-content-center {{s.service.image_css}}"></i>
+                    <div class="content justify-content-center text-center">
+                        <h5>
+                            {% trans 'Paper from Melissa' %}
+                        </h5>
+                        <p>
+                            TODO: Add paper here
+                        </p>
+                        <a href="service_detail?id={{s.service.pk}}" target="_plain" class="btn btn-rounded btn-light" >
+                            {% trans 'Learn more' %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
+                    <i class="justify-content-center {{s.service.image_css}}"></i>
+                    <div class="content justify-content-center text-center">
+                        <h5>
+                            {% trans 'HowTo guides' %}
+                        </h5>
+                        <p>
+                            TODO: Add Howto guides
+                        </p>
+                        <a href="service_detail?id={{s.service.pk}}" target="_plain" class="btn btn-rounded btn-light" >
+                            {% trans 'Learn more' %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
+                    <i class="justify-content-center {{s.service.image_css}}"></i>
+                    <div class="content justify-content-center text-center">
+                        <h5>
+                            {% trans 'Research Papers' %}
+                        </h5>
+                        <p>
+                            TODO: Add Research Papers
+                        </p>
+                        <a href="service_detail?id={{s.service.pk}}" target="_plain" class="btn btn-rounded btn-light" >
+                            {% trans 'Learn more' %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+             <div class="col-12 col-md-6 col-lg-4">
+                <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
+                    <i class="justify-content-center {{s.service.image_css}}"></i>
+                    <div class="content justify-content-center text-center">
+                        <h5>
+                            {% trans 'Deliverables' %}
+                        </h5>
+                        <p>
+                            TODO: Add Deliverables
+                        </p>
+                        <a href="service_detail?id={{s.service.pk}}" target="_plain" class="btn btn-rounded btn-light" >
+                            {% trans 'Learn more' %}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 
 <!--contact us -->
 <section id="contact" class="bg-gray pt120 pb120">
