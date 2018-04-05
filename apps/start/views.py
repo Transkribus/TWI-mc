@@ -32,7 +32,8 @@ def index(request):
         'blogs' : m.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed'),
         'inst' :  m.Institution.objects.all(),
         'articles' : m.HomeArticleEntry.objects.filter(lang=translation.get_language()),
-        'service' : m.ServiceEntries.objects.filter(lang=translation.get_language())
+        'service' : m.ServiceEntries.objects.filter(lang=translation.get_language()),
+        'quotes' : m.QuoteEntries.objects.filter(lang=translation.get_language())
     }
     return HttpResponse(template.render(context, request))
 
@@ -42,11 +43,12 @@ def inst_detail(request):
     inst = m.Institution.objects.get(pk=idb)
     desc = m.InstitutionDescription.objects.get(inst=inst, lang=translation.get_language())
     proj = m.InstitutionProjectEntries.objects.filter(project__inst=inst, lang=translation.get_language())
+    
+    
     context = {
         'inst' : inst,
         'desc' : desc,
         'proj' : proj
-        
     }
     
     return HttpResponse(template.render(context, request))

@@ -477,7 +477,6 @@
                             </article>
                         </div>
                     {% endfor %}
-                   
                 </div>
             </div>
         </div>
@@ -492,41 +491,21 @@
         <div class="row justify-content-center">
             <div class="col-lg-7 col-md-10 col-12">
                 <div class="testimonial_carousel_one testimonial_box_light owl-carousel">
-                    <div class="item">
-                        <div class="testimonial_box_three text-center">
-                            <i class="icon-quote"></i>
-                            <h5> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less.</h5>
-                            <img src="https://placeholdit.co//i/100x100" alt="testimonials-user1">
-                            <h6>
-                                Jimmy Page
-                            </h6>
-                            <p>
-                                Front-End Developer
-                            </p>
+                    {% for q in quotes %} 
+                        <div class="item">
+                            <div class="testimonial_box_three text-center">
+                                <i class="icon-quote"></i>
+                                <h5> {{q.content|safe}} </h5>
+                                <img src="https://placeholdit.co//i/100x100" alt="testimonials-user1">
+                                <h6>
+                                    {{q.quote.name}}
+                                </h6>
+                                <p>
+                                    {{q.role}}
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="item">
-                        <div class="testimonial_box_three text-center">
-                            <i class="icon-quote"></i>
-                            <h5> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less.</h5>
-                            <img src="https://placeholdit.co//i/100x100" alt="testimonials-user2">
-                            <h6> Willie Nichols</h6>
-                            <p>
-                                Developer
-                            </p>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="testimonial_box_three text-center">
-                            <i class="icon-quote"></i>
-                            <h5> It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less.</h5>
-                            <img src="https://placeholdit.co//i/100x100"  alt="testimonials-user3">
-                            <h6>chejuev</h6>
-                            <p>
-                                ceo
-                            </p>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
