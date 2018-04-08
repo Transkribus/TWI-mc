@@ -411,6 +411,37 @@ function store_quote()
             });
 }
 
+
+
+/* ------------------------------------ */
+/* Videos                               */
+/* ------------------------------------ */    
+
+function store_video()
+{
+    var html_de = $("#editor-container-video-de").children().first().html(); 
+    var html_en = $("#editor-container-video-en").children().first().html();
+    var title_de = $("#editor-title-video-de").val();
+    var title_en = $("#editor-title-video-en").val();
+    var vid = $("#editor-id-video").val();
+    var id = $("#quote-options").val();
+    var name = $("#editor-name-quote").val();
+    
+    $.post("store_admin_video",
+        {id: id,
+        vid : vid,
+        title_de: title_de,
+        title_en: title_en,
+        content_de: html_de, 
+        content_en: html_en, 
+        'csrfmiddlewaretoken':  csrf_token
+        }).done(function(data)
+            {
+                console.log(data.id + ":" + data.title);
+                $("#video-options").append('<option value="' + data.id +'" selected="selected">' + data.title + '</option>');
+            });
+}
+
 /* ------------------------------------ */
 /* Main entry Point                     */
 /* ------------------------------------ */    
@@ -422,6 +453,7 @@ $(document).ready(function()
         openTabs('editor-inst-proj-tab-de','inst-proj');
         openTabs('editor-article-tab-de','article');
         openTabs('editor-quote-tab-de','quote');
+        openTabs('editor-video-tab-de','video');
         
         generateQuillObjects('blog');
         generateQuillObjects('inst');
@@ -429,5 +461,6 @@ $(document).ready(function()
         generateQuillObjects('article');
         generateQuillObjects('article-short');
         generateQuillObjects('quote');        
+        generateQuillObjects('video');            
             
     });        

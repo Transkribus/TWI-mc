@@ -27,5 +27,6 @@ urlpatterns = [
     url(r'^inst_detail', v.inst_detail , name='inst_detail'),
     url(r'^store_admin_article', v.store_admin_article , name='store_admin_article'),
     url(r'^home_article_details', v.home_article_details , name='home_article_details'),
-    url(r'^store_admin_quote', v.store_admin_quote , name='store_admin_quote')   
+    url(r'^store_admin_quote', v.store_admin_quote , name='store_admin_quote'),   
+    url(r'^store_admin_video', v.store_admin_video , name='store_admin_video')
 ]

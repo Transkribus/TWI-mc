@@ -135,6 +135,10 @@ var csrf_token = '{{ csrf_token }}';
                 </li>
       
                 <li class="nav-item">
+                    <a class="nav-link " href="#videos">{% trans 'videos' %}</a>
+                </li>
+                
+                <li class="nav-item">
                     <a class="nav-link" href="#"><span class="admin">{{LANGUAGE_CODE}} </span></a>
                     <ul class="sub_menu">
                         {% for language in languages %}
@@ -405,6 +409,51 @@ var csrf_token = '{{ csrf_token }}';
     </div> 
 </section>
 
+
+<section id="videos" class="bg-light pt120 pb120">
+     <div class="container">
+        <h1>{% trans 'Videos' %}</h1>
+        
+        {% trans 'select video' %}: 
+        <select name="video-options" id="video-options" onchange="change_video($(this).val())">
+             {% for v in videos %}
+                <option value="{{v.video.pk}}">{{v.title}} ({{v.video.vid}})</option>
+            {% endfor %}
+        </select>
+        
+
+        <br/><br/>
+        
+        
+         <div class="form-group">
+           <label for="editor-id-video">
+                {% trans 'youtube-id' %}
+            </label>
+           <input class="form-control" type="text" name="editor-id-video" id ="editor-id-video" />
+        </div>
+        
+         <div class="tab">
+            <button class="tablinks-video" onclick="openTabs('editor-video-tab-de', 'video', event)">DE</button>
+            <button class="tablinks-video" onclick="openTabs('editor-video-tab-en', 'video', event)">EN</button>
+        </div>
+        {% for l in LANGUAGES %}
+             <div class="editor-video-tab-{{l.0}} tabcontent-video" id="editor-video-tab-{{l.0}}">
+                 <div class="form-group">
+                   <label for="editor-title-video-{{l.0}}">
+                        {% language "{{l.0}}" %}title{% endlanguage %}
+                    </label>
+                   <input class="form-control" type="text" name="editor-title-video-{{l.0}}" id ="editor-title-video-{{l.0}}" />
+                </div>
+             
+             
+                 <div class="editor-container" id="editor-container-video-{{l.0}}">
+                   {{a.content|safe}}{{l.0}}
+                </div> 
+            </div>
+        {% endfor %}            
+        <button id="editor-store-video" onclick="store_video()">{% trans 'store' %}</button>
+    </div> 
+</section>
 
 
 

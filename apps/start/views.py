@@ -33,7 +33,8 @@ def index(request):
         'inst' :  m.Institution.objects.all(),
         'articles' : m.HomeArticleEntry.objects.filter(lang=translation.get_language()),
         'service' : m.ServiceEntries.objects.filter(lang=translation.get_language()),
-        'quotes' : m.QuoteEntries.objects.filter(lang=translation.get_language())
+        'quotes' : m.QuoteEntries.objects.filter(lang=translation.get_language()),
+        'videos' : m.VideoDesc.objects.filter(lang=translation.get_language())
     }
     return HttpResponse(template.render(context, request))
 
@@ -83,6 +84,7 @@ def admin(request):
     i = m.Institution.objects.all()
     a = m.HomeArticleEntry.objects.filter(lang=translation.get_language())
     q = m.QuoteEntries.objects.filter(lang=translation.get_language())
+    v = m.VideoDesc.objects.filter(lang=translation.get_language())
     
     ifirst = m.Institution.objects.first()
     inst_entries = m.InstitutionProjectEntries.objects.filter(project__inst=ifirst.pk, lang=translation.get_language())
@@ -93,7 +95,8 @@ def admin(request):
         'inst' : i,
         'first_inst_entries' : inst_entries,
         'articles' : a,
-        'quotes' : q 
+        'quotes' : q,
+        'videos' : v 
     }
 
     return HttpResponse(template.render(context, request))
@@ -218,6 +221,23 @@ def store_admin_quote(request):
 #     title = (role_de, role_en)[translation.get_language() == 'de']
     json = '{"id" : ' + str(q.pk) + ', "title" : "' + name + '"}'
     return HttpResponse(json, content_type="application/json") 
+
+
+def store_admin_video(request):
+    idb = request.POST.get('id',0)
+    vid = request.POST.get('vid','')
+    title_de = request.POST.get('title_de','')
+    title_en = request.POST.get('title_en','')
+    content_de = request.POST.get('content_de','')
+    content_en = request.POST.get('content_en','')
+    
+    v = m.Video.objects.create(vid = vid)
+    m.VideoDesc.objects.create(title=title_de, desc=content_de, lang='de', video=v)
+    m.VideoDesc.objects.create(title=title_en, desc=content_en, lang='en', video=v)    
+
+    title = (title_de, title_en)[translation.get_language() == 'de']
+    json = '{"id" : ' + str(v.pk) + ', "title" : "' + title + ' (' + vid + ')"}'
+    return HttpResponse(json, content_type="application/json")     
 
 '''
 is called when another institution is selected in the institution/project area

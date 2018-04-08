@@ -70,10 +70,18 @@ class Quote(models.Model):
     image = models.FilePathField(max_length=512, null=True)
     changed = models.DateField(auto_now_add=True)
  
-
 class QuoteEntries(models.Model):
     content = models.TextField()
     role = models.CharField( max_length=200)
     changed = models.DateField(auto_now_add=True)
     quote = models.ForeignKey(Quote, on_delete=models.CASCADE, blank=True, null=True)
     lang = models.CharField(max_length=2)
+    
+class Video(models.Model):
+    vid = models.CharField(max_length=200)
+    
+class VideoDesc(models.Model):
+    title = models.CharField( max_length=200)
+    desc = models.TextField()       
+    lang = models.CharField(max_length=2)
+    video = models.ForeignKey(Video, on_delete=models.CASCADE, blank=True, null=True)
