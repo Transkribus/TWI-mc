@@ -109,11 +109,11 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link " href="#calendar">{% trans 'Calendar' %}</a>
+                    <a class="nav-link " href="#videos">{% trans 'Videos' %}</a>
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link " href="#videos">{% trans 'Videos' %}</a>
+                    <a class="nav-link " href="#calendar">{% trans 'Calendar' %}</a>
                 </li>
                 
                 <li class="nav-item">
@@ -620,6 +620,34 @@
     </div>
 </section>
 
+<section id="videos" class="bg-light pt120 pb120">
+    <div class="container">
+         <h4>
+            {% trans 'Videos' %}  
+        </h4>
+        <div class="row justify-content-center mp50" >
+            {% for v in videos %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="embed-responsive embed-responsive-4by3">
+                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{v.video.vid}}"></iframe>
+                    </div>
+                     <b>{{v.title}}</b> <br/>
+                     {{v.desc|safe}}
+                </div>
+            {% endfor %}
+            
+        </div>
+        <br/>
+        {% trans 'Also visit our ' %} <a target="_plain" href="https://www.youtube.com/channel/UC-txVgM31rDTGlBnH-zpPjA">{% trans 'youtube-channel' %}</a>
+    </div>
+</section>
+
+<!--Calendar-->
+<section id="calendar" class="bg-light pt120 pb120">
+    <div class="container">
+        <iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=478cij0o4oahfug9f1tg64t55k%40group.calendar.google.com&amp;color=%230F4B38&amp;ctz=Europe%2FBerlin" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+    </div>
+</section>
 
 <!--contact us -->
 <section id="contact" class="bg-gray pt120 pb120">
@@ -705,7 +733,7 @@
 <!--contact us end -->
 
 <!--section brand -->
-<div class="bg-light pt120 pb120">
+<!-- <div class="bg-light pt120 pb120">
     <div class="container">
         <div class="brand_carousel owl-carousel">
             <div class="brand_item no_max text-center">
@@ -735,38 +763,11 @@
             </div>
         </div>
     </div>
-</div>
-
-
-<!--Calendar-->
-<section id="calendar" class="bg-light pt120 pb120">
-    <div class="container">
-        <iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=478cij0o4oahfug9f1tg64t55k%40group.calendar.google.com&amp;color=%230F4B38&amp;ctz=Europe%2FBerlin" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
-    </div>
-</section>
-
-<section id="videos" class="bg-light pt120 pb120">
-    <div class="container">
-         <h4>
-            {% trans 'Videos' %}  
-        </h4>
-        <div class="row justify-content-center mp50" >
-            {% for v in videos %}
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="embed-responsive embed-responsive-4by3">
-                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{v.video.vid}}"></iframe>
-                    </div>
-                     <b>{{v.title}}</b> <br/>
-                     {{v.desc|safe}}
-                </div>
-            {% endfor %}
-            
-        </div>
-        <br/>
-        {% trans 'Also visit our ' %} <a target="_plain" href="https://www.youtube.com/channel/UC-txVgM31rDTGlBnH-zpPjA">{% trans 'youtube-channel' %}</a>
-    </div>
-</section>
+</div> -->
 <!--section brand end -->
+
+
+
 {% include "start/includes/footer.html" %} 
 
 
