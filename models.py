@@ -65,6 +65,8 @@ class Collection(models.Model):
     is_elearning = models.FloatField()
     page = models.ForeignKey('Page', models.DO_NOTHING, blank=True, null=True)
 
+    documents = models.ManyToManyField('Document', through='DocumentCollection', related_name='collections')
+
     class Meta:
         managed = False
         db_table = 'collection'
