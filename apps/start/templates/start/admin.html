@@ -456,55 +456,6 @@ var csrf_token = '{{ csrf_token }}';
 </section>
 
 
-
-
-<!-- TODO: tb deleted -->
-
-<br/><br/><br/><br/>
-<section id="about" class="bg-light pt120 pb120">
-    <div class="container">
-        <h1>OTHER</h1>
-        {% for a in articles %}
-            <input type="text" name="editor-title{{a.a_key}}" id ="editor-title{{a.a_key}}" value="{{a.title}}"/> <br/>
-            <div class="editor-container" id="editor-container{{a.a_key}}" width="100%">
-               {{a.content|safe}}
-            </div>     
-            <button id="{{a.a_key}}" onclick="store(this.id)">store</button>
-            <br/><br/><br/><br/>
-            <script>
-        
-        var quill = new Quill('#editor-container{{a.a_key}}', {
-          modules: {
-            toolbar: toolbarOptions,
-          },
-          placeholder: 'Compose an epic...',
-          formula:true,
-          theme: 'snow'  // or 'bubble'
-        });    
-        //quill.pasteHTML('{{a.content}}')
-        
-            </script>
-        {% endfor %}
-        
-        <script>
-        function store(id)
-        {
-            console.log(id);
-            console.log($('#editor-container1'));
-            /* var html = $("#editor-container1").firstChild.innerHTML  */
-            var html = document.getElementById("editor-container" + id).firstChild.innerHTML; /* TODO replace with JQuery */
-            var title = document.getElementById("editor-title" + id).value;  /* TODO replace with JQuery */
-            
-            console.log(html);
-            $.post("store_admin", {title: title, content: html, id: id, lang: "DE", 'csrfmiddlewaretoken': '{{ csrf_token }}'}).done(function(data)
-            {
-                console.log(data);
-            });
-        }
-         </script>
-    </div>
-</section>
-
 {% include "start/includes/footer.html" %} 
 
 
