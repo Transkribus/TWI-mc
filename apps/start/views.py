@@ -15,6 +15,7 @@ from apps.utils.services import TranskribusSession
 from django.core.files.storage import default_storage
 import uuid 
 import os
+from random import randint
 from . import models as m
 from itertools import chain
 
@@ -28,13 +29,25 @@ ts = TranskribusSession()
 
 def index(request):
     template = loader.get_template('start/homepage.html')
+    subscribed_users = randint(0,1000)
+    collaborations = randint(0,1000)
+    uploaded_docs = randint(0,1000)
+    trained_models = randint(0,1000)
+    
     context = {
         'blogs' : m.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed'),
         'inst' :  m.Institution.objects.all(),
         'articles' : m.HomeArticleEntry.objects.filter(lang=translation.get_language()),
         'service' : m.ServiceEntries.objects.filter(lang=translation.get_language()),
         'quotes' : m.QuoteEntries.objects.filter(lang=translation.get_language()),
-        'videos' : m.VideoDesc.objects.filter(lang=translation.get_language())
+        'videos' : m.VideoDesc.objects.filter(lang=translation.get_language()),
+        'subscribed_users' : subscribed_users,
+        'collaborations': collaborations,
+        'uploaded_docs' : uploaded_docs,
+        'trained_models' : trained_models
+        
+        
+        
     }
     return HttpResponse(template.render(context, request))
 

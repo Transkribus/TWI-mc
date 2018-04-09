@@ -403,9 +403,9 @@
             <div class="col-lg-3 col-md-6 col-12">
                 <div class="counter_box_one counter_light  text-center fadeInLeft wow animated" data-wow-delay="100ms">
                     <i class="lnr lnr-gift"></i>
-                    <span class="counter">5500</span>
+                    <span class="counter">{{subscribed_users}}</span>
                     <h5 class="">
-                        Packages Delivered
+                       {% trans 'Subscribed Users' %}
                     </h5>
                 </div>
             </div>
@@ -413,9 +413,9 @@
             <div class="col-lg-3 col-md-6 col-12">
                 <div class="counter_box_one counter_light  text-center  fadeInUp wow animated" data-wow-delay="200ms">
                     <i class="lnr  lnr-users"></i>
-                    <span class="counter">3500</span>
+                    <span class="counter">{{collaborations}}</span>
                     <h5 class="">
-                        Repeat Customers
+                        {% trans 'Collaborations' %}
                     </h5>
                 </div>
             </div>
@@ -423,9 +423,9 @@
             <div class="col-lg-3 col-md-6 col-12">
                 <div class="counter_box_one counter_light text-center  fadeInDown wow animated" data-wow-delay="300ms">
                     <i class="lnr  lnr-apartment"></i>
-                    <span class="counter">6000</span>
+                    <span class="counter">{{uploaded_docs}}</span>
                     <h5 class="">
-                        STORAGE Goods
+                        {% trans 'Uploaded Documents' %}
                     </h5>
                 </div>
             </div>
@@ -433,9 +433,9 @@
             <div class="col-lg-3 col-md-6 col-12">
                 <div class="counter_box_one counter_light text-center fadeInRight wow animated" data-wow-delay="400ms">
                     <i class="lnr  lnr-clock"></i>
-                    <span class="counter">24</span>
+                    <span class="counter">{{trained_models}}</span>
                     <h5 class="">
-                        Timely Delivery
+                        {% trans 'trained_models' %}
                     </h5>
                 </div>
             </div>
@@ -755,8 +755,9 @@
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="embed-responsive embed-responsive-4by3">
                         <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{v.video.vid}}"></iframe>
-                        {{v.title}}
                     </div>
+                     <b>{{v.title}}</b> <br/>
+                     {{v.desc|safe}}
                 </div>
             {% endfor %}
             
