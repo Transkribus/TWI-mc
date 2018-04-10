@@ -4,37 +4,13 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <!-- ========== Meta Tags ========== -->
-    <meta charset="UTF-8">
-    <meta name="description" content="TODO">
-    <meta name="keywords" content="TODO">
-    <meta name="author" content="TODO">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <!-- ========== Title ========== -->
-    <title>{% trans 'Transkribus Institutions' %} - {{inst.name}}</title>
-
-    <!-- Bootstrap CSS -->
-    <link href="{% static 'start/assets/css/bootstrap.min.css' %}" rel="stylesheet">
-    <!-- Fonts Icon CSS -->
-    <link href="{% static 'start/assets/css/font-awesome.min.css' %}" rel="stylesheet">
-    <link href="{% static 'start/assets/css/et-line.css' %}" rel="stylesheet">
-    <!-- Owl Carousel CSS -->
-    <link href="{% static 'start/assets/css/owl.carousel.min.css' %}" rel="stylesheet">
-    <link href="{% static 'start/assets/css/owl.theme.default.min.css' %}" rel="stylesheet">
-    <!-- Magnific-popup -->
-    <link rel="stylesheet" href="{% static 'start/assets/css/magnific-popup.css' %}">
-    <!-- Animate CSS -->
-    <link rel="stylesheet" href="{% static 'start/assets/css/animate.min.css' %}">
-    <!-- Custom styles for this template -->
-    <link href="{% static 'start/assets/css/main.css' %}" rel="stylesheet">
-    <link href="{% static 'start/css/homepage.css' %}" rel="stylesheet" >
-    
-    <link rel="shortcut icon" href="{% static 'start/favicon.ico' %}" type="image/x-icon" />
-</head>
+{% include "start/includes/head.html" %} 
 
 <body  data-spy="scroll" data-target="header">
 
+{% include "start/includes/menu.html" with base_path="index" %}
+
+<br/><br/><br/>
 <section id="home" class="home bg-light">
     <div class="container">
         <h1>{{article.title}}</h1>

@@ -23,7 +23,7 @@
         <div class="collapse navbar-collapse flex-sm-row-reverse" id="headernav">
             <ul class=" nav navbar-nav menu">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#home">{% trans 'Projects' %}</a>
+                    <a class="nav-link active" href="{{base_path}}#home">{% trans 'Projects' %}</a>
                     <ul class="sub_menu">
                         <li>
                             <a href="https://read.transkribus.eu/" target="_plain">{% trans 'READ - Project' %}</a>
@@ -35,14 +35,14 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link " href="#institutions">{% trans 'institutions' %}</a>
+                    <a class="nav-link " href="{{base_path}}#institutions">{% trans 'institutions' %}</a>
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link " href="#about">{% trans 'about' %}</a>
+                    <a class="nav-link " href="{{base_path}}#about">{% trans 'about' %}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#services">{% trans 'Services' %}</a>
+                    <a class="nav-link " href="{{base_path}}#services">{% trans 'Services' %}</a>
                      <ul class="sub_menu">
                         <li>
                             <a href="https://transkribus.eu/TrpServer/rest/downloadLatestGui" target ="_plain">{% trans 'Download GUI' %}</a>
@@ -60,23 +60,23 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link " href="#blog">{% trans 'Latest News' %}</a>
+                    <a class="nav-link " href="{{base_path}}#blog">{% trans 'Latest News' %}</a>
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link " href="#documents">{% trans 'Documents' %}</a>
+                    <a class="nav-link " href="{{base_path}}#documents">{% trans 'Documents' %}</a>
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link " href="#videos">{% trans 'Videos' %}</a>
+                    <a class="nav-link " href="{{base_path}}#videos">{% trans 'Videos' %}</a>
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link " href="#calendar">{% trans 'Calendar' %}</a>
+                    <a class="nav-link " href="{{base_path}}#calendar">{% trans 'Calendar' %}</a>
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link " href="#contact">{% trans 'contact us' %}</a>
+                    <a class="nav-link " href="{{base_path}}#contact">{% trans 'contact us' %}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link">{% trans 'account' %}</a>
@@ -94,7 +94,7 @@
                         {% endif %}
                         
                          <li>
-                            <a class="nav-link " data-toggle="modal" data-target="#modifyAccountModal" href="#">{% trans 'modify account' %}</a>
+                            <a class="nav-link " data-toggle="modal" data-target="{{base_path}}#modifyAccountModal" href="{{base_path}}#">{% trans 'modify account' %}</a>
                         </li>
                         <li><a href="logout">{% trans 'logout' %}</a></li>
                         
@@ -130,3 +130,7 @@
     </div>
 </header>
 <!--header end here-->
+
+{% include "start/modals/login.html" %} 
+{% include "start/modals/register.html" %} 
+{% include "start/modals/modifyaccount.html" %} 
