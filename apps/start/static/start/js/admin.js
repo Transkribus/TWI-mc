@@ -112,7 +112,7 @@ function generateQuillObjects(type)
             modules: {
               toolbar: toolbarOptions,
             },
-            placeholder: 'Compose an epic...',
+            placeholder: quills_placeholder,
             formula:true,
             theme: 'snow'  // or 'bubble'
             });  
