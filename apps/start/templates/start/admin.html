@@ -216,9 +216,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
 <section id="blog" class="bg-light pt120 pb120">
     <div class="container">
         <h1>{% trans 'Blog entries' %}</h1>
-        
-        {% include "start/includes/quill_edit.html" with key="myval" key2="myval2" %}
-        
+                
         <input type="hidden" name="editor-id-blog" id= "editor-id-blog" value="0"> <!-- change when a document ist loaded for editing -->
         {% trans 'stored blog entries' %} :
         <select name="blog-options" id="blog-options"  onchange="change_blog($(this).val())">

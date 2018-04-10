@@ -146,7 +146,25 @@ function store_article()
             });
 }
 
+/* clear all entries from the home article section  */
+function clear_article()
+{
+    $("#editor-container-article-de").children().first().html(''); 
+    $("#editor-container-article-en").children().first().html(''); 
+    $("#editor-container-article-short-de").children().first().html(''); 
+    $("#editor-container-article-short-en").children().first().html(''); 
+    $("#editor-title-article-de").val('');
+    $("#editor-title-article-en").val('');
+}
 
+function change_article(v)
+{
+    if (v === '0')
+    {
+        clear_article();
+    }
+
+}
 /* ------------------------------------ */
 /* Blog functions */
 /* ------------------------------------ */    
