@@ -86,9 +86,9 @@ def blog_detail(request):
 
     context = {
         #'blog' : b,
-        'entry' : be,
+        'blog' : be,
     }
-    
+ 
     return HttpResponse(template.render(context, request))
 
 def admin(request):   
