@@ -103,9 +103,9 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
 <!--header start here -->
 <header class="header navbar fixed-top navbar-expand-md">
     <div class="container">
-        <a class="navbar-brand logo" href="#">
+        <!-- <a class="navbar-brand logo" href="#">
             <span class="admin">{% trans 'Transkribus/Admin Page' %}</span>
-        </a>
+        </a> -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#headernav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="lnr lnr-text-align-right"></span>
         </button>
@@ -169,7 +169,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
                 <option value="{{a.article.pk}}">{{a.title}} - {{a.article.changed}}</option>
             {% endfor %}
         </select>
-        <img id="article-blog-img" class="invisible" src="" /> 
+        <img id="editor-article-img" class="invisible" src="" /> 
         
         <button id="editor-article-btn-delete" class="invisible" onclick="delete_article()">{% trans 'delete' %}</button> 
         

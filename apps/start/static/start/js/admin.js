@@ -65,7 +65,9 @@ var toolbarOptions = [
 /* ------------------------------------ */
 /* Common functions */
 /* ------------------------------------ */    
-function getBlogEntryByLang(arr, lang)
+
+/* get the array item which contains a field with a certain lang */ 
+function getEntryByLang(arr, lang)
 {
     for (var i = 1; i < arr.length;i++)
     {
@@ -162,9 +164,34 @@ function change_article(v)
     if (v === '0')
     {
         clear_article();
+    } else
+    {
+        console.log(v);
+        $.post("change_admin_article", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+        {
+            var img = data[0].fields.image;
+            $("#editor-article-img").removeClass("invisible");
+            $("#editor-article-btn-delete").removeClass("invisible");
+            $("#editor-article-img").attr("src", "../static/start/img/upload/" + img ); //TODO: change path
+            $("#editor-article-img").attr("width","80px");
+
+            var de = getEntryByLang(data, "de");
+            quills['article-de'].clipboard.dangerouslyPasteHTML(de.fields.content);
+            $("#editor-title-article-de").val(de.fields.title);
+            quills['article-short-de'].clipboard.dangerouslyPasteHTML(de.fields.shortdesc);
+            
+            var en = getEntryByLang(data, "en");            
+            quills['article-en'].clipboard.dangerouslyPasteHTML(en.fields.content);
+            $("#editor-title-article-en").val(en.fields.title);
+            quills['article-short-en'].clipboard.dangerouslyPasteHTML(en.fields.shortdesc);
+        });
     }
 
 }
+
+
+
+
 /* ------------------------------------ */
 /* Blog functions */
 /* ------------------------------------ */    
@@ -229,14 +256,14 @@ function change_blog(v)
             $("#editor-blog-btn-delete").removeClass("invisible");
             $("#editor-blog-img").attr("src", "../static/start/img/upload/" + img ); //TODO: change path
             $("#editor-blog-img").attr("width","80px");
-            var de = getBlogEntryByLang(data, "de");
+            var de = getEntryByLang(data, "de");
             
             //$("#editor-container-blog-de").html(de.fields.content);
             quills['blog-de'].clipboard.dangerouslyPasteHTML(de.fields.content);
             $("#editor-title-blog-de").val(de.fields.title);
             $("#editor-subtitle-blog-de").val(de.fields.subtitle);
             
-            var en = getBlogEntryByLang(data, "en");
+            var en = getEntryByLang(data, "en");
             quills['blog-en'].clipboard.dangerouslyPasteHTML(en.fields.content);
             $("#editor-title-blog-en").val(en.fields.title);
             $("#editor-subtitle-blog-en").val(en.fields.subtitle);   
