@@ -8,176 +8,17 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
- <!-- ========== Meta Tags ========== -->
-    <meta charset="UTF-8">
-    <meta name="description" content="TODO">
-    <meta name="keywords" content="TODO">
-    <meta name="authorcon" content="TODO">
-    <meta name="viewport" content="initial-scale=1.0">
-    <!-- ========== Title ========== -->
-    <title>{% trans 'Transkribus' %}</title>
-    
-     <!-- Bootstrap CSS -->
-    <link href="{% static 'start/assets/css/bootstrap.min.css' %}" rel="stylesheet" >
-    <!-- Fonts Icon CSS -->
-    <link href="{% static 'start/assets/css/font-awesome.min.css' %}" rel="stylesheet" >
-    <link href="{% static 'start/assets/css/et-line.css' %}" rel="stylesheet" />
-    <!-- Owl Carousel CSS -->
-    <link href="{% static 'start/assets/css/owl.carousel.min.css' %}" rel="stylesheet" >
-    <link href="{% static 'start/assets/css/owl.theme.default.min.css' %}" rel="stylesheet" >
-    <!-- Magnific-popup -->
-    <link rel="stylesheet" href="{% static 'start/assets/css/magnific-popup.css' %}" >
-    <!-- Animate CSS -->
-    <link rel="stylesheet" href="{% static 'start/assets/css/animate.min.css' %}" >
-    <!-- Custom styles for this template -->
-    <link href="{% static 'start/assets/css/main.css' %}" rel="stylesheet" > 
 
-    
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
-    <!-- Custom modifications -->
-    
-    <link href="{% static 'start/css/homepage.css' %}" rel="stylesheet" >
-   
-    <link href="{% static 'start/css/modal.css' %}" rel="stylesheet" > 
-     
-    <link rel="shortcut icon" href="{% static 'start/favicon.ico' %}" type="image/x-icon" />
-
-</head>
-
+{% include "start/includes/head.html" %} 
 
 <body  data-spy="scroll" data-target="header">
 
-<div class="loader">
-    <div class="loader-outter"></div>
-    <div class="loader-inner"></div>
-</div>
-
-<!--header start here -->
-<header class="header navbar fixed-top navbar-expand-md">
-    <div class="container">
-        <a class="navbar-brand logo" href="#">
-            <span>{% trans 'Transkribus' %}</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#headernav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="lnr lnr-text-align-right"></span>
-        </button>
-        <div class="collapse navbar-collapse flex-sm-row-reverse" id="headernav">
-            <ul class=" nav navbar-nav menu">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#home">{% trans 'Projects' %}</a>
-                    <ul class="sub_menu">
-                        <li>
-                            <a href="https://read.transkribus.eu/" target="_plain">{% trans 'READ - Project' %}</a>
-                        </li>
-                        <li>
-                            <a href="https://learn.transkribus.eu" target="_plain">{% trans 'LEARN - Project' %}</a>
-                        </li>
-                    </ul>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link " href="#institutions">{% trans 'institutions' %}</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link " href="#about">{% trans 'about' %}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="#services">{% trans 'Services' %}</a>
-                     <ul class="sub_menu">
-                        <li>
-                            <a href="https://transkribus.eu/TrpServer/rest/downloadLatestGui" target ="_plain">{% trans 'Download GUI' %}</a>
-                        </li>
-                         <li>
-                            <a href="https://transkribus.eu/TrpServer/rest/downloadLatestGui?packageType=mac" target ="_plain">{% trans 'Download GUI for MAC' %}</a>
-                         </li>
-                         <li>
-                            <a href="https://transkribus.eu/wiki/index.php/Main_Page" target ="_plain">{% trans 'Wiki' %}</a>
-                         </li>
-                         <li>
-                            <a href="https://transkribus.eu/wiki/images/7/77/How_to_use_TRANSKRIBUS_-_10_steps.pdf" target ="_plain">{% trans 'How-to guide (pdf)' %}</a>
-                         </li>
-                    </ul>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link " href="#blog">{% trans 'Latest News' %}</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link " href="#documents">{% trans 'Documents' %}</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link " href="#videos">{% trans 'Videos' %}</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link " href="#calendar">{% trans 'Calendar' %}</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link " href="#contact">{% trans 'contact us' %}</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link">{% trans 'account' %}</a>
-                    {% if request.session.user %}
-                     <ul class="sub_menu">
-                        <li>
-                            <a href="#">
-                            {{request.session.user.firstname}} {{request.session.user.lastname}}
-                                ({{request.session.user.userName}})
-                            </a>
-                        </li>
-                        
-                         {% if request.session.user.isAdmin == 'true' %}
-                            <li><a href="start_admin">{% trans 'admin_page' %}</a></li>
-                        {% endif %}
-                        
-                         <li>
-                            <a class="nav-link " data-toggle="modal" data-target="#modifyAccountModal" href="#">{% trans 'modify account' %}</a>
-                        </li>
-                        <li><a href="logout">{% trans 'logout' %}</a></li>
-                        
-                     </ul>
-                     {% else %}
-                    <ul class="sub_menu"> 
-                        <li>
-                            <a class="nav-link " data-toggle="modal" data-target="#createAccountModal" href="#">{% trans 'register' %}</a>
-                        </li>
-                            
-                        <li>
-                            <a class="nav-link" href="#" data-toggle="modal" data-target="#login_modal">{% trans 'login' %}</a>
-                        </li>
-                                
-                    </ul>
-                     {% endif %}
-                </li>
-                
-                <li class="nav-item">
-                    <a class="nav-link" href="#">{{LANGUAGE_CODE}} </a>
-                    <ul class="sub_menu">
-                        {% for language in languages %}
-                            {% if language.code == LANGUAGE_CODE %}
-                                <li>X<span class="glyphicon glyphicon-ok check_left"></span> &nbsp; {{ language.name_local }}</li>
-                            {% else %}
-                                <li><a href="change_lang?lang={{language.code}}"><span class="check_left"> &nbsp;</span>{{ language.name_local }}</a></li>
-                            {% endif %}
-                        {% endfor %}
-                    </ul>
-            </li>
-            </ul>
-        </div>
-    </div>
-</header>
-<!--header end here-->
 
 <!--cover section slider -->
 <section id="home" class="home bg-light">
     <ul class="hero_carousel owl-carousel owl-theme">
          {% for a in articles %} 
-              <li class="vh100"  style="background: url('{{baseUrl}}start/img/upload/{{a.article.image}}') no-repeat fixed center;">
+              <li class="vh80"  style="background: url('{{baseUrl}}start/img/upload/{{a.article.image}}') no-repeat fixed center;">
                     <div class="slider_content">
                         <div class="slider-content-inner">
                             <div class="container">
