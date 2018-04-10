@@ -166,7 +166,6 @@ function change_article(v)
         clear_article();
     } else
     {
-        console.log(v);
         $.post("change_admin_article", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
         {
             var img = data[0].fields.image;
@@ -246,7 +245,7 @@ function store_blog()
 
 function change_blog(v)
 {
-    if (v !== 0)
+    if (v !== '0')
     {
         $.post("change_admin_blog", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
         {
@@ -272,6 +271,7 @@ function change_blog(v)
     {
         $("#editor-blog-btn-delete").addClass("invisible");
         $("#editor-blog-img").addClass("invisible");
+        clear_blog();
     }
 }
 
