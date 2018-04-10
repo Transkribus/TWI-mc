@@ -100,7 +100,9 @@ def admin(request):
     v = m.VideoDesc.objects.filter(lang=translation.get_language())
     
     ifirst = m.Institution.objects.first()
-    inst_entries = m.InstitutionProjectEntries.objects.filter(project__inst=ifirst.pk, lang=translation.get_language())
+    inst_entries = []
+    if ifirst:
+        inst_entries = m.InstitutionProjectEntries.objects.filter(project__inst=ifirst.pk, lang=translation.get_language())
     
     
     context = {

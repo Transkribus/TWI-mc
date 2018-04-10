@@ -65,7 +65,7 @@
                   function initMap() {
                     map = new google.maps.Map(document.getElementById('map'), {
                       center: {lat:  47.259659, lng: 11.400375},
-                      zoom: 2
+                      zoom: 8
                     });
                     {% for i in inst %}
                         var lat = {{i.lat|unlocalize}};
@@ -94,7 +94,9 @@
             <div class="col-12 col-md-4">
                 <ul>
                      {% for i in inst %}
-                        <li><a href="inst_detail?id={{i.pk}}" target="_plain">{{i.name}} </a></li>
+                        <li>
+                            <a href="inst_detail?id={{i.pk}}" target="_plain"><h4>{{i.name}} </h4></a>
+                        </li>
                      {% endfor %} 
                 </ul>
             </div>   
@@ -291,7 +293,7 @@
             <div class="col-12">
                 <div class="blog_carousel owl-carousel">
                     {% for b in blogs %} 
-                        <div class="item">
+                        <div class="item ">
                             <article class="blog_box_one">
                                 <div class="blog_box_img">
                                     <img src="../static/start/img/upload/{{b.blog.image}}" alt="{{b.title}}" >
@@ -303,9 +305,9 @@
                                         {{b.subtitle}}
                                     </p>
                                 </div>
-                                <div class="blog_box_footer">
-                                    <a href="blog_detail?id={{b.blog.pk}}">{% trans 'Read More' %}</a>
-                                </div>
+                                
+                                <a class="btn btn-rounded btn-light" href="blog_detail?id={{b.blog.pk}}">{% trans 'Read More' %}</a>
+                                
                             </article>
                         </div>
                     {% endfor %}
