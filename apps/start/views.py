@@ -150,7 +150,7 @@ def store_admin_blog(request):
         content_en = request.POST.get('content_en','')
             
         fname = None
-        if "blog_name" in request.session:
+        if "blog_fname" in request.session:
             fname = request.session["blog_fname"]
             del request.session["blog_fname"]
         b = m.Blog.objects.create(image=fname)
@@ -271,6 +271,17 @@ def change_admin_inst_proj_selection(request):
     js = serializers.serialize('json',ipe)
     print(js) 
     return HttpResponse(js, content_type="application/json")  
+
+
+
+
+def change_admin_article(request):
+    idb = request.POST.get('id',0)
+    be = m.HomeArticleEntry.objects.filter(article=idb)
+    b = m.HomeArticle.objects.filter(pk=idb)
+    data = list(chain(b, be))
+    data = serializers.serialize('json', data)
+    return HttpResponse(data, content_type="application/json")
 
 '''
 Find a Blog Entry and return as json
