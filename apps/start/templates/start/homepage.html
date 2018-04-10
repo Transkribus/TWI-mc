@@ -4,6 +4,7 @@
 {% get_available_languages as LANGUAGES %}
 {% get_language_info_list for LANGUAGES as languages %}
 {% load l10n %}
+{% static "" as baseUrl %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -175,44 +176,24 @@
 <!--cover section slider -->
 <section id="home" class="home bg-light">
     <ul class="hero_carousel owl-carousel owl-theme">
-        <li class="vh100" style="background: url('{% static 'start/img/lem.jpeg' %}');">
-            <div class="slider_content">
-                <div class="slider-content-inner">
-                    <div class="container">
-                        <div class="slider-content-left">
-                            <h2>{% trans 'Transcribe. Collaborate. Share…' %}</h2>
-                            <div class="title_divider"></div>
-                            <p>
-                            {% trans '…and benefit from cutting edge research in Handwritten Text Recognition!' %}
-                            </p>
-                            <a href="#" class=" btn btn-rounded btn-light" >
-                                {% trans 'Learn more' %}
-                            </a>
+         {% for a in articles %} 
+              <li class="vh100"  style="background: url('{{baseUrl}}start/img/upload/{{a.article.image}}') no-repeat fixed center;">
+                    <div class="slider_content">
+                        <div class="slider-content-inner">
+                            <div class="container">
+                                <div class="slider-content-center">
+                                    <h2>{{a.title}}</h2>
+                                    <div class="title_divider"></div>
+                                    <p> {{a.shortdesc|safe}}</p>
+                                    <a href="home_article_details?id={{a.article.pk}}" class=" btn btn-rounded btn-primary " >
+                                        {% trans 'View Details' %}
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </li>
-        
- 
- {% for a in articles %} 
-      <li class="vh100"  style="background: url('{% static 'start/img/blurry.png' %}');">
-            <div class="slider_content">
-                <div class="slider-content-inner">
-                    <div class="container">
-                        <div class="slider-content-center">
-                            <h2>{{a.title}}</h2>
-                            <div class="title_divider"></div>
-                            <p> {{a.shortdesc|safe}}</p>
-                            <a href="home_article_details?id={{a.article.pk}}" class=" btn btn-rounded btn-primary " >
-                                {% trans 'View Details' %}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-{% endfor %}        
+                </li>
+        {% endfor %}        
     </ul>
 </section>
 <!--cover section slider end -->
@@ -234,8 +215,7 @@
                         }    
                         map.fitBounds(bounds);
                     }
-                
-                
+                   
                   var map;
                   var marker = [];
                   function initMap() {
