@@ -89,10 +89,13 @@ class VideoDesc(models.Model):
     
 class Document(models.Model):  
     icon = models.CharField( max_length=200)
+    changed = models.DateField(auto_now_add=True)
     
-class DocumentEnrtries(models.Model):
+class DocumentEntries(models.Model):
     title = models.CharField( max_length=200)
     desc = models.TextField()    
     content = models.TextField()
     lang = models.CharField(max_length=2)
+    doc = models.ForeignKey(Document, on_delete=models.CASCADE, blank=True, null=True)
+    changed = models.DateField(auto_now_add=True)
           

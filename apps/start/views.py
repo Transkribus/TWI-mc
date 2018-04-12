@@ -45,7 +45,7 @@ def index(request):
         'collaborations': collaborations,
         'uploaded_docs' : uploaded_docs,
         'trained_models' : trained_models,
-        'docs' : m.DocumentEnrtries.filter(lang=translation.get_language())
+        'docs' : m.DocumentEntries.objects.filter(lang=translation.get_language())
         
         
         
@@ -99,7 +99,7 @@ def admin(request):
     a = m.HomeArticleEntry.objects.filter(lang=translation.get_language())
     q = m.QuoteEntries.objects.filter(lang=translation.get_language())
     v = m.VideoDesc.objects.filter(lang=translation.get_language())
-    docs = m.DocumentEnrtries.filter(lang=translation.get_language())
+    docs = m.DocumentEntries.objects.filter(lang=translation.get_language())
     ifirst = m.Institution.objects.first()
     inst_entries = []
     if ifirst:
