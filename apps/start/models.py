@@ -85,3 +85,14 @@ class VideoDesc(models.Model):
     desc = models.TextField()       
     lang = models.CharField(max_length=2)
     video = models.ForeignKey(Video, on_delete=models.CASCADE, blank=True, null=True)
+    
+    
+class Document(models.Model):  
+    icon = models.CharField( max_length=200)
+    
+class DocumentEnrtries(models.Model):
+    title = models.CharField( max_length=200)
+    desc = models.TextField()    
+    content = models.TextField()
+    lang = models.CharField(max_length=2)
+          
