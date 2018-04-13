@@ -488,6 +488,42 @@ function store_video()
 }
 
 /* ------------------------------------ */
+/* Documents                            */
+/* ------------------------------------ */    
+
+function store_doc()
+{
+    var id = $("#doc-options").val();
+    var title_de = $("#editor-title-doc-de").val();
+    var title_en = $("#editor-title-doc-en").val();
+    var html_desc_en = $("#editor-container-doc-desc-en").children().first().html();
+    var html_desc_de = $("#editor-container-doc-desc-de").children().first().html(); 
+    var html_content_en = $("#editor-container-doc-content-en").children().first().html();
+    var html_content_de = $("#editor-container-doc-content-de").children().first().html();
+    
+    console.log(html_desc_en);
+    console.log(html_desc_de);
+    var icon = $("#editor-icon-doc").val();
+    
+        $.post("store_admin_doc",
+        {id: id,
+        title_de: title_de,
+        title_en: title_en,
+        content_de: html_content_de, 
+        content_en: html_content_en, 
+        desc_de: html_desc_de, 
+        desc_en: html_desc_en,
+        icon : icon,
+        'csrfmiddlewaretoken':  csrf_token
+        }).done(function(data)
+            {
+                console.log(data.id + ":" + data.title);
+                $("#video-options").append('<option value="' + data.id +'" selected="selected">' + data.title + '</option>');
+            });
+    
+}
+
+/* ------------------------------------ */
 /* Main entry Point                     */
 /* ------------------------------------ */    
 
@@ -499,6 +535,7 @@ $(document).ready(function()
         openTabs('editor-article-tab-de','article');
         openTabs('editor-quote-tab-de','quote');
         openTabs('editor-video-tab-de','video');
+        openTabs('editor-doc-tab-de','doc');
         
         generateQuillObjects('blog');
         generateQuillObjects('inst');
@@ -507,5 +544,6 @@ $(document).ready(function()
         generateQuillObjects('article-short');
         generateQuillObjects('quote');        
         generateQuillObjects('video');            
-            
+        generateQuillObjects('doc-desc');  
+        generateQuillObjects('doc-content');  
     });        

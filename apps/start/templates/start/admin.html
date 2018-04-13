@@ -136,6 +136,10 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
                 </li>
       
                 <li class="nav-item">
+                    <a class="nav-link " href="#documents">{% trans 'documents' %}</a>
+                </li>
+                
+                <li class="nav-item">
                     <a class="nav-link " href="#videos">{% trans 'videos' %}</a>
                 </li>
                 
@@ -404,6 +408,59 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
             </div>
         {% endfor %}            
         <button id="editor-store-quote" onclick="store_quote()">{% trans 'store' %}</button>
+    </div> 
+</section>
+
+<section id="documents" class="bg-light pt120 pb120">
+     <div class="container">
+        <h1>{% trans 'Documents' %}</h1>
+        
+        {% trans 'select document' %}: 
+        <select name="doc-options" id="doc-options" onchange="change_doc($(this).val())">
+            {% for d in docs %}
+                <option value="{{d.doc.pk}}">{{d.title}} (d.changed)</option>
+            {% endfor %}
+        </select>
+        
+         <br/><br/>
+         <label for="editor-icon-doc">
+             {% language "{{l.0}}" %}icon{% endlanguage %}
+         </label>
+        <input class="form-control" type="text" name="editor-icon-doc" id ="editor-icon-doc" value="icon-lightbulb"/>
+
+         <div class="tab">
+            <button class="tablinks-doc" onclick="openTabs('editor-doc-tab-de', 'doc', event)">DE</button>
+            <button class="tablinks-doc" onclick="openTabs('editor-doc-tab-en', 'doc', event)">EN</button>
+        </div>
+            
+        {% for l in LANGUAGES %}
+            <div class="editor-doc-tab-{{l.0}} tabcontent-doc" id="editor-doc-tab-{{l.0}}">
+                 <div class="form-group">
+                   <label for="editor-title-doc-{{l.0}}">
+                        {% language "{{l.0}}" %}title{% endlanguage %}
+                    </label>
+                   <input class="form-control" type="text" name="editor-title-doc-{{l.0}}" id ="editor-title-doc-{{l.0}}" />
+            
+                    
+            
+                    <label for="editor-doc-desc-{{l.0}}">
+                        {% language "{{l.0}}" %}description{% endlanguage %}
+                    </label>
+                    <div class="editor-container" id="editor-container-doc-desc-{{l.0}}">
+                 
+                    </div>
+                    
+                     <label for="editor-doc-content-{{l.0}}">
+                        {% language "{{l.0}}" %}content{% endlanguage %}
+                    </label>
+                    <div class="editor-container" id="editor-container-doc-content-{{l.0}}">
+                 
+                    </div>
+                </div>
+            </div>
+        {% endfor %}            
+        <button id="editor-store-doc" onclick="store_doc()">{% trans 'store' %}</button>
+        
     </div> 
 </section>
 
