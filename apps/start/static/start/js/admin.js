@@ -340,7 +340,7 @@ function delete_inst()
 
 function change_inst(v)
 {
-    if (v !== 0)
+    if (v !== '0')
     {
         $.post("change_admin_inst", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
         {
