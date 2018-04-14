@@ -275,6 +275,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
                 <option value="{{i.pk}}">{{i.name}}</option>
             {% endfor %}
         </select>
+        <img id="editor-inst-img" class="invisible" src="" /> 
         <button id="editor-inst-btn-delete" class="invisible" onclick="delete_inst()">{% trans 'delete' %}</button> 
         
         <br/><br/>
@@ -283,14 +284,8 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
             <input type="hidden" name="type" value="inst" />
         </form>
         <br/>
-        <label for="inst-name">
-            {% trans 'name' %}
-        </label>
-        <input class="form-control" type="text" name="inst-name" id ="inst-name" />
-        <label for="loc-name">
-            {% trans 'location name' %}
-        </label>
-        <input class="form-control" type="text" name="loc-name" id ="loc-name" />
+        
+        
          <label for="loc-coords-lat">
             {% trans 'location coordinates' %}
         </label>
@@ -312,7 +307,15 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
          {% for l in LANGUAGES %}
              <div class="editor-inst-tab-{{l.0}} tabcontent-inst" id="editor-inst-tab-{{l.0}}">
        
-                 <div class="editor-container" id="editor-container-inst-{{l.0}}">
+                <label for="inst-name">
+                     {% language "{{l.0}}" %}name{% endlanguage %}
+                </label>
+                <input class="form-control" type="text" name="inst-name-{{l.0}}" id ="inst-name-{{l.0}}" />
+                <label for="loc-name">
+                     {% language "{{l.0}}" %}location name{% endlanguage %}
+                </label>
+                <input class="form-control" type="text" name="loc-name-{{l.0}}" id ="loc-name-{{l.0}}" />
+                <div class="editor-container" id="editor-container-inst-{{l.0}}">
                   
                 </div> 
             </div>

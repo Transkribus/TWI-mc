@@ -164,6 +164,8 @@ function change_article(v)
     if (v === '0')
     {
         clear_article();
+        $("#editor-article-img").addClass("invisible");
+        $("#editor-article-btn-delete").addClass("invisible");
     } else
     {
         $.post("change_admin_article", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
@@ -283,16 +285,21 @@ function store_inst()
 {
     var html_de = $("#editor-container-inst-de").children().first().html(); 
     var html_en = $("#editor-container-inst-en").children().first().html();
-    var name = $("#inst-name").val();
-    var loc_name = $("#loc-name").val();
+    var name_de = $("#inst-name-de").val();
+    var loc_name_de = $("#loc-name-de").val();
+    var name_en = $("#inst-name-en").val();
+    var loc_name_en = $("#loc-name-en").val();
+
     var lng = $("#loc-coord-long").val();
     var lat = $("#loc-coord-lat").val();
     var url = $("#inst-url").val();
     
     $.post("store_admin_inst",
         {id: 0,
-        name: name,
-        loc_name : loc_name,
+        name_de: name_de,
+        loc_name_de : loc_name_de,
+        name_en: name_en,
+        loc_name_en : loc_name_en,
         lng : lng,
         lat : lat,
         url : url,
@@ -301,6 +308,7 @@ function store_inst()
         'csrfmiddlewaretoken':  csrf_token
         }).done(function(data)
             {
+                console.log(data.id + data.name)
                 $("#inst-options").append('<option value="' + data.id +'" selected="selected">' + data.name + '</option>');
     
             });
@@ -337,27 +345,25 @@ function change_inst(v)
         $.post("change_admin_inst", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
         {
             var img = data[0].fields.image;
+            $("#editor-inst-img").removeClass("invisible");
+            $("#editor-inst-btn-delete").removeClass("invisible");
+            $("#editor-inst-img").attr("src", "../static/start/img/upload/" + img ); //TODO: change path
+            $("#editor-inst-img").attr("width","80px");
+            var de = getEntryByLang(data, "de");
+            quills['inst-de'].clipboard.dangerouslyPasteHTML(de.fields.desc);            
+            var en = getEntryByLang(data, "en");
+            quills['inst-en'].clipboard.dangerouslyPasteHTML(en.fields.desc);
             
-            $("#editor-blog-img").removeClass("invisible");
-            $("#editor-blog-btn-delete").removeClass("invisible");
-            $("#editor-blog-img").attr("src", "../static/start/img/upload/" + img ); //TODO: change path
-            $("#editor-blog-img").attr("width","80px");
-            var de = getBlogEntryByLang(data, "de");
-            
-            //$("#editor-container-blog-de").html(de.fields.content);
-            quills['blog-de'].clipboard.dangerouslyPasteHTML(de.fields.content);
-            $("#editor-title-blog-de").val(de.fields.title);
-            $("#editor-subtitle-blog-de").val(de.fields.subtitle);
-            
-            var en = getBlogEntryByLang(data, "en");
-            quills['blog-en'].clipboard.dangerouslyPasteHTML(en.fields.content);
-            $("#editor-title-blog-en").val(en.fields.title);
-            $("#editor-subtitle-blog-en").val(en.fields.subtitle);   
+            $("#inst-name").val(data[0].fields.name);
+            $("#loc-name").val(data[0].fields.loclabel);   
+            $("#loc-coord-long").val(data[0].fields.lng);
+            $("#loc-coord-lat").val(data[0].fields.lat);
+            $("#inst-url").val(data[0].fields.link);
         });
     } else
     {
-        $("#editor-blog-btn-delete").addClass("invisible");
-        $("#editor-blog-img").addClass("invisible");
+        $("#editor-inst-btn-delete").addClass("invisible");
+        $("#editor-inst-img").addClass("invisible");
     }
 }
 

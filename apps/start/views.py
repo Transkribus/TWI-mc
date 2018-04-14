@@ -95,7 +95,7 @@ def blog_detail(request):
 def admin(request):   
     template = loader.get_template('start/admin.html')
     b = m.BlogEntry.objects.filter(lang=translation.get_language())
-    i = m.Institution.objects.all()
+    i = m.InstitutionDescription.objects.filter(lang=translation.get_language())
     a = m.HomeArticleEntry.objects.filter(lang=translation.get_language())
     q = m.QuoteEntries.objects.filter(lang=translation.get_language())
     v = m.VideoDesc.objects.filter(lang=translation.get_language())
@@ -175,8 +175,10 @@ def store_admin_inst(request):
     print("store_admin_inst")
     idb = request.POST.get('id',0)
     if idb == "0":
-        name = request.POST.get('name','')
-        loc_name = request.POST.get('loc_name','')
+        name_de = request.POST.get('name_de','')
+        loc_name_de = request.POST.get('loc_name_de','')
+        name_en = request.POST.get('name_en','')
+        loc_name_en = request.POST.get('loc_name_en','')
         lng = Decimal(request.POST.get('lng',''))
         lat = Decimal(request.POST.get('lat',''))
         url = request.POST.get('url','')
@@ -186,14 +188,15 @@ def store_admin_inst(request):
             fname = request.session["inst_fname"]
             del request.session["inst_fname"]
         
-        inst = m.Institution.objects.create(name=name, loclabel=loc_name, lng=lng, lat=lat, link=url, image=fname)
+        inst = m.Institution.objects.create(lng=lng, lat=lat, link=url, image=fname)
         
         content_de = request.POST.get('content_de','')
-        m.InstitutionDescription.objects.create(desc=content_de, lang='de', inst=inst)
+        m.InstitutionDescription.objects.create(name=name_de, loclabel=loc_name_de, desc=content_de, lang='de', inst=inst)
         
         content_en = request.POST.get('content_en','')
-        m.InstitutionDescription.objects.create(desc=content_en, lang='en', inst=inst)   
-    json = '{"name" : ' + name + '}'
+        m.InstitutionDescription.objects.create(name=name_en, loclabel=loc_name_en, desc=content_en, lang='en', inst=inst)   
+    name = (name_de, name_en)[translation.get_language() == 'de']
+    json = '{"id" : ' + str(inst.pk) + ', "name" : "' + name + '"}'
     print (json)
     return HttpResponse(json, content_type="application/json") 
 
