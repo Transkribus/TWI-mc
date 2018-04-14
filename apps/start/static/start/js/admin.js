@@ -422,15 +422,27 @@ function getentrybylang(arr, lang)
 
 function change_inst_proj_proj(v)
 {
-    $.post("change_admin_pr_inst_selection", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+    if (v !== '0')
     {
-        var en = getentrybylang(data,"en");
-        quills['inst-proj-en'].clipboard.dangerouslyPasteHTML(en.fields.desc);
-        $("#editor-title-inst-proj-en").val(en.fields.title);
-        var de = getentrybylang(data,"de");
-        quills['inst-proj-de'].clipboard.dangerouslyPasteHTML(de.fields.desc);
-        $("#editor-title-inst-proj-de").val(de.fields.title);
-    });
+        $.post("change_admin_pr_inst_selection", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+        {
+            var en = getentrybylang(data,"en");
+            quills['inst-proj-en'].clipboard.dangerouslyPasteHTML(en.fields.desc);
+            $("#editor-title-inst-proj-en").val(en.fields.title);
+            var de = getentrybylang(data,"de");
+            quills['inst-proj-de'].clipboard.dangerouslyPasteHTML(de.fields.desc);
+            $("#editor-title-inst-proj-de").val(de.fields.title);
+            $("#editor-inst-proj-btn-delete").removeClass("invisible");
+        });
+    } else
+    {
+        $("#editor-inst-proj-btn-delete").addClass("invisible");
+    }
+}
+
+function delete_inst_proj()
+{
+    //TODO: implement
 }
 
 /* ------------------------------------ */
