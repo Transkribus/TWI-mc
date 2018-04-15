@@ -516,7 +516,6 @@ function change_doc(v)
     {
          $.post("change_admin_doc_selection", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
         {
-            
             $("#editor-icon-doc").val(data[0].fields.name);
             var en = getentrybylang(data,"en");
             quills['doc-desc-en'].clipboard.dangerouslyPasteHTML(en.fields.desc);
@@ -580,6 +579,19 @@ function store_doc()
 /* ------------------------------------ */
 /* Videos                               */
 /* ------------------------------------ */    
+
+function change_video(v)
+{
+     if (v !== '0')
+    {
+         $.post("change_admin_video_selection", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+        {
+        });
+    } else
+    {
+        
+    }
+}
 
 function store_video()
 {

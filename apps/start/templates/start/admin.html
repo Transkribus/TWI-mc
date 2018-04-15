@@ -476,11 +476,12 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         
         {% trans 'select video' %}: 
         <select name="video-options" id="video-options" onchange="change_video($(this).val())">
-             {% for v in videos %}
+            <option value="0" selected>{% trans 'new video' %}...</option>
+            {% for v in videos %}
                 <option value="{{v.video.pk}}">{{v.title}} ({{v.video.vid}})</option>
             {% endfor %}
         </select>
-        
+        <button id="editor-video-btn-delete" class="invisible" onclick="delete_video()">{% trans 'delete' %}</button> 
 
         <br/><br/>
         

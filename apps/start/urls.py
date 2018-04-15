@@ -33,4 +33,5 @@ urlpatterns = [
     url(r'^store_admin_doc', v.store_admin_doc , name='store_admin_doc'),
     url(r'^change_admin_quote_selection', v.change_admin_quote_selection , name='change_admin_quote_selection'),
     url(r'^change_admin_doc_selection', v.change_admin_doc_selection , name='change_admin_doc_selection'),
+    url(r'^change_admin_video_selection', v.change_admin_video_selection , name='change_admin_video_selection')
 ]

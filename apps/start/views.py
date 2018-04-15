@@ -318,7 +318,13 @@ def change_admin_doc_selection(request):
     print(json.dumps(json.loads(data), indent=4)) 
     return HttpResponse(data, content_type="application/json")
 
-    
+def change_admin_video_selection(request):
+    idb = request.POST.get('id',0)
+    vd = m.VideoDesc.objects.filter(pk=idb)
+    data = serializers.serialize('json', vd)
+    print(json.dumps(json.loads(data), indent=4)) 
+    return HttpResponse(data, content_type="application/json")
+
 def change_admin_article(request):
     idb = request.POST.get('id',0)
     be = m.HomeArticleEntry.objects.filter(article=idb)
