@@ -127,9 +127,6 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
                  <li class="nav-item">
                     <a class="nav-link " href="#institutions_projects">{% trans 'institutions_projects' %}</a>
                 </li>
-                 <li class="nav-item">
-                    <a class="nav-link " href="#about">{% trans 'about' %}</a>
-                </li>
       
                 <li class="nav-item">
                     <a class="nav-link " href="#quotes">{% trans 'quotes' %}</a>
@@ -337,10 +334,13 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         
         {% trans 'select project' %}: 
         <select name="inst-proj-proj-options" id="inst-proj-proj-options"  onchange="change_inst_proj_proj($(this).val())">
+             <option value="0" selected>{% trans 'new project' %}...</option>
              {% for i in inst.0.projects %}
                 <option value="{{i.pk}}">{{i.name}}</option>
             {% endfor %}
         </select>
+        
+         <button id="editor-inst-proj-btn-delete" class="invisible" onclick="delete_inst_proj()">{% trans 'delete' %}</button> 
         <br/><br/>
          <div class="tab">
             <button class="tablinks-inst-proj" onclick="openTabs('editor-inst-proj-tab-de', 'inst-proj', event)">DE</button>
@@ -375,11 +375,12 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         
         {% trans 'select quote' %}: 
         <select name="quote-options" id="quote-options" onchange="change_quote($(this).val())">
+            <option value="0" selected>{% trans 'new quote' %}...</option>
              {% for q in quotes %}
                 <option value="{{q.quote.pk}}">{{q.quote.name}}</option>
             {% endfor %}
         </select>
-        
+        <button id="editor-quote-btn-delete" class="invisible" onclick="delete_quote()">{% trans 'delete' %}</button> 
 
         <br/><br/>
         

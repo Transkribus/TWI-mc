@@ -290,6 +290,15 @@ def change_admin_inst_proj(request):
     return HttpResponse(js, content_type="application/json")    
 
 
+def change_admin_quote_selection(request):
+    idb = request.POST.get('id',0)
+    qe = m.QuoteEntries.objects.filter(quote=idb)
+    q = m.Quote.objects.filter(pk=idb)
+    data = list(chain(q, qe))
+    data = serializers.serialize('json',data)
+    print(json.dumps(json.loads(data), indent=4)) 
+    return HttpResponse(data, content_type="application/json")   
+
 def change_admin_inst_proj_selection(request):
     idb = request.POST.get('id',0)
     ipe = m.InstitutionProjectEntries.objects.filter(project=idb)

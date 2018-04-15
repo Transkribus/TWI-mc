@@ -395,7 +395,7 @@ function change_inst_proj(v)
 {
     $.post("change_admin_proj", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
     {
-        $("#inst-proj-proj-options").empty();
+        $("#inst-proj-proj-options option[value!='0']").remove();
         for (var i = 0; i < data.length;i++)
         {
             $("#inst-proj-proj-options").append('<option value="' + data[i].fields.pk +'" selected="selected">' + data[i].fields.title + '</option>');            
@@ -437,6 +437,11 @@ function change_inst_proj_proj(v)
     } else
     {
         $("#editor-inst-proj-btn-delete").addClass("invisible");
+        
+        quills['inst-proj-en'].clipboard.dangerouslyPasteHTML('');
+        $("#editor-title-inst-proj-en").val('');
+        quills['inst-proj-de'].clipboard.dangerouslyPasteHTML('');
+        $("#editor-title-inst-proj-de").val('');
     }
 }
 
@@ -449,6 +454,34 @@ function delete_inst_proj()
 /* Quote - Functions                    */
 /* ------------------------------------ */    
 
+function change_quote(v)
+{
+    if (v !== '0')
+    {
+         $.post("change_admin_quote_selection", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+        {
+            
+            $("#editor-name-quote").val(data[0].fields.name);
+            var en = getentrybylang(data,"en");
+            quills['quote-en'].clipboard.dangerouslyPasteHTML(en.fields.content);
+            $("#editor-role-quote-en").val(en.fields.role);
+            var de = getentrybylang(data,"de");
+            quills['quote-de'].clipboard.dangerouslyPasteHTML(de.fields.content);
+            $("#editor-role-quote-de").val(de.fields.role);
+            $("#editor-quote-btn-delete").removeClass("invisible");
+        });
+    } else
+    {
+        $("#editor-quote-btn-delete").addClass("invisible");
+        
+        $("#editor-name-quote").val('');
+        quills['quote-en'].clipboard.dangerouslyPasteHTML('');
+        $("#editor-role-quote-en").val('');
+        quills['quote-de'].clipboard.dangerouslyPasteHTML('');
+        $("#editor-role-quote-de").val('');
+ 
+    }
+}
 
 function store_quote()
 {
