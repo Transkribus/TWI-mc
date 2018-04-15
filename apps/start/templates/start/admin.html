@@ -421,11 +421,12 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         
         {% trans 'select document' %}: 
         <select name="doc-options" id="doc-options" onchange="change_doc($(this).val())">
+            <option value="0" selected>{% trans 'new document' %}...</option>
             {% for d in docs %}
-                <option value="{{d.doc.pk}}">{{d.title}} (d.changed)</option>
+                <option value="{{d.doc.pk}}">{{d.title}} ( {{d.changed}} )</option>
             {% endfor %}
         </select>
-        
+        <button id="editor-doc-btn-delete" class="invisible" onclick="delete_doc()">{% trans 'delete' %}</button> 
          <br/><br/>
          <label for="editor-icon-doc">
              {% language "{{l.0}}" %}icon{% endlanguage %}

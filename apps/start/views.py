@@ -308,8 +308,17 @@ def change_admin_inst_proj_selection(request):
     return HttpResponse(js, content_type="application/json")  
 
 
+def change_admin_doc_selection(request):
+    idb = request.POST.get('id',0)
+    
+    de = m.DocumentEntries.objects.filter(doc=idb)
+    d = m.Document.objects.filter(pk=idb)
+    data = list(chain(d, de))
+    data = serializers.serialize('json', data)
+    print(json.dumps(json.loads(data), indent=4)) 
+    return HttpResponse(data, content_type="application/json")
 
-
+    
 def change_admin_article(request):
     idb = request.POST.get('id',0)
     be = m.HomeArticleEntry.objects.filter(article=idb)
