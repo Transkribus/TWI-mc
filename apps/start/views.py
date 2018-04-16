@@ -320,8 +320,10 @@ def change_admin_doc_selection(request):
 
 def change_admin_video_selection(request):
     idb = request.POST.get('id',0)
-    vd = m.VideoDesc.objects.filter(pk=idb)
-    data = serializers.serialize('json', vd)
+    v = m.Video.objects.filter(pk=idb)
+    ve = m.VideoDesc.objects.filter(video__pk=idb)
+    data = list(chain(v, ve))
+    data = serializers.serialize('json', data)
     print(json.dumps(json.loads(data), indent=4)) 
     return HttpResponse(data, content_type="application/json")
 
