@@ -148,32 +148,33 @@ def store_admin_article(request):
                     
     title = (title_de, title_en)[translation.get_language() == 'de']
     json = '{"id" : ' + str(art.pk) + ', "title" : "' + title  + '", "changed" : "' + str(art.changed) + '"}'
-    print (json)
     return HttpResponse(json, content_type="application/json")
-      
-        
+              
 def store_admin_blog(request):
-    idb = request.POST.get('id',0)
-    if idb == "0":
-        title_de = request.POST.get('title_de','')
-        title_en = request.POST.get('title_en','')
-        subtitle_de = request.POST.get('subtitle_de','')
-        subtitle_en = request.POST.get('subtitle_en','')
-        content_de = request.POST.get('content_de','')
-        content_en = request.POST.get('content_en','')
-            
-        fname = None
-        if "blog_fname" in request.session:
-            fname = request.session["blog_fname"]
-            del request.session["blog_fname"]
+    idb = int(request.POST.get('id',0))
+    title_de = request.POST.get('title_de','')
+    title_en = request.POST.get('title_en','')
+    subtitle_de = request.POST.get('subtitle_de','')
+    subtitle_en = request.POST.get('subtitle_en','')
+    content_de = request.POST.get('content_de','')
+    content_en = request.POST.get('content_en','')
+        
+    fname = None
+    if "blog_fname" in request.session:
+        fname = request.session["blog_fname"]
+        del request.session["blog_fname"]
+        
+    if idb == 0:
         b = m.Blog.objects.create(image=fname)
-       
         m.BlogEntry.objects.create(title=title_de, subtitle=subtitle_de, content=content_de, blog=b, lang="de")
         m.BlogEntry.objects.create(title=title_en, subtitle=subtitle_en, content=content_en, blog=b, lang="en")  
-        
-    #b = m.BlogEntry.objects.filter(lang=translation.get_language())  
-    #data = serializers.serialize('json', b)    
-    #print(json.dumps(json.loads(data), indent=4)) 
+    else:
+        b = m.Blog.objects.get(pk=idb) 
+        if fname != None:
+            b.update(image=fname)
+        m.BlogEntry.objects.filter(blog=b, lang="de").update(title=title_de, subtitle=subtitle_de, content=content_de)
+        m.BlogEntry.objects.filter(blog=b, lang="en").update(title=title_en, subtitle=subtitle_en, content=content_en)
+            
     title = (title_de, title_en)[translation.get_language() == 'de']
     json = '{"id" : ' + str(b.pk) + ', "title" : "' + title  + '", "changed" : "' + str(b.changed) + '"}'
     print (json)

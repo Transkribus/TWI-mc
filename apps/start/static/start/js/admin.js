@@ -243,10 +243,10 @@ function delete_blog()
     });
     clear_blog();
 }
-
-        
+       
 function store_blog()
 {
+    var id =  $("#blog-options").val();
     var html_de = $("#editor-container-blog-de").children().first().html(); 
     var html_en = $("#editor-container-blog-en").children().first().html();
     var title_de = $("#editor-title-blog-de").val(); 
@@ -255,7 +255,7 @@ function store_blog()
     var subtitle_en = $("#editor-subtitle-blog-en").val();  
 
     $.post("store_admin_blog", 
-        {id : 0, 
+        {id : id, 
         title_de: title_de, 
         subtitle_de: subtitle_de,
         title_en: title_en, 
@@ -264,11 +264,16 @@ function store_blog()
         content_en: html_en,  
         'csrfmiddlewaretoken':  csrf_token }).done(function(data)
             {
-                console.log(data);
-                $("#blog-options").append('<option value="' + data.id +'" selected="selected">' + data.title + ' - ' + data.changed + '</option>');
+                var val = data.title + ' - ' + data.changed;
+                if (id === 0)
+                {
+                    $("#blog-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
+                } else
+                {
+                    $("#blog-options option[value='" + id + "']").text(val);     
+                }
             });
 }    
-
 
 function change_blog(v)
 {
