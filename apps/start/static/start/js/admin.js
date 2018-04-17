@@ -313,6 +313,7 @@ function change_blog(v)
 
 function store_inst()
 {
+    var id =  $("#inst-options").val();
     var html_de = $("#editor-container-inst-de").children().first().html(); 
     var html_en = $("#editor-container-inst-en").children().first().html();
     var name_de = $("#inst-name-de").val();
@@ -325,7 +326,7 @@ function store_inst()
     var url = $("#inst-url").val();
     
     $.post("store_admin_inst",
-        {id: 0,
+        {id: id,
         name_de: name_de,
         loc_name_de : loc_name_de,
         name_en: name_en,
@@ -338,9 +339,14 @@ function store_inst()
         'csrfmiddlewaretoken':  csrf_token
         }).done(function(data)
             {
-                console.log(data.id + data.name)
-                $("#inst-options").append('<option value="' + data.id +'" selected="selected">' + data.name + '</option>');
-    
+                var val = data.name + " - " + data.changed;
+                if (id === 0)
+                {
+                    $("#inst-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
+                } else
+                {
+                    $("#inst-options option[value='" + id + "']").text(val);   
+                }
             });
 }
 

@@ -177,37 +177,40 @@ def store_admin_blog(request):
             
     title = (title_de, title_en)[translation.get_language() == 'de']
     json = '{"id" : ' + str(b.pk) + ', "title" : "' + title  + '", "changed" : "' + str(b.changed) + '"}'
-    print (json)
     return HttpResponse(json, content_type="application/json")
 
 
 def store_admin_inst(request):
-    print("store_admin_inst")
-    idb = request.POST.get('id',0)
-    if idb == "0":
-        name_de = request.POST.get('name_de','')
-        loc_name_de = request.POST.get('loc_name_de','')
-        name_en = request.POST.get('name_en','')
-        loc_name_en = request.POST.get('loc_name_en','')
-        lng = Decimal(request.POST.get('lng',''))
-        lat = Decimal(request.POST.get('lat',''))
-        url = request.POST.get('url','')
-        
-        fname = None
-        if "inst_fname" in request.session:
-            fname = request.session["inst_fname"]
-            del request.session["inst_fname"]
-        
+    idb = int(request.POST.get('id',0))
+    
+    name_de = request.POST.get('name_de','')
+    loc_name_de = request.POST.get('loc_name_de','')
+    name_en = request.POST.get('name_en','')
+    loc_name_en = request.POST.get('loc_name_en','')
+    lng = Decimal(request.POST.get('lng',''))
+    lat = Decimal(request.POST.get('lat',''))
+    url = request.POST.get('url','')
+    content_de = request.POST.get('content_de','')    
+    content_en = request.POST.get('content_en','')
+
+    fname = None
+    if "inst_fname" in request.session:
+        fname = request.session["inst_fname"]
+        del request.session["inst_fname"]
+    
+    if idb == 0:        
         inst = m.Institution.objects.create(lng=lng, lat=lat, link=url, image=fname)
-        
-        content_de = request.POST.get('content_de','')
         m.InstitutionDescription.objects.create(name=name_de, loclabel=loc_name_de, desc=content_de, lang='de', inst=inst)
-        
-        content_en = request.POST.get('content_en','')
         m.InstitutionDescription.objects.create(name=name_en, loclabel=loc_name_en, desc=content_en, lang='en', inst=inst)   
+    else:
+        inst = m.Institution.objects.get(pk=idb)
+        if fname != None:
+            inst.update(image=fname, lng=lng, lat=lat, link=url)
+        m.InstitutionDescription.objects.filter(lang='de', inst=inst).update(name=name_de, loclabel=loc_name_de, desc=content_de)
+        m.InstitutionDescription.objects.filter(lang='en', inst=inst).update(name=name_en, loclabel=loc_name_en, desc=content_en)
+                    
     name = (name_de, name_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(inst.pk) + ', "name" : "' + name + '"}'
-    print (json)
+    json = '{"id" : ' + str(inst.pk) + ', "name" : "' + name + '", "changed" : "' + str(inst.changed) + '"}'
     return HttpResponse(json, content_type="application/json") 
 
 def store_admin_inst_proj(request):
