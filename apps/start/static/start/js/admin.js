@@ -701,7 +701,15 @@ function store_video()
             });
 }
 
-
+function delete_video()
+{
+    var id = $("#video-options").val();
+    $.post("delete_admin_video", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+    {
+        $("#video-options option[value='" + id + "']").remove();
+    });
+    clear_video(); 
+}
 
 /* ------------------------------------ */
 /* Main entry Point                     */

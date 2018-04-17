@@ -76,16 +76,7 @@ class QuoteEntries(models.Model):
     changed = models.DateField(auto_now_add=True)
     quote = models.ForeignKey(Quote, on_delete=models.CASCADE, blank=True, null=True)
     lang = models.CharField(max_length=2)
-    
-class Video(models.Model):
-    vid = models.CharField(max_length=200)
-    
-class VideoDesc(models.Model):
-    title = models.CharField( max_length=200)
-    desc = models.TextField()       
-    lang = models.CharField(max_length=2)
-    video = models.ForeignKey(Video, on_delete=models.CASCADE, blank=True, null=True)
-    
+
     
 class Document(models.Model):  
     icon = models.CharField( max_length=200)
@@ -98,4 +89,15 @@ class DocumentEntries(models.Model):
     lang = models.CharField(max_length=2)
     doc = models.ForeignKey(Document, on_delete=models.CASCADE, blank=True, null=True)
     changed = models.DateField(auto_now_add=True)
+        
+class Video(models.Model):
+    vid = models.CharField(max_length=200)
+    
+class VideoDesc(models.Model):
+    title = models.CharField( max_length=200)
+    desc = models.TextField()       
+    lang = models.CharField(max_length=2)
+    video = models.ForeignKey(Video, on_delete=models.CASCADE, blank=True, null=True)
+    
+
           

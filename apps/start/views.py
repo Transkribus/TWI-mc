@@ -357,6 +357,11 @@ def delete_admin_doc(request):
     m.Document.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
+def delete_admin_video(request):
+    idb = request.POST.get('id',0)
+    m.Video.objects.filter(pk=idb).delete()
+    return HttpResponse("ok", content_type="text/plain")
+
 '''
 Find a Blog Entry and return as json
 This special task is necessary because joined tables cannot be fully serialized as json
