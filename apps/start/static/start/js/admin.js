@@ -201,9 +201,15 @@ function change_article(v)
 
 }
 
-
-
-
+function delete_article()
+{
+    var id = $("#article-options").val();
+    $.post("delete_admin_article", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+    {
+        $("#article-options option[value='" + id + "']").remove();
+    });
+    clear_blog();
+}
 /* ------------------------------------ */
 /* Blog functions */
 /* ------------------------------------ */    
@@ -331,10 +337,10 @@ function clear_inst()
     $("#editor-container-inst-de").children().first().html(''); 
     $("#editor-container-inst-en").children().first().html('');
     $("#inst-name").val(''); 
+    $("#inst-url").val(''); 
     $("#loc-name").val(''); 
     $("#loc-coord-long").val(''); 
     $("#loc-coord-lat").val('');  
-    //TODO: inst-projects
 }
 
 function delete_inst()
@@ -345,7 +351,12 @@ function delete_inst()
     {
         $("#inst-options option[value='" + id + "']").remove();
     });
-    clear_inst();
+    clear_inst(id);
+    var x= $("#inst-proj-options option[value='" + id + "']").remove();
+    if(x.length > 0) //also remove the projects
+    {
+        $("#inst-proj-proj-options[value='0']").attr("selected", true);
+    }
 }
 
 
@@ -456,7 +467,15 @@ function change_inst_proj_proj(v)
 
 function delete_inst_proj()
 {
-    //TODO: implement
+
+    var id = $("#inst-proj-proj-options").val();
+    
+    $.post("delete_admin_projinst", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+    {
+        $("#inst-proj-proj-options option[value='" + id + "']").remove();
+    });
+    clear_inst();
+
 }
 
 /* ------------------------------------ */
@@ -654,7 +673,6 @@ function store_video()
         'csrfmiddlewaretoken':  csrf_token
         }).done(function(data)
             {
-                console.log(data.id + ":" + data.title);
                 $("#video-options").append('<option value="' + data.id +'" selected="selected">' + data.title + '</option>');
             });
 }
@@ -666,22 +684,22 @@ function store_video()
 /* ------------------------------------ */    
 
 $(document).ready(function()
-    {
-        openTabs('editor-blog-tab-de','blog');
-        openTabs('editor-inst-tab-de','inst');
-        openTabs('editor-inst-proj-tab-de','inst-proj');
-        openTabs('editor-article-tab-de','article');
-        openTabs('editor-quote-tab-de','quote');
-        openTabs('editor-video-tab-de','video');
-        openTabs('editor-doc-tab-de','doc');
-        
-        generateQuillObjects('blog');
-        generateQuillObjects('inst');
-        generateQuillObjects('inst-proj');
-        generateQuillObjects('article');
-        generateQuillObjects('article-short');
-        generateQuillObjects('quote');        
-        generateQuillObjects('video');            
-        generateQuillObjects('doc-desc');  
-        generateQuillObjects('doc-content');  
-    });        
+{
+    openTabs('editor-blog-tab-de','blog');
+    openTabs('editor-inst-tab-de','inst');
+    openTabs('editor-inst-proj-tab-de','inst-proj');
+    openTabs('editor-article-tab-de','article');
+    openTabs('editor-quote-tab-de','quote');
+    openTabs('editor-video-tab-de','video');
+    openTabs('editor-doc-tab-de','doc');
+    
+    generateQuillObjects('blog');
+    generateQuillObjects('inst');
+    generateQuillObjects('inst-proj');
+    generateQuillObjects('article');
+    generateQuillObjects('article-short');
+    generateQuillObjects('quote');        
+    generateQuillObjects('video');            
+    generateQuillObjects('doc-desc');  
+    generateQuillObjects('doc-content');  
+});        

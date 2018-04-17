@@ -269,7 +269,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         <select name="inst-options" id="inst-options" onchange="change_inst($(this).val())">
             <option value="0" selected>{% trans 'new institution' %}...</option>
              {% for i in inst %}
-                <option value="{{i.pk}}">{{i.name}}</option>
+                <option value="{{i.inst.pk}}">{{i.name}}</option>
             {% endfor %}
         </select>
         <img id="editor-inst-img" class="invisible" src="" /> 
@@ -328,7 +328,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         {% trans 'select institution' %}: 
         <select name="inst-proj-options" id="inst-proj-options" onchange="change_inst_proj($(this).val())">
              {% for i in inst %}
-                <option value="{{i.pk}}">{{i.name}}</option>
+                <option value="{{i.inst.pk}}">{{i.name}}</option>
             {% endfor %}
         </select>
         

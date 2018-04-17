@@ -335,6 +335,17 @@ def change_admin_article(request):
     data = serializers.serialize('json', data)
     return HttpResponse(data, content_type="application/json")
 
+
+def delete_admin_article(request):
+    idb = request.POST.get('id',0)
+    m.HomeArticle.objects.filter(pk=idb).delete()
+    return HttpResponse("ok", content_type="text/plain")
+
+def delete_admin_projinst(request):
+    idb = request.POST.get('id',0)
+    m.InstitutionProject.objects.filter(pk=idb).delete()
+    return HttpResponse("ok", content_type="text/plain")
+  
 '''
 Find a Blog Entry and return as json
 This special task is necessary because joined tables cannot be fully serialized as json
@@ -359,6 +370,7 @@ def delete_admin_blog(request):
 
 def delete_admin_inst(request):
     idb = request.POST.get('id',0)
+    
     m.Institution.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
@@ -375,6 +387,7 @@ def get_inst_entry(idb):
  
 def change_admin_inst(request):   
     idb = request.POST.get('id',0)
+    print(idb)
     data = get_inst_entry(idb)  
 
     print(json.dumps(json.loads(data), indent=4)) 
