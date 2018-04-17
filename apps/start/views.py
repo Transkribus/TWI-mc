@@ -214,21 +214,26 @@ def store_admin_inst(request):
     return HttpResponse(json, content_type="application/json") 
 
 def store_admin_inst_proj(request):
-    idb = request.POST.get('id',0)
-    if idb == "0":
-        inst_id = request.POST.get('inst_id',0)
-        title_de = request.POST.get('title_de','')
-        title_en = request.POST.get('title_en','')
-        content_de = request.POST.get('content_de','')
-        content_en = request.POST.get('content_en','')
-        print("inst_id:" + str(inst_id))
+    idb = int(request.POST.get('id',0))
+
+    inst_id = request.POST.get('inst_id',0)
+    title_de = request.POST.get('title_de','')
+    title_en = request.POST.get('title_en','')
+    content_de = request.POST.get('content_de','')
+    content_en = request.POST.get('content_en','')
+    print(idb)
+    if idb == 0:
         p = m.InstitutionProject.objects.create(inst=m.Institution.objects.get(pk=inst_id))
         m.InstitutionProjectEntries.objects.create(title=title_de, desc=content_de, lang='de', project=p)
         m.InstitutionProjectEntries.objects.create(title=title_en, desc=content_en, lang='en', project=p)        
- 
-        title = (title_de, title_en)[translation.get_language() == 'de']
-        json = '{"id" : ' + str(p.pk) + ', "title" : "' + title + '"}'
-        return HttpResponse(json, content_type="application/json") 
+    else:
+        p = m.InstitutionProject.objects.get(pk=idb)
+        m.InstitutionProjectEntries.objects.filter(lang='de', project=p).update(title=title_de, desc=content_de)
+        m.InstitutionProjectEntries.objects.filter(lang='en', project=p).update(title=title_en, desc=content_en)
+                
+    title = (title_de, title_en)[translation.get_language() == 'de']
+    json = '{"id" : ' + str(p.pk) + ', "title" : "' + title  + '", "changed" : "' + str(p.changed) + '"}'
+    return HttpResponse(json, content_type="application/json") 
 
 
 def store_admin_quote(request):

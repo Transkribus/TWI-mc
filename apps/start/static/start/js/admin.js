@@ -414,6 +414,7 @@ project for institutions functions
 --------------------------------------------*/
 function store_inst_proj()
 {
+    var id = $("#inst-proj-proj-options").val();
     var html_de = $("#editor-container-inst-proj-de").children().first().html(); 
     var html_en = $("#editor-container-inst-proj-en").children().first().html();
     var title_de = $("#editor-title-inst-proj-de").val();
@@ -421,7 +422,7 @@ function store_inst_proj()
     var inst_id = $("#inst-proj-options").val();
     
     $.post("store_admin_proj",
-        {id: 0,
+        {id: id,
         inst_id : inst_id,
         title_de: title_de,
         title_en: title_en,
@@ -430,7 +431,14 @@ function store_inst_proj()
         'csrfmiddlewaretoken':  csrf_token
         }).done(function(data)
             {
-                $("#inst-proj-proj-options").append('<option value="' + data.id +'" selected="selected">' + data.title + '</option>');
+                var val = data.name + " - " + data.changed;
+                if (id === 0)
+                {
+                    $("#inst-proj-proj-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
+                } else
+                {
+                    $("#inst-proj-proj-options").text(val); 
+                }
             });
 }
 
