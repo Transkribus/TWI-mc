@@ -540,6 +540,19 @@ function store_quote()
             });
 }
 
+function delete_quote()
+{
+
+    var id = $("#quote-options").val();
+    
+    $.post("delete_admin_quote", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+    {
+        $("#quote-options option[value='" + id + "']").remove();
+    });
+    clear_quote();
+}
+
+
 /* ------------------------------------ */
 /* Documents                            */
 /* ------------------------------------ */    

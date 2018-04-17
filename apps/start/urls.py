@@ -36,6 +36,8 @@ urlpatterns = [
     url(r'^change_admin_video_selection', v.change_admin_video_selection , name='change_admin_video_selection'),
     url(r'^delete_admin_article', v.delete_admin_article , name='delete_admin_article'),
     url(r'^delete_admin_projinst', v.delete_admin_projinst , name='delete_admin_projinst'),
+    url(r'^delete_admin_quote', v.delete_admin_quote , name='delete_admin_quote'),
+    
     
    
 ]
