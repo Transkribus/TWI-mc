@@ -622,9 +622,20 @@ function store_doc()
         }).done(function(data)
             {
                 console.log(data.id + ":" + data.title);
-                $("#video-options").append('<option value="' + data.id +'" selected="selected">' + data.title + '</option>');
+                $("#doc-options").append('<option value="' + data.id +'" selected="selected">' + data.title + '</option>');
             });
     
+}
+
+function delete_doc()
+{
+    var id = $("#doc-options").val();
+    
+    $.post("delete_admin_doc", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+    {
+        $("#doc-options option[value='" + id + "']").remove();
+    });
+    clear_doc();
 }
 
 /* ------------------------------------ */
