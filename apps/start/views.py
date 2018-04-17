@@ -119,24 +119,33 @@ def admin(request):
     return HttpResponse(template.render(context, request))
 
 def store_admin_article(request):
-    idb = request.POST.get('id',0)
-    if idb == "0":
-        title_de = request.POST.get('title_de','')
-        title_en = request.POST.get('title_en','')
-        subtitle_de = request.POST.get('subtitle_de','')
-        subtitle_en = request.POST.get('subtitle_en','')
-        content_de = request.POST.get('content_de','')
-        content_en = request.POST.get('content_en','')
-            
-        fname = None
-        if "article_fname" in request.session:
-            fname = request.session["article_fname"]
-            del request.session["article_fname"]
+    idb = int(request.POST.get('id',0))
+
+    title_de = request.POST.get('title_de','')
+    title_en = request.POST.get('title_en','')
+    subtitle_de = request.POST.get('subtitle_de','')
+    subtitle_en = request.POST.get('subtitle_en','')
+    content_de = request.POST.get('content_de','')
+    content_en = request.POST.get('content_en','')
+        
+    fname = None
+    if "article_fname" in request.session:
+        fname = request.session["article_fname"]
+        del request.session["article_fname"]
+        
+
+    if idb == 0:
         art = m.HomeArticle.objects.create(image=fname)
-       
         m.HomeArticleEntry.objects.create(title=title_de, shortdesc=subtitle_de, content=content_de, article=art, lang="de")
         m.HomeArticleEntry.objects.create(title=title_en, shortdesc=subtitle_en, content=content_en, article=art, lang="en")  
-        
+    else:
+        print(idb)
+        art = m.HomeArticle.objects.get(pk=idb)
+        if fname != None:
+            art.update(image=fname)
+        m.HomeArticleEntry.objects.filter(article=art, lang="de").update(title=title_de, shortdesc=subtitle_de, content=content_de) 
+        m.HomeArticleEntry.objects.filter(article=art, lang="en").update(title=title_en, shortdesc=subtitle_en, content=content_en)
+                    
     title = (title_de, title_en)[translation.get_language() == 'de']
     json = '{"id" : ' + str(art.pk) + ', "title" : "' + title  + '", "changed" : "' + str(art.changed) + '"}'
     print (json)

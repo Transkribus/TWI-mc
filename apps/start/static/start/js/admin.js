@@ -144,9 +144,10 @@ function store_article()
     var html_en_short = $("#editor-container-article-short-en").children().first().html();
     var title_de = $("#editor-title-article-de").val(); 
     var title_en = $("#editor-title-article-en").val();   
+    var id = $("#article-options").val();
 
     $.post("store_admin_article", 
-        {id : 0, 
+        {id : id, 
         title_de: title_de, 
         subtitle_de: html_de_short,
         title_en: title_en, 
@@ -155,7 +156,14 @@ function store_article()
         content_en: html_en,  
         'csrfmiddlewaretoken':  csrf_token }).done(function(data)
             {
-                $("#article-options").append('<option value="' + data.id +'" selected="selected">' + data.title + ' - ' + data.changed + '</option>');
+                var val = data.title + ' - ' + data.changed;
+                if (id === 0)
+                {
+                    $("#article-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
+                } else
+                {
+                    $("#article-options option[value='" + id + "']").text(val);    
+                }
             });
 }
 
