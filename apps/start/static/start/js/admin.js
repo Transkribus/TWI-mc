@@ -431,13 +431,13 @@ function store_inst_proj()
         'csrfmiddlewaretoken':  csrf_token
         }).done(function(data)
             {
-                var val = data.name + " - " + data.changed;
+                var val = data.title + " - " + data.changed;
                 if (id === 0)
                 {
                     $("#inst-proj-proj-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
                 } else
                 {
-                    $("#inst-proj-proj-options").text(val); 
+                    $("#inst-proj-proj-options[value='" + id + "']").text(val); 
                 }
             });
 }

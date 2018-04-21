@@ -101,15 +101,15 @@ def admin(request):
     v = m.VideoDesc.objects.filter(lang=translation.get_language())
     docs = m.DocumentEntries.objects.filter(lang=translation.get_language())
     ifirst = m.Institution.objects.first()
+    
     inst_entries = []
     if ifirst:
-        inst_entries = m.InstitutionProjectEntries.objects.filter(project__inst=ifirst.pk, lang=translation.get_language())
-    
+        inst_proj_entries = m.InstitutionProjectEntries.objects.filter(project__inst=ifirst.pk, lang=translation.get_language())
     
     context = {
         'blogs' : b,
         'inst' : i,
-        'first_inst_entries' : inst_entries,
+        'first_inst_proj_entries' : inst_proj_entries,
         'articles' : a,
         'quotes' : q,
         'videos' : v,

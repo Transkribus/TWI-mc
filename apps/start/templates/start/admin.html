@@ -335,8 +335,8 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         {% trans 'select project' %}: 
         <select name="inst-proj-proj-options" id="inst-proj-proj-options"  onchange="change_inst_proj_proj($(this).val())">
              <option value="0" selected>{% trans 'new project' %}...</option>
-             {% for i in inst.0.projects %}
-                <option value="{{i.pk}}">{{i.name}}</option>
+             {% for i in first_inst_proj_entries %}
+                <option value="{{i.pk}}">{{i.title}}</option>
             {% endfor %}
         </select>
         
