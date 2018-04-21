@@ -437,7 +437,7 @@ function store_inst_proj()
                     $("#inst-proj-proj-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
                 } else
                 {
-                    $("#inst-proj-proj-options[value='" + id + "']").text(val); 
+                    $("#inst-proj-proj-options option[value='" + id + "']").text(val); 
                 }
             });
 }
@@ -550,11 +550,12 @@ function store_quote()
     var html_en = $("#editor-container-quote-en").children().first().html();
     var role_de = $("#editor-role-quote-de").val();
     var role_en = $("#editor-role-quote-en").val();
-    var quote_id = $("#quote-options").val();
+    var id = $("#quote-options").val();
     var name = $("#editor-name-quote").val();
     
+    console.log(id);
     $.post("store_admin_quote",
-        {id: quote_id,
+        {id: id,
         role_de: role_de,
         role_en: role_en,
         content_de: html_de, 
@@ -563,8 +564,14 @@ function store_quote()
         'csrfmiddlewaretoken':  csrf_token
         }).done(function(data)
             {
-                console.log(data.id + ":" + data.title);
-                $("#quote-options").append('<option value="' + data.id +'" selected="selected">' + data.title + '</option>');
+                var val = data.name + " - " + data.changed;
+                if (id === 0)
+                {
+                    $("#quote-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
+                } else
+                {
+                    $("#quote-options  option[value='" + id + "']").text(val); 
+                }
             });
 }
 

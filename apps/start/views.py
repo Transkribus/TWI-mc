@@ -237,10 +237,8 @@ def store_admin_inst_proj(request):
 
 
 def store_admin_quote(request):
-    idb = request.POST.get('id',0)
-    print("ID" + str(idb))
-    #if idb == 0:
-    
+    idb = int(request.POST.get('id',0))
+ 
     role_de = request.POST.get('role_de','')
     role_en = request.POST.get('role_en','')
     content_de = request.POST.get('content_de','')
@@ -252,12 +250,22 @@ def store_admin_quote(request):
         fname = request.session["quote_fname"]
         del request.session["quote_fname"]
     
-    q = m.Quote.objects.create(name=name, image=fname);
-    m.QuoteEntries.objects.create(content=content_de, role=role_de, lang='de', quote=q)
-    m.QuoteEntries.objects.create(content=content_en, role=role_en, lang='en', quote=q)
     
-#     title = (role_de, role_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(q.pk) + ', "title" : "' + name + '"}'
+    print("ID" + str(idb))
+    if idb == 0:
+        print("if")
+        q = m.Quote.objects.create(name=name, image=fname)
+        m.QuoteEntries.objects.create(content=content_de, role=role_de, lang='de', quote=q)
+        m.QuoteEntries.objects.create(content=content_en, role=role_en, lang='en', quote=q)
+    else:
+        print("else")
+        q = m.Quote.objects.filter(pk=idb)
+        q.update(name=name);
+        m.QuoteEntries.objects.filter(lang='de', quote=q).update(content=content_de, role=role_de)
+        m.QuoteEntries.objects.filter(lang='en', quote=q).update(content=content_en, role=role_en)
+        
+    json = '{"id" : ' + str(q.first().id) + ', "name" : "' + name + '"}'
+    print (json);
     return HttpResponse(json, content_type="application/json") 
 
 
