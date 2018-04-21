@@ -281,8 +281,9 @@ def store_admin_doc(request):
         m.DocumentEntries.objects.create(title=title_de, desc=desc_de, content=content_de, doc=d, lang='de')
         m.DocumentEntries.objects.create(title=title_en, desc=desc_en, content= content_en, doc=d, lang='en')
     else:
-        d = d = m.Document.objects.filter(pk=idb)
+        d = m.Document.objects.filter(pk=idb)
         d.update(icon=icon)
+        d = d.first()
         m.DocumentEntries.objects.filter(doc=d, lang='de').update(title=title_de, desc=desc_de, content=content_de)
         m.DocumentEntries.objects.filter(doc=d, lang='en').update(title=title_en, desc=desc_en, content= content_en)
         
@@ -292,19 +293,26 @@ def store_admin_doc(request):
     
     
 def store_admin_video(request):
-    idb = request.POST.get('id',0)
+    idb = int(request.POST.get('id',0))
     vid = request.POST.get('vid','')
     title_de = request.POST.get('title_de','')
     title_en = request.POST.get('title_en','')
     content_de = request.POST.get('content_de','')
     content_en = request.POST.get('content_en','')
+    print(str(idb))
+    if idb == 0:
+        v = m.Video.objects.create(vid = vid)
+        m.VideoDesc.objects.create(title=title_de, desc=content_de, lang='de', video=v)
+        m.VideoDesc.objects.create(title=title_en, desc=content_en, lang='en', video=v)    
+    else:
+        v = m.Video.objects.filter(pk=idb)
+        v.update(vid=vid)
+        v = v.first()
+        m.VideoDesc.objects.filter(lang='de', video=v).update(title=title_de, desc=content_de)
+        m.VideoDesc.objects.filter(lang='en', video=v).update(title=title_en, desc=content_en)    
     
-    v = m.Video.objects.create(vid = vid)
-    m.VideoDesc.objects.create(title=title_de, desc=content_de, lang='de', video=v)
-    m.VideoDesc.objects.create(title=title_en, desc=content_en, lang='en', video=v)    
-
     title = (title_de, title_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(v.pk) + ', "title" : "' + title + ' (' + vid + ')"}'
+    json = '{"id" : ' + str(v.pk) + ', "title" : "' + title + ' (' + vid + ')", "changed" : "' + str(v.changed) + '"}'
     return HttpResponse(json, content_type="application/json")     
 
 

@@ -643,27 +643,27 @@ function store_doc()
 
     var icon = $("#editor-icon-doc").val();
     
-        $.post("store_admin_doc",
-        {id: id,
-        title_de: title_de,
-        title_en: title_en,
-        content_de: html_content_de, 
-        content_en: html_content_en, 
-        desc_de: html_desc_de, 
-        desc_en: html_desc_en,
-        icon : icon,
-        'csrfmiddlewaretoken':  csrf_token
-        }).done(function(data)
+    $.post("store_admin_doc",
+    {id: id,
+    title_de: title_de,
+    title_en: title_en,
+    content_de: html_content_de, 
+    content_en: html_content_en, 
+    desc_de: html_desc_de, 
+    desc_en: html_desc_en,
+    icon : icon,
+    'csrfmiddlewaretoken':  csrf_token
+    }).done(function(data)
+        {
+            var val = data.title + " - " + data.changed;
+            if (id === 0)
             {
-                var val = data.title + " - " + data.changed;
-                if (id === 0)
-                {
-                    $("#doc-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
-                } else
-                {
-                    $("#doc-options option[value='" + id + "']").text(val);   
-                }
-            });
+                $("#doc-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
+            } else
+            {
+                $("#doc-options option[value='" + id + "']").text(val);   
+            }
+        });
     
 }
 
@@ -726,7 +726,7 @@ function store_video()
     var title_en = $("#editor-title-video-en").val();
     var vid = $("#editor-id-video").val();
     var id = $("#video-options").val();
-    
+    console.log(id);
     $.post("store_admin_video",
         {id: id,
         vid : vid,
@@ -737,7 +737,14 @@ function store_video()
         'csrfmiddlewaretoken':  csrf_token
         }).done(function(data)
             {
-                $("#video-options").append('<option value="' + data.id +'" selected="selected">' + data.title + '</option>');
+                var val = data.title + " - " + data.changed;
+                if (id === 0)
+                {
+                    $("#video-options").append('<option value="' + data.id +'" selected="selected">' + data.title + '</option>');
+                } else
+                {
+                    $("#video-options option[value='" + id + "']").text(val); 
+                }
             });
 }
 
