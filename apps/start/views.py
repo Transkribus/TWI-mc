@@ -317,10 +317,13 @@ def change_admin_quote_selection(request):
     print(json.dumps(json.loads(data), indent=4)) 
     return HttpResponse(data, content_type="application/json")   
 
+'''
+is called when the project entries should be changed in the institution/project area
+'''
 def change_admin_inst_proj_selection(request):
     idb = request.POST.get('id',0)
     ipe = m.InstitutionProjectEntries.objects.filter(project=idb)
-
+    print(idb)
     js = serializers.serialize('json',ipe)
     print(js) 
     return HttpResponse(js, content_type="application/json")  

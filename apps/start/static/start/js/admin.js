@@ -477,6 +477,7 @@ function change_inst_proj_proj(v)
     {
         $.post("change_admin_pr_inst_selection", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
         {
+            console.log(data);
             var en = getentrybylang(data,"en");
             quills['inst-proj-en'].clipboard.dangerouslyPasteHTML(en.fields.desc);
             $("#editor-title-inst-proj-en").val(en.fields.title);
