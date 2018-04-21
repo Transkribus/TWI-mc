@@ -253,12 +253,10 @@ def store_admin_quote(request):
     
     print("ID" + str(idb))
     if idb == 0:
-        print("if")
         q = m.Quote.objects.create(name=name, image=fname)
         m.QuoteEntries.objects.create(content=content_de, role=role_de, lang='de', quote=q)
         m.QuoteEntries.objects.create(content=content_en, role=role_en, lang='en', quote=q)
     else:
-        print("else")
         q = m.Quote.objects.filter(pk=idb)
         q.update(name=name);
         m.QuoteEntries.objects.filter(lang='de', quote=q).update(content=content_de, role=role_de)
@@ -268,7 +266,31 @@ def store_admin_quote(request):
     print (json);
     return HttpResponse(json, content_type="application/json") 
 
-
+def store_admin_doc(request):
+    idb = int(request.POST.get('id',0))
+    title_de = request.POST.get('title_de','')
+    title_en =request.POST.get('title_en','')
+    desc_en =request.POST.get('desc_en','')
+    desc_de = request.POST.get('desc_de','')
+    content_en = request.POST.get('content_en','')
+    content_de = request.POST.get('content_de','')
+    icon = request.POST.get('icon','')
+    
+    if idb == 0:
+        d = m.Document.objects.create(icon=icon)
+        m.DocumentEntries.objects.create(title=title_de, desc=desc_de, content=content_de, doc=d, lang='de')
+        m.DocumentEntries.objects.create(title=title_en, desc=desc_en, content= content_en, doc=d, lang='en')
+    else:
+        d = d = m.Document.objects.filter(pk=idb)
+        d.update(icon=icon)
+        m.DocumentEntries.objects.filter(doc=d, lang='de').update(title=title_de, desc=desc_de, content=content_de)
+        m.DocumentEntries.objects.filter(doc=d, lang='en').update(title=title_en, desc=desc_en, content= content_en)
+        
+    title = (title_de, title_en)[translation.get_language() == 'de']
+    json = '{"id" : ' + str(d.pk) + ', "title" : "' + title +  '", "changed" : "' + str(d.changed) + '"}'
+    return HttpResponse(json, content_type="application/json")     
+    
+    
 def store_admin_video(request):
     idb = request.POST.get('id',0)
     vid = request.POST.get('vid','')
@@ -286,24 +308,7 @@ def store_admin_video(request):
     return HttpResponse(json, content_type="application/json")     
 
 
-def store_admin_doc(request):
-    idb = request.POST.get('id',0)
-    title_de = request.POST.get('title_de','')
-    title_en =request.POST.get('title_en','')
-    desc_en =request.POST.get('desc_en','')
-    desc_de = request.POST.get('desc_de','')
-    content_en = request.POST.get('content_en','')
-    content_de = request.POST.get('content_de','')
-    icon = request.POST.get('icon','')
-    
-    d = m.Document.objects.create(icon=icon)
-    m.DocumentEntries.objects.create(title=title_de, desc=desc_de, content=content_de, doc=d, lang='de')
-    m.DocumentEntries.objects.create(title=title_en, desc=desc_en, content= content_en, doc=d, lang='en')
 
-    title = (title_de, title_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(d.pk) + ', "title" : "' + title + '"}'
-    return HttpResponse(json, content_type="application/json")     
-    
 '''
 is called when another institution is selected in the institution/project area
 '''

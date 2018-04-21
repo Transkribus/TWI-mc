@@ -553,7 +553,6 @@ function store_quote()
     var id = $("#quote-options").val();
     var name = $("#editor-name-quote").val();
     
-    console.log(id);
     $.post("store_admin_quote",
         {id: id,
         role_de: role_de,
@@ -656,8 +655,14 @@ function store_doc()
         'csrfmiddlewaretoken':  csrf_token
         }).done(function(data)
             {
-                console.log(data.id + ":" + data.title);
-                $("#doc-options").append('<option value="' + data.id +'" selected="selected">' + data.title + '</option>');
+                var val = data.title + " - " + data.changed;
+                if (id === 0)
+                {
+                    $("#doc-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
+                } else
+                {
+                    $("#doc-options option[value='" + id + "']").text(val);   
+                }
             });
     
 }
