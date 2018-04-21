@@ -92,12 +92,14 @@ class DocumentEntries(models.Model):
         
 class Video(models.Model):
     vid = models.CharField(max_length=200)
+    changed = models.DateField(auto_now_add=True)
     
 class VideoDesc(models.Model):
     title = models.CharField( max_length=200)
     desc = models.TextField()       
     lang = models.CharField(max_length=2)
     video = models.ForeignKey(Video, on_delete=models.CASCADE, blank=True, null=True)
+    changed = models.DateField(auto_now_add=True)
     
 
           
