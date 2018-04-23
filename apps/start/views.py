@@ -128,7 +128,7 @@ def store_admin_article(request):
     content_de = request.POST.get('content_de','')
     content_en = request.POST.get('content_en','')
         
-    fname = None
+    fname = ""
     if "article_fname" in request.session:
         fname = request.session["article_fname"]
         del request.session["article_fname"]
@@ -139,15 +139,16 @@ def store_admin_article(request):
         m.HomeArticleEntry.objects.create(title=title_de, shortdesc=subtitle_de, content=content_de, article=art, lang="de")
         m.HomeArticleEntry.objects.create(title=title_en, shortdesc=subtitle_en, content=content_en, article=art, lang="en")  
     else:
-        print(idb)
-        art = m.HomeArticle.objects.get(pk=idb)
-        if fname != None:
+        art = m.HomeArticle.objects.filter(pk=idb)
+        if fname != "":
             art.update(image=fname)
+        art = art.first()
         m.HomeArticleEntry.objects.filter(article=art, lang="de").update(title=title_de, shortdesc=subtitle_de, content=content_de) 
         m.HomeArticleEntry.objects.filter(article=art, lang="en").update(title=title_en, shortdesc=subtitle_en, content=content_en)
                     
     title = (title_de, title_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(art.pk) + ', "title" : "' + title  + '", "changed" : "' + str(art.changed) + '"}'
+    json = '{"id" : ' + str(art.pk) + ', "title" : "' + title  + '", "changed" : "' + str(art.changed) + '", "image" : "' + fname + '"}'
+    print (json)
     return HttpResponse(json, content_type="application/json")
               
 def store_admin_blog(request):

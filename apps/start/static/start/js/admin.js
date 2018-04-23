@@ -139,11 +139,31 @@ set the image img for the image with id
 */
 function setImg(id, img)
 {
-    $(id).removeClass("invisible");
-    $(id).attr("src", "../static/start/img/upload/" + img ); //TODO: change path
-    $(id).attr("width","80px");
-
+    console.log("IMG:" + img)
+    if (img != "")
+    {
+        $(id).removeClass("invisible");
+        $(id).attr("src", "../static/start/img/upload/" + img ); //TODO: change path
+        $(id).attr("width","80px");
+    }
 }
+
+/* by default, select the first option*/
+function selectOption(id, opt_id = 0)
+{
+    console.log(id);
+    $(id).removeAttr("selected");
+    $(id + "option[value='" + opt_id + "']").attr("selected", "selected");
+}
+
+/* removes the image from the dropzone with id */
+function clearDropzone(id)
+{
+    console.log($(id + " .dz-image").html())
+    $(id + " .dz-image").remove();
+    $(id + " .dz-default dz-message").html(quills_placeholder);
+}
+
 /* ------------------------------------ */
 /* Home Article functions */
 /* ------------------------------------ */   
@@ -157,7 +177,7 @@ function store_article()
     var title_de = $("#editor-title-article-de").val(); 
     var title_en = $("#editor-title-article-en").val();   
     var id = $("#article-options").val();
-
+    
     $.post("store_admin_article", 
         {id : id, 
         title_de: title_de, 
@@ -169,14 +189,18 @@ function store_article()
         'csrfmiddlewaretoken':  csrf_token }).done(function(data)
             {
                 var val = data.title + ' - ' + data.changed;
-                if (id === 0)
+                if (id == 0)
                 {
                     $("#article-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
                 } else
                 {
-                    $("#article-options option[value='" + id + "']").text(val);    
+                    $("#article-options option[value='" + id + "']").text(val);  
+                    setImg("#editor-article-img", data.image);  
                 }
             });
+            
+    clearDropzone("#article_dropzone");
+    $("#editor-article-btn-delete").removeClass("invisible");
 }
 
 /* clear all entries from the home article section  */
@@ -188,6 +212,8 @@ function clear_article()
     $("#editor-container-article-short-en").children().first().html(''); 
     $("#editor-title-article-de").val('');
     $("#editor-title-article-en").val('');
+    $("#editor-article-img").attr("src", "");
+    $("#editor-article-img").addClass("invisible");
 }
 
 function change_article(v)
@@ -274,7 +300,7 @@ function store_blog()
         'csrfmiddlewaretoken':  csrf_token }).done(function(data)
             {
                 var val = data.title + ' - ' + data.changed;
-                if (id === 0)
+                if (id == 0)
                 {
                     $("#blog-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
                 } else
@@ -347,7 +373,7 @@ function store_inst()
         }).done(function(data)
             {
                 var val = data.name + " - " + data.changed;
-                if (id === 0)
+                if (id == 0)
                 {
                     $("#inst-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
                 } else
@@ -438,7 +464,7 @@ function store_inst_proj()
         }).done(function(data)
             {
                 var val = data.title + " - " + data.changed;
-                if (id === 0)
+                if (id == 0)
                 {
                     $("#inst-proj-proj-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
                 } else
@@ -523,6 +549,8 @@ function clear_quote()
     $("#editor-role-quote-en").val('');
     quills['quote-de'].clipboard.dangerouslyPasteHTML('');
     $("#editor-role-quote-de").val('');
+    $("#editor-quote-img").attr("src", "");
+    $("#editor-quote-img").addClass("invisible");
 }
 
 function change_quote(v)
@@ -545,7 +573,6 @@ function change_quote(v)
     } else
     {
         $("#editor-quote-btn-delete").addClass("invisible");
-        
         clear_quote();
     }
 }
@@ -570,7 +597,7 @@ function store_quote()
         }).done(function(data)
             {
                 var val = data.name + " - " + data.changed;
-                if (id === 0)
+                if (id == 0)
                 {
                     $("#quote-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
                 } else
@@ -662,7 +689,7 @@ function store_doc()
     }).done(function(data)
         {
             var val = data.title + " - " + data.changed;
-            if (id === 0)
+            if (id == 0)
             {
                 $("#doc-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
             } else
@@ -744,7 +771,7 @@ function store_video()
         }).done(function(data)
             {
                 var val = data.title + " - " + data.changed;
-                if (id === 0)
+                if (id == 0)
                 {
                     $("#video-options").append('<option value="' + data.id +'" selected="selected">' + data.title + '</option>');
                 } else
