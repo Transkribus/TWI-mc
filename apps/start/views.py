@@ -258,11 +258,12 @@ def store_admin_quote(request):
         m.QuoteEntries.objects.create(content=content_en, role=role_en, lang='en', quote=q)
     else:
         q = m.Quote.objects.filter(pk=idb)
-        q.update(name=name);
+        q.update(name=name)
+        q = q.first()
         m.QuoteEntries.objects.filter(lang='de', quote=q).update(content=content_de, role=role_de)
         m.QuoteEntries.objects.filter(lang='en', quote=q).update(content=content_en, role=role_en)
         
-    json = '{"id" : ' + str(q.first().id) + ', "name" : "' + name + '"}'
+    json = '{"id" : ' + str(q.id) + ', "name" : "' + name + '"}'
     print (json);
     return HttpResponse(json, content_type="application/json") 
 
