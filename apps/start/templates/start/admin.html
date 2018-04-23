@@ -380,6 +380,8 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
                 <option value="{{q.quote.pk}}">{{q.quote.name}}</option>
             {% endfor %}
         </select>
+        <img id="editor-quote-img" class="invisible" src="" /> 
+        
         <button id="editor-quote-btn-delete" class="invisible" onclick="delete_quote()">{% trans 'delete' %}</button> 
 
         <br/><br/>
