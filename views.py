@@ -7,7 +7,7 @@ import random
 import sys
 
 #Imports of django modules
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.utils import translation
 from django.contrib.auth.models import User
@@ -16,6 +16,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
+from django.template.defaultfilters import slugify
 from django.template.loader import render_to_string
 
 from apps.utils.decorators import t_login_required_ajax
@@ -158,7 +159,7 @@ def collection_metadata(request, collId):
         recent = None
 #Don't stop if we don't get recents back from actions/list
 #        return apps.utils.views.error_view(request,recent)
- 
+
     #last save data for the doc (generally... not specific to the current user)
     recent_save = t.document_recent(request,{'collId': collId})
     if isinstance(recent_save,HttpResponse):
@@ -930,3 +931,27 @@ def getTagsString(personCount, placeCount, dateCount, abbrevCount, otherCount):
         return 'Tags: ' + ', '.join(tagsStringParts)
     else:
         return 'No Tags'
+
+
+@login_required
+def project(request, slug):
+    t = request.user.tsdata.t
+
+    collection = None
+    document = None
+    for c in t.collections(request,{'empty': 'true'}):
+        if slugify(c['colName']) == slug:
+            collection = c
+            collection['documents'] = t.collection(request, {'collId': c['colId']})
+            break
+        for d in t.collection(request, {'collId': c['colId']}):
+            if slugify(d['title']) == slug:
+                document = t.document(request, str(c['colId']), int(d['docId']), -1)
+                break
+    if collection is None and document is None:
+        return HttpResponseNotFound('No collection or document found with "%s".' % slug)
+
+    print(document.keys())
+    print(document['pageList']['pages'][0]['tsList']['transcripts'][0].keys())
+
+    return render(request, 'library/project.html', locals())
