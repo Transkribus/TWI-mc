@@ -132,6 +132,18 @@ function getentrybylang(arr, lang)
     }
     return null;
 }
+
+
+/*
+set the image img for the image with id 
+*/
+function setImg(id, img)
+{
+    $(id).removeClass("invisible");
+    $(id).attr("src", "../static/start/img/upload/" + img ); //TODO: change path
+    $(id).attr("width","80px");
+
+}
 /* ------------------------------------ */
 /* Home Article functions */
 /* ------------------------------------ */   
@@ -189,12 +201,9 @@ function change_article(v)
     {
         $.post("change_admin_article", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
         {
-            var img = data[0].fields.image;
-            $("#editor-article-img").removeClass("invisible");
             $("#editor-article-btn-delete").removeClass("invisible");
-            $("#editor-article-img").attr("src", "../static/start/img/upload/" + img ); //TODO: change path
-            $("#editor-article-img").attr("width","80px");
-
+            setImg("#editor-article-img", data[0].fields.image);
+            
             var de = getEntryByLang(data, "de");
             quills['article-de'].clipboard.dangerouslyPasteHTML(de.fields.content);
             $("#editor-title-article-de").val(de.fields.title);
@@ -281,12 +290,10 @@ function change_blog(v)
     {
         $.post("change_admin_blog", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
         {
-            var img = data[0].fields.image;
-            
-            $("#editor-blog-img").removeClass("invisible");
             $("#editor-blog-btn-delete").removeClass("invisible");
-            $("#editor-blog-img").attr("src", "../static/start/img/upload/" + img ); //TODO: change path
-            $("#editor-blog-img").attr("width","80px");
+            
+            setImg("#editor-blog-img", data[0].fields.image);
+                        
             var de = getEntryByLang(data, "de");
             
             //$("#editor-container-blog-de").html(de.fields.content);
@@ -385,11 +392,10 @@ function change_inst(v)
     {
         $.post("change_admin_inst", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
         {
-            var img = data[0].fields.image;
-            $("#editor-inst-img").removeClass("invisible");
             $("#editor-inst-btn-delete").removeClass("invisible");
-            $("#editor-inst-img").attr("src", "../static/start/img/upload/" + img ); //TODO: change path
-            $("#editor-inst-img").attr("width","80px");
+            
+            setImg("#editor-inst-img", data[0].fields.image);
+            
             var de = getEntryByLang(data, "de");
             quills['inst-de'].clipboard.dangerouslyPasteHTML(de.fields.desc);            
             var en = getEntryByLang(data, "en");
@@ -525,7 +531,8 @@ function change_quote(v)
     {
          $.post("change_admin_quote_selection", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
         {
-            
+            setImg("#editor-quote-img", data[0].fields.image);
+               
             $("#editor-name-quote").val(data[0].fields.name);
             var en = getentrybylang(data,"en");
             quills['quote-en'].clipboard.dangerouslyPasteHTML(en.fields.content);
