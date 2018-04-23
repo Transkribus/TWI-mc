@@ -529,7 +529,7 @@ function change_quote(v)
 {
     if (v !== '0')
     {
-         $.post("change_admin_quote_selection", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+        $.post("change_admin_quote_selection", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
         {
             setImg("#editor-quote-img", data[0].fields.image);
                
@@ -547,7 +547,6 @@ function change_quote(v)
         $("#editor-quote-btn-delete").addClass("invisible");
         
         clear_quote();
- 
     }
 }
 

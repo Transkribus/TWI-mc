@@ -385,7 +385,11 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         <button id="editor-quote-btn-delete" class="invisible" onclick="delete_quote()">{% trans 'delete' %}</button> 
 
         <br/><br/>
-        
+        <form class="dropzone" action="upload_img" method="post" enctype="multipart/form-data" id="quote_dropzone">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}" />
+            <input type="hidden" name="type" value="quote" />
+        </form>
+        <br/>
         
          <div class="form-group">
            <label for="editor-name-quote">
