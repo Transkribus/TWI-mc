@@ -2,6 +2,8 @@ import time
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
+from django.http import HttpResponseNotFound
 
 from . import services
 from . import forms
@@ -19,8 +21,17 @@ class CollectionListView(LoginRequiredMixin, ListView):
         form = self.form_class(self.request.GET)
         assert form.is_valid(), form.errors
         self.form = form
+        self.search = form.cleaned_data.get('search')
 
-        return Collection.objects.all()
+        if self.search:
+            collections = Collection.objects.filter(\
+                Q(name__icontains=self.search) |\
+                Q(description__icontains=self.search)\
+            )
+        else:
+            collections = Collection.objects.all()
+
+        return collections
 
     def get_context_data(self, **kwargs):
         then = time.time()
@@ -40,7 +51,7 @@ class CollectionListView(LoginRequiredMixin, ListView):
 
         context.update({
             'items': items,
-            'search': self.form.cleaned_data['search'],
+            'search': self.search,
             'form': self.form,
             'page': context.pop('page_obj'),
             'time_elapsed': round(1000 * (time.time() - then), 2)
@@ -58,8 +69,17 @@ class DocumentListView(LoginRequiredMixin, ListView):
         form = self.form_class(self.request.GET)
         assert form.is_valid(), form.errors
         self.form = form
+        self.search = self.form.cleaned_data['search']
 
-        documents = Document.objects.all()
+        if self.search:
+            documents = Document.objects.filter(\
+                Q(title__icontains=self.search) |\
+                Q(author__icontains=self.search) |\
+                Q(description__icontains=self.search)\
+            )
+        else:
+            documents = Document.objects.all()
+
         collection = DocumentCollection.objects.filter(docid=documents[0].docid).first().collection
         self.col_id = collection.collection_id
         self.col_name = collection.name
@@ -96,7 +116,7 @@ class DocumentListView(LoginRequiredMixin, ListView):
             'items': items,
             'id': int(self.col_id),
             'title': col_name,
-            'search': '',
+            'search': self.search,
             'form': self.form,
             'page': page,
             'time_elapsed': round(1000 * (time.time() - then), 2)
@@ -166,3 +186,21 @@ def collection_detail(request, col_id):
 def document_detail(request, col_id, doc_id):
     from django.http import HttpResponse
     return HttpResponse("Not Implemented", status=501)
+
+
+@login_required
+def project(request, slug):
+    t = request.user.tsdata.t
+
+    slugs = {
+        'webuitestcollection': 2305,
+        'brussels-webui-demo': 5163,
+    }
+
+    if slug not in slugs:
+        return HttpResponseNotFound('No collection found with "%s".' % slug)
+
+    metadata = t.collection_metadata(request,{'collId': slugs[slug]})
+    documents = t.collection(request, {'collId': slugs[slug]})
+
+    return render(request, 'library/project.html', locals())

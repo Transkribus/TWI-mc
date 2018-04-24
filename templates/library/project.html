@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+{% block body_content %}
+<div class="container">
+    <section class="project">
+        <header>
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'library:collection-list' %}"><span class="glyphicon glyphicon-home"></span> {% trans 'Home'%}</a></li>
+                        <li class="breadcrumb-item"><a href="{% url "library:project" slug %}">{{ metadata|get_item:"colName" }} <small>{{ metadata|get_item:"colId" }}</small></a></li>
+                    </ol>
+                </div>
+            </div>
+        </header>
+        <main class="list">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <ul>
+                        <li><b>{% trans "Number of documents" %}</b>: {{ metadata|get_item:"nrOfDocuments" }}</li>
+                        <li><b>{% trans "Number of regions" %}</b>: {{ metadata|get_item:"nrOfRegions" }}</li>
+                        <li><b>{% trans "Number of transcribed regions" %}</b>: {{ metadata|get_item:"nrOfTranscribedRegions" }}</li>
+                        <li><b>{% trans "Number of words in regions" %}</b>: {{ metadata|get_item:"nrOfWordsInRegions" }}</li>
+                        <li><b>{% trans "Number of lines" %}</b>: {{ metadata|get_item:"nrOfLines" }}</li>
+                        <li><b>{% trans "Number of transcribed lines" %}</b>: {{ metadata|get_item:"nrOfTranscribedLines" }}</li>
+                        <li><b>{% trans "Number of words in lines" %}</b>: {{ metadata|get_item:"nrOfWordsInLines" }}</li>
+                        <li><b>{% trans "Number of words" %}</b>: {{ metadata|get_item:"nrOfWords" }}</li>
+                        <li><b>{% trans "Number of transcribed words" %}</b>: {{ metadata|get_item:"nrOfTranscribedWords" }}</li>
+                        <li><b>{% trans "Number of new" %}</b>: {{ metadata|get_item:"nrOfNew" }}</li>
+                        <li><b>{% trans "Number of in progress" %}</b>: {{ metadata|get_item:"nrOfInProgress" }}</li>
+                        <li><b>{% trans "Number of done" %}</b>: {{ metadata|get_item:"nrOfDone" }}</li>
+                        <li><b>{% trans "Number of final" %}</b>: {{ metadata|get_item:"nrOfFinal" }}</li>
+                        <li><b>{% trans "Number of ground truth" %}</b>: {{ metadata|get_item:"nrOfGT" }}</li>
+                    </ul>
+                    <ul>
+                        {% for d in documents %}
+                            <li><a>{{ d|get_item:"title" }} <small>{{ d|get_item:"docId" }}</small></a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </section>
+</div>
+{% endblock %}
