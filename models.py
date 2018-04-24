@@ -193,6 +193,13 @@ class Document(models.Model):
         managed = True
         db_table = 'doc_md'
 
+    @property
+    def thumb_url(self):
+        if self.page is not None:
+            return helpers.get_thumb_url(self.page.imagekey)
+        else:
+            return ''
+
 class DocumentCollection(models.Model):
     docid = models.OneToOneField(Document, models.DO_NOTHING, db_column='docid', primary_key=True)
     collection = models.ForeignKey(Collection, models.DO_NOTHING)
@@ -461,7 +468,7 @@ class PageImageVersion(models.Model):
         unique_together = (('pageid', 'type', 'tsid'),)
 
 class Page(models.Model):
-    docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', related_name='+')
+    docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', related_name='pages')
     pagenr = models.FloatField()
     imagekey = models.CharField(max_length=24, blank=True, null=True)
     imgfilename = models.CharField(max_length=1024, blank=True, null=True)
