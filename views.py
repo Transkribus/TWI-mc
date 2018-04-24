@@ -2,10 +2,12 @@ import time
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.http import HttpResponseNotFound
 
 from . import services
 from . import forms
+from .models import Collection, Document, DocumentCollection
 
 from .legacy_views import *
 
@@ -16,25 +18,20 @@ class CollectionListView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-
-        client = services.Helpers.create_client_from_request(self.request)
-
         form = self.form_class(self.request.GET)
         assert form.is_valid(), form.errors
-
         self.form = form
+        self.search = form.cleaned_data.get('search')
 
-        search = form.cleaned_data.get('search')
-        sort_by = form.cleaned_data.get(
-            'sort_by', self.form_class.SORT_BY_DEFAULT)
-
-        if search not in ('', None):
-            results = client.find_collections(
-                query=search, sort_by=sort_by)
+        if self.search:
+            collections = Collection.objects.filter(\
+                Q(name__icontains=self.search) |\
+                Q(description__icontains=self.search)\
+            )
         else:
-            results = client.get_col_list(sort_by=sort_by)
+            collections = Collection.objects.all()
 
-        return results
+        return collections
 
     def get_context_data(self, **kwargs):
         then = time.time()
@@ -43,18 +40,18 @@ class CollectionListView(LoginRequiredMixin, ListView):
 
         items = [
             {
-                'title': item.get('col_name'),
-                'id': item.get('col_id'),
-                'description': item.get('descr'),
-                'item_count': item.get('nr_of_documents'),
-                'role': item.get('role'),
-                'thumb_url': item.get('thumb_url')
+                'title': item.name,
+                'id': int(item.collection_id),
+                'description': item.description,
+                'item_count': item.documents.count(),
+                'role': '',
+                'thumb_url': item.thumb_url,
             } for item in context.pop('object_list')
         ]
 
         context.update({
             'items': items,
-            'search': self.form.cleaned_data['search'],
+            'search': self.search,
             'form': self.form,
             'page': context.pop('page_obj'),
             'time_elapsed': round(1000 * (time.time() - then), 2)
@@ -69,30 +66,25 @@ class DocumentListView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-
-        client = services.Helpers.create_client_from_request(self.request)
-
         form = self.form_class(self.request.GET)
         assert form.is_valid(), form.errors
-
-        col_id = self.kwargs['col_id'] = int(self.kwargs['col_id'])
-        search = form.cleaned_data.get('search')
-        sort_by = form.cleaned_data.get(
-            'sort_by', self.form_class.SORT_BY_DEFAULT)
-
-        if search is not None:
-            results = client.find_documents(
-                col_id, query=search, sort_by=sort_by)
-        else:
-            results = client.get_doc_list(col_id, sort_by=sort_by)
-
-        self.meta_data = client.get_col_meta_data(col_id)
-
         self.form = form
-        self.col_id = col_id
-        self.search = search
+        self.search = self.form.cleaned_data['search']
 
-        return results
+        if self.search:
+            documents = Document.objects.filter(\
+                Q(title__icontains=self.search) |\
+                Q(author__icontains=self.search) |\
+                Q(description__icontains=self.search)\
+            )
+        else:
+            documents = Document.objects.all()
+
+        collection = DocumentCollection.objects.filter(docid=documents[0].docid).first().collection
+        self.col_id = collection.collection_id
+        self.col_name = collection.name
+
+        return documents
 
     def get_context_data(self, **kwargs):
         then = time.time()
@@ -101,38 +93,28 @@ class DocumentListView(LoginRequiredMixin, ListView):
 
         items = [
             {
-                'title': item.get('title'),
-                'id': item.get('doc_id'),
-                'description': item.get('desc'),
-                'item_count': item.get('nr_of_pages'),
-                'script_type': item.get('script_type'),
-                'language': item.get('language'),
-                'author': item.get('author'),
-                'writer': item.get('writer'),
-                'genre': item.get('genre'),
+                'title': item.title,
+                'id': int(item.docid),
+                'description': item.description,
+                'item_count': item.pages.count(),
+                'script_type': item.scripttype,
+                'language': item.language,
+                'author': item.author,
+                'writer': item.writer,
+                'genre': item.genre,
 
-                'thumb_url': item.get('thumb_url'),
-
-                # 'upload_timestamp':1472468970284,
-                # 'uploader':'testuser@example.org',
-                # 'uploader_id':42,
-                # 'url':'https://dbis-thure.uibk.ac.at/f/Get?id=ERPDNPGLDFALSYJFLARZDNOX&fileType=view',
-
-                # 'status': 0,
-                # 'created_from_timestamp':-5993089570326,
-                # 'created_to_timestamp':-5961467170326,
-                # 'collection_list'
+                'thumb_url': item.thumb_url,
 
             } for item in context.pop('object_list')
         ]
 
         page = context.pop('page_obj')
 
-        col_name = self.meta_data.col_name
+        col_name = self.col_name
 
         context.update({
             'items': items,
-            'id': self.col_id,
+            'id': int(self.col_id),
             'title': col_name,
             'search': self.search,
             'form': self.form,
