@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from . import services
 from . import forms
+from .models import Collection
 
 from .legacy_views import *
 
@@ -15,25 +16,11 @@ class CollectionListView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-
-        client = services.Helpers.create_client_from_request(self.request)
-
         form = self.form_class(self.request.GET)
         assert form.is_valid(), form.errors
-
         self.form = form
 
-        search = form.cleaned_data.get('search')
-        sort_by = form.cleaned_data.get(
-            'sort_by', self.form_class.SORT_BY_DEFAULT)
-
-        if search not in ('', None):
-            results = client.find_collections(
-                query=search, sort_by=sort_by)  
-        else:
-            results = client.get_col_list(sort_by=sort_by)
-
-        return results
+        return Collection.objects.all()
 
     def get_context_data(self, **kwargs):
         then = time.time()
@@ -42,12 +29,12 @@ class CollectionListView(LoginRequiredMixin, ListView):
 
         items = [
             {
-                'title': item.get('col_name'),
-                'id': item.get('col_id'),
-                'description': item.get('descr'),
-                'item_count': item.get('nr_of_documents'),
-                'role': item.get('role'),
-                'thumb_url': item.get('thumb_url')
+                'title': item.name,
+                'id': int(item.collection_id),
+                'description': item.description,
+                'item_count': item.documents.count(),
+                'role': '',
+                'thumb_url': item.thumb_url,
             } for item in context.pop('object_list')
         ]
 
