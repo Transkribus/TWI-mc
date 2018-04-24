@@ -214,6 +214,7 @@ function clear_article()
     $("#editor-title-article-en").val('');
     $("#editor-article-img").attr("src", "");
     $("#editor-article-img").addClass("invisible");
+    $("#editor-article-btn-delete").addClass("invisible");
 }
 
 function change_article(v)
@@ -251,7 +252,7 @@ function delete_article()
     {
         $("#article-options option[value='" + id + "']").remove();
     });
-    clear_blog();
+    clear_article();
 }
 /* ------------------------------------ */
 /* Blog functions */
@@ -266,6 +267,8 @@ function clear_blog()
     $("#editor-title-blog-en").val(''); 
     $("#editor-subtitle-blog-de").val(''); 
     $("#editor-subtitle-blog-en").val('');  
+    $("#editor-blog-img").addClass("invisible");
+    $("#editor-blog-btn-delete").addClass("invisible");
 }
 
 function delete_blog()
@@ -393,6 +396,8 @@ function clear_inst()
     $("#loc-name").val(''); 
     $("#loc-coord-long").val(''); 
     $("#loc-coord-lat").val('');  
+    $("#editor-inst-img").addClass("invisible");
+    $("#editor-inst-btn-delete").addClass("invisible");
 }
 
 function delete_inst()

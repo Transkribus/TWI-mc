@@ -102,7 +102,7 @@ def admin(request):
     docs = m.DocumentEntries.objects.filter(lang=translation.get_language())
     ifirst = m.Institution.objects.first()
     
-    inst_entries = []
+    inst_proj_entries = []
     if ifirst:
         inst_proj_entries = m.InstitutionProjectEntries.objects.filter(project__inst=ifirst.pk, lang=translation.get_language())
     
