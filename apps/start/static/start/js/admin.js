@@ -140,7 +140,7 @@ set the image img for the image with id
 function setImg(id, img)
 {
     console.log("IMG:" + img)
-    if (img != "")
+    if (img && img != "")
     {
         $(id).removeClass("invisible");
         $(id).attr("src", "../static/start/img/upload/" + img ); //TODO: change path
@@ -311,6 +311,8 @@ function store_blog()
                     $("#blog-options option[value='" + id + "']").text(val);     
                 }
             });
+    clearDropzone("#blog_dropzone");
+    $("#editor-blog-btn-delete").removeClass("invisible");
 }    
 
 function change_blog(v)

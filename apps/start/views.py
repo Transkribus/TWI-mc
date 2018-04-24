@@ -188,8 +188,13 @@ def store_admin_inst(request):
     loc_name_de = request.POST.get('loc_name_de','')
     name_en = request.POST.get('name_en','')
     loc_name_en = request.POST.get('loc_name_en','')
-    lng = Decimal(request.POST.get('lng',''))
-    lat = Decimal(request.POST.get('lat',''))
+  
+    try:
+        lng = Decimal(request.POST.get('lng','0.0'))
+        lat = Decimal(request.POST.get('lat','0.0'))
+    except:
+        lng = 0
+        lat = 0
     url = request.POST.get('url','')
     content_de = request.POST.get('content_de','')    
     content_en = request.POST.get('content_en','')
@@ -204,9 +209,10 @@ def store_admin_inst(request):
         m.InstitutionDescription.objects.create(name=name_de, loclabel=loc_name_de, desc=content_de, lang='de', inst=inst)
         m.InstitutionDescription.objects.create(name=name_en, loclabel=loc_name_en, desc=content_en, lang='en', inst=inst)   
     else:
-        inst = m.Institution.objects.get(pk=idb)
+        inst = m.Institution.objects.filter(pk=idb)
         if fname != None:
             inst.update(image=fname, lng=lng, lat=lat, link=url)
+        inst = inst.first()
         m.InstitutionDescription.objects.filter(lang='de', inst=inst).update(name=name_de, loclabel=loc_name_de, desc=content_de)
         m.InstitutionDescription.objects.filter(lang='en', inst=inst).update(name=name_en, loclabel=loc_name_en, desc=content_en)
                     
