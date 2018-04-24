@@ -1,9 +1,11 @@
 import time
 
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseNotFound
+from django.utils.decorators import method_decorator
 
 from . import services
 from . import forms
@@ -16,6 +18,10 @@ class CollectionListView(LoginRequiredMixin, ListView):
     template_name = 'library/collection/list.html'
     form_class = forms.ListForm
     paginate_by = 10
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):        
+        return super(CollectionListView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         form = self.form_class(self.request.GET)
@@ -64,6 +70,10 @@ class DocumentListView(LoginRequiredMixin, ListView):
     template_name = 'library/document/list.html'
     form_class = forms.ListForm
     paginate_by = 10
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):        
+        return super(DocumentListView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         form = self.form_class(self.request.GET)
