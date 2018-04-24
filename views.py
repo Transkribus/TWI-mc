@@ -2,6 +2,7 @@ import time
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseNotFound
 
 from . import services
 from . import forms
@@ -29,7 +30,7 @@ class CollectionListView(LoginRequiredMixin, ListView):
 
         if search not in ('', None):
             results = client.find_collections(
-                query=search, sort_by=sort_by)  
+                query=search, sort_by=sort_by)
         else:
             results = client.get_col_list(sort_by=sort_by)
 
@@ -203,3 +204,21 @@ def collection_detail(request, col_id):
 def document_detail(request, col_id, doc_id):
     from django.http import HttpResponse
     return HttpResponse("Not Implemented", status=501)
+
+
+@login_required
+def project(request, slug):
+    t = request.user.tsdata.t
+
+    slugs = {
+        'webuitestcollection': 2305,
+        'brussels-webui-demo': 5163,
+    }
+
+    if slug not in slugs:
+        return HttpResponseNotFound('No collection found with "%s".' % slug)
+
+    metadata = t.collection_metadata(request,{'collId': slugs[slug]})
+    documents = t.collection(request, {'collId': slugs[slug]})
+
+    return render(request, 'library/project.html', locals())
