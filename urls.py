@@ -26,6 +26,4 @@ urlpatterns = [
     url(r'^users/([\-0-9]+)/([0-9]+)$', views.users, name='users'),
     url(r'^coll_metadata/(?P<collId>[0-9]+)$', views.collection_metadata, name='collection_metadata'),
     url(r'^doc_metadata/(?P<collId>[0-9]+)/(?P<docId>[0-9]+)$', views.document_metadata, name='document_metadata'),
-
-    url(r'^(?P<slug>[\w0-9-]+)$', views.project, name='project'),
 ]
