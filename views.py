@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseNotFound
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext_lazy as _
 
 from . import services
 from . import forms
@@ -20,7 +21,7 @@ class CollectionListView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
     @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):        
+    def dispatch(self, request, *args, **kwargs):
         return super(CollectionListView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -72,7 +73,7 @@ class DocumentListView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
     @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):        
+    def dispatch(self, request, *args, **kwargs):
         return super(DocumentListView, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -211,6 +212,24 @@ def project(request, slug):
         return HttpResponseNotFound('No collection found with "%s".' % slug)
 
     metadata = t.collection_metadata(request,{'collId': slugs[slug]})
-    documents = t.collection(request, {'collId': slugs[slug]})
+    col_name = metadata['colName']
+    col_id = metadata['colId']
+    documents = []
+    for d in t.collection(request, {'collId': slugs[slug]}):
+        if d['status'] == 0:
+            status = _('New')
+        elif d['status'] == 1:
+            status = _('In Progress')
+        elif d['status'] == 2:
+            status = _('Done')
+        elif d['status'] == 3:
+            status = _('Final')
+        else:
+            status = _('Ground Truth')
+        documents.append({
+            'title': d['title'],
+            'doc_id': d['docId'],
+            'status': status
+        })
 
     return render(request, 'library/project.html', locals())
