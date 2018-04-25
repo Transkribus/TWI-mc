@@ -1,31 +1,61 @@
-#imports of python modules
-#import json
-#import sys
-#import re
-#import random
+import logging
 
-from django.template.defaultfilters import linebreaksbr
+from urllib.parse import urlparse
 
-#Imports of django modules
+from django.conf import settings
+
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 from django.shortcuts import render
 from django.shortcuts import resolve_url
 
-#from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import LoginView
+from django.contrib.auth import logout
+
+from django.template.defaultfilters import linebreaksbr
+from apps.querystring_parser.querystring_parser import parser
+
 from apps.utils.decorators import t_login_required_ajax
 from apps.utils.services import *
 from apps.utils.utils import t_log, error_message_switch
-import logging
-import settings
-
-from apps.querystring_parser.querystring_parser import parser
 
 from .forms import RegisterForm
 from .models import TSData
-#from django.contrib.auth.models import User
-from django.contrib.auth import logout
-from urllib.parse import urlparse
+
+
+class LoginWithCookie(LoginView):
+
+    template_name = 'registration/login-with-cookie.html'
+
+    def form_invalid(self, form):
+        response = super(LoginWithCookie, self).form_invalid(form)
+
+        response.delete_cookie('JSESSIONID', path='/', domain='transkribus.eu')
+
+        return response
+
+    def form_valid(self, form):
+
+        # NOTE: super.form_valid is where user is authenticated
+        response = super(LoginWithCookie, self).form_valid(form)
+
+        try:
+            self.set_cookie(self.request, response)
+        except (ValueError, TypeError, AttributeError) as error:
+            logging.error(error)
+
+        return response
+
+    def set_cookie(self, request, response):
+
+        user = self.request.user
+        transkribus = user.tsdata
+
+        # Set-Cookie: JSESSIONID=""; Domain=transkri…nly; Path=/TrpServer/; Secure
+        response.set_cookie(
+            'JSESSIONID', value=transkribus.sessionId,
+            path='/TrpServer/', domain='transkribus.eu',
+            httponly=True, secure=True)
 
 def register(request):
 #TODO this is generic guff need to extend form for extra fields, send reg data to transkribus and authticate (which will handle the user creation)
