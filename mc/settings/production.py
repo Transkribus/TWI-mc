@@ -74,7 +74,8 @@ INSTALLED_APPS = [
     'apps.dashboard',
     'apps.edit',
     'apps.search',
-    'apps.navigation'
+#    'apps.navigation'
+    'apps.sandbox'
 ]
 
 MIDDLEWARE_CLASSES = [

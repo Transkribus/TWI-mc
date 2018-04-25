@@ -34,6 +34,9 @@
     <link href="{% static "css/common.css" %}" rel="stylesheet"/>
 
 
+	{% block styles %}{% endblock %}
+
+
     <!-- recaptcha -->
    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
 
@@ -79,6 +82,9 @@
 	deftaults to empty file in projecy template
     {%endcomment%}
 	{% include apphead %}
+	
+
+    {% block scripts %}{% endblock %}
 
 {% comment %}
 <!-- #TODO the modal stuff is dependent on the library app being looaded so this should be executed in an app template or on the condition that the library app is loaded -->
