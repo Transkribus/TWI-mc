@@ -40,7 +40,7 @@
               Search for: <input id="search" name="search" type="search" value="{{search}}">
             </label>
             {% if search %}
-            <a href="{% url 'library:document-list' %}">Show All</a>
+            <a href="{% url 'library:document-list' id %}">Show All</a>
             {% endif %}
           </div>
           <div class="col-md-3">
