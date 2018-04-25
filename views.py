@@ -9,6 +9,8 @@ from django.utils.translation import ugettext_lazy as _
 
 from . import services
 from . import forms
+from . import paginator
+
 from .models import Collection, Document, DocumentCollection
 
 from .legacy_views import *
@@ -18,6 +20,7 @@ class CollectionListView(LoginRequiredMixin, ListView):
     template_name = 'library/collection/list.html'
     form_class = forms.ListForm
     paginate_by = 10
+    paginator_class = paginator.Paginator
 
     def get_queryset(self):
         form = self.form_class(self.request.GET)
@@ -66,6 +69,7 @@ class DocumentListView(LoginRequiredMixin, ListView):
     template_name = 'library/document/list.html'
     form_class = forms.ListForm
     paginate_by = 10
+    paginator_class = paginator.Paginator
 
     def get_queryset(self):
         form = self.form_class(self.request.GET)
