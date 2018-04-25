@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+
+{% block scripts %}
+<script src="{% static "sandbox/js/lib/utils.js" %}"></script>
+<script src="{% static "sandbox/js/lib/api.js" %}"></script>
+{%endblock%}
+
+
+{% block body_content %}
+<div class="container">
+    <section class="project">
+        <header>
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'library:collection-list' %}"><span class="glyphicon glyphicon-home"></span> {% trans 'Home'%}</a></li>
+                        <li class="breadcrumb-item"><a href="{% url "library:project" slug %}">{{ col_name }} <small>{{ col_id }}</small></a></li>
+                    </ol>
+                </div>
+            </div>
+        </header>
+        <main class="list">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <ul>
+                        <li><b>{% trans "Number of documents" %}</b>: {{ metadata|get_item:"nrOfDocuments" }}</li>
+                        <li><b>{% trans "Number of regions" %}</b>: {{ metadata|get_item:"nrOfRegions" }}</li>
+                        <li><b>{% trans "Number of transcribed regions" %}</b>: {{ metadata|get_item:"nrOfTranscribedRegions" }}</li>
+                        <li><b>{% trans "Number of words in regions" %}</b>: {{ metadata|get_item:"nrOfWordsInRegions" }}</li>
+                        <li><b>{% trans "Number of lines" %}</b>: {{ metadata|get_item:"nrOfLines" }}</li>
+                        <li><b>{% trans "Number of transcribed lines" %}</b>: {{ metadata|get_item:"nrOfTranscribedLines" }}</li>
+                        <li><b>{% trans "Number of words in lines" %}</b>: {{ metadata|get_item:"nrOfWordsInLines" }}</li>
+                        <li><b>{% trans "Number of words" %}</b>: {{ metadata|get_item:"nrOfWords" }}</li>
+                        <li><b>{% trans "Number of transcribed words" %}</b>: {{ metadata|get_item:"nrOfTranscribedWords" }}</li>
+                        <li><b>{% trans "Number of new" %}</b>: {{ metadata|get_item:"nrOfNew" }}</li>
+                        <li><b>{% trans "Number of in progress" %}</b>: {{ metadata|get_item:"nrOfInProgress" }}</li>
+                        <li><b>{% trans "Number of done" %}</b>: {{ metadata|get_item:"nrOfDone" }}</li>
+                        <li><b>{% trans "Number of final" %}</b>: {{ metadata|get_item:"nrOfFinal" }}</li>
+                        <li><b>{% trans "Number of ground truth" %}</b>: {{ metadata|get_item:"nrOfGT" }}</li>
+                    </ul>
+                    <ul>
+                        {% for d in documents %}
+                            <li>
+                                <a>{{ d|get_item:"title" }} <small>{{ d|get_item:"doc_id" }}</small></a>: {{ d|get_item:"status" }}
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdown_{{ d|get_item:"docId" }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        {% trans "Pages" %}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul id="pages_{{ d|get_item:"docId" }}" class="dropdown-menu" aria-labelledby="dropdown_{{ d|get_item:"docId" }}">
+                                    </ul>
+                                </div>
+                                <script type="text/javascript">
+                                    $(function() {
+                                        API.getInstance().then(function (api) {
+                                            api.getDocById({{ metadata|get_item:"colId" }}, {{ d|get_item:"docId" }}, 1).then(function (docData) {
+                                                docData.pageList.pages.foreach(function(p) {
+                                                    $("#pages_{{ d|get_item:"docId" }}").append('<li><a href="">' + p.pageNr + ' [' + p.pageId + ']: ' + p.tsList.transcripts[0].status + '</a></li>');
+                                                });
+                                            });
+                                        });
+                                    });
+                                </script>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </section>
+</div>
+{% endblock %}
