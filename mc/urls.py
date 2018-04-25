@@ -46,7 +46,7 @@ urlpatterns = [
     url(r'^release_notes/$', mc.views.release_notes, name='release_notes'),
     url(r'^browser_compat/$', mc.views.browser_compat, name='browser_compat'),
 
-    url('^login-with-cookie/$', apps.utils.views.LoginWithCookie.as_view(), name='login-with-cookie')
+    url('^login-with-cookie/$', apps.utils.views.LoginWithCookie.as_view(), name='login-with-cookie'),
 
     ## Others ##
     url(r'^admin/', admin.site.urls),
