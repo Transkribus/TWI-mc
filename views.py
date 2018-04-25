@@ -93,7 +93,9 @@ class DocumentListView(LoginRequiredMixin, ListView):
         if self.search:
             qs = documents.filter(title__icontains=self.search)
             qs |= documents.filter(author__icontains=self.search)
-            qs |= documents.filter(description__icontains=self.search)        
+            qs |= documents.filter(description__icontains=self.search)
+        else:
+            qs = documents
 
         self.col_id = collection.collection_id
         self.col_name = collection.name
