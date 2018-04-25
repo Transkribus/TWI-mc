@@ -201,8 +201,8 @@ class Document(models.Model):
             return ''
 
 class DocumentCollection(models.Model):
-    docid = models.OneToOneField(Document, models.DO_NOTHING, db_column='docid', primary_key=True)
-    collection = models.ForeignKey(Collection, models.DO_NOTHING)
+    docid = models.OneToOneField(Document, on_delete=models.DO_NOTHING, db_column='docid', primary_key=True)
+    collection = models.ForeignKey(Collection, related_name='document_collection', on_delete=models.DO_NOTHING)
 
     class Meta:
         managed = IS_MANAGED
@@ -615,7 +615,7 @@ class Upload(models.Model):
 
 class UserCollection(models.Model):
     user_id = models.FloatField(primary_key=True)
-    collection = models.ForeignKey(Collection, models.DO_NOTHING, related_name='collections')
+    collection = models.ForeignKey(Collection, on_delete=models.DO_NOTHING, related_name='user_collection')
     is_default = models.FloatField()
     role = models.CharField(max_length=20)
 
