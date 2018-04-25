@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^$', login_required(views.CollectionListView.as_view()), name='index'),
 
     url('^collections/', include([
-        url(r'^$', login_required(views.CollectionListView.as_view()), name='collection-list'),        
+        url(r'^$', login_required(views.CollectionListView.as_view()), name='collection-list'),
         url(r'^(?P<col_id>\d+)/$', login_required(views.collection_detail), name='collection-detail'),
         url(r'^(?P<col_id>\d+)/$', login_required(views.collection_detail), name='collection-detail'),
         url(r'^(?P<col_id>\d+)/documents/', include([
