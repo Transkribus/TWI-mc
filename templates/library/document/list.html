@@ -39,6 +39,9 @@
             <label for="search">
               Search for: <input id="search" name="search" type="search" value="{{search}}">
             </label>
+            {% if search %}
+            <a href="{% url 'library:document-list' %}">Show All</a>
+            {% endif %}
           </div>
           <div class="col-md-3">
             {{ form.sort_by.label_tag }} {{ form.sort_by }}
@@ -101,27 +104,9 @@
         <div class="col-md-2">
           {{ time_elapsed }}ms
         </div>
+        {% if is_paginated %}
         <div class="col-md-10 text-right">
-          {% if is_paginated %}
-          <nav>
-            <ul class="pagination">
-              <li>
-                <a {% if page.has_previous %}class="disabled" href="?page={{ page.previous_page_number }}" {% endif %}aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              {% for page_num in page.paginator.page_range %}
-              <li{% if page_num  == page.number %} class="active"{% endif %}>
-                <a href="?page={{ page_num }}">{{ page_num }}</a>
-              </li>
-              {% endfor %}
-              <li>
-                <a {% if page.has_next %}class="disabled" href="?page={{ page.next_page_number }}" {% endif %}aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
+          {% include 'library/includes/pagination.html' %}
         </div>
         {% endif %}
     </footer>

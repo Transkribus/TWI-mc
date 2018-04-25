@@ -1,14 +1,16 @@
 import time
 
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.http import HttpResponseNotFound
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext_lazy as _
 
 from . import services
 from . import forms
+from . import paginator
+
 from .models import Collection, Document, DocumentCollection
 
 from .legacy_views import *
@@ -18,10 +20,7 @@ class CollectionListView(LoginRequiredMixin, ListView):
     template_name = 'library/collection/list.html'
     form_class = forms.ListForm
     paginate_by = 10
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):        
-        return super(CollectionListView, self).dispatch(request, *args, **kwargs)
+    paginator_class = paginator.Paginator
 
     def get_queryset(self):
         form = self.form_class(self.request.GET)
@@ -29,15 +28,15 @@ class CollectionListView(LoginRequiredMixin, ListView):
         self.form = form
         self.search = form.cleaned_data.get('search')
 
-        collections = Collection.objects.filter(user_collections__user_id=self.request.user.tsdata.userId)
+        qs = Collection.objects.filter(collections__user_id=self.request.user.tsdata.userId)
 
         if self.search:
-            collections = collections.filter(\
+            qs = qs.filter(\
                 Q(name__icontains=self.search) |\
                 Q(description__icontains=self.search)\
             )
 
-        return collections
+        return qs.order_by('name', 'description')
 
     def get_context_data(self, **kwargs):
         then = time.time()
@@ -70,10 +69,7 @@ class DocumentListView(LoginRequiredMixin, ListView):
     template_name = 'library/document/list.html'
     form_class = forms.ListForm
     paginate_by = 10
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):        
-        return super(DocumentListView, self).dispatch(request, *args, **kwargs)
+    paginator_class = paginator.Paginator
 
     def get_queryset(self):
         form = self.form_class(self.request.GET)
@@ -82,11 +78,10 @@ class DocumentListView(LoginRequiredMixin, ListView):
         self.search = self.form.cleaned_data['search']
 
         if self.search:
-            documents = Document.objects.filter(\
-                Q(title__icontains=self.search) |\
-                Q(author__icontains=self.search) |\
-                Q(description__icontains=self.search)\
-            )
+            documents = Document.objects.filter(
+                Q(title__icontains=self.search) |
+                Q(author__icontains=self.search) |
+                Q(description__icontains=self.search))
         else:
             documents = Document.objects.all()
 
@@ -94,7 +89,7 @@ class DocumentListView(LoginRequiredMixin, ListView):
         self.col_id = collection.collection_id
         self.col_name = collection.name
 
-        return documents
+        return documents.order_by('title', 'author', 'description')
 
     def get_context_data(self, **kwargs):
         then = time.time()
@@ -211,6 +206,24 @@ def project(request, slug):
         return HttpResponseNotFound('No collection found with "%s".' % slug)
 
     metadata = t.collection_metadata(request,{'collId': slugs[slug]})
-    documents = t.collection(request, {'collId': slugs[slug]})
+    col_name = metadata['colName']
+    col_id = metadata['colId']
+    documents = []
+    for d in t.collection(request, {'collId': slugs[slug]}):
+        if d['status'] == 0:
+            status = _('New')
+        elif d['status'] == 1:
+            status = _('In Progress')
+        elif d['status'] == 2:
+            status = _('Done')
+        elif d['status'] == 3:
+            status = _('Final')
+        else:
+            status = _('Ground Truth')
+        documents.append({
+            'title': d['title'],
+            'doc_id': d['docId'],
+            'status': status
+        })
 
     return render(request, 'library/project.html', locals())

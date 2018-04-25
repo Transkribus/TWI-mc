@@ -1,17 +1,21 @@
 from django import forms
 
+from . import models
+
+
 class ListForm(forms.Form):
 
-    SORT_BY_DEFAULT = 'ta'
     PAGE_MIN = 1
     SIZE_MIN = 1
     SIZE_MAX = 100
     SIZE_DEFAULT = 10
 
     SORT_BY = {
-        SORT_BY_DEFAULT: "Title: ascending",
+        'ta': "Title: ascending",
         'td': "Title: descending"
     }
+
+    SORT_BY_DEFAULT = 'ta'
 
     sort_by = forms.TypedChoiceField(
         choices=SORT_BY.items(),
