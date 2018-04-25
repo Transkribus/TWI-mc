@@ -2,14 +2,12 @@ import time
 
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
-from django.http import HttpResponseNotFound
-from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext_lazy as _
+from django.shortcuts import get_object_or_404
 
 from . import services
 from . import forms
 from . import paginator
+from . import models
 
 from .models import Collection, Document, DocumentCollection
 
@@ -18,6 +16,7 @@ from .legacy_views import *
 
 class CollectionListView(LoginRequiredMixin, ListView):
     template_name = 'library/collection/list.html'
+    queryset = models.Collection.objects.all()
     form_class = forms.ListForm
     paginate_by = 10
     paginator_class = paginator.Paginator
@@ -28,12 +27,16 @@ class CollectionListView(LoginRequiredMixin, ListView):
         self.form = form
         self.search = form.cleaned_data.get('search')
 
+        qs = super(CollectionListView, self).get_queryset()
+
+        user = self.request.user
+        trp_user_id = user.tsdata.userId
+
+        qs = qs.filter(user_collection__user_id=trp_user_id)
+
         if self.search:
-            qs = Collection.objects.filter(
-                Q(name__icontains=self.search) |
-                Q(description__icontains=self.search))
-        else:
-            qs = Collection.objects.all()
+            qs = qs.filter(name__icontains=self.search)
+            qs |= qs.filter(description__icontains=self.search)
 
         return qs.order_by('name', 'description')
 
@@ -76,19 +79,26 @@ class DocumentListView(LoginRequiredMixin, ListView):
         self.form = form
         self.search = self.form.cleaned_data['search']
 
-        if self.search:
-            documents = Document.objects.filter(
-                Q(title__icontains=self.search) |
-                Q(author__icontains=self.search) |
-                Q(description__icontains=self.search))
-        else:
-            documents = Document.objects.all()
+        user = self.request.user
+        trp_user_id = user.tsdata.userId
 
-        collection = DocumentCollection.objects.filter(docid=documents[0].docid).first().collection
+        # NOTE: respond with 404 if access denied
+        collection = get_object_or_404(
+            models.Collection,
+            pk=self.kwargs['col_id'],
+            user_collection__user_id=trp_user_id)
+
+        documents = collection.documents.all()
+
+        if self.search:
+            qs = documents.filter(title__icontains=self.search)
+            qs |= documents.filter(author__icontains=self.search)
+            qs |= documents.filter(description__icontains=self.search)        
+
         self.col_id = collection.collection_id
         self.col_name = collection.name
 
-        return documents.order_by('title', 'author', 'description')
+        return qs.order_by('title', 'author', 'description')
 
     def get_context_data(self, **kwargs):
         then = time.time()
@@ -191,9 +201,10 @@ def document_detail(request, col_id, doc_id):
     from django.http import HttpResponse
     return HttpResponse("Not Implemented", status=501)
 
-
 @login_required
 def project(request, slug):
+    from django.http import HttpResponseNotFound
+
     t = request.user.tsdata.t
 
     slugs = {
