@@ -37,6 +37,9 @@ urlpatterns = [
     url(r'^edit/', include('apps.edit.urls', app_name='edit', namespace='edit')),
     url(r'^utils/', include('apps.utils.urls', app_name='utils', namespace='utils')),
 
+    # Sandbox
+    url(r'^sandbox/', include('apps.sandbox.urls', app_name='sandbox', namespace='sandbox')),
+
     ## Project pages for My collection ##
     url(r'^$', mc.views.index, name='index'),
     url(r'^about/$', mc.views.about, name='about'),
@@ -45,13 +48,17 @@ urlpatterns = [
     url(r'^release_notes/$', mc.views.release_notes, name='release_notes'),
     url(r'^browser_compat/$', mc.views.browser_compat, name='browser_compat'),
 
-
-
     ## Others ##
     url(r'^admin/', admin.site.urls),
     url(r'^register$', apps.utils.views.register, name='register'),
     url(r'^logout/$', apps.utils.views.logout_view, name='logout'),
+    url(
+        '^login-with-cookie/$',
+        apps.utils.views.LoginWithCookie.as_view(),
+        name='login-with-cookie'
+    ),
     url('', include('django.contrib.auth.urls')),
+
     url(r'^i18n/', include('django.conf.urls.i18n')),
 
 ]
