@@ -1,8 +1,31 @@
 import os
 import unittest
 
-from django.test import TestCase
+from django.test import TestCase, TransactionTestCase
 from django.conf import settings
+
+from . import models
+
+
+class TestCollection(TransactionTestCase):
+
+    # NOTE: loads to ./library/fixtures/User.json, etc.
+    fixtures = ('User', 'Collection', 'UserCollection')
+
+    def test_list_collections_for_user(self):
+
+        user = models.User.objects(username='test')
+
+        expected = 5
+
+        self.assertEqual(user.collections.count(), expected)
+
+    def test_takes_one_query(self):
+
+        def get_test_collection():
+            models.Collection.objects.filter(title='test')
+
+        self.assertNumQueries(1, get_test_collection())
 
 
 class TestServices(TestCase):
