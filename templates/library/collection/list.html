@@ -48,6 +48,9 @@
             <label for="{{ form.search.id }}">
               Search for: {{ form.search }}
             </label>
+            {% if search %}
+            <a href="{% url 'library:collection-list' %}">Show All</a>
+            {% endif %}
           </div>
           <div class="col-md-3">
             {{ form.sort_by.label_tag }} {{ form.sort_by }}

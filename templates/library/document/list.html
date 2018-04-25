@@ -39,6 +39,9 @@
             <label for="search">
               Search for: <input id="search" name="search" type="search" value="{{search}}">
             </label>
+            {% if search %}
+            <a href="{% url 'library:document-list' %}">Show All</a>
+            {% endif %}
           </div>
           <div class="col-md-3">
             {{ form.sort_by.label_tag }} {{ form.sort_by }}
