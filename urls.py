@@ -6,16 +6,15 @@ from . import views
 
 urlpatterns = [
 
-    url(r'^$', login_required(views.CollectionListView.as_view()), name='index'),
+    url(r'^$', views.CollectionListView.as_view(), name='index'),
 
     url('^collections/', include([
-        url(r'^$', login_required(views.CollectionListView.as_view()), name='collection-list'),
-        url(r'^(?P<col_id>\d+)/$', login_required(views.collection_detail), name='collection-detail'),
-        url(r'^(?P<col_id>\d+)/$', login_required(views.collection_detail), name='collection-detail'),
+        url(r'^$', views.CollectionListView.as_view(), name='collection-list'),
+        url(r'^(?P<col_id>\d+)/$', views.collection_detail, name='collection-detail'),
         url(r'^(?P<col_id>\d+)/documents/', include([
-            url('^$', login_required(views.DocumentListView.as_view()), name='document-list'),
-            url(r'^(?P<doc_id>\d+)/$', login_required(views.document_detail), name='document-detail'),
-            url(r'^(?P<doc_id>\d+)/pages/$', login_required(views.PageListView.as_view()), name='page-list'),
+            url('^$', views.DocumentListView.as_view(), name='document-list'),
+            url(r'^(?P<doc_id>\d+)/$', views.document_detail, name='document-detail'),
+            url(r'^(?P<doc_id>\d+)/pages/$', views.PageListView.as_view(), name='page-list'),
         ]))
     ])),
     
@@ -38,5 +37,5 @@ urlpatterns = [
     url(r'^coll_metadata/(?P<collId>[0-9]+)$', views.collection_metadata, name='collection_metadata'),
     url(r'^doc_metadata/(?P<collId>[0-9]+)/(?P<docId>[0-9]+)$', views.document_metadata, name='document_metadata'),
 
-    url(r'^(?P<slug>[\w-]+)$', views.project, name='project'),
+    url(r'^(?P<slug>[\w-]+)/$', views.project, name='project'),
 ]
