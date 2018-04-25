@@ -29,14 +29,13 @@ class CollectionListView(LoginRequiredMixin, ListView):
         self.search = form.cleaned_data.get('search')
 
         if self.search:
-            collections = Collection.objects.filter(\
-                Q(name__icontains=self.search) |\
-                Q(description__icontains=self.search)\
-            )
+            qs = Collection.objects.filter(
+                Q(name__icontains=self.search) |
+                Q(description__icontains=self.search))
         else:
-            collections = Collection.objects.all()
+            qs = Collection.objects.all()
 
-        return collections
+        return qs.order_by('name', 'description')
 
     def get_context_data(self, **kwargs):
         then = time.time()
@@ -78,11 +77,10 @@ class DocumentListView(LoginRequiredMixin, ListView):
         self.search = self.form.cleaned_data['search']
 
         if self.search:
-            documents = Document.objects.filter(\
-                Q(title__icontains=self.search) |\
-                Q(author__icontains=self.search) |\
-                Q(description__icontains=self.search)\
-            )
+            documents = Document.objects.filter(
+                Q(title__icontains=self.search) |
+                Q(author__icontains=self.search) |
+                Q(description__icontains=self.search))
         else:
             documents = Document.objects.all()
 
@@ -90,7 +88,7 @@ class DocumentListView(LoginRequiredMixin, ListView):
         self.col_id = collection.collection_id
         self.col_name = collection.name
 
-        return documents
+        return documents.order_by('title', 'author', 'description')
 
     def get_context_data(self, **kwargs):
         then = time.time()
