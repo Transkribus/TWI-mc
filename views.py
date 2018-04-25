@@ -29,13 +29,13 @@ class CollectionListView(LoginRequiredMixin, ListView):
         self.form = form
         self.search = form.cleaned_data.get('search')
 
+        collections = Collection.objects.filter(user_collections__user_id=self.request.user.tsdata.userId)
+
         if self.search:
-            collections = Collection.objects.filter(\
+            collections = collections.filter(\
                 Q(name__icontains=self.search) |\
                 Q(description__icontains=self.search)\
             )
-        else:
-            collections = Collection.objects.all()
 
         return collections
 

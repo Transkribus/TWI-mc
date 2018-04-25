@@ -615,7 +615,7 @@ class Upload(models.Model):
 
 class UserCollection(models.Model):
     user_id = models.FloatField(primary_key=True)
-    collection = models.ForeignKey(Collection, models.DO_NOTHING)
+    collection = models.ForeignKey(Collection, models.DO_NOTHING, related_name='user_collections')
     is_default = models.FloatField()
     role = models.CharField(max_length=20)
 
