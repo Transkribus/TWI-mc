@@ -1,3 +1,4 @@
+{% load i18n %}
 <nav>
   <ul class="pagination">
     <li>
@@ -5,12 +6,25 @@
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
+
+    {% if not page.is_first_in_range %}
+    <li>
+      <a href="?page=1">{% trans "First" %}</a>
+    </li>
+    {% endif %}
     
     {% for page_num in page.page_range %}
     <li{% if page_num  == page.number %} class="active"{% endif %}>
       <a href="?page={{ page_num }}">{{ page_num }}</a>
     </li>
     {% endfor %}
+
+    {% if not page.is_last_in_range %}
+    <li>
+      <a href="?page={{ paginator.num_pages }}">{% trans "Last" %}</a>
+    </li>
+    {% endif %}
+
     <li>
       <a {% if page.has_next %}class="disabled" href="?page={{ page.next_page_number }}" {% endif %}aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
