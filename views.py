@@ -232,10 +232,16 @@ def project(request, slug):
             status = _('Final')
         else:
             status = _('Ground Truth')
+
+        document = t.document(request, str(col_id), int(d['docId']), -1)
         documents.append({
             'title': d['title'],
             'doc_id': d['docId'],
-            'status': status
+            'status': status,
+            'pages': [{
+                'page_id': p['pageId'],
+                'page_nr': p['pageNr'],
+                'status': p['tsList']['transcripts'][0]['status']
+            } for p in document['pageList']['pages']]
         })
-
     return render(request, 'library/project.html', locals())

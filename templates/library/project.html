@@ -43,26 +43,18 @@
                     <ul>
                         {% for d in documents %}
                             <li>
-                                <a>{{ d|get_item:"title" }} <small>{{ d|get_item:"doc_id" }}</small></a>: {{ d|get_item:"status" }}
+                                <a href="{% url "edit:correct" col_id d|get_item:"doc_id" %}">{{ d|get_item:"title" }} <small>{{ d|get_item:"doc_id" }}</small></a>: {{ d|get_item:"status" }}
                                 <div class="dropdown">
                                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdown_{{ d|get_item:"docId" }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                         {% trans "Pages" %}
                                         <span class="caret"></span>
                                     </button>
                                     <ul id="pages_{{ d|get_item:"docId" }}" class="dropdown-menu" aria-labelledby="dropdown_{{ d|get_item:"docId" }}">
+                                        {% for p in d|get_item:"pages" %}
+                                            <li><a href="{% url "edit:correct" col_id d|get_item:"doc_id" p|get_item:"page_nr" %}">{{ p|get_item:"page_nr" }} [{{ p|get_item:"page_id" }}]: {{ p|get_item:"status" }}</a></li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
-                                <script type="text/javascript">
-                                    $(function() {
-                                        API.getInstance().then(function (api) {
-                                            api.getDocById({{ metadata|get_item:"colId" }}, {{ d|get_item:"docId" }}, 1).then(function (docData) {
-                                                docData.pageList.pages.foreach(function(p) {
-                                                    $("#pages_{{ d|get_item:"docId" }}").append('<li><a href="">' + p.pageNr + ' [' + p.pageId + ']: ' + p.tsList.transcripts[0].status + '</a></li>');
-                                                });
-                                            });
-                                        });
-                                    });
-                                </script>
                             </li>
                         {% endfor %}
                     </ul>
