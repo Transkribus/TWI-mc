@@ -277,6 +277,9 @@ class LazyList(List):
         warnings.warn("Iterating over *all* list items ...")
         return (CamelCaseDict(data) for data in self._req.execute())
 
+    def __repr__(self):
+        return [item in self]
+
     def __getitem__(self, maybe_slice):
         raise NotImplemented
 
@@ -320,6 +323,16 @@ class LazyObject(CamelCaseDict):
     def __init__(self, request):
         self._req = request
         self._data = None
+
+    def __getattr__(self, name):
+        if self._data is None:
+            self._data = CamelCaseDict(self._req.execute())
+        return getattr(self._data, name)
+
+    def __repr__(self):
+        if self._data is None:
+            self._data = CamelCaseDict(self._req.execute())
+        return '<LazyObject: %r>' % self._data
 
 
 class Helpers:
