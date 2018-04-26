@@ -270,7 +270,7 @@ def store_admin_quote(request):
         m.QuoteEntries.objects.filter(lang='de', quote=q).update(content=content_de, role=role_de)
         m.QuoteEntries.objects.filter(lang='en', quote=q).update(content=content_en, role=role_en)
         
-    json = '{"id" : ' + str(q.id) + ', "name" : "' + name + '"}'
+    json = '{"id" : ' + str(q.id) + ', "name" : "' + name  +  '", "changed" : "' + str(q.changed) + '"}'
     print (json);
     return HttpResponse(json, content_type="application/json") 
 
