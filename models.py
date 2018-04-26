@@ -3,7 +3,7 @@ from django.conf import settings
 
 from . import helpers
 
-IS_MANAGED = getattr(settings, 'DEBUG', False)
+IS_MANAGED = getattr(settings, 'MANAGED', getattr(settings, 'DEBUG', False))
 
 class AbbrevTag(models.Model):
     id = models.FloatField(primary_key=True)
