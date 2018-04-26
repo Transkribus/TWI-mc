@@ -160,7 +160,7 @@ def store_admin_blog(request):
     content_de = request.POST.get('content_de','')
     content_en = request.POST.get('content_en','')
         
-    fname = None
+    fname = ''
     if "blog_fname" in request.session:
         fname = request.session["blog_fname"]
         del request.session["blog_fname"]
@@ -170,14 +170,15 @@ def store_admin_blog(request):
         m.BlogEntry.objects.create(title=title_de, subtitle=subtitle_de, content=content_de, blog=b, lang="de")
         m.BlogEntry.objects.create(title=title_en, subtitle=subtitle_en, content=content_en, blog=b, lang="en")  
     else:
-        b = m.Blog.objects.get(pk=idb) 
-        if fname != None:
+        b = m.Blog.objects.filter(pk=idb) 
+        if fname != '':
             b.update(image=fname)
+        b = b.first()
         m.BlogEntry.objects.filter(blog=b, lang="de").update(title=title_de, subtitle=subtitle_de, content=content_de)
         m.BlogEntry.objects.filter(blog=b, lang="en").update(title=title_en, subtitle=subtitle_en, content=content_en)
             
     title = (title_de, title_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(b.pk) + ', "title" : "' + title  + '", "changed" : "' + str(b.changed) + '"}'
+    json = '{"id" : ' + str(b.pk) + ', "title" : "' + title  + '", "changed" : "' + str(b.changed) + '", "image" : "' + fname + '"}'
     return HttpResponse(json, content_type="application/json")
 
 
@@ -199,7 +200,7 @@ def store_admin_inst(request):
     content_de = request.POST.get('content_de','')    
     content_en = request.POST.get('content_en','')
 
-    fname = None
+    fname = ""
     if "inst_fname" in request.session:
         fname = request.session["inst_fname"]
         del request.session["inst_fname"]
@@ -210,14 +211,14 @@ def store_admin_inst(request):
         m.InstitutionDescription.objects.create(name=name_en, loclabel=loc_name_en, desc=content_en, lang='en', inst=inst)   
     else:
         inst = m.Institution.objects.filter(pk=idb)
-        if fname != None:
+        if fname != "":
             inst.update(image=fname, lng=lng, lat=lat, link=url)
         inst = inst.first()
         m.InstitutionDescription.objects.filter(lang='de', inst=inst).update(name=name_de, loclabel=loc_name_de, desc=content_de)
         m.InstitutionDescription.objects.filter(lang='en', inst=inst).update(name=name_en, loclabel=loc_name_en, desc=content_en)
                     
     name = (name_de, name_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(inst.pk) + ', "name" : "' + name + '", "changed" : "' + str(inst.changed) + '"}'
+    json = '{"id" : ' + str(inst.pk) + ', "name" : "' + name + '", "changed" : "' + str(inst.changed)  + '", "image" : "' + fname + '"}'
     return HttpResponse(json, content_type="application/json") 
 
 def store_admin_inst_proj(request):
@@ -228,7 +229,6 @@ def store_admin_inst_proj(request):
     title_en = request.POST.get('title_en','')
     content_de = request.POST.get('content_de','')
     content_en = request.POST.get('content_en','')
-    print(idb)
     if idb == 0:
         p = m.InstitutionProject.objects.create(inst=m.Institution.objects.get(pk=inst_id))
         m.InstitutionProjectEntries.objects.create(title=title_de, desc=content_de, lang='de', project=p)
@@ -252,7 +252,7 @@ def store_admin_quote(request):
     content_en = request.POST.get('content_en','')
     name = request.POST.get('name','')
     
-    fname = None
+    fname = ""
     if "quote_fname" in request.session:
         fname = request.session["quote_fname"]
         del request.session["quote_fname"]
@@ -270,7 +270,7 @@ def store_admin_quote(request):
         m.QuoteEntries.objects.filter(lang='de', quote=q).update(content=content_de, role=role_de)
         m.QuoteEntries.objects.filter(lang='en', quote=q).update(content=content_en, role=role_en)
         
-    json = '{"id" : ' + str(q.id) + ', "name" : "' + name  +  '", "changed" : "' + str(q.changed) + '"}'
+    json = '{"id" : ' + str(q.id) + ', "name" : "' + name  +  '", "changed" : "' + str(q.changed) + '", "image" : "' + fname + '"}'
     print (json);
     return HttpResponse(json, content_type="application/json") 
 

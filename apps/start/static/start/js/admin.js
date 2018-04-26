@@ -142,6 +142,7 @@ function setImg(id, img)
     console.log("IMG:" + img)
     if (img && img != "")
     {
+        console.log($(id))
         $(id).removeClass("invisible");
         $(id).attr("src", "../static/start/img/upload/" + img ); //TODO: change path
         $(id).attr("width","80px");
@@ -197,6 +198,7 @@ function store_article()
                     $("#article-options option[value='" + id + "']").text(val);  
                     setImg("#editor-article-img", data.image);  
                 }
+                setImg("#editor-article-img", data.image);  
             });
             
     clearDropzone("#article_dropzone");
@@ -310,6 +312,7 @@ function store_blog()
                 {
                     $("#blog-options option[value='" + id + "']").text(val);     
                 }
+                setImg("#editor-blog-img", data.image);  
             });
     clearDropzone("#blog_dropzone");
     $("#editor-blog-btn-delete").removeClass("invisible");
@@ -380,12 +383,19 @@ function store_inst()
                 var val = data.name + " - " + data.changed;
                 if (id == 0)
                 {
-                    $("#inst-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
+                    var newOpt = '<option value="' + data.id +'" selected="selected">' + val + '</option>';
+                    $("#inst-options").append(newOpt);
+                    $("#inst-proj-options").append(newOpt);
                 } else
                 {
-                    $("#inst-options option[value='" + id + "']").text(val);   
+                    $("#inst-options option[value='" + id + "']").text(val);
+                    $("#inst-proj-options option[value='" + id + "']").text(val);    
                 }
+                setImg("#editor-inst-img", data.image);  
             });
+            
+    clearDropzone("#inst_dropzone");
+    $("#editor-inst-btn-delete").removeClass("invisible");
 }
 
 /* remove all entries from the inst editor section (also from inst-projects if linked) */
@@ -393,9 +403,11 @@ function clear_inst()
 {
     $("#editor-container-inst-de").children().first().html(''); 
     $("#editor-container-inst-en").children().first().html('');
-    $("#inst-name").val(''); 
+    $("#inst-name-de").val(''); 
+    $("#inst-name-en").val(''); 
     $("#inst-url").val(''); 
-    $("#loc-name").val(''); 
+    $("#loc-name-de").val(''); 
+    $("#loc-name-en").val(''); 
     $("#loc-coord-long").val(''); 
     $("#loc-coord-lat").val('');  
     $("#editor-inst-img").addClass("invisible");
@@ -430,12 +442,15 @@ function change_inst(v)
             setImg("#editor-inst-img", data[0].fields.image);
             
             var de = getEntryByLang(data, "de");
-            quills['inst-de'].clipboard.dangerouslyPasteHTML(de.fields.desc);            
+            quills['inst-de'].clipboard.dangerouslyPasteHTML(de.fields.desc);   
+            $("#inst-name-de").val(de.fields.name);
+            $("#loc-name-de").val(de.fields.loclabel);  
+                     
             var en = getEntryByLang(data, "en");
             quills['inst-en'].clipboard.dangerouslyPasteHTML(en.fields.desc);
+            $("#inst-name-en").val(en.fields.name);
+            $("#loc-name-en").val(en.fields.loclabel);
             
-            $("#inst-name").val(data[0].fields.name);
-            $("#loc-name").val(data[0].fields.loclabel);   
             $("#loc-coord-long").val(data[0].fields.lng);
             $("#loc-coord-lat").val(data[0].fields.lat);
             $("#inst-url").val(data[0].fields.link);
@@ -459,7 +474,7 @@ function store_inst_proj()
     var title_de = $("#editor-title-inst-proj-de").val();
     var title_en = $("#editor-title-inst-proj-en").val();
     var inst_id = $("#inst-proj-options").val();
-    
+    console.log("ID::" + id);
     $.post("store_admin_proj",
         {id: id,
         inst_id : inst_id,
@@ -490,11 +505,14 @@ function change_inst_proj(v)
         $("#inst-proj-proj-options option[value!='0']").remove();
         for (var i = 0; i < data.length;i++)
         {
-            $("#inst-proj-proj-options").append('<option value="' + data[i].fields.pk +'" selected="selected">' + data[i].fields.title + '</option>');            
+            $("#inst-proj-proj-options").append('<option value="' + data[i].pk +'" selected="selected">' + data[i].fields.title + '</option>');            
         }
         if (data.length > 0)
         {
             change_inst_proj_proj(data[0].fields.project);
+        } else
+        {
+            clear_inst_proj();
         }
     });
 }
@@ -507,6 +525,7 @@ function clear_inst_proj()
     $("#editor-title-inst-proj-en").val('');
     quills['inst-proj-de'].clipboard.dangerouslyPasteHTML('');
     $("#editor-title-inst-proj-de").val('');
+    $("#editor-inst-proj-btn-delete").addClass("invisible");
     
 }
 
@@ -516,10 +535,10 @@ function change_inst_proj_proj(v)
     {
         $.post("change_admin_pr_inst_selection", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
         {
-            console.log(data);
             var en = getentrybylang(data,"en");
             quills['inst-proj-en'].clipboard.dangerouslyPasteHTML(en.fields.desc);
             $("#editor-title-inst-proj-en").val(en.fields.title);
+            
             var de = getentrybylang(data,"de");
             quills['inst-proj-de'].clipboard.dangerouslyPasteHTML(de.fields.desc);
             $("#editor-title-inst-proj-de").val(de.fields.title);
@@ -541,7 +560,7 @@ function delete_inst_proj()
     {
         $("#inst-proj-proj-options option[value='" + id + "']").remove();
     });
-    clear_inst();
+    clear_inst_proj();
 
 }
 
@@ -611,7 +630,11 @@ function store_quote()
                 {
                     $("#quote-options  option[value='" + id + "']").text(val); 
                 }
+                setImg("#editor-quote-img", data.image);  
             });
+    
+    clearDropzone("#quote_dropzone");
+    $("#editor-quote-btn-delete").removeClass("invisible");
 }
 
 function delete_quote()
@@ -635,11 +658,12 @@ function clear_doc()
 {
     quills['doc-desc-en'].clipboard.dangerouslyPasteHTML('');
     quills['doc-content-en'].clipboard.dangerouslyPasteHTML('');
-    $("#editor-title-doc-de").val('');
+    $("#editor-title-doc-en").val('');
     
     quills['doc-desc-de'].clipboard.dangerouslyPasteHTML('');
     quills['doc-content-de'].clipboard.dangerouslyPasteHTML('');
-    $("#editor-title-doc-de").val('');    
+    $("#editor-title-doc-de").val('');   
+    $("#editor-icon-doc").val(''); 
 }
 
 function change_doc(v)
@@ -652,12 +676,12 @@ function change_doc(v)
             var en = getentrybylang(data,"en");
             quills['doc-desc-en'].clipboard.dangerouslyPasteHTML(en.fields.desc);
             quills['doc-content-en'].clipboard.dangerouslyPasteHTML(en.fields.content);
-            $("#editor-title-doc-de").val(en.fields.title);
+            $("#editor-title-doc-en").val(en.fields.title);
             
             var de = getentrybylang(data,"de");
-            quills['doc-desc-de'].clipboard.dangerouslyPasteHTML(en.fields.desc);
-            quills['doc-content-de'].clipboard.dangerouslyPasteHTML(en.fields.content);
-            $("#editor-title-doc-de").val(en.fields.title);
+            quills['doc-desc-de'].clipboard.dangerouslyPasteHTML(de.fields.desc);
+            quills['doc-content-de'].clipboard.dangerouslyPasteHTML(de.fields.content);
+            $("#editor-title-doc-de").val(de.fields.title);
             
             $("#editor-doc-btn-delete").removeClass("invisible");
             
