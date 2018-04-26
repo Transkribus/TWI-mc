@@ -5,6 +5,18 @@ from . import helpers
 
 IS_MANAGED = getattr(settings, 'MANAGED', getattr(settings, 'DEBUG', False))
 
+def __protect_oracle(is_managed):
+    from django.conf import settings
+
+    if not is_managed:
+       return
+
+    for entry in settings.DATABASES.values():
+       if entry.get('ENGINE') == 'django.db.backends.oracle':
+           assert not is_managed, "oracle database must not be managed"
+
+__protect_oracle(IS_MANAGED)
+
 class AbbrevTag(models.Model):
     id = models.FloatField(primary_key=True)
     docid = models.ForeignKey('Document', models.DO_NOTHING, db_column='docid', blank=True, null=True)
