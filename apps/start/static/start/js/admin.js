@@ -726,10 +726,12 @@ function clear_video()
     $("#editor-id-video").val();
     
     quills['video-de'].clipboard.dangerouslyPasteHTML('');
-    $("#editor-title-video-de").val();
+    $("#editor-title-video-de").val('');
     
     quills['video-en'].clipboard.dangerouslyPasteHTML('');    
-    $("#editor-title-video-en").val();
+    $("#editor-title-video-en").val('');
+    
+    $("#editor-id-video").val('');
 }
 
 function change_video(v)
