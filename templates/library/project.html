@@ -51,6 +51,7 @@
               {% trans "Document" %}:
             </label>
             <select id="doc-id" name="docId" onchange="this.form.submit();">
+              <option {% if selected_document_id == None %} selected{% endif %}>Select a document ...</option>
               {% for doc in documents %}
               <option value="{{ doc.id }}"{% if selected_document_id == doc.id %} selected{% endif %}>
                 {{ doc.title }} ({{ doc.id }})
