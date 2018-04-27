@@ -109,9 +109,10 @@
                 </li>
                 <li>{{ page.user }}</li>
                 <li>
-                  {# <a href="{% url 'sandbox:transcribe' %}?test=0&colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">View</a> #}
-                  <a href="{% url 'sandbox:transcribe' %}?test=0&colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">Transcribe</a>
-                  <a href="{% url 'sandbox:transcribe' %}?test=0&colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">Proofread</a>
+                  Start using 
+                  <a href="{% url 'edit:correct' collection.id document.id page.num %}"> Interface A</a>
+                  &nbsp;|&nbsp;
+                  <a href="{% url 'sandbox:transcribe' %}?test=0&colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">Interface B</a>
                 </li>
               </ul>
             </div>
