@@ -23,9 +23,6 @@ urlpatterns = [
 
     url(r'^projects/(?P<slug>[\w-]+)/$', login_required(views.project_detail), name='project-detail'),
 
-#    url(r'^collections$', views.collections, name='collections'),
-    # url(r'^([\-0-9]+)$', views.collection, name='collection'),
-#    url(r'^([\-0-9]+)/([0-9]+)$', views.document, name='document'),
     url(r'^([\-0-9]+)/([0-9]+)/([0-9]+)$', views.document_page, name='document_page'),
     url(r'^([\-0-9]+)/([0-9]+)$', views.document_page, name='document_page'),
 #    url(r'^([\-0-9]+)/([0-9]+)/([0-9]+)$', views.page, name='page'),
