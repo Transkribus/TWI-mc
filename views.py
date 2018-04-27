@@ -208,6 +208,8 @@ def project_detail(request, slug):
     SLUGS = {
         'webuitestcollection': 2305,
         'brussels-webui-demo': 5163,
+        'nekrolog': 13138,
+        'nz-alpine-journal': 13547
     }
 
     TITLES = {
