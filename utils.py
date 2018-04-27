@@ -73,7 +73,7 @@ class PageList:
             'id': page_data['pageNr'],
             'num': page_data['pageNr'],
             'status': PAGE_STATE[data['status']].title(),
-            'user': data['userName'],
+            'user': data['userName'] if not '@' in data['userName'] else data['userName'][:data['userName'].index('@')],
             'num_lines_total': data['nrOfLines'],
             'num_lines_done': data['nrOfTranscribedLines'],
             'progress': progress
