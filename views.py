@@ -8,8 +8,7 @@ from . import services
 from . import forms
 from . import paginator
 from . import models
-
-from .models import Collection, Document, DocumentCollection
+from . import utils
 
 from .legacy_views import *
 
@@ -203,45 +202,66 @@ def document_detail(request, col_id, doc_id):
     from django.http import HttpResponse
     return HttpResponse("Not Implemented", status=501)
 
-@login_required
-def project(request, slug):
-    from django.http import HttpResponseNotFound
+def project_detail(request, slug):
+    from django.http import Http404
 
-    t = request.user.tsdata.t
-
-    slugs = {
+    SLUGS = {
         'webuitestcollection': 2305,
         'brussels-webui-demo': 5163,
     }
 
-    if slug not in slugs:
-        return HttpResponseNotFound('No collection found with "%s".' % slug)
+    TITLES = {
+        2305: 'Web UI Test Collection'
+    }
 
-    metadata = t.collection_metadata(request,{'collId': slugs[slug]})
-    col_name = metadata['colName']
-    col_id = metadata['colId']
-    documents = []
-    for d in t.collection(request, {'collId': slugs[slug]}):
-        if d['status'] == 0:
-            status = _('New')
-        elif d['status'] == 1:
-            status = _('In Progress')
-        elif d['status'] == 2:
-            status = _('Done')
-        elif d['status'] == 3:
-            status = _('Final')
-        else:
-            status = _('Ground Truth')
+    if slug not in SLUGS:
+        raise Http404
 
-        document = t.document(request, str(col_id), int(d['docId']), -1)
-        documents.append({
-            'title': d['title'],
-            'doc_id': d['docId'],
-            'status': status,
-            'pages': [{
-                'page_id': p['pageId'],
-                'page_nr': p['pageNr'],
-                'status': p['tsList']['transcripts'][0]['status']
-            } for p in document['pageList']['pages']]
-        })
-    return render(request, 'library/project.html', locals())
+    from . import services
+
+    client = services.Helpers.create_client_from_request(request)
+
+    # 1 request
+    collection = client.get_col_meta_data(SLUGS[slug])
+
+    # 2 requests
+    documents = client.get_doc_list(int(collection.col_id))
+
+    DOC_ID = 'docId'
+
+    try:
+        doc_id = int(request.GET[DOC_ID])
+    except (ValueError, KeyError):
+        doc_id = doc = None
+    else:
+        # 3 requests
+        doc = client.get_fulldoc(collection.col_id, doc_id)
+
+    # 4th request
+    stats = utils.Stats(client.get_col_stats(collection.col_id))    
+
+    context = {
+        'slug': slug,
+        'collection': {
+            'id': collection.col_id,
+            'name': collection.col_name,
+            'num_docs': collection.nr_of_documents,
+            'title': TITLES.get(collection.col_id),
+            'progress': stats.progress
+        },
+        'selected_document_id': doc_id,
+        'selected_document': None if doc is None else {
+            'id': doc.md['docId'],
+            'title': doc.md['title'],
+            'num_pages': doc.md['nrOfPages'],
+            'progress': utils.Stats(doc.md).progress,
+            'pages': utils.PageList(doc)
+        },
+        'documents':({
+            'id': doc.doc_id,
+            'status': doc.status,
+            'title': doc.title
+        } for doc in documents)
+    }
+
+    return render(request, 'library/project.html', context)
