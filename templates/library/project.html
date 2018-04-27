@@ -107,10 +107,11 @@
                 <li>
                   <span title="{{ page.num_lines_done }}  of {{ page.num_lines_total }} Lines Transcribed">{{ page.num_lines_done }}  of {{ page.num_lines_total }}</span>
                 </li>
+                <li>{{ page.user }}</li>
                 <li>
-                  {# <a href="{% url 'sandbox:transcribe' %}?colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">View</a> #}
-                  <a href="{% url 'sandbox:transcribe' %}?colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">Transcribe</a>
-                  <a href="{% url 'sandbox:transcribe' %}?colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">Proofread</a>
+                  {# <a href="{% url 'sandbox:transcribe' %}?test=0&colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">View</a> #}
+                  <a href="{% url 'sandbox:transcribe' %}?test=0&colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">Transcribe</a>
+                  <a href="{% url 'sandbox:transcribe' %}?test=0&colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">Proofread</a>
                 </li>
               </ul>
             </div>
