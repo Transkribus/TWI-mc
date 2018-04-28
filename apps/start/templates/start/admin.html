@@ -443,16 +443,19 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
          <label for="editor-icon-doc">
              {% language "{{l.0}}" %}icon{% endlanguage %}
          </label>
-        <input class="form-control" type="text" name="editor-icon-doc" id ="editor-icon-doc" value="icon-lightbulb"/>
+        
 
-        <div class="ui inline dropdown">
+        <div class="ui fluid search dropdown" id="editor-icondiv-doc">
+        <input type="hidden" name="editor-icon-doc" id ="editor-icon-doc" value=""/>
           <span class="text">{% trans 'select icon' %}</span>
           <i class="dropdown icon"></i>
           <div class="menu">
-            <div class="item">
-             
-                icon 1
-            </div>
+            {% for i in icons %}
+                <div class="item" data-value="{{i.name}}">
+                    <span class="{{i.css_class}}"></span>
+                    {{i.name}}
+                </div>
+            {% endfor %}
             <div class="item">
               <img class="ui image" src="{% static 'start/img/doc_icons/jaune.jpeg' %}">
                 icon 1
@@ -460,7 +463,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
             
           </div>
         </div>
-
+        <br/>
     
          <div class="tab">
             <button class="tablinks-doc" onclick="openTabs('editor-doc-tab-de', 'doc', event)">DE</button>

@@ -101,6 +101,7 @@ def admin(request):
     v = m.VideoDesc.objects.filter(lang=translation.get_language())
     docs = m.DocumentEntries.objects.filter(lang=translation.get_language())
     ifirst = m.Institution.objects.first()
+    icons = m.SupportedIcons.objects.all()
     
     inst_proj_entries = []
     if ifirst:
@@ -113,7 +114,8 @@ def admin(request):
         'articles' : a,
         'quotes' : q,
         'videos' : v,
-        'docs' : docs 
+        'docs' : docs,
+        'icons' : icons 
     }
 
     return HttpResponse(template.render(context, request))

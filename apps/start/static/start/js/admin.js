@@ -663,7 +663,16 @@ function clear_doc()
     quills['doc-desc-de'].clipboard.dangerouslyPasteHTML('');
     quills['doc-content-de'].clipboard.dangerouslyPasteHTML('');
     $("#editor-title-doc-de").val('');   
-    $("#editor-icon-doc").val(''); 
+    $("#editor-icon-doc").val('phone'); 
+    
+    //$("#editor-icondiv-doc").find(":selected").val('phone');
+    
+    //$('#editor-icondiv-doc').dropdown("set selected", ['phone']);
+    $('#editor-icondiv-doc').dropdown('clear');
+    
+    var v = $('#editor-icondiv-doc').dropdown();
+    //var v = $('#editor-icondiv-doc').dropdown('get value');
+    console.dir(v);
 }
 
 function change_doc(v)
@@ -847,4 +856,18 @@ $(document).ready(function()
     generateQuillObjects('video');            
     generateQuillObjects('doc-desc');  
     generateQuillObjects('doc-content');  
+    
+    
+     $('#editor-icon-doc').dropdown(
+     {
+        onChange: function (value, text, $selectedItem) 
+        {
+            console.log(value);
+        },
+        forceSelection: false, 
+        selectOnKeydown: false, 
+        showOnFocus: false,
+        on: "hover" 
+    });
+      
 });        
