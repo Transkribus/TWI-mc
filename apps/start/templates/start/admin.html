@@ -44,8 +44,12 @@
     <script src="{% static 'start/assets/js/particles.min.js' %}"></script>
     <script src="{% static 'start/assets/js/init-particles.js' %}"></script>
     <!--typed js -->
-    <script src="{% static 'start/assets/js/typed.min.js' %}s"></script>
-
+    <script src="{% static 'start/assets/js/typed.min.js' %}"></script>
+    
+    
+    <!-- semantic ui -->
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
     
     <!-- Fonts Icon CSS -->
     <link href="{% static 'start/assets/css/font-awesome.min.css' %}" rel="stylesheet" >
@@ -72,11 +76,13 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'start/css/admin.css' %}">
     <link href="{% static 'start/css/homepage.css' %}" rel="stylesheet" >
-    
-    <link rel="shortcut icon" href="{% static 'start/favicon.ico' %}" type="image/x-icon" />
+  
     <!-- Custom js -->
     <script src="{% static 'start/assets/js/main.js' %}"></script>
     <script src="{% static 'start/js/admin.js' %}"></script>
+    
+    
+    <link rel="shortcut icon" href="{% static 'start/favicon.ico' %}" type="image/x-icon" />
 </head>
 
 <body data-spy="scroll" data-target="header">
@@ -439,6 +445,23 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
          </label>
         <input class="form-control" type="text" name="editor-icon-doc" id ="editor-icon-doc" value="icon-lightbulb"/>
 
+        <div class="ui inline dropdown">
+          <span class="text">{% trans 'select icon' %}</span>
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            <div class="item">
+             
+                icon 1
+            </div>
+            <div class="item">
+              <img class="ui image" src="{% static 'start/img/doc_icons/jaune.jpeg' %}">
+                icon 1
+            </div>
+            
+          </div>
+        </div>
+
+    
          <div class="tab">
             <button class="tablinks-doc" onclick="openTabs('editor-doc-tab-de', 'doc', event)">DE</button>
             <button class="tablinks-doc" onclick="openTabs('editor-doc-tab-en', 'doc', event)">EN</button>
@@ -521,8 +544,12 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
     </div> 
 </section>
 
+<script>
+$('.ui.dropdown')
+  .dropdown()
+;
 
+</script>
 {% include "start/includes/footer.html" %} 
-
 
 </body>
