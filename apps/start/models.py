@@ -101,5 +101,7 @@ class VideoDesc(models.Model):
     video = models.ForeignKey(Video, on_delete=models.CASCADE, blank=True, null=True)
     changed = models.DateField(auto_now_add=True)
     
-
+class SupportedIcons(models.Model):
+    name = models.CharField( max_length=200)
+    css_class = models.CharField( max_length=200)
           
