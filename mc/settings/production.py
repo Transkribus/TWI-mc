@@ -76,7 +76,7 @@ INSTALLED_APPS = [
     'apps.search',
 #    'apps.navigation'
     'apps.sandbox',
-    'transkribus',
+#    'transkribus',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -233,8 +233,8 @@ MEDIA_URL =  SERVERBASE+'/media/' #not currently used
 
 ## Auth backend that logs in to transkribus.eu and extends the django.contrib.auth.User
 AUTHENTICATION_BACKENDS = [
-#    'apps.utils.backends.TranskribusBackend',
-    'transkribus.auth_backends.TranskribusBackend',
+    'apps.utils.backends.TranskribusBackend',
+#    'transkribus.auth_backends.TranskribusBackend',
 ]
 
 #Location of TRP server for transkribus REST services
