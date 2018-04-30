@@ -28,11 +28,15 @@ class LoginWithCookie(LoginView):
     template_name = 'registration/login-with-cookie.html'
 
     def form_invalid(self, form):
+
         response = super(LoginWithCookie, self).form_invalid(form)
 
-        response.delete_cookie('JSESSIONID', path='/', domain='transkribus.eu')
-
-        return response
+        try:
+            response.delete_cookie('JSESSIONID', path='/', domain='transkribus.eu')
+        except (ValueError, TypeError, AttributeError) as error:
+            logging.error("%r", error)
+        finally:
+            return response
 
     def form_valid(self, form):
 
@@ -42,7 +46,7 @@ class LoginWithCookie(LoginView):
         try:
             self.set_cookie(self.request, response)
         except (ValueError, TypeError, AttributeError) as error:
-            logging.error(error)
+            logging.error("%r", error)
 
         return response
 
@@ -55,7 +59,7 @@ class LoginWithCookie(LoginView):
         response.set_cookie(
             'JSESSIONID', value=transkribus.sessionId,
             path='/TrpServer/', domain='transkribus.eu',
-            httponly=True, secure=True)
+            httponly=False, secure=True)
 
 def register(request):
 #TODO this is generic guff need to extend form for extra fields, send reg data to transkribus and authticate (which will handle the user creation)
