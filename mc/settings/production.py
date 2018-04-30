@@ -75,7 +75,8 @@ INSTALLED_APPS = [
     'apps.edit',
     'apps.search',
 #    'apps.navigation'
-    'apps.sandbox'
+    'apps.sandbox',
+    'transkribus',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -232,7 +233,8 @@ MEDIA_URL =  SERVERBASE+'/media/' #not currently used
 
 ## Auth backend that logs in to transkribus.eu and extends the django.contrib.auth.User
 AUTHENTICATION_BACKENDS = [
-    'apps.utils.backends.TranskribusBackend',
+#    'apps.utils.backends.TranskribusBackend',
+    'transkribus.auth_backends.TranskribusBackend',
 ]
 
 #Location of TRP server for transkribus REST services
@@ -275,7 +277,7 @@ CDNS = {'bootstrap_css' : {'local': "css/bootstrap.min.css", 'cdn' : "//maxcdn.b
 PROFILE_LOG_BASE = '/tmp/'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 28800 #8 hours like Transkribus REST session
+SESSION_COOKIE_AGE = 25200 #7 hours < than Transkribus REST session (8 hours)
 
 BROWSERS = [
 		{"browser": "Chrome", "versions": ["60.x"]},
