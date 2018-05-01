@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'apps.search',
 #    'apps.navigation'
     'apps.sandbox',
+#    'waffle',
 #    'transkribus',
 ]
 
@@ -87,6 +88,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+#    'waffle.middleware.WaffleMiddleware',
     #Added for READ
     'django.middleware.locale.LocaleMiddleware',
 
@@ -113,12 +115,14 @@ TEMPLATES = [
 		'apps.utils.contexts.nav_up',
 		'apps.utils.contexts.version',
 		'apps.utils.contexts.browser_list',
+#                'apps.utils.contexts.static_url', 
             ],
             'libraries' : {
                 'read_tags': 'apps.utils.templatetags',
             },
         },
     },
+
 ]
 
 
@@ -163,6 +167,10 @@ AUTH_PASSWORD_VALIDATORS = [
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, "locale"),
 ]
+
+ADMINS = [('Rory', 'ror.mcnicholl@london.ac.uk'), ('Berthold', 'berthold.ulreich@alumni.uni-graz.at')]
+
+SERVER_EMAIL = 'email@transkribus.eu'
 
 LANGUAGE_CODE = 'en'
 #Added for READ lang set == official EU languages
@@ -233,8 +241,9 @@ MEDIA_URL =  SERVERBASE+'/media/' #not currently used
 
 ## Auth backend that logs in to transkribus.eu and extends the django.contrib.auth.User
 AUTHENTICATION_BACKENDS = [
-    'apps.utils.backends.TranskribusBackend',
-#    'transkribus.auth_backends.TranskribusBackend',
+#    'apps.utils.auth_backends.TranskribusBackend',
+    'apps.utils.backends.TranskribusBackend', 
+#    'transkribus.auth_backends.TranskribusBac<F8>kend',
 ]
 
 #Location of TRP server for transkribus REST services
