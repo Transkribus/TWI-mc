@@ -168,7 +168,7 @@ LOCALE_PATHS = [
     os.path.join(BASE_DIR, "locale"),
 ]
 
-ADMINS = [('Rory', 'ror.mcnicholl@london.ac.uk'), ('Berthold', 'berthold.ulreich@alumni.uni-graz.at')]
+ADMINS = [('Rory', 'rory.mcnicholl@london.ac.uk'), ('Berthold', 'berthold.ulreich@alumni.uni-graz.at')]
 
 SERVER_EMAIL = 'email@transkribus.eu'
 
