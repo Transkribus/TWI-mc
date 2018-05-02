@@ -47,3 +47,38 @@
     border: 1px solid #ccc;
     border-top: none;
 }
+
+
+.selectboxit-option-icon-container {
+    margin-top: 7px;
+    width: 30px;
+    height: 30px;
+    float: left;
+}
+
+/* Height and Vertical Alignment of Text */
+.selectboxit-container span, .selectboxit-container .selectboxit-options a {
+    height: 30px; / Height of the drop down /
+    line-height: 30px; / Vertically positions the drop down text */
+    display: block;
+    font-color: #989EAC;
+}
+
+.selectboxit-container .selectboxit-option-icon {
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    width:100px;
+}
+
+
+.selectboxit-option-icon
+{   
+    
+    color: black;    
+    background-size: 105px 112px; 
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+    
+}

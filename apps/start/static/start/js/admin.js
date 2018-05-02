@@ -663,16 +663,9 @@ function clear_doc()
     quills['doc-desc-de'].clipboard.dangerouslyPasteHTML('');
     quills['doc-content-de'].clipboard.dangerouslyPasteHTML('');
     $("#editor-title-doc-de").val('');   
-    $("#editor-icon-doc").val('phone'); 
+    //$("#editor-icon-doc").val(''); 
     
-    //$("#editor-icondiv-doc").find(":selected").val('phone');
-    
-    //$('#editor-icondiv-doc').dropdown("set selected", ['phone']);
-    $('#editor-icondiv-doc').dropdown('clear');
-    
-    var v = $('#editor-icondiv-doc').dropdown();
-    //var v = $('#editor-icondiv-doc').dropdown('get value');
-    console.dir(v);
+    $("#editor-icon-doc").data("selectBox-selectBoxIt").selectOption("no_icon");
 }
 
 function change_doc(v)
@@ -681,7 +674,7 @@ function change_doc(v)
     {
          $.post("change_admin_doc_selection", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
         {
-            $("#editor-icon-doc").val(data[0].fields.name);
+            $("#editor-icon-doc").data("selectBox-selectBoxIt").selectOption(data[0].fields.icon);
             var en = getentrybylang(data,"en");
             quills['doc-desc-en'].clipboard.dangerouslyPasteHTML(en.fields.desc);
             quills['doc-content-en'].clipboard.dangerouslyPasteHTML(en.fields.content);
@@ -713,7 +706,6 @@ function store_doc()
     var html_content_en = $("#editor-container-doc-content-en").children().first().html();
     var html_content_de = $("#editor-container-doc-content-de").children().first().html();
     
-
     var icon = $("#editor-icon-doc").val();
     
     $.post("store_admin_doc",
@@ -857,17 +849,12 @@ $(document).ready(function()
     generateQuillObjects('doc-desc');  
     generateQuillObjects('doc-content');  
     
-    
-     $('#editor-icon-doc').dropdown(
-     {
-        onChange: function (value, text, $selectedItem) 
-        {
-            console.log(value);
-        },
-        forceSelection: false, 
-        selectOnKeydown: false, 
-        showOnFocus: false,
-        on: "hover" 
-    });
-      
+     $("#editor-icon-doc").selectBoxIt({
+          theme: "jqueryui",
+          showEffect: "slideDown",
+          autoWidth: true,
+         
+         
+     });
+     //$("select").selectBoxIt();
 });        

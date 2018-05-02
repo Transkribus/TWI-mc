@@ -20,7 +20,9 @@
     
        <!-- bootstrap -->
     <script src="{% static 'start/assets/js/popper.js' %}"></script>
-    <script src="{% static 'start/assets/js/bootstrap.min.js' %}"></script>
+    
+    <!-- <script src="{% static 'start/assets/js/bootstrap.min.js' %}"></script>
+     -->
     <script src="{% static 'start/assets/js/waypoints.min.js' %}"></script>
     <!-- Owl Carousel js -->
     <script src="{% static 'start/assets/js/owl.carousel.min.js' %}"></script>
@@ -45,22 +47,38 @@
     <script src="{% static 'start/assets/js/init-particles.js' %}"></script>
     <!--typed js -->
     <script src="{% static 'start/assets/js/typed.min.js' %}"></script>
+   
     
+    <!-- <link href="{% static 'start/css/jquery-ui.min.css' %}" rel="stylesheet" >
+    <script src="{% static 'start/js/jquery-ui.min.js' %}"></script>  -->
     
-    <!-- semantic ui -->
+    <!-- <link href="{% static 'start/css/selectboxlt.css' %}" rel="stylesheet" >
+    <script src="{% static 'start/js/selectboxlt.js' %}"></script> 
+     -->
+    
+    <link rel="stylesheet" href="http://gregfranko.com/jquery.selectBoxIt.js/css/jquery.selectBoxIt.css" />
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/base/jquery-ui.css" />
+    
+    <!-- semantic ui
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.3.1/dist/semantic.min.css">
+    -->
     
     <!-- Fonts Icon CSS -->
     <link href="{% static 'start/assets/css/font-awesome.min.css' %}" rel="stylesheet" >
     <link href="{% static 'start/assets/css/et-line.css' %}" rel="stylesheet" />
+    
     <!-- Owl Carousel CSS -->
     <link href="{% static 'start/assets/css/owl.carousel.min.css' %}" rel="stylesheet" >
     <link href="{% static 'start/assets/css/owl.theme.default.min.css' %}" rel="stylesheet" >
+    
     <!-- Magnific-popup -->
     <link rel="stylesheet" href="{% static 'start/assets/css/magnific-popup.css' %}" >
+    
     <!-- Animate CSS -->
     <link rel="stylesheet" href="{% static 'start/assets/css/animate.min.css' %}" >
+    
     <!-- Custom styles for this template -->
     <link href="{% static 'start/assets/css/main.css' %}" rel="stylesheet" > 
     <!-- Custom modifications -->   
@@ -427,6 +445,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
     </div> 
 </section>
 
+
 <section id="documents" class="bg-light pt120 pb120">
      <div class="container">
         <h1>{% trans 'Documents' %}</h1>
@@ -443,27 +462,17 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
          <label for="editor-icon-doc">
              {% language "{{l.0}}" %}icon{% endlanguage %}
          </label>
-        
 
-        <div class="ui fluid search dropdown" id="editor-icondiv-doc">
-        <input type="hidden" name="editor-icon-doc" id ="editor-icon-doc" value=""/>
-          <span class="text">{% trans 'select icon' %}</span>
-          <i class="dropdown icon"></i>
-          <div class="menu">
+
+        <select name="editor-icon-doc"  id="editor-icon-doc">
+             <option value="no_icon" selected>{% trans 'no icon' %}...</option>
             {% for i in icons %}
-                <div class="item" data-value="{{i.name}}">
-                    <span class="{{i.css_class}}"></span>
-                    {{i.name}}
-                </div>
+            <option value="{{i.name}}" data-iconurl="" data-icon="{{i.css_class}}" data-text="{{i.name}}" data-selectedtext="">
+                
+            </option>
             {% endfor %}
-            <div class="item">
-              <img class="ui image" src="{% static 'start/img/doc_icons/jaune.jpeg' %}">
-                icon 1
-            </div>
-            
-          </div>
-        </div>
-        <br/>
+        </select>
+
     
          <div class="tab">
             <button class="tablinks-doc" onclick="openTabs('editor-doc-tab-de', 'doc', event)">DE</button>
@@ -547,12 +556,18 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
     </div> 
 </section>
 
-<script>
-$('.ui.dropdown')
-  .dropdown()
-;
 
-</script>
 {% include "start/includes/footer.html" %} 
-
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+ <!--  <script src="http://gregfranko.com/jquery.selectBoxIt.js/js/jquery.selectBoxIt.min.js"></script> -->
+  <script src="{% static 'start/js/selectBoxIt.js' %}"></script>
+  <script src="{% static 'start/assets/js/waypoints.min.js' %}"></script>
+  <script src="{% static 'start/assets/js/jquery.counterup.min.js' %}"></script>
+  <script src="{% static 'start/assets/js/jquery.magnific-popup.min.js' %}"></script>
+  <!-- Owl Carousel js -->
+<script src="{% static 'start/assets/js/owl.carousel.min.js' %}"></script>
+<!-- Owl Carousel js -->
+<script src="{% static 'start/assets/js/parallax.min.js' %}"></script>
+  
 </body>
