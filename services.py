@@ -6,6 +6,7 @@ import requests
 
 @functools.lru_cache(maxsize=256)
 def camelize(string):
+    # FIXME: turns AB into A_B
     return ''.join(
         s.title() if i > 0 else s
         for i, s in enumerate(string.split('_'))
@@ -145,63 +146,6 @@ class LazyJsonClient:
     def set_header_default(self, key, value):
         self._headers[key] = value
 
-    def post_login(self, username, password):
-        assert username and password
-        return self._build_object('POST', '/auth/login', {
-            'user': username,
-            'pw': password
-        })
-
-    def get_col_list(self, **kwargs):
-        sort_by = kwargs.get('sort_by')
-        params = {
-            'sortColumn': 'colName',
-            'sortDirection': 'DESC' if sort_by == 'td' else 'ASC'
-        }
-        return self._build_list_with_count('GET', [
-            '/collections/list', '/collections/count'], params)
-
-    def get_doc_list(self, col_id, sort_by=None):
-        assert isinstance(col_id, int)
-        params = {
-            'sortColumn': 'colName',
-            'sortDirection': 'DESC' if sort_by == 'td' else 'ASC'
-        }
-        return self._build_list_with_count('GET', [
-            '/collections/%d/list' % col_id,
-            '/collections/%d/count' % col_id
-        ], params)
-
-    def get_page_list(self, **kwargs):
-        raise NotImplemented('https://github.com/Transkribus/TranskribusServer/issues/36')
-
-    def get_doc_meta_data(self, col_id, doc_id):
-        return self._build_object('GET', '/collections/%d/%d/metadata' % (col_id, doc_id))
-
-    def get_col_meta_data(self, col_id):
-        return self._build_object('GET', '/collections/%d/metadata' % col_id)
-
-    def find_collections(self, *args, **kwargs):
-        raise NotImplemented('https://github.com/Transkribus/TranskribusServer/issues/35')
-
-    def find_documents(self, col_id, query, sort_by=None):
-        params = {
-            'collId': col_id,
-            'title': query,
-            'description': query,
-            # NOTE: commented out because trp api returns bogus results
-            # 'author': query,
-            # 'writer': query,
-            'exactMatch': False,
-            'caseSensitive': False,
-            'sortColumn': 'title',
-            'sortDirection': 'DESC' if sort_by == 'td' else 'ASC'
-        }
-        return self._build_list_with_count('GET', [
-            '/collections/findDocuments',
-            '/collections/countFindDocuments'
-        ], params)
-
 
 class Request:
 
@@ -277,6 +221,9 @@ class LazyList(List):
         warnings.warn("Iterating over *all* list items ...")
         return (CamelCaseDict(data) for data in self._req.execute())
 
+    def __repr__(self):
+        return [item in self]
+
     def __getitem__(self, maybe_slice):
         raise NotImplemented
 
@@ -321,6 +268,82 @@ class LazyObject(CamelCaseDict):
         self._req = request
         self._data = None
 
+    def __getattr__(self, name):
+        if self._data is None:
+            self._data = CamelCaseDict(self._req.execute())
+        return getattr(self._data, name)
+
+    def __getitem__(self, name):
+        return self.__getattr__(name)
+
+    def __repr__(self):
+        if self._data is None:
+            self._data = CamelCaseDict(self._req.execute())
+        return '<LazyObject: %r>' % self._data
+
+
+class API(LazyJsonClient):
+
+    def post_login(self, username, password):
+        assert username and password
+        return self._build_object('POST', '/auth/login', {
+            'user': username,
+            'pw': password
+        })
+
+    def get_col_list(self, **kwargs):
+        sort_by = kwargs.get('sort_by')
+        params = {
+            'sortColumn': 'colName',
+            'sortDirection': 'DESC' if sort_by == 'td' else 'ASC'
+        }
+        return self._build_list_with_count('GET', [
+            '/collections/list', '/collections/count'], params)
+
+    def get_doc_list(self, col_id, sort_by=None):
+        assert isinstance(col_id, int)
+        params = {
+            'sortColumn': 'colName',
+            'sortDirection': 'DESC' if sort_by == 'td' else 'ASC'
+        }
+        return self._build_list_with_count('GET', [
+            '/collections/%d/list' % col_id,
+            '/collections/%d/count' % col_id
+        ], params)
+
+    def get_doc_meta_data(self, col_id, doc_id):
+        return self._build_object('GET', '/collections/%d/%d/metadata' % (col_id, doc_id))
+
+    def get_col_meta_data(self, col_id):
+        return self._build_object('GET', '/collections/%d/metadata' % col_id)
+
+    def get_doc_page_list(self, col_id):
+        return self._build_object('GET', '/collections/%d/metadata' % col_id)
+
+    def get_fulldoc(self, col_id, doc_id):
+        return self._build_object('GET', '/collections/%d/%d/fulldoc' % (col_id, doc_id))
+
+    def get_col_stats(self, col_id):
+        return self._build_object('GET', '/collections/%d/stats' % col_id)
+
+    def find_documents(self, col_id, query, sort_by=None):
+        params = {
+            'collId': col_id,
+            'title': query,
+            'description': query,
+            # NOTE: commented out because trp api returns bogus results
+            # 'author': query,
+            # 'writer': query,
+            'exactMatch': False,
+            'caseSensitive': False,
+            'sortColumn': 'title',
+            'sortDirection': 'DESC' if sort_by == 'td' else 'ASC'
+        }
+        return self._build_list_with_count('GET', [
+            '/collections/findDocuments',
+            '/collections/countFindDocuments'
+        ], params)
+
 
 class Helpers:
 
@@ -336,7 +359,7 @@ class Helpers:
         if req.GET.get('test') != '1':
             assert hasattr(settings, 'TRP_URL')
             session_id = Helpers.get_session_id(req)
-            return LazyJsonClient(settings.TRP_URL, {'Cookie': 'JSESSIONID=%s' % session_id})
+            return API(settings.TRP_URL, {'Cookie': 'JSESSIONID=%s' % session_id})
 
         # prepare test client
 
