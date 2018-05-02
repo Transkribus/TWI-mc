@@ -3,6 +3,7 @@ import time
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
+from django.views.generic import TemplateView
 
 from . import services
 from . import forms
@@ -194,6 +195,29 @@ class PageListView(LoginRequiredMixin, ListView):
         })
 
         return context
+
+
+class CollectionView(TemplateView):
+    template_name = "about.html"
+
+    def get_context_data(self, **kwargs):
+        then = time.time()
+
+        context = super(ListView, self).get_context_data(**kwargs)
+        collection = Collection.objects.get(collection_id=context.pop('col_id'))
+
+        context.update({
+            'title': collection.name,
+            'id': int(collection.collection_id),
+            'description': collection.description,
+            'item_count': collection.documents.count(),
+            'role': '',
+            'thumb_url': collection.thumb_url,
+            'time_elapsed': round(1000 * (time.time() - then), 2)
+        })
+
+        return context
+
 
 def collection_detail(request, col_id):
     from django.http import HttpResponse

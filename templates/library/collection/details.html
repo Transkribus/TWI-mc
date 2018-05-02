@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block body_content %}
+<div class="container">
+  <section class="collections">
+    <style>
+
+     .collections {
+       padding: 2em 0;
+     }
+
+     .collections .list > .item > .media-left {
+       text-align: center;
+     }
+
+     .collections .list > .item > .media-left > .img {
+       display: block;
+       width: auto;
+       min-width: 85px;
+       height: 120px;
+       background-color: rgba(0, 0, 0, 0.05);
+     }
+
+    </style>
+
+    <header>
+      <div class="row">
+        <div class="col-md-12">
+          <ol class="breadcrumb">
+            <li class="active">Collection: {{ name }}</li>
+          </ol>
+        </div>
+      </div>
+    </header>
+
+    <main class="list">
+      <table class="table table-striped display" id="collections_table">
+        {% for property in properties %}
+          <tr>
+            <th>{{ property.name }}</th>
+            <td>{{ property.value }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </main>
+
+    <footer>
+      <div class="row">
+        <div class="col-md-2">
+          {{ time_elapsed }}ms
+        </div>
+        <div class="col-md-10 text-right">
+          {% if is_paginated %}
+          <nav>
+            <ul class="pagination">
+              <li>
+                <a {% if page.has_previous %}class="disabled" href="?page={{ page.previous_page_number }}" {% endif %}aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              {% for page_num in page.paginator.page_range %}
+              <li{% if page_num  == page.number %} class="active"{% endif %}>
+                <a href="?page={{ page_num }}">{{ page_num }}</a>
+              </li>
+              {% endfor %}
+              <li>
+                <a {% if page.has_next %}class="disabled" href="?page={{ page.next_page_number }}" {% endif %}aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        {% endif %}
+    </footer>
+  </section>
+</div>
+{% endblock %}
