@@ -2,6 +2,7 @@ import time
 
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from django.views.generic import TemplateView
 
 from apps.transkribus.mixins import LoginRequiredMixin
 
@@ -203,13 +204,54 @@ class PageListView(LoginRequiredMixin, ListView):
 
         return context
 
-def collection_detail(request, col_id):
-    from django.http import HttpResponse
-    return HttpResponse("Not Implemented", status=501)
 
-def document_detail(request, col_id, doc_id):
-    from django.http import HttpResponse
-    return HttpResponse("Not Implemented", status=501)
+class CollectionView(TemplateView):
+    template_name = 'library/collection/details.html'
+
+    def get_context_data(self, **kwargs):
+        then = time.time()
+
+        context = super(CollectionView, self).get_context_data(**kwargs)
+        collection = models.Collection.objects.get(collection_id=context.pop('col_id'))
+
+        context.update({
+            'title': collection.name,
+            'id': int(collection.collection_id),
+            'description': collection.description,
+            'item_count': collection.documents.count(),
+            'role': '',
+            'thumb_url': collection.thumb_url,
+            'time_elapsed': round(1000 * (time.time() - then), 2)
+        })
+
+        return context
+
+
+class DocumentView(TemplateView):
+    template_name = 'library/document/details.html'
+
+    def get_context_data(self, **kwargs):
+        then = time.time()
+
+        context = super(DocumentView, self).get_context_data(**kwargs)
+        document = models.Document.objects.get(docid=context.pop('doc_id'))
+
+        context.update({
+            'title': document.title,
+            'id': int(document.docid),
+            'description': document.description,
+            'item_count': document.pages.count(),
+            'script_type': document.scripttype,
+            'language': document.language,
+            'author': document.author,
+            'writer': document.writer,
+            'genre': document.genre,
+
+            'thumb_url': document.thumb_url,
+            'time_elapsed': round(1000 * (time.time() - then), 2)
+        })
+
+        return context
 
 def project_detail(request, slug):
     from django.http import Http404

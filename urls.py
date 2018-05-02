@@ -12,10 +12,10 @@ urlpatterns = [
 
     url('^collections/', include([
         url(r'^$', views.CollectionListView.as_view(), name='collection-list'),
-        url(r'^(?P<col_id>\d+)/$', views.collection_detail, name='collection-detail'),
+        url(r'^(?P<col_id>\d+)/$', views.CollectionView.as_view(), name='collection-detail'),
         url(r'^(?P<col_id>\d+)/documents/', include([
             url('^$', views.DocumentListView.as_view(), name='document-list'),
-            url(r'^(?P<doc_id>\d+)/$', views.document_detail, name='document-detail'),
+            url(r'^(?P<doc_id>\d+)/$', views.DocumentView.as_view(), name='document-detail'),
             url(r'^(?P<doc_id>\d+)/pages/$', views.PageListView.as_view(), name='page-list'),
         ]))
     ])),
