@@ -348,9 +348,10 @@ class API(LazyJsonClient):
 class Helpers:
 
     @staticmethod
-    def get_session_id(req):
-        return getattr(req.user.tsdata, 'session_id', getattr(
-            req.user.tsdata, 'sessionId'))
+    def get_session_id(request):
+        user = request.user
+        assert getattr(user, 'data', None) is not None
+        return user.data.session_id
 
     @staticmethod
     def create_client_from_request(req):

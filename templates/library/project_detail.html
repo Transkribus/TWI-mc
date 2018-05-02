@@ -4,7 +4,9 @@
 <script src="{% static "sandbox/js/lib/utils.js" %}"></script>
 <script src="{% static "sandbox/js/lib/api.js" %}"></script>
 {% endblock %}
-{% block body_content %}
+{% block header %}
+{% endblock header %}
+{% block content %}
 <div class="container">
   <section class="project">
     <header>
@@ -106,11 +108,10 @@
                   {% include 'library/includes/progress.html' with items=page.progress %}
                 </li>
                 <li>
-                  <span title="{{ page.num_lines_done }}  of {{ page.num_lines_total }} Lines Transcribed">{{ page.num_lines_done }}  of {{ page.num_lines_total }}</span>
+                  <span title="{{ page.num_lines_done }}  of {{ page.num_lines_total }} Lines Transcribed">{{ page.num_lines_done }}  of {{ page.num_lines_total }} lines transcribed</span>
                 </li>
                 <li>{{ page.user }}</li>
                 <li>
-                  Start using 
                   <a href="{% url 'edit:correct' collection.id document.id page.num %}"> Interface A</a>
                   &nbsp;|&nbsp;
                   <a href="{% url 'sandbox:transcribe' %}?test=0&colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">Interface B</a>
@@ -126,4 +127,6 @@
     </main>
   </section>
 </div>
-{% endblock %}
+{% endblock content %}
+{% block footer %}
+{% endblock footer %}

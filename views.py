@@ -317,4 +317,4 @@ def project_detail(request, slug):
         } for doc in documents)
     }
 
-    return render(request, 'library/project.html', context)
+    return render(request, 'library/project_detail.html', context)
