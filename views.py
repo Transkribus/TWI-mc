@@ -206,7 +206,7 @@ class PageListView(LoginRequiredMixin, ListView):
 
 
 class CollectionView(TemplateView):
-    template_name = 'library/collection/details.html'
+    template_name = 'library/collection/detail.html'
 
     def get_context_data(self, **kwargs):
         then = time.time()
@@ -228,7 +228,7 @@ class CollectionView(TemplateView):
 
 
 class DocumentView(TemplateView):
-    template_name = 'library/document/details.html'
+    template_name = 'library/document/detail.html'
 
     def get_context_data(self, **kwargs):
         then = time.time()
