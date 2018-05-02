@@ -76,7 +76,7 @@ INSTALLED_APPS = [
     'apps.search',
 #    'apps.navigation'
     'apps.sandbox',
-#    'waffle',
+    'waffle',
 #    'transkribus',
 ]
 
@@ -88,7 +88,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-#    'waffle.middleware.WaffleMiddleware',
+    'waffle.middleware.WaffleMiddleware',
     #Added for READ
     'django.middleware.locale.LocaleMiddleware',
 
