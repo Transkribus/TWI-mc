@@ -75,7 +75,9 @@ INSTALLED_APPS = [
     'apps.edit',
     'apps.search',
 #    'apps.navigation'
-    'apps.sandbox'
+    'apps.sandbox',
+    'waffle',
+#    'transkribus',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -86,6 +88,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'waffle.middleware.WaffleMiddleware',
     #Added for READ
     'django.middleware.locale.LocaleMiddleware',
 
@@ -112,12 +115,14 @@ TEMPLATES = [
 		'apps.utils.contexts.nav_up',
 		'apps.utils.contexts.version',
 		'apps.utils.contexts.browser_list',
+#                'apps.utils.contexts.static_url', 
             ],
             'libraries' : {
                 'read_tags': 'apps.utils.templatetags',
             },
         },
     },
+
 ]
 
 
@@ -162,6 +167,10 @@ AUTH_PASSWORD_VALIDATORS = [
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, "locale"),
 ]
+
+ADMINS = [('Rory', 'rory.mcnicholl@london.ac.uk'), ('Berthold', 'berthold.ulreich@alumni.uni-graz.at')]
+
+SERVER_EMAIL = 'email@transkribus.eu'
 
 LANGUAGE_CODE = 'en'
 #Added for READ lang set == official EU languages
@@ -232,7 +241,9 @@ MEDIA_URL =  SERVERBASE+'/media/' #not currently used
 
 ## Auth backend that logs in to transkribus.eu and extends the django.contrib.auth.User
 AUTHENTICATION_BACKENDS = [
-    'apps.utils.backends.TranskribusBackend',
+#    'apps.utils.auth_backends.TranskribusBackend',
+    'apps.utils.backends.TranskribusBackend', 
+#    'transkribus.auth_backends.TranskribusBac<F8>kend',
 ]
 
 #Location of TRP server for transkribus REST services
@@ -275,7 +286,8 @@ CDNS = {'bootstrap_css' : {'local': "css/bootstrap.min.css", 'cdn' : "//maxcdn.b
 PROFILE_LOG_BASE = '/tmp/'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 28800 #8 hours like Transkribus REST session
+SESSION_COOKIE_AGE = 25200 #7 hours < than Transkribus REST session (8 hours)
+SESSION_SAVE_EVERY_REQUEST = False
 
 BROWSERS = [
 		{"browser": "Chrome", "versions": ["60.x"]},
