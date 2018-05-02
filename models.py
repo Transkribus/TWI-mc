@@ -11,7 +11,8 @@ from django.contrib.auth.models import User
 from picklefield.fields import PickledObjectField
 
 from django.conf import settings
-# class TSData(models.Model):
+class TSData(models.Model):
+    pass
     # user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     # userId = models.CharField(max_length=100, default=0)
     # gender = models.CharField(max_length=100)
