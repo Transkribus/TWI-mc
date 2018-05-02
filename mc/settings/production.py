@@ -287,6 +287,7 @@ PROFILE_LOG_BASE = '/tmp/'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_AGE = 25200 #7 hours < than Transkribus REST session (8 hours)
+SESSION_SAVE_EVERY_REQUEST = False
 
 BROWSERS = [
 		{"browser": "Chrome", "versions": ["60.x"]},
