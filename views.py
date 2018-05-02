@@ -1,8 +1,9 @@
 import time
 
 from django.conf import settings
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
+
+from apps.transkribus.mixins import LoginRequiredMixin
 
 from . import services
 from . import forms
@@ -12,6 +13,7 @@ from . import utils
 
 from .legacy_views import *
 
+
 def test(request):
     from django.http import HttpResponse
 
@@ -20,6 +22,7 @@ def test(request):
         1 / 0
 
     return HttpResponse('test', content_type='text/plain')
+
 
 class CollectionListView(LoginRequiredMixin, ListView):
     template_name = 'library/collection/list.html'
@@ -37,9 +40,8 @@ class CollectionListView(LoginRequiredMixin, ListView):
         qs = super(CollectionListView, self).get_queryset()
 
         user = self.request.user
-        trp_user_id = user.tsdata.userId
 
-        qs = qs.filter(user_collection__user_id=trp_user_id)
+        qs = qs.filter(user_collection__user_id=user.data.user_id)
 
         if self.search:
             qs = qs.filter(name__icontains=self.search)
@@ -87,13 +89,12 @@ class DocumentListView(LoginRequiredMixin, ListView):
         self.search = self.form.cleaned_data['search']
 
         user = self.request.user
-        trp_user_id = user.tsdata.userId
 
         # NOTE: respond with 404 if access denied
         collection = get_object_or_404(
             models.Collection,
             pk=self.kwargs['col_id'],
-            user_collection__user_id=trp_user_id)
+            user_collection__user_id=user.data.user_id)
 
         documents = collection.documents.all()
 
