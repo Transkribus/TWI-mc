@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 
-from apps.utils.decorators import t_login_required as login_required 
+from apps.transkribus.decorators import login_required 
 
 from . import views
 
@@ -27,7 +27,7 @@ urlpatterns = [
 
     url(r'^([\-0-9]+)/([0-9]+)/([0-9]+)$', views.document_page, name='document_page'),
     url(r'^([\-0-9]+)/([0-9]+)$', views.document_page, name='document_page'),
-#    url(r'^([\-0-9]+)/([0-9]+)/([0-9]+)$', views.page, name='page'),
+    # url(r'^([\-0-9]+)/([0-9]+)/([0-9]+)$', views.page, name='page'),
     url(r'^([\-0-9]+)/([0-9]+)/([0-9]+)/([0-9]+)$', views.transcript, name='transcript'),
     url(r'^([\-0-9]+)/([0-9]+)/([0-9]+)/([0-9]+)/([\w-]+)$', views.region, name='region'), #TODO improve regionId regex?
     url(r'^([\-0-9]+)/([0-9]+)/([0-9]+)/([0-9]+)/([\w-]+)/([\w-]+)$', views.line, name='line'), #TODO as above...
