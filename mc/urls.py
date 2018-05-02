@@ -21,7 +21,9 @@ import apps.utils.views
 import mc.views
 import settings
 
+from apps import transkribus
 
+from apps.transkribus import views
 urlpatterns = [
     ##Pass on to app urls.py##
     #this causes various fails for some reason, though it would be nice to pass in app_name to library....
@@ -50,11 +52,10 @@ urlpatterns = [
     url(r'^browser_compat/$', mc.views.browser_compat, name='browser_compat'),
 
     ## Others ##
-    url(
-        '^login/$',
-        apps.transkribus.views.LoginWithCookie.as_view(),
-        name='login'
-    ),
+    url(r'^admin/', admin.site.urls),
+    url(r'^register$', apps.utils.views.register, name='register'),
+    # url(r'^logout/$', apps.utils.views.logout_view, name='logout'),
+    url('^login/$', transkribus.views.LoginWithCookie.as_view(), name='login-with-cookie'),
     url(r'^register$', apps.utils.views.register, name='register'),
     url(r'^admin/', admin.site.urls),
     url('', include('django.contrib.auth.urls')),
