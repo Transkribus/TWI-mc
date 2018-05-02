@@ -26,7 +26,6 @@ class TranskribusBackend(ModelBackend):
     associated with Django user.
     """
 
-    @transaction.atomic
     def authenticate(self, request, username=None, password=None):
 
         if not username or not password:
@@ -42,6 +41,7 @@ class TranskribusBackend(ModelBackend):
 
         return user
 
+@transaction.atomic
 def update_or_create_user_model(data):
 
     try:
