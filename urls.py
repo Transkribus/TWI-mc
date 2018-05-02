@@ -8,6 +8,8 @@ urlpatterns = [
 
     url(r'^$', views.CollectionListView.as_view(), name='index'),
 
+    url(r'^test/$', views.test, name='test'),
+
     url('^collections/', include([
         url(r'^$', views.CollectionListView.as_view(), name='collection-list'),
         url(r'^(?P<col_id>\d+)/$', views.collection_detail, name='collection-detail'),

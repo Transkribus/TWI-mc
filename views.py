@@ -12,6 +12,14 @@ from . import utils
 
 from .legacy_views import *
 
+def test(request):
+    from django.http import HttpResponse
+
+    if request.GET.get('error') == '1':
+        # yes, we can!
+        1 / 0
+
+    return HttpResponse('test', content_type='text/plain')
 
 class CollectionListView(LoginRequiredMixin, ListView):
     template_name = 'library/collection/list.html'
