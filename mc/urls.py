@@ -50,14 +50,13 @@ urlpatterns = [
     url(r'^browser_compat/$', mc.views.browser_compat, name='browser_compat'),
 
     ## Others ##
-    url(r'^admin/', admin.site.urls),
-    url(r'^register$', apps.utils.views.register, name='register'),
-    url(r'^logout/$', apps.utils.views.logout_view, name='logout'),
     url(
-        '^login-with-cookie/$',
-        apps.utils.views.LoginWithCookie.as_view(),
-        name='login-with-cookie'
+        '^login/$',
+        apps.transkribus.views.LoginWithCookie.as_view(),
+        name='login'
     ),
+    url(r'^register$', apps.utils.views.register, name='register'),
+    url(r'^admin/', admin.site.urls),
     url('', include('django.contrib.auth.urls')),
 
     url(r'^i18n/', include('django.conf.urls.i18n')),
