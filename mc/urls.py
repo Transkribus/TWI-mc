@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.views.generic import RedirectView
 
 import apps.utils.views
 import mc.views
@@ -38,8 +37,6 @@ urlpatterns = [
     url(r'^view/', include('apps.edit.urls', app_name='edit', namespace='edit')),
     url(r'^edit/', include('apps.edit.urls', app_name='edit', namespace='edit')),
     url(r'^utils/', include('apps.utils.urls', app_name='utils', namespace='utils')),
-    url(r'^sandbox/', include('apps.sandbox.urls', app_name='sandbox', namespace='sandbox')),
-
     # Sandbox
     url(r'^sandbox/', include('apps.sandbox.urls', app_name='sandbox', namespace='sandbox')),
 
@@ -55,7 +52,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^register$', apps.utils.views.register, name='register'),
     # url(r'^logout/$', apps.utils.views.logout_view, name='logout'),
-    url('^login/$', transkribus.views.LoginWithCookie.as_view(), name='login-with-cookie'),
+    url('^login/$', transkribus.views.LoginWithCookie.as_view(template_name='registration/login-with-cookie.html'), name='login-with-cookie'),
     url(r'^register$', apps.utils.views.register, name='register'),
     url(r'^admin/', admin.site.urls),
     url('', include('django.contrib.auth.urls')),
@@ -63,4 +60,3 @@ urlpatterns = [
     url(r'^i18n/', include('django.conf.urls.i18n')),
 
 ]
-

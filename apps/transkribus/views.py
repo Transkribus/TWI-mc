@@ -3,8 +3,6 @@ from django.contrib.auth.views import LoginView
 
 class LoginWithCookie(LoginView):
 
-    template_name = 'registration/login-with-cookie.html'
-
     def form_invalid(self, form):
 
         response = super(LoginWithCookie, self).form_invalid(form)
