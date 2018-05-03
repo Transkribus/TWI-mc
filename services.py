@@ -354,13 +354,13 @@ class Helpers:
         return user.data.session_id
 
     @staticmethod
-    def create_client_from_request(req):
+    def create_client_from_request(request):
         from django.conf import settings
 
-        if req.GET.get('test') != '1':
-            assert hasattr(settings, 'TRP_URL')
-            session_id = Helpers.get_session_id(req)
-            return API(settings.TRP_URL, {'Cookie': 'JSESSIONID=%s' % session_id})
+        if request.GET.get('test') != '1':
+            session_id = request.user.data.session_id
+            url = getattr(settings, 'TRANSKRIBUS_URL', 'https://transkribus.eu/TrpServer/rest/')
+            return API(url, {'Cookie': 'JSESSIONID=%s' % session_id})
 
         # prepare test client
 
