@@ -37,12 +37,12 @@ class TranskribusBackend(ModelBackend):
         if not data:
             return None
 
-        user = update_or_create_user_model(data)
+        user = create_or_update_user(data)
 
         return user
 
 @transaction.atomic
-def update_or_create_user_model(data):
+def create_or_update_user(data):
 
     try:
         user = models.User.objects.get(
@@ -78,5 +78,5 @@ def authenticate_with_cookie(request, key=None):
 
     data = services.get_data(session_id)
 
-    user = update_or_create_user_model(data)
+    user = create_or_update_user(data)
     return user
