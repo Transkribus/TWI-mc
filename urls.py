@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^(?P<col_id>\d+)/$', views.DocumentListView.as_view(), name='document-list--compat'),
 
 
-    url(r'^projects/(?P<slug_or_id>[\w]+)/$', login_required(views.project_detail), name='project-detail'),
+    url(r'^projects/(?P<slug_or_id>[\w-]+)/$', login_required(views.project_detail), name='project-detail'),
 
     url(r'^([\-0-9]+)/([0-9]+)/([0-9]+)$', views.document_page, name='document_page'),
     url(r'^([\-0-9]+)/([0-9]+)$', views.document_page, name='document_page'),
