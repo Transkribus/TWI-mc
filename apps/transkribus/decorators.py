@@ -22,7 +22,7 @@ def login_required(view_func, *args, **kwargs):
             else:
                 return view_func(request, *args, **kwargs)
         except HTTPError as error:
-            if error.response.status_code in (401, 403):
+            if error.response.status_code == 401:
                 logout(request)
                 return redirect('logout')
             else:
