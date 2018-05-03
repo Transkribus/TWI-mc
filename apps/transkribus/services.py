@@ -41,8 +41,7 @@ def login(username, password):
     if content_type is None:
         raise NotImplementedError("Missing content type")
     elif r.headers['Content-Type'].lower().startswith('application/json'):
-            r.raw.decode_content = True
-            return serializers.parse_user_data(r.raw)
+            return serializers.parse_user_data(r.json())
     else:
         raise NotImplementedError("Unexpected content type: {!s}".format(r.headers['Content-Type']))
 
@@ -74,7 +73,7 @@ def get_user_data(session_id):
         raise NotImplementedError("Missing content type")
     elif r.headers['Content-Type'].lower().startswith('application/json'):
             r.raw.decode_content = True
-            return serializers.parse_user_data(r.raw)
+            return serializers.parse_user_data(r.json())
     else:
         raise NotImplementedError("Unexpected content type: {!s}".format(r.headers['Content-Type']))
 

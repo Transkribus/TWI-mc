@@ -31,11 +31,9 @@ FIELDS = {
     # 'email': ('email', str),
 }
 
-def parse_user_data(fileobj):
+def parse_user_data(user_data):
 
     parsed_user_data = {}
-
-    user_data = json.load(fileobj)
 
     for field_name in FIELDS:
         value = user_data.pop(field_name, None)
