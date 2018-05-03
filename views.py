@@ -253,13 +253,17 @@ class DocumentView(TemplateView):
 
         return context
 
-def project_detail(request, slug):
+def project_detail(request, slug_or_id):
+
     from django.http import Http404
 
     SLUGS = {
         'webuitestcollection': 2305,
         'brussels-webui-demo': 5163,
         'nekrolog': 13138,
+        'kulinarik': 12710,
+        'hebrew-press': 6070,
+        'arabic-press-papers': 8838,
         'nz-alpine-journal': 13547
     }
 
@@ -267,18 +271,28 @@ def project_detail(request, slug):
         2305: 'Web UI Test Collection'
     }
 
-    if slug not in SLUGS:
-        raise Http404
+    if slug_or_id.isdigit():
+        col_id = int(slug_or_id)
+    else:
+        col_id = SLUGS.get(slug_or_id)
+        if col_id is None:
+            raise Http404
 
     from . import services
 
     client = services.Helpers.create_client_from_request(request)
 
     # 1 request
-    collection = client.get_col_meta_data(SLUGS[slug])
+    collection = client.get_col_meta_data(col_id)
 
-    # 2 requests
-    documents = client.get_doc_list(int(collection.col_id))
+    from requests.exceptions import HTTPError
+
+    try:
+        # 2 requests
+        documents = client.get_doc_list(int(collection.col_id))
+    except HTTPError as error:
+        from django.http import HttpResponseForbidden
+        return HttpResponseForbidden("Forbidden")
 
     DOC_ID = 'docId'
 
@@ -294,7 +308,7 @@ def project_detail(request, slug):
     stats = utils.Stats(client.get_col_stats(collection.col_id))    
 
     context = {
-        'slug': slug,
+        'slug': slug_or_id,
         'collection': {
             'id': collection.col_id,
             'name': collection.col_name,
