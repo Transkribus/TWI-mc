@@ -264,7 +264,8 @@ def project_detail(request, slug_or_id):
         'kulinarik': 12710,
         'hebrew-press': 6070,
         'arabic-press-papers': 8838,
-        'nz-alpine-journal': 13547
+        'nz-alpine-journal': 13547,
+        'tengnagel': 3850
     }
 
     TITLES = {
