@@ -127,7 +127,8 @@ class DocumentListView(LoginRequiredMixin, ListView):
                 'author': item.author,
                 'writer': item.writer,
                 'genre': item.genre,
-
+                'uploader': item.uploader,
+                'status': item.status,
                 'thumb_url': item.thumb_url,
 
             } for item in context.pop('object_list')
