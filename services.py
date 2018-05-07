@@ -100,7 +100,7 @@ class LazyJsonClient:
 
         self._request_factory = LazyJsonRequestFactory(headers)
         self._list_class = LazyList
-        self._object_class = LazyObject
+        self._object_class = EagerObject
         self._headers = headers
 
         self.__assert()
@@ -262,7 +262,22 @@ class LazyListWithCount(List):
         return self._req.count.execute()
 
 
-class LazyObject(CamelCaseDict):
+class EagerObject:
+
+    def __init__(self, request):
+        self._data = CamelCaseDict(request.execute())
+
+    def __getattr__(self, name):
+        return getattr(self._data, name)
+
+    def __getitem__(self, name):
+        return self.__getattr__(name)
+
+    def __repr__(self):
+        return '<EagerObject: %r>' % self._data
+
+
+class LazyObject:
 
     def __init__(self, request):
         self._req = request
