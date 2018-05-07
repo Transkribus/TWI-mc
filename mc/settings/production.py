@@ -265,7 +265,7 @@ PAGE_SIZE_DEFAULT = 5
 #Switch to use CDNs or local
 USE_CDNS = True
 # Static Resources (js css etc)
-CDNS = {'bootstrap_css' : {'local': "css/bootstrap.min.css", 'cdn' : "//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" },
+CDNS = {'bootstrap_css' : {'local': "css/bootstrap.min.css", 'cdn' : "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css"},
        'bootstrap_js' : {'local': "js/bootstrap.min.js", 'cdn' : "//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"},
        'datatables_css' : {'local': "css/jquery.dataTables.min.css", 'cdn': "//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"},
        'datatables_js' : {'local': "js/jquery.dataTables.min.js", 'cdn': "//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"},
