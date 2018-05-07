@@ -216,7 +216,7 @@ USE_TZ = True
 
 #### NB this is the static files setting for the production apache server
 
-SERVERBASE = '/read'
+SERVERBASE = ''
 
 #Step 1: we store static files in project_root/static
 STATICFILES_DIRS = (
@@ -230,7 +230,7 @@ STATICFILES_FINDERS = (
 )
 #Step 3 We run python manage.py collectstatic it will collect the static files from the locations defined above
 # and store them in the location defined by STATIC_ROOT (cannot be the same as any of the STATFILES_DIRS)
-STATIC_ROOT =  'collected_static'
+STATIC_PATH = STATIC_ROOT =  'collected_static'
 MEDIA_ROOT = 'media' #not currently used
 #Step 4 Finally we tell django how to serve the static files
 STATIC_URL = SERVERBASE+'/static/'
