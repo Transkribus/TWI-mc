@@ -220,13 +220,13 @@ class PageListView(LoginRequiredMixin, ListView):
         return context
 
 
-class CollectionView(TemplateView):
+class CollectionDetailView(TemplateView):
     template_name = 'library/collection/detail.html'
 
     def get_context_data(self, **kwargs):
         then = time.time()
 
-        context = super(CollectionView, self).get_context_data(**kwargs)
+        context = super(CollectionDetailView, self).get_context_data(**kwargs)
         collection = models.Collection.objects.get(collection_id=context.pop('col_id'))
 
         context.update({
@@ -242,13 +242,13 @@ class CollectionView(TemplateView):
         return context
 
 
-class DocumentView(TemplateView):
+class DocumentDetailView(TemplateView):
     template_name = 'library/document_detail.html'
 
     def get_context_data(self, **kwargs):
         then = time.time()
 
-        context = super(DocumentView, self).get_context_data(**kwargs)
+        context = super(DocumentDetailView, self).get_context_data(**kwargs)
         document = models.Document.objects.get(docid=context.pop('doc_id'))
 
         context.update({
