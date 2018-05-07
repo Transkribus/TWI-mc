@@ -38,6 +38,8 @@ class CollectionListView(LoginRequiredMixin, ListView):
         self.form = form
         self.search = form.cleaned_data.get('search')
 
+        sort_by = form.cleaned_data.get('sort_by')
+
         qs = super(CollectionListView, self).get_queryset()
 
         user = self.request.user
@@ -48,7 +50,11 @@ class CollectionListView(LoginRequiredMixin, ListView):
             qs = qs.filter(name__icontains=self.search)
             qs |= qs.filter(description__icontains=self.search)
 
-        return qs.order_by('name', 'description')
+        if sort_by == 'td':
+            sort_by_name = '-name'
+        else:
+            sort_by_name = 'name'
+        return qs.order_by(sort_by_name, 'description')
 
     def get_context_data(self, **kwargs):
         then = time.time()
@@ -78,7 +84,7 @@ class CollectionListView(LoginRequiredMixin, ListView):
 
 
 class DocumentListView(LoginRequiredMixin, ListView):
-    template_name = 'library/document/list.html'
+    template_name = 'library/document_list.html'
     form_class = forms.ListForm
     paginate_by = 10
     paginator_class = paginator.Paginator
@@ -88,6 +94,8 @@ class DocumentListView(LoginRequiredMixin, ListView):
         assert form.is_valid(), form.errors
         self.form = form
         self.search = self.form.cleaned_data['search']
+
+        sort_by = self.form.cleaned_data['sort_by']
 
         user = self.request.user
 
@@ -109,30 +117,36 @@ class DocumentListView(LoginRequiredMixin, ListView):
         self.col_id = collection.collection_id
         self.col_name = collection.name
 
-        return qs.order_by('title', 'author', 'description')
+        if sort_by == 'td':
+            sort_by_title = '-title'
+        else:
+            sort_by_title = 'title'
+        return qs.order_by(sort_by_title, 'author', 'description')
 
     def get_context_data(self, **kwargs):
         then = time.time()
 
         context = super(ListView, self).get_context_data(**kwargs)
 
-        items = [
+        items = (
             {
                 'title': item.title,
                 'id': int(item.docid),
                 'description': item.description,
                 'item_count': item.pages.count(),
-                'script_type': item.scripttype,
-                'language': item.language,
+                'script_type': item.scripttype.title(),
+                'language': item.language.title(),
                 'author': item.author,
                 'writer': item.writer,
                 'genre': item.genre,
                 'uploader': item.uploader,
                 'status': item.status,
+                'created_from': item.createdfrom,
+                'created_to': item.createdto,
                 'thumb_url': item.thumb_url,
 
             } for item in context.pop('object_list')
-        ]
+        )
 
         page = context.pop('page_obj')
 
@@ -229,7 +243,7 @@ class CollectionView(TemplateView):
 
 
 class DocumentView(TemplateView):
-    template_name = 'library/document/detail.html'
+    template_name = 'library/document_detail.html'
 
     def get_context_data(self, **kwargs):
         then = time.time()

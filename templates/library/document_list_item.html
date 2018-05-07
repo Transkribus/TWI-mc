@@ -9,6 +9,7 @@
   </div>
   <div class="col-md-8">
     <h4><a href="{% url 'library:page-list' id item.id %}">{{ item.title }}</a></h4>
+    {% if False %}
     <dl>
       {% if item.author %}
       <dt>Author</dt>
@@ -37,6 +38,52 @@
       <dt>Genre</dt>
       <dd>{{ item.genre }}</dd>
     </dl>
+    {% else %}
+    {% if item.author %}
+    <span class="text-muted">{% trans "By" %}</span> {{ item.author }}
+    {% endif %}
+    {% if item.description %}
+    <p>
+      {{ item.description }}
+    </p>
+    {% endif %}
+
+    <p>
+      {% blocktrans count counter=item.item_count %}
+      1 Page
+      {% plural %}
+      {{ counter }} Pages
+      {% endblocktrans %}
+    </p>
+
+    <div class="tags">
+      {% if item.language %}
+      <span class="badge badge-secondary">{{ item.language }}</span>
+      {% endif %}
+      {% if item.genre %}
+      <span class="badge badge-secondary">{{ item.genre }}</span>
+      {% endif %}
+      {% if item.script_type %}
+      <span class="badge badge-secondary">{{ item.script_type }}</span>
+      {% endif %}
+      {% if item.writer %}
+      <span class="badge badge-secondary">{{ item.writer }}</span>
+      {% endif %}
+      {% comment %}
+      {% if item.created_from or item.created_to %}
+      <span class="badge badge-secondary">
+        {% if created_from and created_to %}
+        {{ item.created_from }}-{{ item.created_to }}
+        {% elif created_from %}
+        {{ item.created_from }}
+        {% elif created_to %}
+        {{ item.created_to }}
+        {% endif %}
+      </span>
+      {% endif %}
+      {% endcomment %}
+    </div>
+    {% endif %}
   </div>
   <div class="col-md-2">
     <!-- <a href="{% url 'edit:document-view' id item.id %}">{% trans "Viewer" %}</a> -->
