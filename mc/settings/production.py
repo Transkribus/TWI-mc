@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 #Supporting apps
     'bootstrap3',
+    'bootstrap4',
     'captcha',
 #project app
     'mc',
