@@ -37,14 +37,15 @@ class User(AbstractUser):
 
         user = self
 
+        from apps.utils.services import TranskribusSession
+        cookies = {'JSESSIONID': self.data.session_id}
+        trp_sess = TranskribusSession()
+        trp_sess.s.cookies.update(cookies)
+        
         class _:
-            @property
-            def userId(self):
-                return user.data.user_id
-            @property
-            def sessionId(self):
-                return user.data.session_id
-
+            t = trp_sess
+            userId = self.data.user_id
+            sessionId = self.data.session_id
         return _
 
 
