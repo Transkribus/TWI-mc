@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n static %}
+{% block title %}{{ collection.name }} - Project Page{% endblock %}
 {% block scripts %}
 <script src="{% static "sandbox/js/lib/utils.js" %}"></script>
 <script src="{% static "sandbox/js/lib/api.js" %}"></script>
