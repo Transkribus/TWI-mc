@@ -39,10 +39,14 @@
                 ({{ collection.id }})
               </h1>
             </a>
+            {% comment %}
+            <h2>
+              Documents ({{ collection.num_docs }})
+            </h2>
+            {% endcomment %}
             <p>
-              {{ collection.num_docs }} Documents
+              {% include 'library/includes/progress.html' with items=collection.progress %}
             </p>
-            {% include 'library/includes/progress.html' with items=collection.progress %}
           </div>
         </div>        
       </div>
@@ -66,58 +70,19 @@
       <div class="row">
         <div class="col-md-12">
           {% if not selected_document %}
-          <h2>{% trans "No document selected" %}</h2>
+          <h4>{% trans "No document selected" %}</h4>
           {% else %}
           {% with document=selected_document %}
           <a href="{% url 'library:project-detail' slug %}/?docId={{ document.id }}">
             <h2>{{ document.title }} ({{ document.id }})</h2>
           </a>
-          <p>{{ document.num_pages }} Pages</p>
-          {% include 'library/includes/progress.html' with items=document.progress %}
-          <h3>Pages</h3>
+          <h3>Pages ({{ document.num_pages }})</h3>
+          <p>
+            {% include 'library/includes/progress.html' with items=document.progress %}
+          </p>
           <div class="page-list">
-            <style>
-             .page-list .page {
-               display: inline-block;
-               width: 49%;
-             }
-
-             .page-list .page .progress {
-               display: inline-block;
-               width: 80px;
-               margin: 0;
-               margin-top: 5px;
-             }
-
-             .page-list .page .progress-bar {
-               padding: 0;
-             }
-
-             .page-list .page .list-inline li {
-               vertical-align: middle;
-             }
-
-            </style>
             {% for page in document.pages %}
-            <div class="page">
-              <ul class="list-inline">
-                <li>
-                  <span class="badge">{{ page.status }}</span>
-                </li>
-                <li>
-                  {% include 'library/includes/progress.html' with items=page.progress %}
-                </li>
-                <li>
-                  <span title="{{ page.num_lines_done }}  of {{ page.num_lines_total }} Lines Transcribed">{{ page.num_lines_done }}  of {{ page.num_lines_total }} lines transcribed</span>
-                </li>
-                <li>{{ page.user }}</li>
-                <li>
-                  <a href="{% url 'edit:correct' collection.id document.id page.num %}"> Interface A</a>
-                  &nbsp;|&nbsp;
-                  <a href="{% url 'sandbox:transcribe' %}?test=0&colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">Interface B</a>
-                </li>
-              </ul>
-            </div>
+            {% include 'library/includes/page_list_item.html' %}
             {% endfor %}
           </div>
           {% endwith %}
