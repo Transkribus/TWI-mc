@@ -13,7 +13,7 @@
    background-color: rgba(255, 255, 255, 0.25);
  }
 
- .facets {
+ .filters {
    height: 100%;
    background-color: rgba(0, 0, 0, 0.1);
  }
@@ -97,19 +97,25 @@
     </div>
   </header>
   <div class="row">
+    {% if filters %}
     <div class="col-md-10">
+    {% else %}
+    <div class="col-md-12">
+    {% endif %}
       <main class="documents">
         {% for item in items %}
-        {% include 'library/document/list_item.html' %}
+        {% include 'library/document_list_item.html' %}
         {% endfor %}
       </main>
     </div>
+    {% if filters %}
     <div class="col-md-2">
-      <div class="facets">
-        facets
+      <div class="filters">
+        filters
       </div>
     </div>
   </div>
+  {% endif %}
   <footer>
     <div class="row">
       <div class="col-md-2">
