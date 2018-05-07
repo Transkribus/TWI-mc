@@ -298,17 +298,20 @@ def project_detail(request, slug_or_id):
 
     client = services.Helpers.create_client_from_request(request)
 
-    # 1 request
-    collection = client.get_col_meta_data(col_id)
-
     from requests.exceptions import HTTPError
 
     try:
-        # 2 requests
-        documents = client.get_doc_list(int(collection.col_id))
+        # 1 request
+        collection = client.get_col_meta_data(col_id)
     except HTTPError as error:
-        from django.http import HttpResponseForbidden
-        return HttpResponseForbidden("Forbidden")
+        if error.response.status_code == 403:
+            from django.http import HttpResponseForbidden
+            return HttpResponseForbidden("Forbidden")
+        elif error.response.status_code == 404:
+            raise Http404
+
+    # 2 requests
+    documents = client.get_doc_list(int(collection.col_id))
 
     DOC_ID = 'docId'
 
@@ -318,8 +321,11 @@ def project_detail(request, slug_or_id):
         doc_id = doc = None
     else:
         # 3 requests
-        doc = client.get_fulldoc(collection.col_id, doc_id)
-
+        try:
+            doc = client.get_fulldoc(collection.col_id, doc_id)
+        except HTTPError as error:
+            doc_id = doc = None
+        
     # 4th request
     stats = utils.Stats(client.get_col_stats(collection.col_id))    
 
