@@ -33,6 +33,10 @@ def login(username, password):
         stream=True
     )
 
+    # NOTE: server returns 403 for invalid passwords
+    if r.status_code == 403:
+        return {}
+
     if r.status_code != 200:
         r.raise_for_status()
 
