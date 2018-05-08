@@ -35,9 +35,11 @@ a.link_disabled {cursor: default;}
 	top: -7px;
 	margin-left: 50px;
 }
+/*
 .container {
 	min-height: 600px;
 }
+*/
 #global-message {
 	margin-top: 0.7em;
 }
