@@ -51,9 +51,9 @@
       {% endcomment %}
       <li>Changed by <strong>{{ page.user }}</strong></li>
       <li>
-        <a href="{% url 'edit:correct' collection.id document.id page.num %}"> Interface A</a>
+        <a target="_blank" href="{% url 'edit:correct' collection.id document.id page.num %}"> Interface A</a>
         &nbsp;<span class="text-muted">|</span>&nbsp;
-        <a href="{% url 'sandbox:transcribe' %}?test=0&colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">Interface B</a>
+        <a target="_blank" href="{% url 'sandbox:transcribe' %}?test=0&colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">Interface B</a>
       </li>
     </ul>
   </div>
