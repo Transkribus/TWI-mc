@@ -1,0 +1,124 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/login-dialog.css"/>
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/menu.css"/>
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/zoomable.css"/>
+{% if viewer == 'l' %}
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/layout-viewer.css"/>
+{% elif viewer == 'r' %}
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/review-viewer.css"/>
+{% endif %}
+<style>
+ * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+
+ html, body {
+   height: 100%;
+ }
+
+ body {
+   width: 100%;
+   overflow: hidden;
+   font-family: sans-serif;
+ }
+
+ .login-dialog {
+   background-color: rgba(255, 0, 0, 0.25);
+ }
+
+ .debug {
+   position: fixed;
+   right: 0;
+   bottom: 0;
+   width: 320px;
+   // height: 240px;
+   max-width: 100%;
+   max-height: 100%;
+
+   display: none;
+   flex-flow: column nowrap;
+
+   background-color: black;
+ }
+
+ .debug.error {
+   display: flex;
+   height: 240px;
+   border: 4px solid red;
+ }
+
+ .debug .message {
+   display: none;
+   text-transform: uppercase;
+   background-color: white;
+ }
+
+ .debug.error .message {
+   display: block;
+ }
+
+ .debug textarea {
+   flex: 1;
+   overflow: hidden;
+   resize: none;
+ }
+
+ .login-dialog,
+ .login-dialog form {
+   background-color: white;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-flow: column wrap;
+ }
+
+</style>
+{% endblock %}
+{% block content %}
+{% if viewer == 'l' %}
+{% include 'sandbox/includes/layout-viewer.html' %}
+{% include 'sandbox/includes/menu.html' %}
+{% elif viewer == 'r' %}
+{% include 'sandbox/includes/review-viewer.html' %}
+{% endif %}
+{% include 'sandbox/includes/login.html' %}
+<aside class="debug js-debug">
+  <textarea class="js-text"></textarea>
+  <div class="message">Don't forget to include a screenshot!</div>
+</aside>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/lib/api.js"></script>
+<script src="{% static 'sandbox' %}/js/LoginDialog.js"></script>
+<script src="{% static 'sandbox' %}/js/CurrentTranscript.js"></script>
+<script src="{% static 'sandbox' %}/js/PageContent.js"></script>
+{% if viewer == 'l' %}
+<script src="{% static 'sandbox' %}/js/Menu.js"></script>
+<script src="{% static 'sandbox' %}/js/ui/Zoomable.js"></script>
+<script src="{% static 'sandbox' %}/js/LayoutViewer.js"></script>
+{% elif viewer == 'r' %}
+<script src="{% static 'sandbox' %}/js/OtherMenu.js"></script>
+<script src="{% static 'sandbox' %}/js/ReviewViewer.js"></script>
+{% endif %}
+<script src="{% static 'sandbox' %}/js/Application.js"></script>
+<script>
+ window.onload = function (evt) {
+
+   (function () {
+     console.log(parsePath('/v/1/2/3/'));
+     console.log(parsePath('/v/1/2/3'));
+
+     var params = parsePath('/v/2305/36784/1/');
+   }());
+
+   var app = new Application();
+
+ };
+
+</script>
+{% endblock %}

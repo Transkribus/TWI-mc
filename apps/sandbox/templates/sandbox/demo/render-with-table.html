@@ -1,0 +1,149 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block body_class_list %}loading{% endblock %}
+{% block content %}
+<main>
+  <svg class="viewport js-svg" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xmlns:xlink="http://www.w3.org/1999/xlink">
+    <image class="image js-image" x="0" y="0" width="100%" height="100%" xlink:href=""/>
+    <rect x="0" y="0" width="100%" height="100%" fill="#333" fill-opacity="0.5"/>
+    <g class="layout js-layout"></g>
+  </svg>
+</main>
+<aside class="menu js-menu">
+  <button type="button" value="image">Image</button>
+  <button type="button" value="layout">Layout</button>
+  &nbsp;
+  <button type="button" value="TextRegion">TextRegion</button>
+  <button type="button" value="TableRegion">TableRegion</button>
+  <button type="button" value="TableCell">TableCell</button>
+  <button type="button" value="TextLine">TextLine</button>
+  <button type="button" value="Baseline">Baseline</button>
+</aside>
+{% endblock %}
+{% block styles %}
+<style>
+ * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+
+ html, body {
+   height: 100%;
+ }
+
+ main {
+   min-height: 100%;
+   padding: 2em 0;
+   background-color: #333;
+   text-align: center;
+ }
+
+ .loading main .viewport {
+   display: none;
+ }
+
+ .viewport {
+   max-width: 1080px;
+   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+ }
+
+ .TextRegion,
+ .TableRegion,
+ .TextLine {
+   stroke: none;
+ }
+
+ .image.hidden,
+ .layout.hidden,
+ .TextRegion.hidden,
+ .TableRegion.hidden,
+ .TableCell.hidden,
+ .TextLine.hidden,
+ .Baseline.hidden {
+   opacity: 0.05;
+ }
+
+ .TextRegion,
+ .TableRegion,
+ .TableCell {
+   opacity: 0.75;
+ }
+
+ .TextRegion:hover,
+ .TableRegion:hover,
+ .TableCell:hover,
+ .TextLine:hover {
+   stroke: black;
+ }
+
+ .Baseline {
+   fill: none;
+   stroke: rgba(0, 0, 0, 0.5);
+   stroke-width: 1px;
+ }
+
+ .Baseline.hidden {
+   stroke: rgba(0, 0, 0, 0.05);
+ }
+
+ .menu {
+   position: fixed;
+   left: 0;
+   top: 0;
+   width: 100%;
+ }
+
+ button[value="TableRegion"],
+ button[value="TableCell"] {
+   display: none;
+ }
+
+ .with-table button[value="TableRegion"],
+ .with-table button[value="TableCell"] {
+   display: inline-block;
+ }
+
+</style>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/PageContent.js"></script>
+<script src="{% static 'sandbox' %}/js/render-with-table.js"></script>
+<script>
+ window.onload = function (evt) {
+   var EXAMPLES = {
+     true: {
+       image: '{% static 'sandbox' %}/data/ABP_Schmidseder_Joseph_S/S_Aicha_vorm_Wald_024_0052.jpg',
+       content: '{% static 'sandbox' %}/data/ABP_Schmidseder_Joseph_S/page/S_Aicha_vorm_Wald_024_0052.xml'
+     },
+     false: {
+       image: '{% static 'sandbox' %}/data/page.jpeg',
+       content: '{% static 'sandbox' %}/data/content.xml'
+     }
+   };
+
+   var withTable = getQueryParam('withTable', parseInt) === 1 ? true : false;
+
+   var p = EXAMPLES[withTable];
+
+   if (withTable)
+     document.body.classList.add('with-table');
+
+   renderWithTable(p.image, p.content);
+
+ }
+
+ function getQueryParam (name, parse) {
+   var value = new URL(document.location.href).searchParams.get(name);
+   if (value === null)
+     return null;
+   if (typeof parse !== 'function')
+     return value;
+   
+   return parse(value);
+ }
+
+
+</script>
+{% endblock %}

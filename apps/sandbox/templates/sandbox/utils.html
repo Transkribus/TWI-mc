@@ -1,0 +1,29 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block content %}
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script>
+ window.addEventListener('load', function (evt) {
+
+   var CONST = {
+     XML: '{% static 'sandbox' %}/data/ABP_Schmidseder_Joseph_S/page/S_Aicha_vorm_Wald_024_0052.xml',
+     IMG: '{% static 'sandbox' %}/data/ABP_Schmidseder_Joseph_S/S_Aicha_vorm_Wald_024_0052.jpg'
+   };
+
+   getXML(CONST.XML).then(function (data) {
+     console.log('getXML', 'OK', data);
+   }, function (error) {
+     console.error('getXML', 'FAIL', error);
+   });
+
+   getIMG(CONST.IMG).then(function (data) {
+     console.log('getIMG', 'OK', data);
+   }, function (error) {
+     console.error('getIMG', 'FAIL', error);
+   });
+
+ }, false);
+</script>
+{% endblock %}

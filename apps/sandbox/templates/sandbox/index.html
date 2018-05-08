@@ -1,0 +1,151 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block styles %}
+<style>
+ body {
+   padding: 0 2em 2em;
+   font-family: sans-serif;
+ }
+
+ h1 {
+   margin: 1.75em 0 1em;
+ }
+
+ li {
+   margin-bottom: 1em;
+ }
+</style>
+{% endblock %}
+{% block content %}
+<h1>Index</h1>
+<h2>Widgets</h2>
+<ul>
+  <li>
+    <a href="{% url 'sandbox:loader' %}">Loader</a> (alpha)
+  </li>
+  <li>
+    <a href="{% url 'sandbox:toolbar' %}">Toolbar</a> (alpha)
+  </li>
+</ul>
+<h2>Components</h2>
+<ul>
+  <li>
+    <h3><a href="{% url 'sandbox:svg-image-viewer' %}">SVGImageViewer</a> (alpha)</h3>
+    <ul>
+      <li>
+        <a href="{% url 'sandbox:zoomable' %}">Zoomable</a> (alpha)
+      </li>
+      <li>
+        <a href="{% url 'sandbox:render-with-table' %}">SVG Rendering</a> (alpha)
+      </li>
+      <li><a>ImageViewerToolbar</a></li>
+    </ul>
+  </li>
+  <li>
+    <h3><a href="{% url 'sandbox:plain-text-editor' %}">PlainTextEditor</a> (alpha)</h3>
+    <ul>
+      <li><a>TextEditorToolbar</a></li>
+    </ul>
+  </li>
+  <li>
+    <h3><a href="{% url 'sandbox:layout' %}">LayoutManager (alpha)</a></h3>
+  </li>
+</ul>
+<h2>Dialogs</h2>
+<ul>
+  <li>
+    <a href="{% url 'sandbox:login-dialog' %}">LoginDialog (alpha)</a>
+  </li>
+  <li>
+    <a href="{% url 'sandbox:character-table' %}">CharacterTable</a> (alpha)
+  </li>
+  <li><a>WarningDialog</a></li>
+  <li>
+    <a href="{% url 'sandbox:settings-dialog' %}">SettingsDialog</a>
+  </li>
+</ul>
+<h2>Miscellaneous</h2>
+<ul>
+  <li><a href="{% url 'sandbox:utils' %}">Utils</a></li>
+</ul>
+<h2>Substitutes</h2>
+<ul>
+  <li>
+    <a href="{% url 'sandbox:viewers' 'openlayers' %}">OpenLayersImageViewer</a>
+  </li>
+  <li>
+    <a href="{% url 'sandbox:xml-editor' %}">XMLTextEditor</a>
+  </li>
+  <li>
+    LayoutViewer <a href="{% url 'sandbox:viewers' 'layout' %}?withTable=1">1</a> <a href="{% url 'sandbox:viewer' name='l' col_id=2305 doc_id=36784 page_nr=1 %}">2</a>
+  </li>
+  <li>
+    <a href="{% url 'sandbox:text-viewer' %}">TextViewer</a>
+  </li>
+</ul>
+<h2>Workspaces</h2>
+<ul>
+  <li>
+    <h3>Transcriber</h3>
+    <ul>
+      <li>
+        <a href="{% url 'sandbox:transcribe' %}">Demo</a>
+      </li>
+      <li>
+        <h3>Tests</h3>
+        <ul>
+          <li>
+            <h3>MySanbbox</h3>
+            <a href="{% url 'sandbox:transcribe' %}?test=0&colId=1989&docId=13317&pageId=1">Test Page 1</a>
+          </li>
+          <li>
+            {% for test in tests %}
+            <h3>{{ test.title }}</h3>
+            {% for page in test.pages %}
+            <a href="{% url 'sandbox:transcribe' %}?test=0&colId={{ test.collection }}&docId={{ test.document }}&pageId={{ page }}">{{ page }}</a>
+            {% endfor %}
+            {% endfor %}
+          </li>
+          <li>
+            <form method="get" action="{% url 'sandbox:transcribe' %}?test=0">
+              <fieldset>
+                <legend>Custom</legend>
+                <label for="colId">Collection</label>
+                <input type="number" name="colId" placeholder="Collection ID" min="0" required>
+                <br>
+                <label for="docId">Document</label>
+                <input type="number" name="docId" placeholder="Document ID" min="0" required>
+                <br>
+                <label for="pageId">Page Number</label>
+                <input type="number" name="pageId" placeholder="Page Number" min="1" required>
+                <input type="hidden" name="test" value="0">
+                <button type="submit">View</button>
+              </fieldset>
+            </form>
+          </li>
+        </ul>    
+      </li>
+    </ul>
+  </li>
+</ul>
+<h1>Tools</h1>
+<ul>
+  <li>
+    <h2>LineReview</h2>
+    <ul>
+      <li>
+        <a href="{% url 'sandbox:line-review' %}">Demo</a>
+      </li>
+      <li>
+        <a href="{% url 'sandbox:viewer' name='r' col_id=2305 doc_id=36784 page_nr=1 %}">Page from WebUITestCollection</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<h1>Other</h1>
+<ul>
+  <li>
+    <a href="{% static 'sandbox' %}/data/unicode-blocks.json">unicode-blocks.json</a>
+  </li>
+</ul>
+{% endblock %}

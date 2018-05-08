@@ -1,0 +1,81 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block body_class_list %}{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/text-viewer.css" />
+<style>
+ * {
+   margin: 0;
+   padding: 0;
+ }
+
+ html, body {
+   height: 100%;
+ }
+
+ body {
+   width: 100%;
+   overflow: hidden;
+   background-color: #333;
+ }
+
+ .text-viewer {
+   background-color: white;
+ }
+
+ body {
+   font-family: sans-serif;
+   line-height: 1.5em;
+ }
+
+ .tag {
+   background-color: pink;
+ }
+
+</style>
+{% endblock %}
+{% block content %}
+<div class="text-viewer js-text-viewer"></div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/lib/render.js"></script>
+<script src="{% static 'sandbox' %}/js/TagSpec.js"></script>
+<script src="{% static 'sandbox' %}/js/PageContent.js"></script>
+<script src="{% static 'sandbox' %}/js/HTMLTextViewer.js"></script>
+
+<script>
+ /*
+    NOTE:
+
+    - readingOrder is first attribute in custom attribute
+
+  */
+
+ window.onload = function (evt) {
+
+
+   // TODO: renderer class that has templates and everything.
+
+   // TODO: style first using templates, then use template for parsing
+
+   // TODO: introduce made-up id for tag so dispach click, etc. handling works
+
+   // TODO: could #anchor tags and other layout elements
+
+
+   var PREFIX = '{% static 'sandbox' %}';
+
+   var PAGE = PREFIX + '/data/pageWithTags.xml';
+   var IMAGE = PREFIX + '/data/pageWithTags.jpeg';
+
+   var viewer = HTMLTextViewer();
+
+   getXML(PAGE).then(function (pageDoc) {
+     viewer.update(pageDoc);
+     viewer.render();
+   })
+
+ };
+</script>
+{% endblock %}

@@ -1,0 +1,102 @@
+.manager {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+}
+
+.manager .content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.manager .item {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.manager .viewer {
+    background-color: #556270;
+}
+
+.manager .viewer .edit {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.manager .item {
+    display: none;
+    z-index: 9999;
+}
+
+.manager.viewing .viewer {
+    display: block;
+}
+
+.manager.editing .editor {
+    display: block;
+}
+
+.manager .editor {
+    position: relative;
+}
+
+.manager .editor .item {
+    top: 2.5em;
+    bottom: 2.5em;
+    height: auto;
+}
+
+.manager .header,
+.manager .footer {
+    position: absolute;
+    width: 100%;
+    height: 2.5em;
+    left: 0;
+}
+
+.manager .header {
+    top: 0;
+
+    background-color: #720511;
+
+}
+
+.manager .footer {
+    bottom: 0;
+
+    background-color: #182942;
+}
+
+.manager .xml-editor {
+    background-color: #4ECDC4;
+}
+
+.manager .some-other-editor {
+    background-color: #C7F464;
+}
+
+.manager .preview-viewer {
+    background-color: #FF6B6B;
+}
+
+.manager.editing .editor .item {
+    display: none;
+}
+
+.manager.editing .editor .xml-editor {
+    display: block;
+}
+
+.manager.editing.some-other-editor .editor .some-other-editor {
+    display: block;
+}
+
+
+.manager.previewing .editor .preview-viewer {
+    display: block;
+}

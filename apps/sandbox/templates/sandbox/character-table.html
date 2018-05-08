@@ -1,0 +1,155 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/reset.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/character-table.css" />
+<style>
+ body {
+   font-family: sans-serif;
+ }
+
+ .example {
+   padding: 2em;
+   width: 320px;
+ }
+
+ .example {
+   display: flex;
+   flex-flow: column nowrap;
+ }
+
+ .example,
+ .example .form {
+   flex: 1;
+ }
+
+ .example ul.toolbar {
+   margin: none;
+   padding: none;
+   list-style: none;
+ }
+
+ .example .toolbar {
+   text-align: right;
+ }
+
+ .example .input {
+   width: 100%;
+ }
+
+ .example .tool {
+   display: inline-block;
+   width: 2em;
+   height: 2em;
+ }
+
+ .example .toolbar .tool .action {
+   width: 100%;
+   height: 100%;
+   border: none;
+   background: none;
+   font-size: 20px;
+ }
+
+</style>
+{% endblock %}
+{% block content %}
+<section class="example js-example">
+  <h1>CharacterTable&nbsp;Component</h1>
+  <ul class="toolbar">
+    <li class="tool"><button class="action js-action">&#x2328;</button></li>
+  </ul>
+  <form class="form">
+    <textarea id="input" class="input js-input" spellcheck="false" placeholder="Enter your text here ..."></textarea>
+  </form>
+</section>
+{% include 'sandbox/includes/character-table.html' %}
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/ui/CharacterTable.js"></script>
+<script>
+ var PREFIX = '{% static "sandbox" %}'; 
+</script>
+<script>
+ window.onload = function () {
+
+   var viewNode = document.querySelector('.js-example');
+   var actionNode = viewNode.querySelector('.js-action');
+   var inputNode = viewNode.querySelector('.js-input');
+
+   disableAction();
+
+   inputNode.onblur = function (evt) {
+
+     disableAction();
+
+   }
+
+   inputNode.onfocus = function (evt) {
+     enableAction();
+   }
+   
+   function disableAction () {
+     actionNode.setAttribute('disabled', '');
+   }
+
+   function enableAction () {
+     actionNode.removeAttribute('disabled');
+   }
+
+   // NOTE: trickery required for disabling trigger when input not in focus
+   actionNode.onmousedown = function (evt) {
+     evt.preventDefault(); // prevent onblur being triggered
+   }
+
+   actionNode.onmouseup = function (evt) {
+
+     evt.preventDefault();
+
+     charTable.select().then(function (char) {
+
+       inputNode.focus(); // NOTE: required, so select with ENTER ley works
+
+       insertText(char);
+
+     }, function (error) {
+
+       console.log("cancelled ...", error);
+
+       inputNode.focus();
+
+     });
+
+   };
+
+   function insertText (string) {
+     var text = inputNode.value;
+
+     var startIndex = inputNode.selectionStart;
+     var stopIndex = inputNode.selectionEnd;
+
+     if (stopIndex < startIndex) {
+       var tempIndex = startIndex;
+       startIndex = stopIndex;
+       stopIndex = tempIndex;
+     }
+
+     var caretIndex = startIndex + string.length;
+
+     inputNode.value = [
+       text.slice(0, startIndex),
+       string,
+       text.slice(stopIndex)
+     ].join('');
+
+     
+     inputNode.setSelectionRange(caretIndex, caretIndex);
+
+   }
+
+   var charTable = new CharacterTable();
+
+ };
+</script>
+{% endblock %}

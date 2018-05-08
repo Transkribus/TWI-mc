@@ -1,0 +1,78 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block styles %}
+<style>
+ * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+
+ html, body {
+   height: 100%;
+ }
+
+ body {
+   font-family: sans-serif;
+ }
+
+ main {
+   padding: 2em 0;
+   background-color: #333;
+   text-align: center;
+ }
+
+ svg {
+   max-width: 960px;
+   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+ }
+
+</style>
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/menu.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/review-viewer.css" />
+{% endblock %}
+{% block content %}
+{% include 'sandbox/includes/review-viewer.html' %}
+{% include 'sandbox/includes/other-menu.html' %}
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/PageContent.js"></script>
+<script src="{% static 'sandbox' %}/js/OtherMenu.js"></script>
+<script src="{% static 'sandbox' %}/js/ReviewViewer.js"></script>
+<script>
+
+ var CONFIG = {
+   verbose: true
+ };
+
+ var X = {
+   IMAGE: '{% static 'sandbox' %}/data/page.jpeg',
+   XML: '{% static 'sandbox' %}/data/content.xml'
+ };
+
+ var N = 'http://www.w3.org/2000/svg';
+
+ window.onload = function (evt) {
+
+   getXML(X.XML).then(function (pageDoc) {
+
+     function onSelect () {
+       menu.select.apply(menu.select, arguments);
+     }
+
+     function onFocus (lineId) {
+       if (menu)
+         menu.print(lineId)
+     }
+
+     /* imageUrl, pageRoot ...*/
+     var viewer = new ReviewViewer(X.IMAGE, pageDoc, onSelect, onFocus);
+     var menu = new OtherMenu(viewer, pageDoc);
+
+   });
+
+ };
+
+</script>
+{% endblock %}

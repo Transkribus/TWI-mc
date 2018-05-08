@@ -1,0 +1,316 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block styles %}
+<style>
+ body {
+   padding: 0 2em 2em;
+   font-family: sans-serif;
+ }
+
+ div {
+   width: 100%;
+   background-color: rgba(0, 0, 0, 0.05);
+   border: 1px solid transparent;
+ }
+
+ div:focus {
+   outline: 0;
+   border: 1px solid rgba(0, 0, 255, 0.25);
+   box-shadow: 0 0 5px rgba(0, 0, 255, 0.25);
+   background-color: rgba(0, 0, 255, 0.05);
+ }
+
+ li {
+   // margin-bottom: 0.25em;
+ }
+
+ textarea {
+   width: 100%;
+   height: 480px;
+ }
+
+ span,
+ mark {
+   background-color: rgba(0, 255, 0, 0.25);
+ }
+
+ .debug {
+   margin: 5px 0;
+   background-color: rgba(0, 0, 0, 0.05);
+ }
+
+ .state {
+   background-color: rgba(0, 0, 0, 0.25);
+ }
+
+ .state.enabled {
+   background-color: rgba(0, 255, 0, 0.25);
+ }
+
+ .state.disabled {
+   background-color: rgba(255, 0, 0, 0.25);
+ }
+
+ br[type="_moz"] {
+   // display: none;
+ }
+
+ .hidden {
+   display: none;
+ }
+
+ .main {
+   display: flex;
+   flex-flow: row;
+ }
+
+ .example,
+ .info {
+   padding: 0.5em;
+   width: 50%;
+ }
+
+ .firefox--weird {
+   border-left: 2px solid rgba(255, 0, 0, 0.1);
+ }
+
+
+</style>
+{% endblock %}
+{% block content %}
+<!--
+
+TODO: always use <li><br></li> for all the lines, so it won't be inserted in weird places. in firefox, normalize by removing all empty elements. does this work?
+
+TODO: in lines consisting of span only, it should be possible to enter new text outside of span, however, does not apply when span is continued across end of line
+-->
+<main class="main">
+  <section class="example">
+    <div class="purgatory js-purgatory" spellcheck="false" autocomplete="false" autocapitalize="false" contenteditable>
+      <ul>
+        <li>Text with <b>bold</b> formatting.</li>
+        <li>Can <span>this</span> be backspaced?</li>
+        <li><span>How about</span> this text?</li>
+        <li><b>And what about this?</b></li>
+        {# NOTE: firefox thinks adding <br type="_moz"> in empty line is a good idea (https://bugzilla.mozilla.org/show_bug.cgi?id=1098151) #}
+        <li></li>
+        <li>&#xfeff;</li>
+        <li><span class="something">Delete me</span><br></li>
+        {# NOTE: in chrome, ie, safari, caret cannot be put in this line, but works in firefox, edge #}
+
+        {# NOTE: in firefox using page left position can be set to before span #}
+        <li><span></span><br></li>
+
+        {# NOTE: the caret positioning is weird, when caret positioned at end of line after navigating using up / down keys, endContainer is li, when using left / right keys it is #text, does not apply to other keys or start of line position #}
+        <li><span></span><br></li>
+        <li><span></span><span></span><br></li>
+        <li><span>How about this</span><br></li>
+        <li><span>And this</span><br></li>
+        <li><span>And</span> this?<br></li>
+        <li>And <span>what about</span> this?<br></li>
+        <li><br></li>
+
+        {# weird firefox cases #}
+        <li class="firefox--weird"><br></li>
+        <li class="firefox--weird">lorem ipsum<br></li>
+        <li class="firefox--weird"><span>lorem ipsum<br></span></li>
+        <li class="firefox--weird"><span><br></span></li>
+        <li class="firefox--weird"><span></span><br></li>
+      </ul>
+    </div>
+  </section>
+  <section class="info">
+    <div class="states">
+      <strong>Actions:</strong>
+      <span class="state state--backspace js-backspace">backspace</span>
+    <span class="state state--delete js-delete">delete</span>
+    <button class="js-update">update</button>
+    </div>
+    <div class="debug js-debug">&nbsp;</div>
+    <textarea class="js-textarea"></textarea>
+  </section>
+</main>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/polyfills/array-from-polyfill.js"></script>
+<script>
+
+ {# TODO: normalize line selection, can be ... li + offset of br, #text + offset past last char, #}
+
+ // this doesn't do anything to fix firefox' empty line issue
+ document.execCommand("insertBrOnReturn", false, false);
+
+ window.onload = function (evt) {
+
+   var purgatory = document.querySelector('.js-purgatory');
+   var textArea = document.querySelector('.js-textarea');
+   var debug = document.querySelector('.js-debug');
+   var button = document.querySelector('.js-update');
+
+   purgatory.addEventListener('input', update, false);
+   textArea.addEventListener('input', otherUpdate, false);
+
+   update();
+
+   function update () {
+     textArea.value = purgatory.outerHTML;
+   }
+
+   function otherUpdate () {
+     purgatory.outerHTML = textArea.value;
+   }
+
+   purgatory.addEventListener('paste', gulp, false);
+   purgatory.addEventListener('cut', gulp, false);
+   purgatory.addEventListener('copy', gulp, false);
+
+   function gulp (evt) {
+     evt.preventDefault();
+     if (evt.cancelable)
+       evt.stopPropagation();
+   }
+
+   purgatory.addEventListener('keydown', function (evt) {
+
+     if (evt.key === 'Enter'){
+       // evt.preventDefault();
+     }
+
+     else if (evt.key === 'Backspace') {
+       // evt.preventDefault();
+     }
+
+     else if (evt.key === 'Backspace') {
+       evt.preventDefault();
+     }
+
+
+     // debug.textContent = r.startContainer.nodeName;
+
+   }, false);
+
+   function print () {
+
+     var s = window.getSelection();
+     var r = s.getRangeAt(0);
+
+     var node = r.startContainer;
+     var nodeList = [];
+
+     while (node !== purgatory) {
+       nodeList.unshift(node.nodeName.toLowerCase());
+       node = node.parentNode;
+     }
+
+     node = r.startContainer;
+     while (node !== purgatory) {
+       if (node.nodeName === 'LI')
+         lineNode = node;
+       node = node.parentNode;
+     }
+
+     nodeList.push(r.startOffset);
+
+     var listNode = purgatory.firstElementChild;
+
+     debug.textContent = JSON.stringify({
+       line: Array.from(listNode.children).indexOf(lineNode) + 1,
+       node: r.startContainer.nodeName,
+       offset: r.startOffset,
+       path: nodeList.join(' > ')
+     }, null, 1);
+
+   }
+
+   document.addEventListener('selectionchange', print, false);
+   document.addEventListener('selectionchange', handleSelectionChange, false);
+
+   button.addEventListener('click', function (evt) {
+     evt.preventDefault();
+     handleSelectionChange(evt);
+   }, false);
+
+   function handleSelectionChange (evt) {
+
+     var s = window.getSelection();
+     var r = s.getRangeAt(0);
+
+     // FIXME: handle selections that are NOT collapsed     
+     if (!r.collapsed)
+       throw new Error("Range must be collapsed!");
+
+     var node = r.startContainer;
+
+     var itemNode;
+
+     while (node !== purgatory) {
+       if (node.nodeName === 'LI')
+         itemNode = node;
+       node = node.parentNode;
+     }
+
+     var listNode = purgatory.firstElementChild;
+     var itemList = Array.from(listNode.children);
+
+     // FIXME: how does this need to be fudged to work in firefox?
+
+     var range = document.createRange();
+
+     node = itemNode;
+     while (node.childNodes.length > 0)
+       node = node.childNodes[0];
+
+     var firstNode = node;
+
+     node = itemNode
+     while (node.childNodes.length > 0)
+       node = node.childNodes[node.childNodes.length - 1];
+     var lastNode = node;
+
+     range.setStart(firstNode, 0);
+     // if (lastNode.data === undefined)
+     //   range.setEnd(lastNode.parentNode, 0)
+     // else
+     //   range.setEnd(lastNode, lastNode.data.length);
+
+     // FIXME: deal with empty span case ... this does not cope with it ...
+
+     // NOTE: firefox, empty line, special case
+     if (false && lastNode.nodeName === 'BR') {
+       lastNode = lastNode.parentNode;
+     }
+
+     // FIXME: does not work in firefox
+
+     // range.setEnd(lastNode, lastNode.data !== undefined ? lastNode.data.length : lastNode.childNodes.length - 1);
+     range.setEnd(lastNode, lastNode.data !== undefined ? lastNode.data.length : 0);
+
+     // console.log(range, range.toString(), range.cloneContents());
+     console.log('lineRange', range, 'selectionRange', r);
+
+     // if this is zero, do not allow deletion ...
+     node = document.querySelector('.js-backspace');
+
+     if (range.compareBoundaryPoints(Range.START_TO_START, r) === 0)
+       addOrReplaceClass(node, 'disabled', 'enabled');
+     else
+       addOrReplaceClass(node, 'enabled', 'disabled');
+
+     node = document.querySelector('.js-delete');
+
+     if (range.compareBoundaryPoints(Range.END_TO_END, r) === 0)
+       addOrReplaceClass(node, 'disabled', 'enabled');
+     else
+       addOrReplaceClass(node, 'enabled', 'disabled')       
+
+   }
+
+   function addOrReplaceClass (node, newClassName, oldClassName) {
+     if (node.classList.contains(oldClassName))
+       node.classList.remove(oldClassName);
+     node.classList.add(newClassName);
+   }
+
+ };
+</script>
+{% endblock %}

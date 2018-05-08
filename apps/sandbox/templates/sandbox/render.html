@@ -1,0 +1,215 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block styles %}
+<style>
+ * {
+   margin: 0;
+   padding: 0;
+ }
+
+ html, body {
+   height: 100%;
+ }
+</style>
+{% endblock %}
+{% block content %}
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/render.js"></script>
+<script>
+ console.debug('compareStartOffset', compareStartOffset({name: 'a', offset: 0, length: 5}, {name: 'b', offset: 0, length: 5}) < 0);
+ console.debug('compareStartOffset', compareStartOffset({name: 'a', offset: 0, length: 5}, {name: 'b', offset: 5, length: 10}) < 0);
+ console.debug('compareStartOffset', compareStartOffset({name: 'a', offset: 0, length: 5}, {name: 'b', offset: 0, length: 4}) < 0);
+ console.debug('compareStartOffset', compareStartOffset({name: 'a', offset: 0, length: 5}, {name: 'b', offset: 0, length: 10}) > 0);
+
+ var text = '01234567890123456789';
+ var TEST = [
+   // lots of overlaps
+   [
+     // '<a><b></b></a>',
+     '<a>01</a><b><a>23</a></b><c><b>45</b></c><d><c>67</c>89</d>',
+     '0123456789',
+     [
+       new Segment('a', 0, 4),
+       new Segment('b', 2, 4),
+       new Segment('c', 4, 4),
+       new Segment('d', 6, 4),
+     ]
+   ],
+
+
+   // a contains b twice
+   [
+     // '<a><b></b></a>',
+     '<a>01<b>23</b>45<b>67</b>89</a>',
+     '0123456789',
+     [
+       new Segment('a', 0, 10),
+       new Segment('b', 2, 2),
+       new Segment('b', 6, 2),
+     ]
+   ],
+
+   [
+     '<c><a>0<b>12</b>3</a>456789</c>',
+     // '<c><a><b></b></a></c>',
+     '0123456789',
+     [
+       new Segment('b', 1, 2),
+       new Segment('a', 0, 4),
+       new Segment('c', 0, 10),
+     ]
+   ],
+   /* [
+    *   '<a><b></b><c></c></a>',
+    *   [
+    *     new Segment('a', 0, 10),
+    *     new Segment('b', 0, 5),
+    *     new Segment('c', 5, 10),
+    *   ]
+    * ],*/
+   [
+     '01<a>23</a><b><a>45</a>67</b>89',
+     // '<a></a><b><a></a></b>',
+     '0123456789',
+     [
+       new Segment('a', 2, 4),
+       new Segment('b', 4, 4),
+     ]
+   ],
+
+   // start at same offset
+   [
+     '<a>01</a><c><b><a>23</a>45</b>67</c>89',
+     // '<a></a><c><b><a></a></b></c>',
+     '0123456789',
+     [
+       new Segment('a', 0, 4),
+       new Segment('b', 2, 4),
+       new Segment('c', 2, 6),
+     ]
+   ],
+
+   [
+     '<a>01</a><b><a><c>23</c>45</a>6789</b>',
+     // '<a></a><b><a><c></c></a></b>',
+     '0123456789',
+     [
+       new Segment('a', 0, 6),
+       new Segment('b', 2, 8),
+       new Segment('c', 2, 2),
+     ]
+   ],
+
+   [
+     '<a>01<b>23</b></a><c><a><b>4567</b>89</a>abcd</c>ef',
+     //'<a><b></b></a><c><a><b></b></a></c>',
+     '0123456789abcdef',
+     [
+       new Segment('a', 0, 10),
+       new Segment('b', 2, 6),
+       new Segment('c', 4, 10),
+     ]
+   ],
+
+   // simple gap
+   [
+     // '<a><b></b></a>',
+     '<a>01<b></b>23</a>456789',
+     '0123456789',
+     [
+       new Segment('a', 0, 4),
+       new Segment('b', 2, 0),
+     ]
+   ],
+
+   // complex gap
+   // start at same offset
+   [
+
+     '<a>01</a><d></d><e></e><c><b><a>23</a>45</b>67</c>89',
+     // '<a></a><d></d><e></e><c><b><a></a></b></c>',
+     '0123456789',
+     [
+       new Segment('a', 0, 4),
+       new Segment('b', 2, 4),
+       new Segment('c', 2, 6),
+       new Segment('d', 2, 0),
+       new Segment('e', 2, 0),
+     ]
+   ],
+
+
+   // text in-between
+   [
+     '01<a>23<b>45</b>67</a>89',
+     '0123456789',
+     [
+       new Segment('a', 2, 6),
+       new Segment('b', 4, 2),
+
+     ]
+   ]
+
+ ];
+
+ console.debug('compareStopOffset', compareStopOffset(new Segment('a', 0, 10), new Segment('b', 5, 5)) < 0);
+ console.debug('compareStopOffset', compareStopOffset(new Segment('a', 0, 10), new Segment('b', 0, 10)) < 0);
+ console.debug('compareStopOffset', compareStopOffset(new Segment('a', 0, 10), new Segment('b', 0, 5)) < 0);
+
+ TEST.forEach(function (testArray, index) {
+
+   var segments = testArray.pop();
+   var string = testArray.pop();
+   var expected = testArray.pop();
+   var h = new TestHandler();
+
+   segments.sort(compareStartOffset);
+
+   render(string, segments, h.open, h.close, h.handleText, h.openClose);
+
+   console.debug(
+     index,
+     expected === h.getResult(),
+     h.getResult(), expected
+   );
+
+   // NOTE: assumes that segments are always ordered ...
+ });
+
+
+ function TestHandler () {
+
+   var r = [];
+
+   function open (s) {
+     r.push('<' + s.name + '>');
+   }
+
+   function close (s) {
+     r.push('</' + s.name + '>');
+   }
+
+   function openClose (s) {
+     open(s);
+     close(s);
+   }
+
+   function text (string, from, to) {
+     r.push(string);
+   }
+
+   return {
+     close: close,
+     open: open,
+     openClose: openClose,
+     handleText: text,
+     getResult: function () {
+       return r.join('');
+     }
+   };
+ }
+
+</script>
+{% endblock %}

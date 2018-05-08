@@ -1,0 +1,227 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block body_class_list %}{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/text-viewer.css" />
+<style>
+ * {
+   margin: 0;
+   padding: 0;
+ }
+
+ html, body {
+   height: 100%;
+ }
+
+ body {
+   width: 100%;
+   overflow: hidden;
+   background-color: #333;
+ }
+
+ .text-viewer {
+   background-color: white;
+ }
+
+ body {
+   font-family: sans-serif;
+   line-height: 1.5em;
+ }
+
+ .tag {
+   // background-color: pink;
+ }
+
+ .text {
+   white-space: wrap;
+
+   background-color: white;
+   padding: 4em;
+ }
+
+ .token {
+   padding: 2px 3px;
+
+   // margin-right: 0.3em;
+
+   cursor: pointer;
+
+ }
+
+ .token:hover {
+   background-color: rgba(0, 255, 0, 0.5) !important;
+ }
+
+ .token.selected {
+   background-color: rgba(0, 255, 0, 0.25);
+   // border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+   // border-top: 1px solid rgba(0, 0, 0, 0.1);
+ }
+
+</style>
+{% endblock %}
+{% block content %}
+<div class="text js-text"></div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script>
+
+ var TEXT = 'If one examines cultural posttextual theory, one is faced with a choice: either accept objectivism or conclude that consciousness is capable of social comment. Many dematerialisms concerning cultural posttextual theory exist. In a sense, Foucault uses the term ‘postcapitalist textual theory’ to denote the role of the writer as artist.';
+
+ function isPunct (c) {
+   // FIXME: use unicode character table for this ...
+   return '.,;:!?`~\][^@(&%_($(&_@*#?"}’‘’'.indexOf(c) >= 0;
+ }
+
+ function isSpace (c) {
+   return c === ' ';
+ }
+ 
+ function tokenize (string) {
+   var tokenList = [];
+   var s = '';
+   for (var index = 0; index < string.length; index++) {
+
+     if (isPunct(string[index])) {
+       if (s !== '')
+         tokenList.push(s);
+       tokenList.push(string[index]);
+       s = '';
+     }
+     else if (isSpace(string[index])) {
+       if (s !== '')
+         tokenList.push(s);
+       s = '';
+     }
+     else {
+       s += string[index];
+     }
+   }
+
+   if (s !== '')
+     tokenList.push(s);
+
+   return tokenList;
+ }
+
+ window.onload = function (evt) {
+
+   var tokens = TEXT.split(/\s+/).map(function (string) {
+     return string;
+   });
+
+
+
+   var tokens = tokenize(TEXT);
+   console.log(tokens);
+
+   var tokenTmpl = document.createElement('span');
+   tokenTmpl.classList.add('token');
+
+   var nodeList = [];
+
+   var textNode = document.querySelector('.js-text');
+   for (var index = 0; index < tokens.length; index++) {
+     var tokenNode = tokenTmpl.cloneNode(true);
+     tokenNode.textContent = tokens[index];
+     textNode.appendChild(tokenNode);
+     // FIXME: before punct, there should be non-breaking space
+     textNode.appendChild(document.createTextNode('\u200b')); // zero width breaking space
+     nodeList.push(tokenNode);
+   }
+
+   var isSelecting = false;
+
+   var startNode = null;
+   var stopNode = null;
+
+   textNode.addEventListener('mousedown', function (evt) {
+     evt.preventDefault();
+
+     if (evt.target.nodeName === 'SPAN' && evt.target.parentNode === textNode) {
+       startNode = evt.target;
+
+       update(startNode, startNode);
+
+     }
+
+     isSelecting = true;
+
+   }, false);
+
+   document.addEventListener('mousemove', function (evt) {
+
+     if (isSelecting === false)
+       return;
+
+     evt.preventDefault();
+
+     if (evt.target.nodeName === 'SPAN' && evt.target.parentNode === textNode) {
+
+       if (evt.target !== stopNode) {
+
+         stopNode = evt.target;
+         update(startNode, stopNode);
+       }
+
+     }
+
+   }, false);
+
+   document.addEventListener('mouseup', function (evt) {
+
+     if (isSelecting === false)
+       return;
+
+     evt.preventDefault();
+
+     startNode = stopNode = null;
+
+
+     isSelecting = false;
+
+   }, false);
+
+
+   function update (startNode, stopNode) {
+
+     var startIndex = nodeList.indexOf(startNode);
+     var stopIndex = nodeList.indexOf(stopNode);
+
+     if (stopIndex < startIndex) {
+       var tempIndex = startIndex;
+       startIndex = stopIndex;
+       stopIndex = tempIndex;
+     }
+
+     stopIndex = Math.min(stopIndex, nodeList.length - 1);
+
+     var node;
+
+     for (var index = 0; index < startIndex; index++) {
+       node = nodeList[index];
+       if (node.classList.contains('selected'))
+         node.classList.remove('selected');
+     }
+
+     for (var index = stopIndex + 1; index < nodeList.length; index++) {
+       node = nodeList[index];
+       if (node.classList.contains('selected'))
+         node.classList.remove('selected');
+     }
+
+     for (var index = startIndex; index <= stopIndex; index++) {
+
+       node = nodeList[index];
+       if (!node.classList.contains('selected'))
+         node.classList.add('selected');
+     }
+
+
+   }
+
+
+ };
+</script>
+{% endblock %}

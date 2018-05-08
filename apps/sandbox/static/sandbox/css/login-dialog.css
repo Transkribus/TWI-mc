@@ -1,0 +1,27 @@
+.login-dialog {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transform: translate(-100%, -100%);
+    transition: opacity 250ms linear;
+    will-change: opacity;
+}
+
+.login-dialog {
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+
+.login-dialog.visible {
+    transform: none;
+    opacity: 1;
+}
+
+.login-dialog .error-message {
+    display: none;
+}
+
+.login-dialog .error .error-message {
+    display: block;
+}

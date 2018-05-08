@@ -1,0 +1,14 @@
+.image-viewer-toolbar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.image-viewer-toolbar {
+    text-align: center;
+}
+
+.image-viewer-toolbar .action {
+    padding: 0.25em;
+}

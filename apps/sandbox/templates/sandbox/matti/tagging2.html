@@ -1,0 +1,123 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block styles %}
+<style>
+ * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+
+ html, body {
+   height: 100%;
+ }
+
+ body {
+   font-family: sans-serif;
+ }
+
+ .login-dialog {
+   background-color: rgba(255, 0, 0, 0.25);
+ }
+
+ .error-dialog {
+   position: fixed;
+   right: 0;
+   bottom: 0;
+   width: 640px;
+   height: 240px;
+   border: 4px solid red;
+   overflow: auto;
+ }
+
+ .error-dialog.hidden {
+   display: none;
+ }
+
+ .login-dialog,
+ .login-dialog form {
+   background-color: white;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-flow: column wrap;
+ }
+
+ .templates {
+   display: none;
+ }
+
+ .tagging-editor {
+   background: white;
+ }
+</style>
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/login-dialog.css"/>
+{% endblock %}
+{% block content %}
+<main class="tagging-editor js-tagging-editor">
+  <div class="templates js-templates">
+  </div>
+  <h1>¯\_(ツ)_/¯</h1>
+</main>
+<aside class="hidden error-dialog js-error-dialog"></aside>
+{% include 'sandbox/includes/login-dialog.html' %}
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/lib/api.js"></script>
+<script src="{% static 'sandbox' %}/js/LoginDialog.js"></script>
+<script src="{% static 'sandbox' %}/js/CurrentTranscript.js"></script>
+<script src="{% static 'sandbox' %}/js/matti/TaggingEditor.js"></script>
+<script>
+ window.addEventListener('load', function () {
+
+   LoginDialog.getInstance().then(function (loginDialog) {
+
+     var p = loginDialog.login();
+
+     p.catch(function (error) {
+       showError(error);
+
+       throw error;
+
+     });
+
+     p.then(function (userData) {
+       initialize();
+     });
+
+   });
+
+   function initalize () {
+     var t = CurrentTranscript(colId, docId, pageNr);
+     t.load().then(function (t) {
+       initializeTaggingEditor(t.getPageDoc());
+     }).catch(showError);
+
+     function savePageDocAlternative () {
+       return t.save().catch(showError);
+     }
+
+   }
+
+   function initializeTaggingEditor (pageDoc) {
+     var editor = new TaggingEditor(pageDoc);
+   }
+
+   function savePageDoc (colId, docId, pageNr, pageDoc, params) {
+     return API.getInstance().then(function (api) {
+       return api.saveTranscript(
+         colId, docId, pageNr, document, params).catch(showError);
+     });
+   }
+
+   function showError (error) {
+     var node = document.querySelector('.js-error-dialog');
+     node.textContent = error.stack;
+     node.classList.remove('hidden');
+   }
+
+ }, false);
+</script>
+{% endblock %}

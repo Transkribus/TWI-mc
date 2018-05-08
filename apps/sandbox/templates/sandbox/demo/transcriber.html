@@ -1,0 +1,261 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block styles %}
+<style>
+ * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+
+ html, body {
+   height: 100%;
+ }
+
+ body {
+   overflow: hidden;
+ }
+
+ main {
+   padding: 2em 0;
+   background-color: #333;
+   text-align: center;
+ }
+
+
+ * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+
+ html, body {
+   height: 100%;
+ }
+
+ .transcriber-component {
+   width: 100%;
+   height: 100%;
+   background-color: #333;
+   font-size: 0;
+ }
+
+ .horizontal .image-viewer, .horizontal .text-viewer {
+   height: 50%;
+ }
+
+ .vertical .image-viewer, .vertical .text-viewer {
+   display: inline-block;
+   width: 50%;
+   height: 100%;
+   font-size: 16px;
+ }
+
+ .image-viewer {
+   overflow: auto;
+   background-color: rgba(0, 0, 0, 0.25);
+ }
+
+ .text-viewer {
+   background-color: rgba(255, 255, 255, 0.25);
+ }
+
+ .image-viewer svg {
+   max-width: 960px;
+   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+ }
+
+ .image-viewer .TextLine {
+   stroke: none;
+ }
+
+ .image-viewer .TextLine .Coords {
+   fill: transparent;
+ }
+
+ .image-viewer .TextLine .Baseline {
+   stroke-width: 2px;
+   stroke: black;
+   stroke-opacity: 0.25;
+   fill: none;
+
+   /* CLIENT: line style as is not helpful when reading, make it bright /translucent, more distance to text */
+
+   transform: translate(0, 10px);
+ }
+
+ .image-viewer .TextLine .Coords:active + .Baseline {
+   stroke-width: 2px;
+   stroke: green !important;
+ }
+
+ .image-viewer .TextLine .Coords:focus {
+   outline: none;
+ }
+
+ .image-viewer .TextLine.selected .Baseline,
+ .image-viewer .TextLine .Coords:focus + .Baseline {
+   stroke-opacity: 0.255;
+   stroke: red;
+ }
+
+ .image-viewer .TextLine .Coords:hover + .Baseline {
+   stroke-opacity: 0.75;
+   stroke: blue;
+ }
+
+ .text-viewer {
+   border-top: 1px solid #333;
+   overflow: auto;
+ }
+
+ .text-viewer .TextEquiv {
+   position: relative;
+ }
+
+ .text-viewer .Unicode {
+   width: 100%;
+   text-align: center;
+ }
+
+
+
+ .switch {
+   position: fixed;
+   top: 0;
+   right: 0;
+ }
+
+</style>
+{% endblock %}
+{% block content %}
+<main class="transcriber-component horizontal js-transcriber-component">
+  <section class="image-viewer js-image-viewer">
+    <svg viewBox="0 0 2802 4049" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xmlns:xlink="http://www.w3.org/1999/xlink">
+      <!-- disable mask
+           <defs>
+           <mask id="Coords" x="0" y="0" width="100%" height="100%">
+           <rect x="0" y="0" width="100%" height="100%" style="stroke:none; fill: white"/>
+           </mask>
+           </defs>
+
+         -->
+      <image class="js-image" x="0" y="0" width="100%" height="100%" xlink:href="/static/sandbox/data/page.jpeg"/>
+      <!-- <rect x="0" y="0" width="100%" height="100%" fill="rgba(0, 0, 0, 0.25)" mask="url(#Coords)"/> -->
+      <g class="js-layout"></g>
+    </svg>
+  </section>
+  <section class="text-viewer js-text-viewer"></section>
+</main>
+<button class="switch js-switch">layout</button>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/PageContent.js"></script>
+<script src="{% static 'sandbox' %}/js/ImageViewer.js"></script>
+<script src="{% static 'sandbox' %}/js/TextViewer.js"></script>
+<!-- <script src="{% static 'sandbox' %}/js/components/Transcriber.js"></script> -->
+<script>
+
+ var CONFIG = {
+   verbose: true
+ };
+
+ var APP = {
+   IMAGE: '/static/sandbox/data/page.jpeg',
+   XML: '/static/sandbox/data/content.xml'
+ };
+
+ var N = 'http://www.w3.org/2000/svg';
+
+ window.onload = function (evt) {
+
+   function TranscriberComponent (imageUrl, pageUrl) {
+     /* TODO: does not behave as expected in chrome, focus does not work */
+
+     /* TODO: keep text and image line in synch
+
+        - highlight synched lines on text / image viewer
+
+        - restore zoom in text viewer (like image viewer)
+        
+        - implement scrollIntoView that mimicks default behavior
+
+        - trigger focus event, then jump back
+
+        - integrate image viewer with zoomable
+
+        - use layout viewer for image viewer
+
+      */
+
+     var imageViewer;
+     var textViewer;
+
+     var componentNode = document.querySelector('.js-transcriber-component');
+
+     initialize();
+
+     function initialize () {
+       getXML(pageUrl).then(function (pageXml) {
+         imageViewer = new ImageViewer(imageUrl, pageXml, onImageLineSelect);
+         textViewer = new TextViewer(pageXml, onTextLineSelect);
+       });
+     }
+
+     function onImageLineSelect (id, node) {
+       // console.log("selected TextLine", id, node);
+       // node.querySelector('.Coords').scrollIntoView();
+       textViewer.scrollIntoView(id);
+     }
+
+     function onTextLineSelect (id, node) {
+       // console.log("selected TextLine", id, node);
+       imageViewer.scrollIntoView(id);
+     }
+
+     var switchNode = document.querySelector('.js-switch');
+
+     evt.preventDefault();
+
+     switchNode.addEventListener('click', function (evt) {
+
+       if (componentNode.classList.contains('horizontal')) {
+         componentNode.classList.replace('horizontal', 'vertical');
+       }
+
+       else if (componentNode.classList.contains('vertical'))
+         componentNode.classList.replace('vertical', 'horizontal');
+
+     }, false);
+
+   }
+
+   var transcriberComponent = new TranscriberComponent(APP.IMAGE, APP.XML);
+
+   function Dialog () {
+     return {
+       handleError: function (message) {
+
+         if (CONFIG.verbose === true)
+           alert(message);
+
+         throw new Error(message);
+
+       }
+     };
+   }
+
+   Dialog.getInstance = (function () {
+     var inst = null;
+     return function () {
+       if (inst === null)
+         inst = new Dialog();
+       return Promise.resolve(inst);
+     };
+   }());
+
+ };
+
+</script>
+{% endblock %}

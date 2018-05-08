@@ -1,0 +1,125 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/reset.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/layout.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/image-viewer.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/text-manager.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/text-viewer.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.4/ol-debug.css" />
+
+<style>
+ /* NOTE: this is required for xml editor */
+ .editor {
+   position: relative;
+   height: 100%;
+ }
+
+ .text-viewer .tag {
+   background-color: rebeccapurple;
+ }
+
+</style>
+{% endblock %}
+{% block content %}
+<div class="layout horizontal js-layout">
+  <div class="item">
+    <div class="content scrollable">
+      <div class="image-viewer js-image-viewer"></div>
+    </div>
+    <div class="handle js-handle"></div>
+  </div>
+  <div class="item">
+    <div class="content scrollable">
+      {% include 'sandbox/includes/text-manager.html' %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/lib/render.js"></script>
+
+<script src="{% static 'sandbox' %}/js/lib/parsers.js"></script>
+<script src="{% static 'sandbox' %}/js/lib/iterators.js"></script>
+
+<script src="{% static 'sandbox' %}/js/lib/parsers.js"></script>
+
+
+<script src="{% static 'sandbox' %}/js/TagSpec.js"></script>
+<script src="{% static 'sandbox' %}/js/PageContent.js"></script>
+<script src="{% static 'sandbox' %}/js/XMLStringRenderer.js"></script>
+
+<script src="{% static 'sandbox' %}/js/TextManager.js"></script>
+<script src="{% static 'sandbox' %}/js/PreviewViewer.js"></script>
+<script src="{% static 'sandbox' %}/js/HTMLTextViewer.js"></script>
+<script src="{% static 'sandbox' %}/js/XMLEditor.js"></script>
+
+<!-- OpenLayersImageViewer third party -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.5/ol-debug.js"></script>
+
+<!-- XMLEditor third party -->
+<script src="{% static 'sandbox' %}/third_party/ace/ace.js"></script>
+<script src="{% static 'sandbox' %}/third_party/ace/mode-xml.js"></script>
+<script src="{% static 'sandbox' %}/third_party/ace/ext-language_tools.js"></script>
+<script src="{% static 'sandbox' %}/third_party/ace/worker-xml.js"><</script>
+<script src="{% static 'sandbox' %}/third_party/ace/theme-textmate.js"></script>
+
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/lib/api.js"></script>
+<script src="{% static 'sandbox' %}/js/ui/Layout.js"></script>
+<script src="{% static 'sandbox' %}/js/OpenLayersImageViewer.js"></script>
+<script>
+ var PREFIX = '{% static 'sandbox' %}/data/';
+
+
+ // TODO: look into layout viewer as a temporary stand-in for openlayers
+
+ window.onload = function (evt) {
+
+   var layoutView = new Layout({
+     isHorizontal: true,
+     isReversed: false
+   }, onLayoutChange);
+
+   var textManager;
+   var imageViewer;
+
+   getXML(PREFIX + 'pageWithTags.xml').then(function (doc) {
+
+     imageViewer = new OpenLayersImageViewer(
+       PREFIX + 'pageWithTags.jpeg', doc, onImageSelect);
+
+     textManager = new TextManager(doc);
+
+   });
+
+   function onLayoutChange (evt) {
+     console.log(evt.type);
+
+     if (imageViewer !== undefined) {
+       var layout = evt.detail;
+
+       // FIXME: anchor point depends on isReversed and isHorizontal? top left, top right, bottom left, bottom right?
+       imageViewer.resize({
+         width: layout.width,
+         height: layout.height,
+         isReversed: layout.isReversed,
+         isHorizontal: layout.isHorizontal
+         // deltaWidth: layout.deltaWidth,
+         // deltaHeight: layout.deltaHeight,
+       });
+     }
+
+     if (textManager !== undefined)
+       textManager.resize();
+   }
+
+   function onImageSelect (lineId) {
+     console.log("imageSelect", lineId);
+   }
+
+ };
+</script>
+{% endblock %}

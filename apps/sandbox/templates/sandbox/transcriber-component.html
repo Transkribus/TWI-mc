@@ -1,0 +1,254 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block content %}
+<main>
+  <svg viewBox="0 0 2802 4049" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+      <mask id="Coords" x="0" y="0" width="100%" height="100%">
+        <rect x="0" y="0" width="100%" height="100%" style="stroke:none; fill: white"/>
+      </mask>
+    </defs>
+    <image x="0" y="0" width="100%" height="100%" xlink:href="{% static 'sandbox' %}/data/page.jpeg"/>
+    <rect x="0" y="0" width="100%" height="100%" fill="rgba(0, 0, 0, 0.25)" mask="url(#Coords)"/>
+    <g class="js-group"></g>
+  </svg>
+</main>
+{% endblock %}
+{% block styles %}
+<style>
+ * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+
+ html, body {
+   height: 100%;
+ }
+
+ main {
+   padding: 2em 0;
+   background-color: #333;
+   text-align: center;
+ }
+
+ svg {
+   max-width: 960px;
+   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+ }
+
+ .polygon {
+   fill: transparent;
+   // stroke: blue;
+ }
+
+ .polygon:active {
+   stroke: green !important;
+ }
+
+ .polygon:hover, .polygon.disabled:hover {
+   stroke: blue;
+ }
+
+ .polygon:focus,
+ .polygon:hover {
+   stroke-width: 2px;
+   outline: none;
+ }
+
+ .polygon:focus {
+   stroke: red;   
+ }
+
+ .polygon.disabled:focus {
+   /* no style yet :/ */
+ }
+
+ .mask {
+   fill: black;
+ }
+
+ .mask.disabled {
+   fill: white;
+ }
+
+
+</style>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/PageContent.js"></script>
+<script src="{% static 'sandbox' %}/js/ImageViewer.js"></script>
+<script>
+
+ /* FIXTHIS: take into account ReadingOrder */
+ /* FIXTHIS: make sure it works in browers other than firefox 59 */
+ /* FIXTHIS: display some sort of counter */
+ /* FIXTHIS: cannot zoom */
+ /* FIXTHIS: try to access DOM less often */
+ /* FIXTHIS: store and restore state */
+ /* FEATURE: enable allow selecting multiple lines at once, e.g. shift, dblclick and drag mouse to last one, coloring the items in-between  */
+
+ var CONFIG = {
+   verbose: true
+ };
+
+ var X = {
+   IMAGE: '{% static 'sandbox' %}/data/page.jpeg',
+   XML: '{% static 'sandbox' %}/data/content.xml'
+ };
+
+ var N = 'http://www.w3.org/2000/svg';
+
+ window.onload = function (evt) {
+   getXML(X.XML).then(function (pageXML) {
+
+     var S = {
+       Page: 'PcGts > Page',
+       TextRegion: 'PcGts > Page > TextRegion',
+       TextLine: 'PcGts > Page > TextRegion > TextLine',
+       Coords: 'PcGts > Page > TextRegion > TextLine > Coords',
+       Baseline: 'PcGts > Page > TextRegion > TextLine > Baseline',
+       // 'Coords[points]': 'PcGts > Page > TextRegion > TextLine > Coords',
+       // 'Baseline[points]': 'PcGts > Page > TextRegion > TextLine > Baseline[points]',
+       // Test: 'X > Y > Z'
+     };
+
+     var errorList = [];
+
+     for (var nodeName in S) {
+       var s = S[nodeName];
+       if (pageXML.querySelector(s) === null) {
+         errorList.push(nodeName);
+       }
+     }
+
+     if (errorList.length > 0) {
+       handleError("Invalid document! The following tags are missing: " + errorList.join(', '));
+     }
+
+     /* Render all the things ... */
+
+     var svgNode = document.querySelector('svg');
+
+     var coordsList = Array.from(pageXML.querySelectorAll('Page > TextRegion > TextLine > Coords'));
+
+     var maskNode = svgNode.querySelector('#Coords');
+
+     var groupNode = svgNode.querySelector('.js-group');
+
+     var lastPolygonNode;
+     var firstPolygonNode;     
+
+     for (var index = 0; index < coordsList.length; index++) {
+       var node = buildPolygon(coordsList[index]);
+
+       var tempNode = node.cloneNode(true);
+       tempNode.setAttribute('id', 'mask-' + index);
+       tempNode.classList.add('mask');
+
+       maskNode.appendChild(tempNode);
+
+       node.classList.add('polygon', 'js-polygon');
+       node.setAttribute('id', index);
+       node.setAttribute('tabindex', 1);
+       // https://www.w3.org/TR/SVGTiny12/painting.html#NonScalingStroke
+       node.setAttribute('vector-effect', 'non-scaling-stroke');
+       node.addEventListener('click', handleClick, false);
+       node.addEventListener('dblclick', handleClick, false);
+       node.addEventListener('keydown', handleKeydown, false);
+
+       if (index === 0)
+         firstPolygonNode = node;
+       else if (index === coordsList.length - 1)
+         lastPolygonNode = node;
+
+       groupNode.appendChild(node);
+
+     }
+
+     svgNode.appendChild(groupNode);
+
+     firstPolygonNode.focus();
+
+     function onPolygonToggle (id, isDisabled) {
+     }
+
+     function togglePolygonState (node) {
+
+       onPolygonToggle(node.getAttribute('id'), node.classList.toggle('disabled'));
+
+       var maskId = 'mask-' + node.getAttribute('id');
+       var maskNode = document.querySelector('#' + maskId);
+       maskNode.classList.toggle('disabled');
+
+     }
+
+     function handleClick (evt) {
+       evt.preventDefault();
+
+       if (evt.cancelable)
+         evt.stopPropagation();
+
+       togglePolygonState(evt.target);
+     }
+
+     function handleKeydown (evt) {
+
+       switch (evt.key) {
+         case 'Enter':
+         case 'ArrowDown':
+         case 'ArrowRight':
+           if (evt.target.nextElementSibling !== null)
+             evt.target.nextElementSibling.focus();
+           else
+             firstPolygonNode.focus();
+           evt.preventDefault();
+           break;
+         case 'ArrowUp':
+         case 'ArrowLeft':
+           if (evt.target.previousElementSibling !== null)
+             evt.target.previousElementSibling.focus();
+           else
+             lastPolygonNode.focus();
+           evt.preventDefault();
+           break;
+         case ' ':
+           togglePolygonState(evt.target);
+           evt.preventDefault();
+           if (evt.cancelable)
+             evt.stopPropagation();
+           break;
+       }
+     }
+
+   });
+ };
+
+ function buildPolygon (coordsNode) {
+
+   var pointList = parsePointsAttribute(coordsNode.getAttribute('points'));
+   var polygonNode = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+
+   var pointString = pointList.map(function (p) {
+     return p
+     // return {x: toScale(p.x), y: toScale(p.y)};
+   }).map(pointToString).join(' ');
+
+   polygonNode.setAttribute('points', pointString);
+
+   return polygonNode;
+
+ }
+
+ function handleError (message) {
+
+   if (CONFIG.verbose === true)
+     alert(message);
+
+   throw new Error(message);
+
+ }
+
+</script>
+{% endblock %}

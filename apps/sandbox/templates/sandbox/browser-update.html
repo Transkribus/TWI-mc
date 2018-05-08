@@ -1,0 +1,23 @@
+{% extends 'sandbox/base.html' %}
+{% load i18n %}
+{% block content %}
+<style>body { background-color: #333; }</style>
+{% comment %}
+<h1>Browser Update</h1>
+<p>{% trans "Sorry, but we don't support your browser. Please update to a newer verison or install a different browser." %}</p>
+<ul>
+  <li>
+    <a href="https://support.mozilla.org/products/firefox/install-and-update-firefox">Mozilla Firefox</a>
+  </li>
+  <li>
+    <a href ="https://support.apple.com/HT204416">Apple Safari</a>
+  </li>
+  <li>
+    <a href="https://support.google.com/chrome/answer/95346?co=GENIE.Platform%3DDesktop">Google Chrome</a>
+  </li>
+  <li>
+    <a href="https://www.microsoft.com/windows/microsoft-edge">Microsoft Edge</a>
+  </li>
+</ul>
+{% endcomment %}
+{% endblock content %}

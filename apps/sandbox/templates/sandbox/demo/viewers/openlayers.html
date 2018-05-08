@@ -1,0 +1,61 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block body_class_list %}{% endblock %}
+{% block content %}
+<div class="image-viewer js-image-viewer"></div>
+<aside class="position"></aside>
+{% endblock %}
+{% block styles %}
+<style>
+ * {
+   margin: 0;
+   padding: 0;
+ }
+
+ html, body {
+   height: 100%;
+ }
+
+ body {
+   background-color: #333;
+ }
+
+ .image-viewer {
+   height: 100%;
+   background-color: #333;
+ }
+
+ .position {
+   position: fixed;
+   top: 0;
+   left: 0;
+ }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.4/ol-debug.css" />
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/OpenLayersImageViewer.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/4.6.4/ol-debug.js"></script>
+<!-- not sure of proj4 is really required -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
+<script>
+ window.onload = function (evt) {
+
+   var PREFIX = '{% static 'sandbox' %}';
+
+   var PAGE = PREFIX + '/data/pageWithTags.xml';
+   var IMAGE = PREFIX + '/data/pageWithTags.jpeg';
+
+   getXML(PAGE).then(function (pageXML) {
+     var viewer = new OpenLayersImageViewer(IMAGE, pageXML.documentElement, onLineSelect);
+   })
+
+   function onLineSelect (lineId) {
+     console.debug("it works!");
+   }
+
+ }
+
+</script>
+{% endblock %}

@@ -1,0 +1,198 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/lib/render.js"></script>
+<script src="{% static 'sandbox' %}/js/XMLEditor.js"></script>
+<script src="{% static 'sandbox' %}/js/TagSpec.js"></script>
+<script src="{% static 'sandbox' %}/third_party/ace/ace.js"></script>
+<script src="{% static 'sandbox' %}/third_party/ace/mode-xml.js"></script>v
+<script src="{% static 'sandbox' %}/third_party/ace/ext-language_tools.js"></script>
+<script src="{% static 'sandbox' %}/third_party/ace/worker-xml.js"><</script>
+<script src="{% static 'sandbox' %}/third_party/ace/theme-clouds.js"></script>
+
+<script src="{% static 'sandbox' %}/js/PageContent.js"></script>
+<script src="{% static 'sandbox' %}/js/lib/parsers.js"></script>
+<script src="{% static 'sandbox' %}/js/lib/iterators.js"></script>
+<script src="{% static 'sandbox' %}/js/lib/render.js"></script>
+<script src="{% static 'sandbox' %}/js/XMLStringRenderer.js"></script>
+
+<script>
+ var TEXT = [
+   'The premise of subcultural dialectic theory holds that the significance of',
+   'the observer is deconstruction, given that <person firstname="Jean Paul" lastname="Sartre">Sartre’s</person> analysis of neocapitalist',
+   'capitalism in <place>Paris</place> is invalid. In a sense, Lyotard uses the term ‘<unclear>Baudrillardist</unclear>',
+   'hyperreality’ to denote the role of the reader. <abbrev>i.e.</abbrev> artist.',
+   'If subdialectic cultural theory holds, we have to choose between the',
+   'pretextual paradigm of reality and <unclear>Lacanist</unclear> obscurity. However, the subject is',
+   'contextualised into a feminism that includes sexuality as a whole.',
+   '<person>Derrida</person> uses the term ‘neocapitalist capitalism’ to denote a mythopoetical',
+   'totality. In a sense, the characteristic theme of the works of <person>Gibson</person> is the',
+   'role of the writer as artist.'
+ ].join('\n');
+</script>
+<script>
+ // new XMLEditor();
+
+ // new XMLEditorToolbar(editor);
+
+ // TODO: pretty view: select tagged word, then run keyword search.
+
+ // TODO: flexible layout, e.g. left right split, top bottom split, text and image switch positions, should be possible in flexbox
+
+ // TODO: possibly resizeable areas, e.g. change split position
+
+ // TODO: switching component
+
+ // TODO: fancy render
+
+ // TODO: tools for xml edit
+
+ // TODO: add get content method
+
+ // TODO: retrieve list of tags, ideally from trp api, for doc or col, sorted by frequency
+ // TODO: toolbar can insert escaped < and > 
+ // TODO: consistent icons for text viewer and toolbars for tags
+ // TODO: container that allows preview
+ // TODO: save result of editing, or cancel
+
+ // TODO: tagging already existing document use case using toolbar
+
+
+ // TODO: query user for attributes
+ var PREFIX = '{% static 'sandbox' %}';
+ var PAGE = PREFIX + '/data/pageWithTags.xml';
+ 
+ window.onload = function () {
+   getTextLineList(false).then(initialize);
+ };
+
+ function getTextLineList (useFakeData) {
+   return new Promise(function (resolve) {
+
+     if (useFakeData)
+       resolve(TEXT.split('\n'))
+
+     else
+       getXML(PAGE).then(function (pageDoc) {
+         
+         var tagSpec = new TagSpec();
+
+         var renderer = new XMLStringRenderer(tagSpec);
+         var xmlString = renderer.render(pageDoc);
+
+         resolve(xmlString.split('\n'));
+
+       });
+
+   });
+ }
+
+ function initialize (textLineList) {
+
+   var xmlEditor = new XMLEditor(callback);
+
+   function callback (lineIndex) {
+     console.debug('switched to line', lineIndex);
+   }
+
+   // TODO: this is for the tools
+
+   var name = 'someTag';
+   var attrList = [
+     {name: 'a', value: '1'},
+     {name: 'b', value: '2'}
+   ];
+
+   xmlEditor.update(textLineList);
+
+   xmlEditor.render().then(function () {
+     document.body.classList.remove('loading');
+     // xmlEditor.wrapWith(startTag(name, attrList), endTag(name));
+     xmlEditor.focus();
+   });
+ }
+
+ function startTag (name, attrList) {
+   console.assert(typeof name === 'string' && name !== '');
+   return '<' + name + ' ' + attrList.map(attrToString).join(' ') + '>'
+ }
+
+ function endTag (name) {
+   console.assert(typeof name === 'string' && name !== '');
+   return '</' + name + '>';
+ }
+
+ function attrToString (attr) {
+   console.assert(typeof attr.name === 'string' && attr.name !== '');
+   console.assert([null, undefined].indexOf(attr.value) < 0 && (typeof attr.value === 'string' || typeof attr.value === 'number'));
+   return attr.name + '=' + attr.value;
+ }
+
+</script>
+{% endblock %}
+{% block styles %}
+<style>
+
+ * {
+   margin: 0;
+   padding: 0;
+ }
+
+ html, body {
+   height: 100%;
+ }
+
+ body {
+   background-color: #333;
+   overflow: hidden;
+ }
+
+ .container {
+
+   position: relative;
+   width: 720px;
+   height: 100%;
+
+   margin: 0 auto;
+
+ }
+
+ .loading .container {
+   display: none;
+   // opacity: 0;
+ }
+
+ .editor--absolute {
+   position: absolute !important;
+   left: 0;
+   top: 4em;
+   right: 0;
+   bottom: 4em;
+ }
+
+ .container {
+   border-radius: 4px;
+   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.75);
+ }
+
+ .editor {
+   position: relative;
+   height: 100%;
+ }
+
+</style>
+{% endblock %}
+{% block body_class_list %}loading{% endblock %}
+{% block content %}
+<div class="container">
+  <!-- <div class="toolbar">
+       <form>
+       <button>action</button>
+       <button>action</button>
+       <button>action</button>
+       </form>
+       </div> -->
+  <div id="editor" class="editor js-xml-editor"></div>
+</div>
+{% endblock %}

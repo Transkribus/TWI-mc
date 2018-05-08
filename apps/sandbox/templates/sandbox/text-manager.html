@@ -1,0 +1,30 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block body_class_list %}{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/reset.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/text-manager.css" />
+{% endblock %}
+{% block content %}
+{% include 'sandbox/includes/text-manager.html' %}
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/TextManager.js"></script>
+<script>
+ window.onload = function (evt) {
+
+   // doc, copy of doc for editing
+
+   /* TODO: save
+
+      submit copy of page to api
+
+      replace original page with copy
+
+   */
+
+   var manager = new TextManager();
+
+ };
+</script>
+{% endblock %}

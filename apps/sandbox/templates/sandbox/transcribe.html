@@ -1,0 +1,667 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/reset.css" />
+
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/login-dialog.css" />
+
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/loader.css" >
+
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/layout.css" >
+
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/image-viewer--svg.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/toolbar.css" />
+
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/zoomable.css" >
+
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/text-editor--plain.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/character-table.css" />
+<style>
+ .plain-text-editor .text {
+   text-align: center;
+ }
+
+ .loading .layout {
+   
+ }
+</style>
+{% endblock %}
+{% block content %}
+<div class="layout horizontal js-layout">
+  <div class="item">
+    <div class="content">
+      {% include 'sandbox/includes/image-viewer--svg.html' %}
+    </div>
+    <div class="handle js-handle"></div>
+    <style>
+     .toolbar {
+       padding: 0.25em 1em 0 0;
+     }
+    </style>
+    <aside class="toolbar toolbar--fixed toolbar--right js-image-viewer-toolbar">
+      <form class="form js-form">
+        <button class="action" name="zoom" value="decrease">{% trans "Decrease Zoom" %} &minus;</button>
+        <button class="action" name="zoom" value="increase">{% trans "Increase Zoom" %} &plus; </button>
+        <button class="action" name="zoom" value="reset">{% trans "Reset Zoom" %}</button>
+      </form>
+    </aside>
+  </div>
+  <div class="item">
+    <div class="content">
+      <style>
+       .text-editor-layout {
+         display: flex;
+         flex-flow: column nowrap;
+         height: 100%;
+
+         overflow: hidden;
+       }
+
+       .text-editor-layout--sticky {
+         overflow: auto;
+       }
+
+       .text-editor-layout--sticky > .item:last-child {
+         overflow: visible !important;
+       }
+
+       .text-editor-layout--sticky > .item:first-child {
+         position: sticky;
+         left: 0;
+         top: 0;
+       }
+
+       .text-editor-layout > .item:last-child {
+         flex: 1;
+         overflow: hidden;
+       }
+
+       .text-editor-layout .tools {
+         padding: 0.25em 0;
+         text-align: center;
+         border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+         background-color: white;
+       }
+
+       .text-editor-layout .tools .action {
+         font-size: 0.85em;
+       }
+
+       .text-editor-layout .tools input[type="checkbox"] {
+         vertical-align: middle;
+       }
+
+       .text-editor-layout .tools input[type="checkbox"] + label {
+         font-size: 0.85em;
+       }
+
+      </style>
+      <div class="text-editor-layout">
+        <div class="item">
+          <form class="tools js-text-editor-tools">
+            <button id="char" class="action js-action" name="char" title="Insert special character">&#x2328; {% trans "Special Characters" %}</button>
+            &nbsp;
+            <input type="checkbox" class="action js-action" id="right-to-left" name="right-to-left" value="right-to-left">
+
+            <label for="right-to-left">Right-to-Left</label>
+          </form>
+        </div>
+        <div class="item">
+          {% include 'sandbox/includes/text-editor--plain.html' %}
+        </div>
+      </div>
+      {# FIXME: clean this up #}
+      <aside class="toolbar js-transcript-toolbar" style="position: fixed; bottom: 0; right: 0; display: flex; flex-flow: column nowrap;">
+        <style>
+         .toolbar .action {
+           margin-bottom: 0.25em;
+           font-size: 0.85em;
+         }
+        </style>
+        <!-- <button class="action js-action" name="save" title="Submit transcript for review">&#x1f582; {% trans "Submit for Review" %}</button> -->
+        <select class="action js-action status js-status" name="status">
+          <option id="NEW" value="NEW" disabled>
+            &#x2b1c; {% trans "New" %}
+          </option>
+          <option name="IN_PROGRESS" value="IN_PROGRESS">
+            &#x1f6a7; {% trans "Still in Progress" %}
+          </option>
+          <option id="DONE" value="DONE">
+            &#x1f582; {% trans "Ready for Review" %}
+          </option>
+          <option id="FINAL" value="FINAL">
+            &check; {% trans "Completed" %}
+          </option>
+        </select>
+        <button class="action js-action" name="save" title="Save your changes">&#x1f4be; {% trans "Save Changes " %}</button>
+      </aside>
+    </div>
+  </div>
+</div>
+{% comment %}
+<aside id="settings" class="settings dialog settings-dialog">
+  <form class="content js-form" method="post">
+    {% csrf_token %}
+    {% include 'sandbox/includes/settings.html' %}
+  </form>
+</aside>
+{% endcomment %}
+{% include 'sandbox/includes/character-table.html' %}
+<aside id="settings" class="settings js-settings">
+
+  the settings
+
+  <a href="#">Close</a>
+
+  <style>
+   .settings {
+     width: 100%;
+     height: 100%;
+
+     position: fixed;
+     left: 0;
+     top: 0;
+   }
+
+   .settings {
+     display: none;
+   }
+
+   .settings:target {
+     display: block;
+   }
+
+   .settings {
+     background-color: rgba(255, 255, 255, 0.75);
+   }
+
+  </style>
+</aside>
+<style>
+ .loader {
+   z-index: 9999999;
+ }
+</style>
+{% include 'sandbox/includes/loader.html' %}
+<style>
+ .login-dialog {
+   background-color: white;
+ }
+</style>
+
+{% include 'sandbox/includes/login-dialog.html' %}
+{% endblock %}
+{% block scripts %}
+<script>
+ var PREFIX = '{% static "sandbox" %}'; 
+</script>
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+
+<script src="{% static 'sandbox' %}/js/lib/api.js"></script>
+<script src="{% static 'sandbox' %}/js/ui/LoginDialog.js"></script>
+{# Cannot be used, because loader expects several steps ... <script src="{% static 'sandbox' %}/js/CurrentTranscript.js"></script> #}
+
+<script src="{% static 'sandbox' %}/js/ui/Loader.js"></script>
+
+<script src="{% static 'sandbox' %}/js/ui/Layout.js"></script>
+
+<script src="{% static 'sandbox' %}/js/PageContent.js"></script>
+<script src="{% static 'sandbox' %}/js/CurrentTranscript.js"></script>
+
+<script src="{% static 'sandbox' %}/js/ui/Zoomable.js"></script>
+<script src="{% static 'sandbox' %}/js/ui/Draggable.js"></script>
+<script src="{% static 'sandbox' %}/js/ui/SVGImageViewer.js"></script>
+<script src="{% static 'sandbox' %}/js/ui/Toolbar.js"></script>
+
+<script src="{% static 'sandbox' %}/js/ui/PlainTextEditor.js"></script>
+<script src="{% static 'sandbox' %}/js/ui/CharacterTable.js"></script>
+
+<script>
+ /* var DOC = {
+  *   IMG: '{% static 'sandbox' %}/data/ABP_Schmidseder_Joseph_S/S_Aicha_vorm_Wald_024_0052.jpg',
+  *   XML: '{% static 'sandbox' %}/data/ABP_Schmidseder_Joseph_S/page/S_Aicha_vorm_Wald_024_0052.xml'
+  * };
+  */
+
+ var DOC = {
+   IMG: '{% static 'sandbox' %}/data/pageWithTags.jpeg',
+   XML: '{% static 'sandbox' %}/data/pageWithTags.xml'
+ };
+
+</script>
+<script>
+
+ /* TODO: figure out ideal zoom, based on width of lines, line height, i.e. do not zoom in too much */
+ /* TODO: introduce layers.css for layering all things with z-index */
+ /* TODO: all dialog things inherit from a dialog style (like extend in less / sass) */
+ /* TODO: disable character table menu item when editor does not have focus */
+
+ function App () {
+   var layoutView = new Layout({
+     isHorizontal: true,
+     isReversed: false
+   }, onLayoutChange);
+
+   var loader = new Loader();
+   var viewerToolbar = new Toolbar('.js-image-viewer-toolbar', {
+     zoom: {
+       reset: function () {
+         viewer.resetZoom();
+       },
+       increase: function () {
+         viewer.zoomIn();
+       },
+       decrease: function () {
+         viewer.zoomOut();
+       }
+     }
+   });
+
+   var editorToolbar = new Toolbar('.js-text-editor-tools', {
+     char: function (value) {
+       charTable.select().then(function (char) {
+         // insert charater here ...
+         editor.insertText(char);
+
+         editor.focus();
+
+       });
+     },
+     'right-to-left': function (value, node) {
+       editor.setWritingDirection(node.checked === true ? 'right-to-left' : 'left-to-right');
+     }
+   });
+
+   var editor = new TextEditor();
+   var viewer = new SVGImageViewer(onTextLineFocus);
+
+   var CLIENT = 'trp-web-v0.0.1'
+
+   // FIXME: remove tags if line has changed
+
+   var trancriptToolbar = new Toolbar('.js-transcript-toolbar', {
+     status: function (value) {
+       transcript.status = value;
+     },
+     save: function () {
+
+       // TODO: show upload progress
+
+       var t = transcript;
+
+       loader.set(2);
+       loader.show();
+
+       editor.commit();
+
+       loader.notify();
+
+       console.assert(t.tsId !== null);
+
+       API.getInstance().then(function (api) {
+
+         console.assert(t.status !== null);
+
+         api.saveTranscript(t.colId, t.docId, t.pageId, t.doc, {
+           // status: t.status,
+           // status: 'IN_PROGRESS',
+           // note: '',
+           parent: t.tsId,
+           overwrite: false,
+           toolName: CLIENT
+         }).then(function (metaData) {
+
+           // FIXME: setting status separately is probably not required?
+
+           loader.notify();
+
+           t.tsId = metaData.tsId;
+
+           return api.updatePageStatus(t.colId, t.docId, t.pageId, t.tsId, t.status).then(function (data) {
+
+             loader.notify();
+
+             loader.hide();
+
+             alert("Page saved!");
+
+           }, function (error) {
+             console.error(error);
+
+             loader.hide();
+
+             alert("ERROR: Failed to save transcript!");
+
+           });
+
+         }, function (error) {
+           console.error(error);
+
+           loader.hide();
+
+           alert("ERROR: Failed to save transcript!");
+         });
+       });
+     }
+   });
+
+   var charTable = new CharacterTable();
+
+   var transcript = {
+     colId: getQueryParam('colId', parseInt),
+     docId: getQueryParam('docId', parseInt),
+     pageId: getQueryParam('pageId', parseInt),
+     tsId: null,
+     doc: null,
+     status: null
+  };
+
+   return {
+     setup: function () {
+
+       if (getQueryParam('test', parseInt) === 0)
+         LoginDialog.getInstance().then(function (dialog) {
+           var login = dialog.login();
+           login.then(setup).then(function () {
+             setTimeout(loader.hide, 250);
+           }).catch(function (error) {
+             console.warn(error);
+             alert("Failed to load document ...");
+           });
+         });
+       else {
+         loader.show();
+         setupTest(DOC.IMG, DOC.XML).then(loader.hide, loader.hide);
+       }
+
+     }
+   };
+
+   function setup () {
+
+     loader.show();
+
+     return new Promise(function (resolve, reject) {
+
+       var colId = getQueryParam('colId', Number);
+       var docId = getQueryParam('docId', Number);
+       var pageId = getQueryParam('pageId', Number);
+
+       console.assert(colId !== null);
+       console.assert(docId !== null);
+       console.assert(pageId !== null);
+
+       API.getInstance().then(function (api) {
+
+         function notify (data) {
+           loader.notify();
+           return data;
+         }
+
+         function handleError (error) {
+           console.error(error);
+           reject(error);
+         }
+
+         loader.set(7);
+       
+         var pageMetaDataPromise = api.getPage(colId, docId, pageId); // p
+         var transcriptMetaDataPromise = api.getCurrentTranscriptMetaData(colId, docId, pageId); // q
+
+         pageMetaDataPromise.catch(handleError);
+         transcriptMetaDataPromise.catch(handleError);
+
+         pageMetaDataPromise.then(notify);
+         transcriptMetaDataPromise.then(notify);
+
+         transcriptMetaDataPromise.then(function (metaData) {
+           transcript.tsId = metaData.tsId;
+           transcript.status = metaData.status;
+
+           // FIXME: select should observe transcript
+           var toolbar = document.querySelector('.js-transcript-toolbar');
+           var select = toolbar.querySelector('.js-status');
+           var option = select.namedItem(transcript.status);
+           option.selected = true;
+
+         });
+
+         // s
+         var imagePromise = pageMetaDataPromise.then(function (metaData) {
+           return getIMG(metaData.url).then(notify);
+         });
+
+         // var pageMetaDataPromise = q
+         
+         // then(function (doc) { check(doc); return doc; })
+
+         // t
+         var pageXMLDocPromise = transcriptMetaDataPromise.then(function (metaData) {
+           return getXML(metaData.url).then(notify);
+         });
+
+         pageXMLDocPromise.then(function (doc) {
+           transcript.doc = doc;
+         });
+
+         var editorPromise = pageXMLDocPromise.then(function (doc) {
+           return initEditor(doc).then(notify);
+         }).catch(handleError);
+
+         var viewerPromise = Promise.all([imagePromise, pageXMLDocPromise]).then(function (args) {
+           return initViewer.apply(initViewer, args);
+         }).then(notify);
+
+         Promise.all([editorPromise, viewerPromise]).then(function () {
+
+           loader.notify();
+
+           requestAnimationFrame(function () {
+             requestAnimationFrame(resolve);
+           });
+         });
+
+       });
+     });
+   }
+
+   function check (doc) {
+
+     return new Promise(function (resolve, reject) {
+
+       if (hasTags(doc))
+         reject("Documents with tags are not supported!");
+       else
+         resolve(doc);
+     });
+
+   }
+
+   function setupTest (imgUrl, docUrl) {
+
+     return new Promise(function (resolve) {
+
+       loader.set(5);
+
+       loader.notify();
+
+       var p = getXML(docUrl);
+       var q = getIMG(imgUrl);
+
+       var s;
+       var t;
+
+       p.then(loader.notify);
+
+       p.then(function (doc) {
+         transcript.doc = doc;
+       });
+
+       var c = p.then(check);
+
+       c.catch(function (error) {
+         console.warn(error);
+         if(!confirm("WARNING: Existing annotations will be lost when saving this transcript.\n\n\nDo you still want to continue?\n")) {
+           history.back();
+         }
+       });
+
+       v = p.then(initEditor).then(loader.notify);
+
+       q.then(loader.notify);
+     
+       t = Promise.all([q, p]).then(function (args) {
+         console.assert(args.length === 2, args);
+         initViewer.apply(initViewer, args);
+       }).then(loader.notify);
+
+       Promise.all([s, t]).then(init).then(function () {
+         requestAnimationFrame(function () {
+           requestAnimationFrame(resolve);
+         });
+       });
+     });
+
+   }
+
+   function init () {
+     // init things;
+   };
+
+   function initViewer (img, doc) {
+
+     console.assert(img instanceof Image);
+     console.assert(doc instanceof XMLDocument);
+
+     // TODO: use update / render interface
+
+     // var lineHeight = calcLineHeight(doc);
+
+     viewer = new SVGImageViewer(onTextLineFocus, onZoomChange);
+
+     // viewer.update(img, doc);
+     return viewer.render(img, doc);
+
+   }
+
+   function initEditor (doc) {
+     console.assert(doc instanceof XMLDocument);
+     return editor.render(doc);
+   }
+
+   function onLayoutChange (evt) {}
+
+   function onLineChange (evt) {}
+
+   function onZoomChange () {}
+
+   function onTextLineFocus (evt) {
+     editor.focus(evt.target.getAttribute('id'));
+   }
+
+   function TextEditor () {
+
+     var nodeList = [];
+     var itemList = [];
+     var itemIndex = {};
+
+     var editor = new PlainTextEditor(handleLineChange);
+
+     if (editorToolbar.isChecked('right-to-left'))
+       editor.setWritingDirection('right-to-left');
+
+     function handleLineChange (evt) {
+       var index = evt.detail.newIndex;
+       var node = nodeList[index];
+       var id = node.getAttribute('id');
+       viewer.highlight(id);
+       viewer.scrollIntoView(id);
+       // viewer.zoomIntoView(id);
+     }
+
+     function render (doc) {
+       // FIXME: take into account reading order
+
+       var SELECTOR = 'TextLine > TextEquiv > Unicode';
+
+       var it = OrderedTextLineIterator(doc);
+       var i;
+       var node;
+
+       var index = 0;
+       for (var i = it.next(); !i.done; i = it.next()) {
+
+         nodeList.push(i.item);
+         itemList.push({
+           node: i.item,
+           // NOTE: avoid :scope > TextEquiv because bad compatibility
+           text: findUnicodeNode(i.item).textContent,
+         });
+
+         itemIndex[nodeList[index].getAttribute('id')] = index++;
+
+       }
+
+       editor.update(itemList.map(function (item) { return item.text; }));
+       return editor.render();
+
+       function findUnicodeNode (textLineNode) {
+
+         var node;
+
+         for (var index = 0; index < textLineNode.children.length; index++) {
+           node = textLineNode.children[index];
+
+           if (node.nodeName === 'TextEquiv')
+             return node.querySelector('Unicode');
+         }
+
+         return null;
+
+       }
+
+     }
+
+     return {
+       insertText: function (string) {
+
+         editor.insertText(string);
+
+       },
+       focus: function (id) {
+         var index = itemIndex[id];
+         editor.select(index);
+       },
+       setWritingDirection: function (direction) {
+         editor.setWritingDirection(direction);
+       },
+       commit: function () {
+         var textLineList = editor.getResult();
+
+         console.assert(textLineList.length === nodeList.length);
+
+         for (var index = 0; index < textLineList.length; index++) {
+           var node = nodeList[index];
+           var unicodeNode = node.querySelector('Unicode');
+           unicodeNode.textContent = textLineList[index];
+         }
+
+       },
+       render: function (doc) {
+         return render(doc);
+       }
+     };
+
+   }
+ }
+
+ window.onload = function (evt) {
+
+   var app = new App();
+   app.setup();
+
+ };
+
+</script>
+{% endblock %}

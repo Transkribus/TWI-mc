@@ -1,0 +1,61 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% load i18n %}
+{% block styles %}
+<style>
+ * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+
+ html, body {
+   height: 100%;
+ }
+
+ body {
+   font-family: sans-serif;
+ }
+
+ .templates {
+   display: none;
+ }
+
+ .tagging-viewer {
+   background: white;
+ }
+</style>
+{% endblock %}
+{% block content %}
+<main class="tagging-viewer js-tagging-viewer">
+  <div class="templates js-templates">
+    {# use text via templates, because translation ... #}
+    <h1 class="js-hello">{% trans "¯\_(ツ)_/¯" %}</h1>
+  </div>
+  <div class="text js-text"></div>
+</main>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/lib/api.js"></script>
+<script src="{% static 'sandbox' %}/js/matti/TaggingViewer.js"></script>
+<script>
+ var PREFIX = '{% static 'sandbox' %}/data/';
+</script>
+<script>
+ window.addEventListener('load', function () {
+   getXML(PREFIX + 'pageWithTags.xml').then(function (pageDoc) {
+
+     var editor = new TaggingViewer(pageDoc, callback, otherCallback);
+
+     editor.render();
+
+   });
+
+   function callback () { console.debug("Called", callback); }
+
+   function otherCallback () { console.debug("Called", otherCallback); }
+
+ }, false);
+</script>
+{% endblock %}

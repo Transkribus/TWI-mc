@@ -1,0 +1,17 @@
+{% load i18n %}
+<aside class="login-dialog js-login-dialog">
+  <form class="js-login" method="post">
+    <label class="username" for="#username">{% trans 'Username' %}</label><input class="js-username" id="username" name="username" type="text" placeholder="{% trans 'Username' %}">
+    <label class="password" for="#password">{% trans 'Password' %}</label><input class="js-password" id="password" name="password" type="password" placeholder="{% trans 'Password' %}" autocomplete="false">
+    <button type="submit">{% trans 'Login' %}</button>
+    <div class="error-message">
+      <h1>{% trans "Login Failed" %}</h1>
+
+      <h3>Check Network Monitor for Cross-Origin Resource Sharing (CORS) issues.</h3>
+      <div>
+        <h4>To disable same-origin security policy run <emph>Chromium</emph> / <emph>Google Chrome</emph> using:</h4>
+        <code>/path/to/chrome --disable-web-security --user-data-dir</code>
+      </div>
+    </div>
+  </form>
+</aside>

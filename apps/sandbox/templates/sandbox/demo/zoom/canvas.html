@@ -1,0 +1,29 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block content %}
+<canvas class="js-canvas"></canvas>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/utils.js"></script>
+<script>
+
+ var APP = {
+   IMAGE: '/static/sandbox/data/page.jpeg',
+ };
+
+ window.onload = function (evt) {
+
+   document.querySelector('.js-canvas');
+
+   getXML(APP.IMAGE).then(function (pageXml) {
+
+     var context = canvas.getContext('2d');
+
+     /* TODO: use canvas for zooming */
+
+   });
+
+
+ };
+</script>
+{% endblock %}

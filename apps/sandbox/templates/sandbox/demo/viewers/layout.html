@@ -1,0 +1,107 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block body_class_list %}loading{% endblock %}
+{% block content %}
+{% include 'sandbox/includes/layout-viewer.html' %}
+{% include 'sandbox/includes/menu.html' %}
+<aside class="debug js-debug">&nbsp</aside>
+{% endblock %}
+{% block styles %}
+<style>
+ * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+
+ html, body {
+   height: 100%;
+ }
+
+ button[value="TableRegion"],
+ button[value="TableCell"] {
+   display: none;
+ }
+
+ .with-table button[value="TableRegion"],
+ .with-table button[value="TableCell"] {
+   display: inline-block;
+ }
+
+ .debug {
+   position: fixed;
+   left: 50%;
+   bottom: 0;
+   min-width: 320px;
+   font-size: 0.875em;
+   text-align: center;
+   background-color: white;
+   transform: translate(-50%, 0);
+ }
+
+</style>
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/layout-viewer.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/zoomable.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/menu.css" />
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/PageContent.js"></script>
+<script src="{% static 'sandbox' %}/js/Menu.js"></script>
+<script src="{% static 'sandbox' %}/js/ui/Zoomable.js"></script>
+<script src="{% static 'sandbox' %}/js/LayoutViewer.js"></script>
+<script>
+ window.onload = function (evt) {
+
+   var EXAMPLES = {
+     true: {
+       image: '{% static 'sandbox' %}/data/ABP_Schmidseder_Joseph_S/S_Aicha_vorm_Wald_024_0052.jpg',
+       content: '{% static 'sandbox' %}/data/ABP_Schmidseder_Joseph_S/page/S_Aicha_vorm_Wald_024_0052.xml'
+     },
+     false: {
+       image: '{% static 'sandbox' %}/data/page.jpeg',
+       content: '{% static 'sandbox' %}/data/content.xml'
+     }
+   };
+
+   var withTable = getQueryParam('withTable', parseInt) === 1 ? true : false;
+
+   var p = EXAMPLES[withTable];
+
+   if (withTable)
+     document.body.classList.add('with-table');
+
+   var viewer;
+   var menu;
+
+   var imageUrl = p.image;
+   var pageUrl = p.content;
+
+   // renderWithTable(p.image, p.content);
+   getIMG(imageUrl).then(function () {
+     getXML(pageUrl).then(function (xml) {
+
+       viewer = new LayoutViewer(p.image, xml, onFocus);
+       menu = new Menu(viewer);
+
+       document.body.classList.remove('loading');
+
+     })
+   });
+
+   /* handle focus element */
+   var debugNode = document.querySelector('.js-debug');
+
+   function onFocus (evt) {
+     debugNode.textContent = evt.target.parentNode.getAttribute('id');
+   }
+
+   /* click handlers for demo */
+
+   var imageNode = document.querySelector('.js-image');
+   var layoutNode = document.querySelector('.js-layout');
+
+ }
+
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+.layout-viewer {
+    min-height: 100%;
+    padding: 0;
+    // padding: 2em 0;
+    background-color: #333;
+    text-align: center;
+}
+
+.loading .layout-viewer .viewport {
+    display: none;
+}
+
+.layout-viewer .viewport {
+    // display: inline-block;
+    // max-width: 1080px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.layout-viewer .TextRegion,
+.layout-viewer .TableRegion,
+.layout-viewer .TextLine {
+    stroke: none;
+}
+
+.layout-viewer .image.hidden,
+.layout-viewer .layout.hidden,
+.layout-viewer .TextRegion.hidden > .Coords,
+.layout-viewer .TableRegion.hidden > .Coords,
+.layout-viewer .TableCell.hidden > .Coords,
+.layout-viewer .TextLine.hidden > .Coords,
+.layout-viewer .Baseline.hidden {
+    opacity: 0.05;
+}
+
+.layout-viewer .TextRegion > .Coords,
+.layout-viewer .TableRegion > .Coords,
+.layout-viewer .TableCell > .Coords {
+    opacity: 0.75;
+}
+
+.layout-viewer .TextRegion > .Coords:hover,
+.layout-viewer .TableRegion > .Coords:hover,
+.layout-viewer .TableCell > .Coords:hover,
+.layout-viewer .TextLine > .Coords:hover {
+    stroke: black;
+}
+
+.layout-viewer .TextRegion > .Coords:focus,
+.layout-viewer .TableRegion > .Coords:focus,
+.layout-viewer .TableCell > .Coords:focus,
+.layout-viewer .TextLine > .Coords:focus {
+    outline: none;
+    stroke: black;
+    stroke-opacity: 0.75;
+}
+
+.layout-viewer .TextLine > .Baseline {
+    fill: none;
+    stroke: black;
+    stroke-width: 1px;
+    stroke-opacity: 0.5;
+}
+
+.layout-viewer .TextLine > .Coords:hover + .Baseline {
+    stroke: blue;
+}
+
+.layout-viewer .TextLine > .Coords:focus + .Baseline {
+    stroke: blue;
+    stroke-opacity: 1;
+}

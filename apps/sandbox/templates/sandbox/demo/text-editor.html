@@ -1,0 +1,401 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block styles %}
+<style>
+
+ * {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+ }
+
+ html, body {
+   height: 100%;
+ }
+
+ .text-editor {
+   min-height: 100%;
+   padding: 1em;
+   text-align: center;
+
+   background-color: #333;
+
+ }
+
+ .text-editor.hidden .menu,
+ .text-editor.hidden .text {
+   display: none;
+ }
+
+ .menu {
+   position: sticky;
+   top: 0;
+
+   margin-bottom: 1em;
+ }
+
+ .menu.highlight {
+   background-color: red;
+ }
+
+ .text {
+   width: 100%;
+   max-width: 640px;
+   min-height: 240px;
+
+   padding: 1em;
+
+   // text-align: justify;
+   // white-space: pre-line;
+
+   font-family: sans-serif;
+   line-height: 2em;
+
+   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+
+   overflow: hidden;
+
+   resize: none;
+
+ }
+
+</style>
+{% endblock %}
+{% block content %}
+<main class="hidden text-editor">
+  <form class="menu js-menu"></form>
+  <textarea class="text js-text"></textarea>
+</main>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/api--impl_trp.js"></script>
+<script src="{% static 'sandbox' %}/js/api.js"></script>
+<script>
+ window.onload = function (evt) {
+
+   var TEXT = 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.';
+
+   var tagList = [
+     'foo', 'bar', 'baz'
+   ];
+
+   var editor = new TextEditor(tagList);
+   var menu = new Menu(editor, tagList);
+
+   menu.render();
+
+   function Menu (editor, tagList) {
+
+     var menuNode = document.querySelector('.js-menu');
+
+     function renderMenu () {
+       var tmplNode = document.createElement('button');
+       tmplNode.classList.add('.js-button');
+       for (var index = 0; index < tagList.length; index++) {
+         var node = tmplNode.cloneNode(true);
+         node.textContent = node.value = tagList[index];
+         menuNode.appendChild(node);
+       }
+     }
+
+     menuNode.addEventListener('click', onMenuClick, false);
+
+     function onMenuClick (evt) {
+
+       if (evt.target.nodeName !== 'BUTTON')
+         return;
+
+       evt.preventDefault();
+
+       if (evt.cancelable)
+         evt.stopPropagation();
+
+       editor.insertNode(evt.target.value);
+
+     }
+
+     return {
+       render: function () {
+         renderMenu();
+       }
+     };
+
+   }
+
+   function TextEditor () {
+
+     var textNode = document.querySelector('.js-text');
+     var tagIndex = null;
+     var insertRange;
+     var isReady = true;
+
+     requestAnimationFrame(initialize);
+
+     return {
+       insertNode: function (nodeName) {
+
+         var range = getSelectionRange();
+         insertNode(nodeName, range.startIndex, range.stopIndex);
+
+         textNode.focus();
+
+       }
+     };
+
+     function initialize () {
+
+       if (textNode.value == '')
+         textNode.value = TEXT;
+
+       textNode.setAttribute('autocapitalize', 'off');
+       textNode.setAttribute('spellcheck', false);
+
+       textNode.setSelectionRange(0, 0);
+
+       addEventListeners();
+
+       requestAnimationFrame(function () {
+         textNode.parentNode.classList.remove('hidden');
+         requestAnimationFrame(function () {
+           textNode.style.height = textNode.scrollHeight + 'px';
+         });
+       });
+
+     }
+
+     function addEventListeners () {
+
+       textNode.addEventListener('keydown', function (evt) {
+         if (evt.key === '<' || evt.key === '>') {
+           evt.preventDefault();
+         }
+       }, false);
+
+       textNode.addEventListener('scroll', function (evt) {
+         textNode.style.height = textNode.scrollHeight + 'px';
+       }, false);
+
+       textNode.addEventListener('keydown', handleKeydown, false);
+       textNode.addEventListener('keyup', handleKeyup, false);       
+
+     }
+
+     function handleKeydown (evt) {
+
+       if (!evt.ctrlKey)
+         return;
+
+       if (evt.key === 'Shift') {
+         startSelect();
+         evt.preventDefault();
+       }
+       else if (evt.shiftKey) {
+         if (evt.key === 'ArrowUp') {
+           selectNext();
+           evt.preventDefault();
+         }
+         else if (evt.key === 'ArrowDown') {
+           selectPrev();
+           evt.preventDefault();
+         }
+       }
+
+     }
+
+     function handleKeyup (evt) {
+
+       if (isReady)
+         return false;
+
+       if (evt.ctrlKey && evt.shiftKey) {
+         evt.preventDefault();
+       }
+       else if (evt.key === 'Control') {
+         stopSelect();
+       }
+     }
+
+     function startSelect () {
+
+         isReady = false;
+
+         if (tagIndex === null)
+           tagIndex = 0;
+
+         var range = getSelectionRange();
+         insertRange = insertNode(
+           tagList[tagIndex], range.startIndex, range.stopIndex);
+
+         tagIndex += 1;
+
+         // if (!menuNode.classList.contains('highlight'))
+         //   menuNode.classList.add('highlight');
+
+     }
+
+     function stopSelect () {
+       insertRange = null;
+       tagIndex = null;
+       isReady = true;
+
+       textNode.focus();
+
+     }
+
+     function selectNext () {
+
+       /* TODO: keep text within tags when switching to next tag,
+          current, input, result
+          1. the text (selected), Shift + Ctrl, <firstTag>the text</firstTag>
+          2. <firstTag>the text</firstTag>, + Ctrl + Shift + ArrowUp, <secondTag>the text</secondTag>
+          ....
+          n: the text (selected)
+
+          TODO: cursor position: where to position cursor?
+
+          same as insertNode, inside tag if empty, after closing tag if it there is text inside
+
+          TODO: convert xml tags to something that can be written back to page xml custom attr
+
+        */
+
+       if (tagIndex < tagList.length) 
+         replaceWith(tagList[tagIndex++], insertRange.startIndex, insertRange.stopIndex);
+       else {
+         removeText(insertRange.startIndex, insertRange.stopIndex);
+         insertRange.startIndex = insertRange.startIndex;
+         insertRange.stopIndex = insertRange.startIndex;
+         tagIndex = 0;
+       }
+     }
+
+     function selectPrev () {
+       throw new Error("Not Implemented.");
+     }
+
+     function getSelectionRange () {
+
+       var startIndex = textNode.selectionStart;
+       var stopIndex = textNode.selectionEnd;
+
+       if (textNode.selectionDirection === 'backwards') {
+         var tempIndex = startIndex;
+         startIndex = stopIndex;
+         stopIndex = tempIndex;
+       }
+
+       return {
+         startIndex: startIndex,
+         stopIndex: stopIndex
+       };
+     }
+
+     function removeText (startIndex, stopIndex) {
+
+       var text = textNode.value;
+
+       var result = text.slice(startIndex, stopIndex);
+
+
+       textNode.value = [
+         text.slice(0, startIndex),
+         text.slice(stopIndex, text.length)
+       ].join('');
+
+       textNode.setSelectionRange(startIndex, startIndex);
+
+       return result;
+
+     }
+
+     function insertNode (nodeName, startIndex, stopIndex) {
+
+       console.assert(typeof nodeName === 'string', 1);
+       console.assert(typeof startIndex === 'number', 2);
+       console.assert(typeof stopIndex === 'number', 3);
+       console.assert(startIndex <= stopIndex, 100);
+
+       var text = textNode.value;
+
+       var innerText = text.slice(startIndex, stopIndex);
+
+       var openTag = ['<', nodeName, '>'].join('');
+       var closeTag = ['</', nodeName, '>'].join('');
+
+       var outerText = [
+         openTag,
+         innerText,
+         closeTag,
+       ].join('');
+
+       textNode.value = [
+         text.slice(0, startIndex),
+         outerText,
+         text.slice(stopIndex, text.length)
+       ].join('');
+
+       var result = {
+         startIndex: startIndex,
+         stopIndex: startIndex + outerText.length,
+         textStartIndex: startIndex + outerText.length,
+         textStopIndex: outerText.length - closeTag.length,
+         // tagOpen: openTag,
+         // tagClose: closeTag,
+         text: innerText
+       };
+
+       /* NOTE: this might need some fine tuning according to user's needs */
+       if (innerText.length === 0)
+         /* if tag is empty, move cursor inside */
+         startIndex = stopIndex = startIndex + openTag.length;
+       else 
+         /* otherwise move to pos right after closing tag */
+         startIndex = stopIndex = startIndex + outerText.length;
+
+       textNode.setSelectionRange(startIndex, stopIndex);
+
+       return result;
+
+     }
+
+     function insertText (startIndex, text) {
+       var text = textNode.value;
+       textNode.value = [
+         text.slice(0, startIndex),
+         text,
+         text.slice(startIndex, text.length)
+       ].join('');
+       return text;
+     }
+
+     function replaceWith (nodeName, startIndex, stopIndex) {
+       removeText(startIndex, stopIndex);
+       insertRange = insertNode(nodeName, startIndex, startIndex);
+     }
+
+     function validate (text) {
+
+       var parser = new DOMParser();
+       var doc = parser.parseFromString(text, 'application/xml');
+
+       var error = doc.querySelector('parsererror');
+
+       if (error === null)
+         return {isError: false}
+
+       return {
+         isError: true,
+         message: buildMessage(error)
+       }
+
+       function buildMessage (error) {
+         return error.firstChild.textContent + ' ' + error.firstElementChild.textContent;
+       }
+
+     }
+   }
+   
+ }
+</script>
+{% endblock %}

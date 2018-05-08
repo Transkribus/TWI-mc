@@ -1,0 +1,377 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block content %}
+<h1>¯\_(ツ)_/¯</h1>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/lib/builders.js"></script>
+<script src="{% static 'sandbox' %}/js/lib/parsers.js"></script>
+<script src="{% static 'sandbox' %}/js/lib/iterators.js"></script>
+<script src="{% static 'sandbox' %}/js/PageContent.js"></script>
+<script src="{% static 'sandbox' %}/js/test.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/deep-diff/0.3.3/deep-diff.min.js"></script>
+
+<script type="text/javascript">
+ window.onload = function () {
+
+   [
+
+     {
+       output: {
+         text: '01234567890123456789',
+         offset: 20,
+         segments: [
+           {
+             name: 'someTag',
+             attributes: {offset: 5, length: 15, continued: true}
+           },
+           {
+             name: 'TextLine',
+             attributes: {offset: 0, length: 10}
+           },
+           {
+             name: 'TextLine',
+             attributes: {offset: 10, length: 10}
+           }
+         ]
+       },
+       input: [
+         {
+           text: '0123456789',
+           segments: [
+             {
+               name: 'someTag',
+               attributes: {offset: 5, length: 10, continued: true}
+             }
+           ]
+         },
+         {
+           text: '0123456789',
+           segments: [
+             {
+               name: 'someTag',
+               attributes: {offset: 0, length: 5, continued: true}
+             }
+           ]
+         }
+       ],
+     },
+
+
+     {
+       output: {
+         text: '01234567890123456789',
+         offset: 20,
+         segments: [
+           {
+             name: 'someTag',
+             attributes: {offset: 0, length: 10}
+           },
+           {
+             name: 'TextLine',
+             attributes: {offset: 0, length: 10}
+           },
+           {
+             name: 'someTag',
+             attributes: {offset: 10, length: 10}
+           },
+           {
+             name: 'TextLine',
+             attributes: {offset: 10, length: 10}
+           }
+         ]
+       },
+       input: [
+         {
+         text: '0123456789',
+           segments: [
+             {name: 'someTag', attributes: {offset: 0, length: 10}}
+           ]
+         },
+         {
+           text: '0123456789',
+           segments: [
+             {name: 'someTag', attributes: {offset: 0, length: 10}}
+           ]
+         }
+       ]
+     }
+   ].forEach(function (data) {
+
+     var result = {
+       text: '', 
+       offset: 0,
+       segments: []
+     };  
+
+     var expected = data.output;
+     var segments = data.input;
+
+     console.debug(segments.reduce(mergeContinuedSegments, result));
+
+     var diffs = DeepDiff.diff(expected, result);
+     console.assert(!diffs, diffs);
+
+   });
+
+   var PREFIX = '{% static 'sandbox' %}/data/';
+
+   getXML(PREFIX + 'pageWithTags.xml').then(function (doc) {
+
+     Array.from(doc.querySelectorAll('TextRegion > TextLine'));
+
+     var it = new OrderedTextLineIterator(doc);
+
+     var segments = [];
+
+     for (var i = it.next(); !i.done; i = it.next()) {
+       // use tag def here ...
+       
+       var attrList = parseCustomAttribute(i.item.getAttribute('custom'));
+       console.assert(attrList.shift().name === 'readingOrder');
+
+       segments.push({
+         segments: attrList,
+         text: i.item.querySelector('Unicode').textContent
+       });
+
+     }
+
+     var result = {
+       text: '', 
+       offset: 0,
+       segments: []
+     };  
+
+     console.debug(segments.reduce(mergeContinuedSegments, result));
+
+     var segments = result.segments;
+     segments.sort(compare);
+     bracketedSegments = toBracketedSegmentList(segments);
+
+     var b = XMLStringBuilder();
+
+     // make toXML re-usable ...
+     console.log('output', toXML(result.text, bracketedSegments));
+
+     console.log('result', b.getResult());
+
+     // TODO: test with handler that turns this into something more useful ...
+
+   });
+
+   function convertDocument () {
+
+     var result = {
+       text: '', 
+       offset: 0,
+       segments: []
+     };  
+
+   }
+
+   return;
+
+   var test = [
+     {name: 'person', isStart: true, offset: 5},
+     {name: 'person', isStart: false, offset: 25},
+     
+     {name: 'abbrev', isStart: true, offset: 15},
+     {name: 'abbrev', isStart: false, offset: 20},
+   ]
+
+
+   var SEGMENTS = [
+     [
+       false,
+       [
+         {name: 'someTag'},
+         {name: 'someTag'}
+       ]
+     ],
+     [
+       false,
+       [
+         {name: 'someTag'},
+         {name: 'someOtherTag'},
+       ]
+     ],
+     [
+       false,
+       [
+         {name: 'someTag', attributes: {a: 1}},
+         {name: 'someTag', attributes: {b: 1}}
+       ]
+     ],
+     [
+       false, // because not continued
+       [
+         {name: 'someTag', attributes: {a: 1}},
+         {name: 'someTag', attributes: {a: 1}}
+       ]
+     ],
+     [
+       true,
+       [
+         {name: 'someTag', attributes: {a: 1, continued: true}},
+         {name: 'someTag', attributes: {a: 1, continued: true}}
+       ]
+     ],
+     [
+       false, // different keys
+       [
+         {name: 'someTag', attributes: {a: 1, continued: true}},
+         {name: 'someTag', attributes: {b: 1, continued: true}}
+       ]
+     ],
+     [
+       false, // same keys different values
+       [
+         {name: 'someTag', attributes: {a: 1, continued: true}},
+         {name: 'someTag', attributes: {a: 2, continued: true}}
+       ]
+     ],
+     [
+       false, // extra key
+       [
+         {name: 'someTag', attributes: {a: 1, b: 1, continued: true}},
+         {name: 'someTag', attributes: {a: 1, continued: true}}
+       ]
+     ],
+     [
+       false, // extra key
+       [
+         {name: 'someTag', attributes: {a: 1, continued: true}},
+         {name: 'someTag', attributes: {a: 1, b: 1, continued: true}}
+       ]
+     ],
+     [
+       true, // ignore offset, length, index
+       [
+         {
+           name: 'someTag',
+           attributes: {
+             offset: 5,
+             length: 10,
+             a: 1,
+             b: 1,
+             continued: true
+           }
+         },
+         {
+           name: 'someTag',
+           attributes: {
+             offset: 0,
+             length: 5,
+             a: 1,
+             b: 1,
+             continued: true
+           }
+         }
+       ]
+     ]
+   ];
+
+   SEGMENTS.forEach(function (testData, index) {
+     var expected = testData[0];
+     var segments = testData[1];
+     console.assert(expected === isContinuedBy(segments[0], segments[1]), index)
+   });
+
+   return;
+
+   var results = [];
+
+   var tagList = test;
+
+   var tag;
+
+   var openStack = [];
+   var closeStack = [];
+
+   var text = '';
+
+   function isFirst (segment) { // true if we fail to find any segment it continues
+
+     // improvement: if offset > 0 it's first?
+
+     // TODO: use findContinuingSegments(tag, openStack);
+     for (var index = 0; index < openStack.length; index++) {
+
+       var otherSegment = openStack[index];
+
+       if (isSegmentContinued(segment, otherSegment))
+         return false;
+
+     }
+
+     return true;
+
+   }
+
+   function isLast (segment) {
+     return segment.offset + length === text.length;
+   }
+
+   // for each line ...
+
+
+   // TODO: output text as well
+
+   var offset = 0;
+
+   for (var index = 0; index < tagList.length; index++)  {
+
+     tag = tagList[index];
+
+     if (tag.isStart === true) {
+       if (tag.continued === true) {
+         // test if first
+         if (isFirst(tag)) { // improvement: if offset > 0 it's first?
+           openStack.push(tag);
+           results.push(tag); // handleStart
+         }
+         else {
+           // count close tag as continued
+           if (closeSet.contains(tag)) {
+             // maybe update close tag, e.g. text? meh ...
+             closeCount.inc(tag, 1);
+           }
+         }
+       }
+       else {
+         results.push(tag);// handleStart
+       }
+     }
+     else {
+       if (tag.continued === true) {
+         if (isLast(tag)) {
+           // remove it from open stack
+           results.push(tag); // handleEnd
+
+           // remove the node it continues from openstack
+           // remove it from closeStack
+         }
+         else { // cannot be closed right now
+           // if not already in close set ...
+           closeSet.add(tag);
+         }
+       }
+       else {
+
+         openStack.pop();
+
+         results.push(tag); // handleEnd
+       }
+     }
+   }
+
+   // for all items in closeSet ... if closeCount === 0: not continued, can now be handled
+
+   // insert fake newline
+
+ };
+</script>
+{% endblock %}

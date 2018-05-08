@@ -1,0 +1,149 @@
+{% extends 'sandbox/base.html' %}
+{% load static %}
+{% block body_class_list %}loading{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/reset.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/image-viewer-toolbar.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/image-viewer--svg.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/zoomable.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/toolbar--image.css" />
+<link rel="stylesheet" href="{% static 'sandbox' %}/css/toolbar.css" />
+<style>
+ html, body {
+   height: 100%;
+   overflow: hidden;
+ }
+
+ .debug {
+   position: fixed;
+   left: 50%;
+   bottom: 0;
+   min-width: 320px;
+   font-size: 0.875em;
+   text-align: center;
+   background-color: white;
+   transform: translate(-50%, 0);
+ }
+</style>
+{% endblock %}
+{% block content %}
+{% include 'sandbox/includes/image-viewer--svg.html' %}
+{% include 'sandbox/includes/image-viewer-toolbar.html' %}
+<aside class="debug js-debug">&nbsp</aside>
+{% endblock %}
+{% block scripts %}
+<!-- <script src="{% static 'sandbox' %}/third_party/polyfills/smoothscroll.min.js"></script> -->
+
+<script src="{% static 'sandbox' %}/js/lib/utils.js"></script>
+<script src="{% static 'sandbox' %}/js/PageContent.js"></script>
+<script src="{% static 'sandbox' %}/js/ui/Zoomable.js"></script>
+<script src="{% static 'sandbox' %}/js/ui/Draggable.js"></script>
+<script src="{% static 'sandbox' %}/js/ui/SVGImageViewer.js"></script>
+<script src="{% static 'sandbox' %}/js/ui/ImageViewerToolbar.js"></script>
+<script>
+
+ window.onload = function (evt) {
+
+   var EXAMPLES = {
+     true: {
+       image: '{% static 'sandbox' %}/data/ABP_Schmidseder_Joseph_S/S_Aicha_vorm_Wald_024_0052.jpg',
+       content: '{% static 'sandbox' %}/data/ABP_Schmidseder_Joseph_S/page/S_Aicha_vorm_Wald_024_0052.xml'
+     },
+     false: {
+       image: '{% static 'sandbox' %}/data/page.jpeg',
+       content: '{% static 'sandbox' %}/data/content.xml'
+     }
+   };
+
+   var withTable = getQueryParam('withTable', parseInt) === 1 ? true : false;
+
+   var p = EXAMPLES[withTable];
+
+   if (withTable)
+     document.body.classList.add('with-table');
+
+   var imageUrl = p.image;
+   var pageUrl = p.content;
+
+   var viewer = new SVGImageViewer(onFocus, onZoomChange);
+
+   var menu;
+   // renderWithTable(p.image, p.content);
+   getIMG(imageUrl).then(function () {
+     getXML(pageUrl).then(function (xml) {
+
+       function chooseRandomNode () {
+         var items = Array.from(xml.querySelectorAll('TextRegion > TextLine'));
+         return items[parseInt(Math.random() * items.length)];
+       }
+
+       menu = new ImageViewerToolbar({
+         test: function (option) {
+           var options = {
+             scrollIntoView: function () {
+               var node = chooseRandomNode();
+               var id = node.getAttribute('id');
+               viewer.scrollIntoView(id);
+               viewer.highlight(id);
+             },
+             zoomIntoView: function () {
+               var node = chooseRandomNode();
+               // var rect = toRect(parsePointsAttribute(node.querySelector('Coords').getAttribute('points')));
+               // viewer.zoomIntoView(rect);
+               var id = node.getAttribute('id');
+               viewer.zoomIntoView(id);
+               viewer.highlight(id);
+             }
+           };
+           var action = options[option];
+           if (typeof action === 'function')
+             action();
+         },
+         zoom: function (value) {
+           switch (value) {
+             case 'in':
+               viewer.zoomIn();
+               break;
+             case 'out':
+               viewer.zoomOut();
+               break;
+             case 'reset':
+               viewer.resetZoom();
+               break;
+             default:
+               console.warn("Invalid value:", value);
+               break;
+           }
+         }
+       });
+
+       getIMG(p.image).then(function (img) {
+         return viewer.render(img, xml);
+       }).then(function () {
+         document.body.classList.remove('loading');
+       });
+
+     })
+   });
+
+   /* handle focus element */
+   var debugNode = document.querySelector('.js-debug');
+
+   function onFocus (evt) {
+     debugNode.textContent = evt.target.getAttribute('id');
+     console.log(evt);
+   }
+
+   function onZoomChange (evt) {
+     menu.setZoomFactor(Math.round(10 * 100 * evt.detail.factor) / 10);
+   }
+
+   /* click handlers for demo */
+
+   var imageNode = document.querySelector('.js-image');
+   var layoutNode = document.querySelector('.js-layout');
+
+ }
+
+</script>
+{% endblock %}

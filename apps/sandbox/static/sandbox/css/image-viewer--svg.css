@@ -1,0 +1,103 @@
+/* image-viewer */
+
+.image-viewer {
+    min-height: 100%;
+    padding: 0;
+    text-align: center;
+}
+
+.image-viewer {
+    position: relative;
+}
+
+.loading .image-viewer .viewport {
+    // display: none;
+    // opacity: 0;
+}
+
+/* image-viewer--svg */
+
+.image-viewer--svg .layout .viewport {
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* NOTE: hides all coords unless expliclty made visible later on */
+.image-viewer--svg .layout .Coords,
+.image-viewer--svg .layout .Baseline {
+    display: none;
+    fill: transparent;
+}
+
+/* .image-viewer--svg .layout .TextRegion > .Coords:focus, */
+/* .image-viewer--svg .layout .TableRegion > .Coords:focus, */
+/* .image-viewer--svg .layout .TableCell > .Coords:focus, */
+.image-viewer--svg .layout .TextLine > .Coords:focus {
+    outline: none;
+}
+
+.image-viewer--svg .layout .TextLine > .Coords {
+    display: block;
+}
+
+/* theme */
+
+.image-viewer {
+    background-color: #333;
+}
+
+.image-viewer--svg .layout .TextLine > .Coords {
+    fill: rgba(0, 0, 255, 0.05);
+}
+
+.image-viewer--svg .layout .TextLine > .Baseline {
+    display: block;
+
+    stroke-width: 2px;
+    stroke: black;
+    stroke-opacity: 0.1;
+    opacity: 1;
+    // fill: none;
+
+    transform: translate(0, 10px);
+}
+
+.image-viewer--svg .layout .TextLine > .Coords,
+.image-viewer--svg .layout .TextLine > .Baseline {
+    transition: opacity 50ms ease-in;
+    transition-delay: 50ms;
+}
+
+.image-viewer--svg .layout .TextLine > .Coords {
+    opacity: 0;
+}
+
+.image-viewer--svg .layout .TextLine > .Coords:hover {
+    opacity: 1;
+}
+
+.image-viewer--svg .layout .TextLine > .Coords:active + .Baseline {
+    // stroke-opacity: 0.75 !important;
+    // stroke: blue !important;
+    stroke: black !important;
+    stroke-opacity: 1;
+    opacity: 0.75;
+    transition: none;
+
+}
+
+.image-viewer--svg .layout .TextLine > .Coords:hover + .Baseline {
+    // stroke-opacity: 1;
+    // stroke: pink;
+    stroke-opacity: 0.2;
+    stroke: blue;
+    opacity: 1;
+}
+
+.image-viewer--svg .layout .TextLine.highlighted > .Baseline,
+.image-viewer--svg .layout .TextLine > .Coords:focus + .Baseline {
+    // stroke-opacity: 1;
+    // stroke: purple;
+    stroke-opacity: 0.35;
+    stroke: blue;
+    opacity: 1;
+}

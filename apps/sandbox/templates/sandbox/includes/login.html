@@ -1,0 +1,11 @@
+{% load i18n %}
+<aside class="login-dialog js-login-dialog">
+  <form class="js-login" method="post">
+    <label class="username" for="#username">{% trans 'Username' %}</label><input class="js-username" id="username" name="username" type="text" placeholder="{% trans 'Username' %}">
+    <label class="password" for="#password">{% trans 'Password' %}</label><input class="js-password" id="password" name="password" type="password" placeholder="{% trans 'Password' %}">
+    <button type="submit">{% trans 'Login' %}</button>
+    <div class="error-message">
+      {% trans 'Invalid username or password.' %}
+    </div>
+  </form>
+</aside>

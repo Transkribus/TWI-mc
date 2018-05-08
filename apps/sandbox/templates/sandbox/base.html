@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+     {# embedded css #}
+    </style>
+    {% comment %}
+    <link rel="stylesheet" href="{% static 'sandbox' %}/css/styles.css">
+    {% endcomment %}
+    {% block styles %}
+    {% endblock %}
+  </head>
+  <body class="{% block body_class_list %}{% endblock %}">
+    {% block content %}
+    {% endblock %}
+    {% comment %}
+    <script src="{% static %}/sandbox/js/script.js"></script>
+    {% endcomment %}
+    <script src="{% static 'sandbox/third_party/browser-update.js' %}"></script>
+    <script src="{% static 'sandbox' %}/third_party/polyfills/es6-promise.auto.min.js"></script>
+    <script src="{% static 'sandbox' %}/third_party/polyfills/url-polyfill.min.js"></script>
+    <script src="{% static 'sandbox' %}/third_party/polyfills/smoothscroll.min.js"></script>
+    <script src="{% static 'sandbox' %}/third_party/polyfills/array-from-polyfill.js"></script>
+    <script src="{% static 'sandbox' %}/third_party/polyfills/node-children.js"></script>
+    <script src="{% static 'sandbox' %}/third_party/polyfills/node-classlist.js"></script>
+    {% load waffle_tags %}
+    {% flag record %}
+    <script src="{% static 'sandbox' %}/third_party/fullstory.js"></script>
+    {% endflag %}
+    {% block scripts %}
+    {% endblock %}
+  </body>
+</html>
