@@ -1,9 +1,21 @@
 from django.db import models
+from django.conf import settings
 
 from . import helpers
 
-# NOTE: original commit e7963dadc3ca02fe09634dbeeb429d1218178bb1
+IS_MANAGED = getattr(settings, 'MANAGED', getattr(settings, 'DEBUG', False))
 
+def __protect_oracle(is_managed):
+    from django.conf import settings
+
+    if not is_managed:
+       return
+
+    for entry in settings.DATABASES.values():
+       if entry.get('ENGINE') == 'django.db.backends.oracle':
+           assert not is_managed, "oracle database must not be managed"
+
+__protect_oracle(IS_MANAGED)
 
 class AbbrevTag(models.Model):
     id = models.FloatField(primary_key=True)
@@ -20,7 +32,7 @@ class AbbrevTag(models.Model):
     context_after = models.CharField(max_length=256, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'abbrev_tag'
 
 class ActionType(models.Model):
@@ -28,7 +40,7 @@ class ActionType(models.Model):
     type = models.CharField(unique=True, max_length=255)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'action_types'
 
 class Action(models.Model):
@@ -45,7 +57,7 @@ class Action(models.Model):
     user_role = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'actions'
 
 class Client(models.Model):
@@ -53,7 +65,7 @@ class Client(models.Model):
     client_name = models.CharField(unique=True, max_length=127)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'clients'
 
 class Collection(models.Model):
@@ -68,7 +80,7 @@ class Collection(models.Model):
     documents = models.ManyToManyField('Document', through='DocumentCollection', related_name='collections')
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'collection'
 
     def __str__(self):
@@ -76,7 +88,10 @@ class Collection(models.Model):
 
     @property
     def thumb_url(self):
-        helpers.get_thumb_url(self.page.imagekey)
+        if self.page is not None:
+            return helpers.get_thumb_url(self.page.imagekey)
+        else:
+            return ''
 
 
 class CollectionLabel(models.Model):
@@ -85,7 +100,7 @@ class CollectionLabel(models.Model):
     label = models.CharField(unique=True, max_length=50)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'collection_labels'
 
 class CrowdProject(models.Model):
@@ -94,7 +109,7 @@ class CrowdProject(models.Model):
     collection = models.OneToOneField(Collection, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'crowd_project'
 
 class CrowdProjectMessage(models.Model):
@@ -107,7 +122,7 @@ class CrowdProjectMessage(models.Model):
     email_sent = models.BigIntegerField()
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'crowd_project_message'
 
 class CrowdProjectMilestone(models.Model):
@@ -119,7 +134,7 @@ class CrowdProjectMilestone(models.Model):
     date_created = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'crowd_project_milestone'
 
 class DateTag(models.Model):
@@ -141,7 +156,7 @@ class DateTag(models.Model):
     context_after = models.CharField(max_length=256, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'date_tag'
 
 class Dict(models.Model):
@@ -153,7 +168,7 @@ class Dict(models.Model):
     created = models.DateTimeField()
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'dict'
 
 class DictCollection(models.Model):
@@ -161,7 +176,7 @@ class DictCollection(models.Model):
     collection = models.ForeignKey(Collection, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'dict_collection'
 
 class Document(models.Model):
@@ -187,15 +202,22 @@ class Document(models.Model):
     page = models.ForeignKey('Page', models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'doc_md'
 
+    @property
+    def thumb_url(self):
+        if self.page is not None:
+            return helpers.get_thumb_url(self.page.imagekey)
+        else:
+            return ''
+
 class DocumentCollection(models.Model):
-    docid = models.OneToOneField(Document, models.DO_NOTHING, db_column='docid', primary_key=True)
-    collection = models.ForeignKey(Collection, models.DO_NOTHING)
+    docid = models.OneToOneField(Document, on_delete=models.DO_NOTHING, db_column='docid', primary_key=True)
+    collection = models.ForeignKey(Collection, related_name='document_collection', on_delete=models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'document_collection'
         unique_together = (('docid', 'collection'),)
 
@@ -206,7 +228,7 @@ class EdFeature(models.Model):
     collection = models.ForeignKey(Collection, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'ed_features'
 
 class EdOption(models.Model):
@@ -215,7 +237,7 @@ class EdOption(models.Model):
     text = models.CharField(max_length=255)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'ed_options'
 
 class EditDeclaration(models.Model):
@@ -224,7 +246,7 @@ class EditDeclaration(models.Model):
     option = models.ForeignKey(EdOption, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'edit_declaration'
         unique_together = (('feature', 'doc'),)
 
@@ -235,7 +257,7 @@ class Event(models.Model):
     title = models.CharField(max_length=255)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'events'
 
 class Fimgstore(models.Model):
@@ -247,7 +269,7 @@ class Fimgstore(models.Model):
     password = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'fimgstore'
 
 class History(models.Model):
@@ -263,7 +285,7 @@ class History(models.Model):
     action_id = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'history'
 
 class Htr(models.Model):
@@ -284,7 +306,7 @@ class Htr(models.Model):
     nr_of_words = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'htr'
 
 class HtrCollection(models.Model):
@@ -292,7 +314,7 @@ class HtrCollection(models.Model):
     htr = models.ForeignKey(Htr, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'htr_collection'
 
 class HtrModel(models.Model):
@@ -307,7 +329,7 @@ class HtrModel(models.Model):
     nr_of_dict_tokens = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'htr_models'
 
 class HtrOutput(models.Model):
@@ -320,7 +342,7 @@ class HtrOutput(models.Model):
     tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'htr_output'
 
 class Image(models.Model):
@@ -332,7 +354,7 @@ class Image(models.Model):
     created = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'images'
 
 class JobError(models.Model):
@@ -347,7 +369,7 @@ class JobError(models.Model):
     stacktrace = models.TextField()
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'job_errors'
 
 class JobImplRegistry(models.Model):
@@ -358,7 +380,7 @@ class JobImplRegistry(models.Model):
     users = models.CharField(max_length=1024, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'job_impl_registry'
 
 class JobModule(models.Model):
@@ -372,7 +394,7 @@ class JobModule(models.Model):
     service_type = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'job_module'
 
 class Job(models.Model):
@@ -416,7 +438,7 @@ class Job(models.Model):
     total_work = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'jobs'
 
 class OtherTag(models.Model):
@@ -435,7 +457,7 @@ class OtherTag(models.Model):
     context_after = models.CharField(max_length=256, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'other_tag'
 
 class PageImageVersion(models.Model):
@@ -453,12 +475,12 @@ class PageImageVersion(models.Model):
     created = models.DateTimeField()
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'page_image_versions'
         unique_together = (('pageid', 'type', 'tsid'),)
 
 class Page(models.Model):
-    docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', related_name='+')
+    docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', related_name='pages')
     pagenr = models.FloatField()
     imagekey = models.CharField(max_length=24, blank=True, null=True)
     imgfilename = models.CharField(max_length=1024, blank=True, null=True)
@@ -469,7 +491,7 @@ class Page(models.Model):
     img_problem = models.CharField(max_length=2048, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'pages'
 
 class Permission(models.Model):
@@ -479,7 +501,7 @@ class Permission(models.Model):
     userid = models.FloatField()
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'permissions'
         unique_together = (('docid', 'userid'),)
 
@@ -506,7 +528,7 @@ class PersonTag(models.Model):
     context_after = models.CharField(max_length=256, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'person_tag'
 
 class PlaceTag(models.Model):
@@ -524,7 +546,7 @@ class PlaceTag(models.Model):
     context_after = models.CharField(max_length=256, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'place_tag'
 
 class SessionHistory(models.Model):
@@ -539,7 +561,7 @@ class SessionHistory(models.Model):
     gui_version = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'session_history'
         unique_together = (('session_id', 'created'),)
 
@@ -551,7 +573,7 @@ class TagDef(models.Model):
     description = models.CharField(max_length=2048, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'tag_defs'
 
 class TagDefCollection(models.Model):
@@ -559,7 +581,7 @@ class TagDefCollection(models.Model):
     tagdefs = models.BinaryField()
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'tag_defs_collection'
 
 class Transcript(models.Model):
@@ -585,7 +607,7 @@ class Transcript(models.Model):
     nr_of_transcribed_words = models.FloatField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'transcripts'
 
 class Upload(models.Model):
@@ -600,17 +622,17 @@ class Upload(models.Model):
     collection = models.ForeignKey(Collection, models.DO_NOTHING)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'uploads'
 
 class UserCollection(models.Model):
     user_id = models.FloatField(primary_key=True)
-    collection = models.ForeignKey(Collection, models.DO_NOTHING)
+    collection = models.ForeignKey(Collection, on_delete=models.DO_NOTHING, related_name='user_collection')
     is_default = models.FloatField()
     role = models.CharField(max_length=20)
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'user_collection'
         unique_together = (('user_id', 'collection'),)
 
@@ -625,6 +647,6 @@ class Wordgraph(models.Model):
     pageid = models.ForeignKey(Page, models.DO_NOTHING, db_column='pageid')
 
     class Meta:
-        managed = False
+        managed = IS_MANAGED
         db_table = 'wordgraphs'
         unique_together = (('lineid', 'pageid'),)
