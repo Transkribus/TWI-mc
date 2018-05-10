@@ -22,6 +22,7 @@ from itertools import chain
 #from .forms import NameForm
 import datetime
 import json
+import requests
 
 #from . import Services as serv 
 
@@ -45,7 +46,8 @@ def index(request):
         'collaborations': collaborations,
         'uploaded_docs' : uploaded_docs,
         'trained_models' : trained_models,
-        'docs' : m.DocumentEntries.objects.filter(lang=translation.get_language())
+        'docs' : m.DocumentEntries.objects.filter(lang=translation.get_language()),
+        'recaptcha_key' : settings.RECAPTCHA_KEY
         
         
         
@@ -492,6 +494,7 @@ def login_process(request):
       
     try:
         request.session['user'] = ts.login(e,p)
+        print(request.session['user'])
         request.session.modified = True 
         
     except:
@@ -500,16 +503,28 @@ def login_process(request):
     return HttpResponseRedirect("index")
 
 def register_process(request):
-#     user = request.POST.get('user')
-#     pw = request.POST.get('pw')
-#     pw_again = request.POST.get('pw_again')
-#     firstName = request.POST.get('firstName')
-#     lastName = request.POST.get('lastName')
-#     orcid = request.POST.get('orcid')
-#     gender = request.POST.get('gender')
+    user = request.POST.get('user')
+    pw = request.POST.get('pw')
+    pw_again = request.POST.get('pw_again')
+    firstName = request.POST.get('firstName')
+    lastName = request.POST.get('lastName')
+    #     orcid = request.POST.get('orcid')
+    gender = request.POST.get('gender')
     
-    #TODO currently not working
-    ts.register(request)
+    recaptcha_response = request.POST.get('g-recaptcha-response')
+    data = {
+       'secret': settings.RECAPTCHA_KEY_SECRET,
+       'response': recaptcha_response
+    }
+    r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+    result = r.json()
+    if result['success']:
+        res = ts.register(request)
+        print(result)
+    else:
+        messages.warning(request, "login_failed")
+    
+    return HttpResponseRedirect("index")
     
 def change_lang(request):
     lang = request.GET.get('lang','en')
