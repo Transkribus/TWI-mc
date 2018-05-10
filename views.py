@@ -36,7 +36,7 @@ def test(request):
 
 
 class CollectionListView(LoginRequiredMixin, ListView):
-    template_name = 'library/collection/list.html'
+    template_name = 'library/collection_list.html'
     queryset = models.Collection.objects.all()
     form_class = forms.ListForm
     paginate_by = 10
@@ -176,7 +176,7 @@ class DocumentListView(LoginRequiredMixin, ListView):
 
 
 class PageListView(LoginRequiredMixin, ListView):
-    template_name = 'library/page/list.html'
+    template_name = 'library/page_list.html'
     form_class = forms.ListForm
     paginate_by = 10
 
@@ -231,7 +231,7 @@ class PageListView(LoginRequiredMixin, ListView):
 
 
 class CollectionDetailView(TemplateView):
-    template_name = 'library/collection/detail.html'
+    template_name = 'library/collection_detail.html'
 
     def get_context_data(self, **kwargs):
         then = time.time()
@@ -253,7 +253,7 @@ class CollectionDetailView(TemplateView):
 
 
 class DocumentDetailView(TemplateView):
-    template_name = 'library/document/detail.html'
+    template_name = 'library/document_detail.html'
 
     def get_context_data(self, **kwargs):
         then = time.time()
