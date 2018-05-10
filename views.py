@@ -25,6 +25,16 @@ def test(request):
     return HttpResponse('test', content_type='text/plain')
 
 
+def test(request):
+    from django.http import HttpResponse
+
+    if request.GET.get('error') == '1':
+        # yes, we can!
+        1 / 0
+
+    return HttpResponse('test', content_type='text/plain')
+
+
 class CollectionListView(LoginRequiredMixin, ListView):
     template_name = 'library/collection/list.html'
     queryset = models.Collection.objects.all()
@@ -84,7 +94,7 @@ class CollectionListView(LoginRequiredMixin, ListView):
 
 
 class DocumentListView(LoginRequiredMixin, ListView):
-    template_name = 'library/document/list.html'
+    template_name = 'library/document_list.html'
     form_class = forms.ListForm
     paginate_by = 10
     paginator_class = paginator.Paginator
