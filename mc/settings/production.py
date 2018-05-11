@@ -93,6 +93,14 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.locale.LocaleMiddleware',
 
 ]
+
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+    }
+}
+
 #'django.contrib.auth.middleware.SessionAuthenticationMiddleware' ??
 
 ROOT_URLCONF = 'mc.urls'
