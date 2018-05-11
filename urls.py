@@ -25,4 +25,5 @@ urlpatterns = [
 
     url(r'^projects/(?P<slug_or_id>[\w-]+)/$', login_required(views.project_detail), name='project-detail'),
 
+
 ]
