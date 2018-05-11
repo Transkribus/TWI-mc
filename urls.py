@@ -1,4 +1,5 @@
 from django.conf.urls import url, include
+from django.views.decorators.cache import cache_page
 
 from apps.transkribus.decorators import login_required 
 
@@ -23,7 +24,7 @@ urlpatterns = [
     url(r'^(?P<col_id>\d+)/$', views.DocumentListView.as_view(), name='document-list--compat'),
 
 
-    url(r'^projects/(?P<slug_or_id>[\w-]+)/$', login_required(views.project_detail), name='project-detail'),
+    url(r'^projects/(?P<slug_or_id>[\w-]+)/$', login_required(cache_page(60 * 15)(views.project_detail)), name='project-detail'),
 
 
 ]
