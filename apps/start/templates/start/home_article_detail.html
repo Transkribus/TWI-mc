@@ -1,19 +1,44 @@
 {% load static %}
 {% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_language_info_list for LANGUAGES as languages %}
 {% load l10n %}
+{% static "" as baseUrl %}
 
 <!DOCTYPE html>
 <html lang="en">
 {% include "start/includes/head.html" %} 
 
+
+
 <body  data-spy="scroll" data-target="header">
 
-{% include "start/includes/menu.html" with base_path="index" %}
 
+<!--header start here -->
+<header class="header navbar fixed-top navbar-expand-md">
+    <div class="container">
+        <a class="navbar-brand logo" href="#">
+            <span style="color:black">{{article.title}}</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#headernav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="lnr lnr-text-align-right"></span>
+        </button>
+        <div class="collapse navbar-collapse flex-sm-row-reverse" id="headernav">
+            <ul class=" nav navbar-nav menu">
+       
+                
+                <li class="nav-item">
+                    <a class="nav-link active" target="_plain" href="index">{% trans 'back' %}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+<!--header end here-->
 <br/><br/><br/>
 <section id="home" class="home bg-light">
     <div class="container">
-        <h1>{{article.title}}</h1>
         
         {{article.shortdesc|safe}}
         <br/>
