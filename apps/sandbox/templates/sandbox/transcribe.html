@@ -442,6 +442,9 @@
          });
 
          pageXMLDocPromise.then(function (doc) {
+
+           fixTextLinesWithoutUnicode(doc);
+
            transcript.doc = doc;
          });
 

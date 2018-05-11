@@ -30,15 +30,17 @@
 
 }
 
-.plain-text-editor .highlighted .text {
-    background-color: rgba(0, 0, 255, 0.1);
-}
-
-.plain-text-editor .text:focus {
-    background-color: rgba(0, 0, 255, 0.25);
-}
-
 .plain-text-editor .text:invalid {
     box-shadow: none;
     background-color: rgba(255, 0, 0, 0.05);
+}
+
+.plain-text-editor .highlighted .text,
+.plain-text-editor .highlighted .text:invalid {
+    background-color: rgba(0, 0, 255, 0.1);
+}
+
+.plain-text-editor .text:focus,
+.plain-text-editor .highlighted .text:invalid:focus {
+    background-color: rgba(0, 0, 255, 0.25);
 }

@@ -76,16 +76,29 @@ function hasEmptyLines (doc) {
   return doc.querySelector('TextEquiv > Unicode:empty') !== null;
 }
 
-function hasReadingOrder (doc) {
-  return [].map.call(doc.querySelectorAll('TextLine[custom]'), function (node) {
-    return node.getAttribute('custom').indexOf('readingOrder') !== -1;
-  }).reduce(function (acc, cur) {
-    return  acc || cur;
-  }, false);
+var SELECTOR = {
+  TextLine: 'TextRegion > TextLine, TableRegion > TableCell > TextLine'
+};
+
+function hasReadingOrder (doc, selector) {
+
+  selector = selector || SELECTOR.TextLine;
+
+  var items = doc.querySelectorAll(selector);
+
+  for (var index = 0; index < items.length; index++) {
+
+    var first = parseCustomAttribute(items[index]).shift();
+    if (first.name !== 'readingOrder')
+      return false;
+  }
+
+  return true;
+
 }
 
 function hasTags (doc) {
-  var items = Array.from(doc.querySelectorAll('TextLine[custom]'));
+  var items = doc.querySelectorAll('TextLine[custom]');
   for (var i = 0; i < items.length; i++) {
     var attrList = parseCustomAttribute(items[i].getAttribute('custom'));
     for (var j = 0; j < attrList.length; j++) {
@@ -95,6 +108,12 @@ function hasTags (doc) {
     }
   }
   return false;
+}
+
+function hasTextLinesWithoutUnicode (doc) {
+  var textLines = doc.querySelectorAll('TextLine > Unicode');
+  var textLinesWithoutUnicode = doc.querySelectorAll('TextLine > TextEquiv > Unicode');
+  return textLines.length === textLinesWithoutUnicode.length;
 }
 
 // NOTE: commented out because es6 syntax
@@ -110,6 +129,38 @@ function hasTags (doc) {
 // function textLineHasCoordsWithPointsAndFormat (doc) {
 //   return Array.prototype.map.call(doc.querySelectorAll('TextLine'), node => Array.prototype.map.call(node.childNodes, child => child.nodeName === 'Coords' && /[(\d+,\d+\s\d+,\d+)\s]+/.test(child.getAttribute('points'))).reduce(function (acc, cur) { return acc || cur; }, false)).reduce(function (acc, cur) { return acc || cur; }, false);
 // }
+
+var SELECTOR = {
+  TextLine: 'TextRegion > TextLine, TableCell > TextLine'
+};
+
+function fixTextLinesWithoutUnicode (doc, selector) {
+
+  selector = selector || 'TextRegion > TextLine, TableRegion > TableCell > TextLine';
+
+  var lines = doc.querySelectorAll(selector);
+  var line;
+  var equiv;
+  var unicode;
+
+  for (var index = 0; index < lines.length; index++) {
+
+    line = lines[index];
+    equiv = line.querySelector('TextEquiv');
+
+    if (equiv === null)
+      equiv = line.appendChild(doc.createElement('TextEquiv'));
+
+    unicode = equiv.querySelector('Unicode');
+
+    if (unicode === null)
+      unicode = equiv.appendChild(doc.createElement('Unicode'));
+
+    unicode.textContent = '';
+
+  }
+
+}
 
 function toRect (points) {
 
@@ -514,11 +565,9 @@ function buildPageContent (data) {
 function OrderedTextLineIterator (doc) {
   // NOTE: doc must have reading order
 
-  console.warn("OrderedTextLineIterator has not been tested ...");
-
   var SELECTOR = {
     REGION: 'TextRegion, TableRegion',
-    LINE: 'TextRegion > TextLine, TableRegion > TextLine'
+    LINE: 'TextRegion > TextLine, TableRegion > TableCell > TextLine'
   };
 
   var regionList = Array.from(doc.querySelectorAll(SELECTOR.REGION));
