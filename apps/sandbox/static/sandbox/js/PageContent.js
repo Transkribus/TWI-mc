@@ -153,10 +153,10 @@ function fixTextLinesWithoutUnicode (doc, selector) {
 
     unicode = equiv.querySelector('Unicode');
 
-    if (unicode === null)
+    if (unicode === null) {
       unicode = equiv.appendChild(doc.createElement('Unicode'));
-
-    unicode.textContent = '';
+      unicode.textContent = '';
+    }
 
   }
 
