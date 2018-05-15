@@ -4,8 +4,8 @@
 ```bash
 git clone https://github.com/Transkribus/TWI-mc
 cd TWI-mc
-virtualenv -p /usr/bin/python3 .
-source bin/activate
+virtualenv -p /usr/bin/python3 venv
+source venv/bin/activate
 pip install -r requirements.txt
 git pull
 git submodule update --init
