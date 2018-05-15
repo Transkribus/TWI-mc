@@ -26,35 +26,34 @@
  }
 
 </style>
-<a id="page-{{ page.num}}">
-  <div class="page">
-    <ul class="list-inline">
-      <li><strong><a href="#page-{{ page.num }}">Page {{ page.num }}</a></strong></li>
-      <li>
-        <span class="badge badge-secondary">{{ page.status }}</span>
-      </li>
-      <li>
-        <span title="{{ page.num_lines_done }} of {{ page.num_lines_total }} Lines Transcribed">
-          <strong>{{ page.num_lines_done }}</strong>  of <strong>{{ page.num_lines_total }}</strong> Lines Transcribed
-        </span>
-      </li>
+<div class="page">
+  <a id="page-{{ page.num}}"></a>
+  <ul class="list-inline">
+    <li><strong><a href="#page-{{ page.num }}">Page {{ page.num }}</a></strong></li>
+    <li>
+      <span class="badge badge-secondary">{{ page.status }}</span>
+    </li>
+    <li>
+      <span title="{{ page.num_lines_done }} of {{ page.num_lines_total }} Lines Transcribed">
+        <strong>{{ page.num_lines_done }}</strong>  of <strong>{{ page.num_lines_total }}</strong> Lines Transcribed
+      </span>
+    </li>
 
-      {% comment %}
-      <li>
-        <dl>
-          <dt>Lines Transcribed:</dt>
-          <dd>
-            {% include 'library/includes/progress.html' with items=page.progress %}
-          </dd>
-        </dl>
-      </li>
-      {% endcomment %}
-      <li>Changed by <strong>{{ page.user }}</strong></li>
-      <li>
-        <a target="_blank" href="{% url 'edit:correct' collection.id document.id page.num %}"> Interface A</a>
-        &nbsp;<span class="text-muted">|</span>&nbsp;
-        <a target="_blank" href="{% url 'sandbox:transcribe' %}?test=0&colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">Interface B</a>
-      </li>
-    </ul>
-  </div>
-</a>
+    {% comment %}
+    <li>
+      <dl>
+        <dt>Lines Transcribed:</dt>
+        <dd>
+          {% include 'library/includes/progress.html' with items=page.progress %}
+        </dd>
+      </dl>
+    </li>
+    {% endcomment %}
+    <li>Changed by <strong>{{ page.user }}</strong></li>
+    <li>
+      <a target="_blank" href="{% url 'edit:correct' collection.id document.id page.num %}"> Interface A</a>
+      &nbsp;<span class="text-muted">|</span>&nbsp;
+      <a target="_blank" href="{% url 'sandbox:transcribe' %}?test=0&colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">Interface B</a>
+    </li>
+  </ul>
+</div>
