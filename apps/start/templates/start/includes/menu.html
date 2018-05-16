@@ -61,6 +61,13 @@
 
                 <li class="nav-item">
                     <a class="nav-link " href="{{base_path}}#blog">{% trans 'Latest News' %}</a>
+                     <ul class="sub_menu">
+                        {% for b in blogs %}
+                         <li>
+                            <a href="{{base_path}}#blog" >{{b.title}} ({{b.changed}})</a>
+                         </li>
+                        {% endfor %} 
+                     </ul>   
                 </li>
                 
                 <li class="nav-item">
@@ -118,7 +125,7 @@
                     <ul class="sub_menu">
                         {% for language in languages %}
                             {% if language.code == LANGUAGE_CODE %}
-                                <li>X<span class="glyphicon glyphicon-ok check_left"></span> &nbsp; {{ language.name_local }}</li>
+                                <li>X<span class="glyphicon glyphicon-ok check_left"></span> &nbsp; <span class="">{{ language.name_local }}</span></li>
                             {% else %}
                                 <li><a href="change_lang?lang={{language.code}}"><span class="check_left"> &nbsp;</span>{{ language.name_local }}</a></li>
                             {% endif %}
