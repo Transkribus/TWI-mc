@@ -43,21 +43,36 @@
 </section>
 <!--cover section slider end -->
 
+<script>
+var inst = [];
+{% for i in inst %}
+    var lat = {{i.inst.lat|unlocalize}};
+    var lng = {{i.inst.lng|unlocalize}};
+    var desc = '{{i.desc|safe}}';
+    inst[{{i.inst.pk}}] = {lat:lat, lng:lng, desc:desc};
+{% endfor %} 
+</script>
 
 <section id="institutions" class="bg-light pt120 pb120">
     <div class="container">
-        <h1>{% trans 'Institutions' %}
-            <select>
-                {% for i in inst %}
-                    <option>
-                        {{i.name}}
-                    </option>
-                 {% endfor %} 
-            </select>
-        </h1>
-
+        <h1>{% trans 'Institutions' %} </h1>
+        <select id="institution-select"  onchange="change_inst_select($(this).val())">
+            {% for i in inst %}
+                <option value="{{i.inst.pk}}" data-iconurl="../static/start/img/upload/{{i.inst.image}}" data-text="{{i.name}}" />
+             {% endfor %} 
+        </select>
+       <br/><br/>
+        <div id="inst_desc"></div>
         <div id="map" class="img-rounded"></div>
         <script>
+            function  change_inst_select(id)
+            {
+                ins = inst[id]
+                map.setCenter({lat:ins.lat, lng:ins.lng});
+                $("#inst_desc").html(ins.desc);
+                
+            }
+            
             function fitMarkers()
             {
                 var bounds = new google.maps.LatLngBounds();                        
@@ -96,9 +111,7 @@
                     var height = 20;
                     var width= Math.ceil(height / {{i.inst.img_height}} * {{i.inst.img_width}});
                 
-                    console.log(width + "," + height);
-                
-                      m = new google.maps.Marker({
+                    m = new google.maps.Marker({
                           position: {lat:  lat, lng:  lng},
                           map: map,
                           title: '{{i.name}}',

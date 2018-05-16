@@ -17,3 +17,9 @@ html, body {
   margin: 0;
   padding: 0;
 }
+
+.selectboxit .selectboxit-option-icon-container 
+{
+    width: 30px;
+}
+
