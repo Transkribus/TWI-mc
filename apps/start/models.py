@@ -18,6 +18,7 @@ class HomeArticleEntry (models.Model):
 class Blog(models.Model):
     changed = models.DateField(auto_now_add=True)
     image = models.FilePathField(max_length=512, null=True)
+
     
 class BlogEntry(models.Model):
     title = models.CharField("Title", max_length=200)
@@ -33,6 +34,8 @@ class Institution(models.Model):
     lng= models.DecimalField(decimal_places=4, max_digits=12) #longitude  
     link = models.CharField(max_length=512, null=False) #the link to the institution
     image = models.FilePathField(max_length=512, null=True)
+    img_width = models.IntegerField(null=True)
+    img_height = models.IntegerField(null=True)
     changed = models.DateField(auto_now_add=True)
 
 class InstitutionDescription(models.Model):

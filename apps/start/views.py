@@ -23,6 +23,7 @@ from itertools import chain
 import datetime
 import json
 import requests
+from PIL import Image
 
 #from . import Services as serv 
 
@@ -37,7 +38,7 @@ def index(request):
     
     context = {
         'blogs' : m.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed'),
-        'inst' :  m.Institution.objects.all(),
+        'inst' :  m.InstitutionDescription.objects.filter(lang=translation.get_language()),
         'articles' : m.HomeArticleEntry.objects.filter(lang=translation.get_language()),
         'service' : m.ServiceEntries.objects.filter(lang=translation.get_language()),
         'quotes' : m.QuoteEntries.objects.filter(lang=translation.get_language()),
@@ -205,18 +206,22 @@ def store_admin_inst(request):
     content_en = request.POST.get('content_en','')
 
     fname = ""
+    img_width = 0
+    img_height = 0
     if "inst_fname" in request.session:
         fname = request.session["inst_fname"]
         del request.session["inst_fname"]
+        im = Image.open(settings.IMG_DIR + fname)
+        img_width, img_height = im.size
     
     if idb == 0:        
-        inst = m.Institution.objects.create(lng=lng, lat=lat, link=url, image=fname)
+        inst = m.Institution.objects.create(lng=lng, lat=lat, link=url, image=fname, img_width=img_width, img_height=img_height)
         m.InstitutionDescription.objects.create(name=name_de, loclabel=loc_name_de, desc=content_de, lang='de', inst=inst)
         m.InstitutionDescription.objects.create(name=name_en, loclabel=loc_name_en, desc=content_en, lang='en', inst=inst)   
     else:
         inst = m.Institution.objects.filter(pk=idb)
         if fname != "":
-            inst.update(image=fname, lng=lng, lat=lat, link=url)
+            inst.update(image=fname, img_width=img_width, img_height=img_height, lng=lng, lat=lat, link=url)
         inst = inst.first()
         m.InstitutionDescription.objects.filter(lang='de', inst=inst).update(name=name_de, loclabel=loc_name_de, desc=content_de)
         m.InstitutionDescription.objects.filter(lang='en', inst=inst).update(name=name_en, loclabel=loc_name_en, desc=content_en)
@@ -519,8 +524,9 @@ def register_process(request):
     r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
     result = r.json()
     if result['success']:
-        res = ts.register(request)
-        print(result)
+        print('success')
+        #res = ts.register(request)
+        #print(res)
     else:
         messages.warning(request, "login_failed")
     
