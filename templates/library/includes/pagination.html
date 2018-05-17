@@ -1,32 +1,32 @@
 {% load i18n %}
 <nav>
   <ul class="pagination">
-    <li>
-      <a {% if page.has_previous %}class="disabled" href="?page={{ page.previous_page_number }}" {% endif %}aria-label="Previous">
+    <li class="page-item">
+      <a class="page-link{% if not page.has_previous %} disabled{% endif %}" {% if page.has_previous %}href="?page={{ page.previous_page_number }}" {% endif %}aria-label="Previous">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
 
     {% if not page.is_first_in_range %}
-    <li>
-      <a href="?page=1">{% trans "First" %}</a>
+    <li class="page-item">
+      <a class="page-link" href="?page=1">{% trans "First" %}</a>
     </li>
     {% endif %}
     
     {% for page_num in page.page_range %}
-    <li{% if page_num  == page.number %} class="active"{% endif %}>
-      <a href="?page={{ page_num }}">{{ page_num }}</a>
+    <li{% if page_num  == page.number %} class="page-item active"{% endif %}>
+      <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
     </li>
     {% endfor %}
 
     {% if not page.is_last_in_range %}
-    <li>
-      <a href="?page={{ paginator.num_pages }}">{% trans "Last" %}</a>
+    <li class="page-item">
+      <a class="page-link" href="?page={{ paginator.num_pages }}">{% trans "Last" %}</a>
     </li>
     {% endif %}
 
-    <li>
-      <a {% if page.has_next %}class="disabled" href="?page={{ page.next_page_number }}" {% endif %}aria-label="Next">
+    <li class="page-item">
+      <a class="page-link{% if not page.has_next %} disabled{% endif %}" {% if page.page.has_next %}href="?page={{ page.next_page_number }}" {% endif %}aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
