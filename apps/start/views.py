@@ -336,7 +336,6 @@ is called when another institution is selected in the institution/project area
 '''
 def change_admin_inst_proj(request):
     idb = request.POST.get('id',0)
-    print(idb)
     ipe = m.InstitutionProjectEntries.objects.filter(project__inst__pk=idb, lang=translation.get_language())
 
     js = serializers.serialize('json',ipe)
@@ -358,7 +357,7 @@ is called when the project entries should be changed in the institution/project 
 '''
 def change_admin_inst_proj_selection(request):
     idb = request.POST.get('id',0)
-    ipe = m.InstitutionProjectEntries.objects.filter(project=idb)
+    ipe = m.InstitutionProjectEntries.objects.filter(project__pk=idb)
     print(idb)
     js = serializers.serialize('json',ipe)
     print(js) 
@@ -418,6 +417,13 @@ def delete_admin_video(request):
     idb = request.POST.get('id',0)
     m.Video.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
+
+def get_inst_projects(request):
+    idb = request.POST.get('id',0)
+    entr = m.InstitutionProjectEntries.objects.filter(project__pk=idb, lang=translation.get_language())
+    js = serializers.serialize('json',entr)
+    print(js) 
+    return HttpResponse(js, content_type="application/json")  
 
 '''
 Find a Blog Entry and return as json

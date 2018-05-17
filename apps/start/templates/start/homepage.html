@@ -12,8 +12,10 @@
 {% include "start/includes/head.html" %} 
 
 <body  data-spy="scroll" data-target="header">
-
-
+<script>
+var csrf_token = '{{ csrf_token }}';
+var projects_str = '{% trans 'Projects' %}'
+</script>
 {% include "start/includes/menu.html" %}
 
  
@@ -63,6 +65,8 @@ var inst = [];
         </select>
        <br/><br/>
         <div id="inst_desc"></div>
+        <div id="inst_projects"></div>
+        
         <div id="map" class="img-rounded"></div>
         <script>
             

@@ -38,5 +38,7 @@ urlpatterns = [
     url(r'^delete_admin_projinst', v.delete_admin_projinst , name='delete_admin_projinst'),
     url(r'^delete_admin_quote', v.delete_admin_quote , name='delete_admin_quote'),
     url(r'^delete_admin_doc', v.delete_admin_doc , name='delete_admin_doc'),  
-    url(r'^delete_admin_video', v.delete_admin_video , name='delete_admin_video'),     
+    url(r'^delete_admin_video', v.delete_admin_video , name='delete_admin_video'),   
+    url(r'^get_inst_projects', v.get_inst_projects , name='get_inst_projects'),
+      
 ]
