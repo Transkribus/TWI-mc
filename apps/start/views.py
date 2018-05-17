@@ -78,19 +78,6 @@ def home_article_details(request):
     
     return HttpResponse(template.render(context, request))
     
-def blog_detail(request):
-    idb = request.GET.get('id',0)
-    print(idb +  ":" + translation.get_language())
-    template = loader.get_template('start/blog_detail.html')
-    be = m.BlogEntry.objects.get(blog=idb, lang=translation.get_language())
-    #b = m.Blog.objects.get(pk=idb)
-
-    context = {
-        #'blog' : b,
-        'blog' : be,
-    }
- 
-    return HttpResponse(template.render(context, request))
 
 def admin(request):   
     template = loader.get_template('start/admin.html')
@@ -429,6 +416,14 @@ def get_inst_projects(request):
 Find a Blog Entry and return as json
 This special task is necessary because joined tables cannot be fully serialized as json
 '''
+
+def get_blog(request):
+    idb = request.POST.get('id',0)
+    be = m.BlogEntry.objects.filter(blog=idb, lang=translation.get_language())
+    js = serializers.serialize('json',be)
+    print(js) 
+    return HttpResponse(js, content_type="application/json")  
+
 def get_blog_entry(idb):
     be = m.BlogEntry.objects.filter(blog=idb)
     b = m.Blog.objects.filter(pk=idb)

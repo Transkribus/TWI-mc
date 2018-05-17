@@ -14,6 +14,18 @@ $(document).ready(function()
 
 
 
+function blog_detail(id)
+{
+    $.post("get_blog", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+    {
+        var str = "<h4>" + data[0].fields.title + " (" + data[0].fields.subtitle + ")</h4>";
+        str += data[0].fields.content;
+        $('#blog_detail').html(str);
+    });
+}
+
+
+
 function change_inst_select(id)
 {
     ins = inst[id]

@@ -331,15 +331,17 @@ var inst = [];
                                     </p>
                                 </div>
                                 
-                                <a class="btn btn-rounded btn-light" href="blog_detail?id={{b.blog.pk}}">{% trans 'Read More' %}</a>
-                                
+                                <a class="btn btn-rounded btn-light" onclick="blog_detail({{b.blog.pk}})">{% trans 'Read More' %}</a>
                             </article>
                         </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
-
+        <div  class="row">
+            <div id="blog_detail" class="col-12">
+            </div>
+        </div>
     </div>
 </section>
 <!--SECTION  BLOG end-->

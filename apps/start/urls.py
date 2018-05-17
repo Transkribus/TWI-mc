@@ -17,7 +17,6 @@ urlpatterns = [
     url(r'^upload_img', v.upload_img, name='upload_img'),
     url(r'^change_admin_blog', v.change_admin_blog, name='change_admin_blog'),
     url(r'^delete_admin_blog', v.delete_admin_blog, name='delete_admin_blog'),
-    url(r'^blog_detail', v.blog_detail, name='blog_detail'),
     url(r'^store_admin_inst', v.store_admin_inst, name='store_admin_inst'),
     url(r'^delete_admin_inst', v.delete_admin_inst, name='delete_admin_inst'),
     url(r'^change_admin_inst', v.change_admin_inst, name='change_admin_inst'),
@@ -40,5 +39,6 @@ urlpatterns = [
     url(r'^delete_admin_doc', v.delete_admin_doc , name='delete_admin_doc'),  
     url(r'^delete_admin_video', v.delete_admin_video , name='delete_admin_video'),   
     url(r'^get_inst_projects', v.get_inst_projects , name='get_inst_projects'),
+    url(r'^get_blog', v.get_blog, name='get_blog'),
       
 ]
