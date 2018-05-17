@@ -65,13 +65,7 @@ var inst = [];
         <div id="inst_desc"></div>
         <div id="map" class="img-rounded"></div>
         <script>
-            function  change_inst_select(id)
-            {
-                ins = inst[id]
-                map.setCenter({lat:ins.lat, lng:ins.lng});
-                $("#inst_desc").html(ins.desc);
-                
-            }
+            
             
             function fitMarkers()
             {
