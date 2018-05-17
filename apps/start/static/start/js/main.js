@@ -8,7 +8,7 @@ $(document).ready(function()
      });
      
      
-     var id = $("#institution-select option:first-child").val()
+     var id = $("#institution-select option:first-child").val();
      change_inst_select(id);
 });
 

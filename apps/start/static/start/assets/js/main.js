@@ -248,20 +248,13 @@ $(document).ready(function() {
             0:{
                 items:1
             },
-            450:{
-                items:1
-
-            },
+            
             800:{
                 items:2
 
-            },
-            1200:{
-                items:3
-
             }
         },
-        items:3
+        items:2
     });
     $(".brand_carousel").owlCarousel({
         loop:true,
