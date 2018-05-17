@@ -170,7 +170,7 @@ class Dict(models.Model):
     class Meta:
         managed = IS_MANAGED
         db_table = 'dict'
-
+'''
 class DictCollection(models.Model):
     dict = models.ForeignKey(Dict, models.DO_NOTHING)
     collection = models.ForeignKey(Collection, models.DO_NOTHING)
@@ -178,7 +178,7 @@ class DictCollection(models.Model):
     class Meta:
         managed = IS_MANAGED
         db_table = 'dict_collection'
-
+'''
 class Document(models.Model):
     docid = models.FloatField(primary_key=True)
     title = models.CharField(max_length=255)
@@ -249,7 +249,7 @@ class EditDeclaration(models.Model):
         managed = IS_MANAGED
         db_table = 'edit_declaration'
         unique_together = (('feature', 'doc'),)
-
+'''
 class Event(models.Model):
     event_id = models.FloatField()
     time = models.DateTimeField()
@@ -259,7 +259,7 @@ class Event(models.Model):
     class Meta:
         managed = IS_MANAGED
         db_table = 'events'
-
+'''
 class Fimgstore(models.Model):
     storeid = models.FloatField(primary_key=True)
     host = models.CharField(max_length=127)
@@ -308,7 +308,7 @@ class Htr(models.Model):
     class Meta:
         managed = IS_MANAGED
         db_table = 'htr'
-
+'''
 class HtrCollection(models.Model):
     collection = models.ForeignKey(Collection, models.DO_NOTHING)
     htr = models.ForeignKey(Htr, models.DO_NOTHING)
@@ -316,7 +316,7 @@ class HtrCollection(models.Model):
     class Meta:
         managed = IS_MANAGED
         db_table = 'htr_collection'
-
+'''
 class HtrModel(models.Model):
     model_id = models.FloatField(primary_key=True)
     model_name = models.CharField(unique=True, max_length=100)
@@ -626,10 +626,11 @@ class Upload(models.Model):
         db_table = 'uploads'
 
 class UserCollection(models.Model):
-    user_id = models.FloatField(primary_key=True)
+    user_id = models.FloatField()
     collection = models.ForeignKey(Collection, on_delete=models.DO_NOTHING, related_name='user_collection')
     is_default = models.FloatField()
     role = models.CharField(max_length=20)
+    id = models.FloatField(primary_key=True)
 
     class Meta:
         managed = IS_MANAGED
