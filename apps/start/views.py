@@ -48,10 +48,7 @@ def index(request):
         'uploaded_docs' : uploaded_docs,
         'trained_models' : trained_models,
         'docs' : m.DocumentEntries.objects.filter(lang=translation.get_language()),
-        'recaptcha_key' : settings.RECAPTCHA_KEY
-        
-        
-        
+        'recaptcha_key' : settings.RECAPTCHA_KEY 
     }
     return HttpResponse(template.render(context, request))
 
@@ -339,7 +336,8 @@ is called when another institution is selected in the institution/project area
 '''
 def change_admin_inst_proj(request):
     idb = request.POST.get('id',0)
-    ipe = m.InstitutionProjectEntries.objects.filter(project__pk=idb, lang=translation.get_language())
+    print(idb)
+    ipe = m.InstitutionProjectEntries.objects.filter(project__inst__pk=idb, lang=translation.get_language())
 
     js = serializers.serialize('json',ipe)
     print(js) 
