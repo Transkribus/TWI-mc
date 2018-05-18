@@ -59,6 +59,7 @@ class InstitutionProjectEntries(models.Model):
 
 class Service(models.Model):
     image_css = models.CharField(max_length=512, null=True)
+    changed = models.DateField(auto_now_add=True)
     
 class ServiceEntries(models.Model):    
     title = models.CharField("Title", max_length=200)
