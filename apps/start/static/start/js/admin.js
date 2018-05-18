@@ -256,6 +256,77 @@ function delete_article()
     });
     clear_article();
 }
+
+/* ------------------------------------ */
+/* Service functions */
+/* ------------------------------------ */   
+
+function store_service()
+{
+    var html_de = $("#editor-container-service-de").children().first().html(); 
+    var html_en = $("#editor-container-service-en").children().first().html();
+    var html_de_short = $("#editor-container-service-short-de").children().first().html(); 
+    var html_en_short = $("#editor-container-service-short-en").children().first().html();
+    var title_de = $("#editor-title-service-de").val(); 
+    var title_en = $("#editor-title-service-en").val();   
+    var id = $("#service-options").val();
+    var icon = $("#editor-icon-service").val();
+ 
+    $.post("store_admin_service", 
+        {id : id, 
+        title_de: title_de, 
+        subtitle_de: html_de_short,
+        title_en: title_en, 
+        subtitle_en: html_en_short,
+        content_de: html_de, 
+        content_en: html_en,  
+        icon : icon,
+      'csrfmiddlewaretoken':  csrf_token }).done(function(data)
+        {
+            console.log("DATA:" + data);
+            var val = data.title + ' - ' + data.changed;
+            console.log("ID:" + id);
+            if (id == 0)
+            {
+                console.log(val);
+                $("#service-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
+            } else
+            {
+                $("#service-options option[value='" + id + "']").text(val);  
+            }
+        });
+    $("#editor-service-btn-delete").removeClass("invisible");
+}
+
+
+function change_service(v)
+{
+    if (v !== '0')
+    {
+         $.post("change_admin_service_selection", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+        {
+            $("#editor-icon-service").data("selectBox-selectBoxIt").selectOption(data[0].fields.icon);
+            var en = getentrybylang(data,"en");
+            quills['service-short-en'].clipboard.dangerouslyPasteHTML(en.fields.subtitle);
+            quills['service-en'].clipboard.dangerouslyPasteHTML(en.fields.content);
+            $("#editor-title-service-en").val(en.fields.title);
+            
+            var de = getentrybylang(data,"de");
+            quills['service-short-de'].clipboard.dangerouslyPasteHTML(de.fields.subtitle);
+            quills['service-de'].clipboard.dangerouslyPasteHTML(de.fields.content);
+            $("#editor-title-service-de").val(de.fields.title);
+            
+            $("#editor-service-btn-delete").removeClass("invisible");
+            
+        });
+    } else
+    {
+        $("#editor-service-btn-delete").addClass("invisible");
+        clear_doc();
+
+    }
+}
+
 /* ------------------------------------ */
 /* Blog functions */
 /* ------------------------------------ */    
@@ -838,6 +909,7 @@ $(document).ready(function()
     openTabs('editor-quote-tab-de','quote');
     openTabs('editor-video-tab-de','video');
     openTabs('editor-doc-tab-de','doc');
+    openTabs('editor-service-tab-de','service');
     
     generateQuillObjects('blog');
     generateQuillObjects('inst');
@@ -847,14 +919,21 @@ $(document).ready(function()
     generateQuillObjects('quote');        
     generateQuillObjects('video');            
     generateQuillObjects('doc-desc');  
-    generateQuillObjects('doc-content');  
+    generateQuillObjects('doc-content'); 
+    generateQuillObjects('service');
+    generateQuillObjects('service-short');     
     
      $("#editor-icon-doc").selectBoxIt({
           theme: "jqueryui",
           showEffect: "slideDown",
-          autoWidth: true,
-         
-         
+          autoWidth: true 
+     });
+     
+     
+     $("#editor-icon-service").selectBoxIt({
+          theme: "jqueryui",
+          showEffect: "slideDown",
+          autoWidth: true 
      });
      //$("select").selectBoxIt();
 });        

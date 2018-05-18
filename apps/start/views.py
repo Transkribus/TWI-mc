@@ -40,7 +40,7 @@ def index(request):
         'blogs' : m.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed'),
         'inst' :  m.InstitutionDescription.objects.filter(lang=translation.get_language()),
         'articles' : m.HomeArticleEntry.objects.filter(lang=translation.get_language()),
-        'service' : m.ServiceEntries.objects.filter(lang=translation.get_language()),
+        'services' : m.ServiceEntries.objects.filter(lang=translation.get_language()),
         'quotes' : m.QuoteEntries.objects.filter(lang=translation.get_language()),
         'videos' : m.VideoDesc.objects.filter(lang=translation.get_language()),
         'subscribed_users' : subscribed_users,
@@ -102,11 +102,40 @@ def admin(request):
         'quotes' : q,
         'videos' : v,
         'docs' : docs,
-        'icons' : icons 
+        'icons' : icons,
+        'services' : m.ServiceEntries.objects.filter(lang=translation.get_language()) 
     }
 
     return HttpResponse(template.render(context, request))
 
+def store_admin_service(request):
+    idb = int(request.POST.get('id',0))
+
+    title_de = request.POST.get('title_de','')
+    title_en = request.POST.get('title_en','')
+    subtitle_de = request.POST.get('subtitle_de','')
+    subtitle_en = request.POST.get('subtitle_en','')
+    content_de = request.POST.get('content_de','')
+    content_en = request.POST.get('content_en','')
+    icon = request.POST.get('icon','')
+    
+    if idb == 0:
+        serv = m.Service.objects.create(image_css=icon)
+        m.ServiceEntries.objects.create(title=title_de, subtitle=subtitle_de, content=content_de, service=serv, lang="de")
+        m.ServiceEntries.objects.create(title=title_en, subtitle=subtitle_en, content=content_en, service=serv, lang="en")
+    else:
+        serv = m.HomeArticle.objects.filter(pk=idb)
+        serv.update(image_css=icon)
+        serv = serv.first()
+        m.ServiceEntries.objects.filter(lang="de", service=serv).update(title=title_de, subtitle=subtitle_de, content=content_de)
+        m.ServiceEntries.objects.filter(lang="en", service=serv).update(title=title_en, subtitle=subtitle_en, content=content_en)
+
+    title = (title_de, title_en)[translation.get_language() == 'de']
+    json = '{"id" : ' + str(serv.pk) + ', "title" : "' + title  + '", "changed" : "' + str(serv.changed) + '"}'
+    print(json)
+    print("store_admin_service")
+    return HttpResponse(json, content_type="application/json")
+        
 def store_admin_article(request):
     idb = int(request.POST.get('id',0))
 
@@ -137,7 +166,6 @@ def store_admin_article(request):
                     
     title = (title_de, title_en)[translation.get_language() == 'de']
     json = '{"id" : ' + str(art.pk) + ', "title" : "' + title  + '", "changed" : "' + str(art.changed) + '", "image" : "' + fname + '"}'
-    print (json)
     return HttpResponse(json, content_type="application/json")
               
 def store_admin_blog(request):
@@ -353,10 +381,19 @@ def change_admin_inst_proj_selection(request):
 
 def change_admin_doc_selection(request):
     idb = request.POST.get('id',0)
-    
-    de = m.DocumentEntries.objects.filter(doc=idb)
     d = m.Document.objects.filter(pk=idb)
+    de = m.DocumentEntries.objects.filter(doc=idb)
+    
     data = list(chain(d, de))
+    data = serializers.serialize('json', data)
+    print(json.dumps(json.loads(data), indent=4)) 
+    return HttpResponse(data, content_type="application/json")
+
+def change_admin_service_selection(request):
+    idb = request.POST.get('id',0)
+    s = m.Service.objects.filter(pk=idb)
+    se = m.ServiceEntries.objects.filter(service=idb)
+    data = list(chain(s, se))
     data = serializers.serialize('json', data)
     print(json.dumps(json.loads(data), indent=4)) 
     return HttpResponse(data, content_type="application/json")

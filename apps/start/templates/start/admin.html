@@ -5,14 +5,13 @@
 {% get_language_info_list for LANGUAGES as languages %}
 
 <html>
-
 <head>
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <title>{% trans 'Transkribus/Admin Page' %}</title>
    
-       <!-- jquery -->
+    <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     
     <!-- Bootstrap CSS -->
@@ -127,9 +126,6 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
 <!--header start here -->
 <header class="header navbar fixed-top navbar-expand-md">
     <div class="container">
-        <!-- <a class="navbar-brand logo" href="#">
-            <span class="admin">{% trans 'Transkribus/Admin Page' %}</span>
-        </a> -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#headernav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="lnr lnr-text-align-right"></span>
         </button>
@@ -163,7 +159,9 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
                 <li class="nav-item">
                     <a class="nav-link " href="#videos">{% trans 'videos' %}</a>
                 </li>
-                
+                <li class="nav-item">
+                    <a class="nav-link " href="#services">{% trans 'services' %}</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><span class="admin">{{LANGUAGE_CODE}} </span></a>
                     <ul class="sub_menu">
@@ -237,6 +235,76 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         <button id="editor-store-article" onclick="store_article()">{% trans 'store' %}</button>    
     </div>
 </section>
+
+
+
+<section id="services" class="bg-light pt120 pb120">
+    <div class="container">
+        <h1>{% trans 'Services' %}</h1>
+        
+         <input type="hidden" name="editor-id-service" id= "editor-id-service" value="0"> <!-- change when a document ist loaded for editing -->
+        {% trans 'stored service entries' %} :
+        <select name="service-options" id="service-options"  onchange="change_service($(this).val())">
+            <option value="0" selected>{% trans 'new service entry' %}...</option>
+             {% for s in services %}
+                <option value="{{s.service.pk}}">{{s.title}} - {{s.service.changed}}</option>
+            {% endfor %}
+        </select>
+        
+        <button id="editor-service-btn-delete" class="invisible" onclick="delete_service()">{% trans 'delete' %}</button> 
+        
+        <br/><br/>
+    
+        <label for="editor-icon-service">
+            {% language "{{l.0}}" %}icon{% endlanguage %}:
+        </label>
+        
+        <select name="editor-icon-service"  id="editor-icon-service">
+             <option value="no_icon" selected>{% trans 'no icon' %}...</option>
+            {% for i in icons %}
+            <option value="{{i.name}}" data-iconurl="" data-icon="{{i.css_class}}" data-text="{{i.name}}" data-selectedtext="">
+                
+            </option>
+            {% endfor %}
+        </select>
+        
+        <div class="tab">
+            <button class="tablinks-service" onclick="openTabs('editor-service-tab-de', 'service', event)">DE</button>
+            <button class="tablinks-service" onclick="openTabs('editor-service-tab-en', 'service', event)">EN</button>
+        </div>
+        
+        {% for l in LANGUAGES %}
+             <div class="editor-service-tab-{{l.0}} tabcontent-service" id="editor-service-tab-{{l.0}}">
+                <div class="form-group">
+                   <label for="editor-title-service-{{l.0}}">
+                        {% language "{{l.0}}" %}main title{% endlanguage %}
+                    </label>
+                   <input class="form-control" type="text" name="editor-title-service-{{l.0}}" id ="editor-title-service-{{l.0}}" />
+                </div>
+                <div class="form-group">
+                   <label for="editor-container-service-short-{{l.0}}">
+                        {% language "{{l.0}}" %}sub title{% endlanguage %}
+                   </label>
+                  
+                    <div class="editor-container" id="editor-container-service-short-{{l.0}}"> 
+                    
+                    </div>
+                     <label for="editor-container-service-{{l.0}}">
+                        {% language "{{l.0}}" %}Main content{% endlanguage %}
+                   </label>
+                     <div class="editor-container" id="editor-container-service-{{l.0}}">
+                       
+                    </div> 
+                </div>  
+                
+            </div>
+        {% endfor %}            
+        <button id="editor-store-service" onclick="store_service()">{% trans 'store' %}</button>    
+    </div>
+</section>
+
+
+
 
 <section id="blog" class="bg-light pt120 pb120">
     <div class="container">
@@ -459,6 +527,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         </select>
         <button id="editor-doc-btn-delete" class="invisible" onclick="delete_doc()">{% trans 'delete' %}</button> 
          <br/><br/>
+         
          <label for="editor-icon-doc">
              {% language "{{l.0}}" %}icon{% endlanguage %}
          </label>
@@ -558,16 +627,6 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
 
 
 {% include "start/includes/footer.html" %} 
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
- <!--  <script src="http://gregfranko.com/jquery.selectBoxIt.js/js/jquery.selectBoxIt.min.js"></script> -->
-  <script src="{% static 'start/js/selectBoxIt.js' %}"></script>
-  <script src="{% static 'start/assets/js/waypoints.min.js' %}"></script>
-  <script src="{% static 'start/assets/js/jquery.counterup.min.js' %}"></script>
-  <script src="{% static 'start/assets/js/jquery.magnific-popup.min.js' %}"></script>
-  <!-- Owl Carousel js -->
-<script src="{% static 'start/assets/js/owl.carousel.min.js' %}"></script>
-<!-- Owl Carousel js -->
-<script src="{% static 'start/assets/js/parallax.min.js' %}"></script>
+
   
 </body>

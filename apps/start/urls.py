@@ -40,5 +40,6 @@ urlpatterns = [
     url(r'^delete_admin_video', v.delete_admin_video , name='delete_admin_video'),   
     url(r'^get_inst_projects', v.get_inst_projects , name='get_inst_projects'),
     url(r'^get_blog', v.get_blog, name='get_blog'),
-      
+    url(r'^store_admin_service', v.store_admin_service, name='store_admin_service'),
+    url(r'^change_admin_service_selection', v.change_admin_service_selection, name='change_admin_service_selection'),
 ]
