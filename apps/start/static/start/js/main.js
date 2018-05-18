@@ -48,7 +48,19 @@ function change_inst_select(id)
             
         }
         $("#inst_projects").html(str);
-    });
-    
-    
+    });  
+}
+
+function more_service(btn, id, show_str, hide_str)
+{ 
+    console.log( btn);
+    if ($("#services_more_" + id).html().trim().length == 0)
+    {
+        $("#" + btn).html(hide_str);
+        $("#services_more_" + id).html(services[id]);
+    } else
+    {
+         $("#" + btn).html(show_str);
+        $("#services_more_" + id).html('');
+    }
 }

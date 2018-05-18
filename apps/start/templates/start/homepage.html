@@ -204,6 +204,15 @@ var inst = [];
 </section>
 <!--about section end-->
 
+
+<script>
+var services = [];
+{% for s in services %}
+    var content = '{{s.content|safe}}';
+    services[{{s.service.pk}}] = content;
+{% endfor %} 
+</script>
+
 <!--our services -->
 <section id="services" class="pt120 pb120 bg-gray">
     <div class="container">
@@ -222,7 +231,7 @@ var inst = [];
             </div>
         </div>
         <div class="row justify-content-center">
-             {% for s in service %} 
+             {% for s in services %} 
                 <div class="col-12 col-md-6 col-lg-4">
                     <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
                         <i class="justify-content-center {{s.service.image_css}}"></i>
@@ -231,11 +240,13 @@ var inst = [];
                                 {{s.title}}
                             </h5>
                             <p>
-                                {{s.subtitle}}
+                                {{s.subtitle|   safe}}
                             </p>
-                            <a href="service_detail?id={{s.service.pk}}" target="_plain" class="btn btn-rounded btn-light" >
+                            <a id="services_a_{{s.service.pk}}" class="btn btn-rounded btn-light" onclick="more_service('services_a_{{s.service.pk}}', {{s.service.pk}}, '{% trans 'Learn more' %}' , '{% trans 'hide' %}')">
                                 {% trans 'Learn more' %}
                             </a>
+                        </div>
+                        <div id="services_more_{{s.service.pk}}">
                         </div>
                     </div>
                 </div>

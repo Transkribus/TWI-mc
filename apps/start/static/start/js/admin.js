@@ -320,7 +320,7 @@ function change_service(v)
     } else
     {
         $("#editor-service-btn-delete").addClass("invisible");
-        clear_doc();
+        clear_service();
 
     }
 }
