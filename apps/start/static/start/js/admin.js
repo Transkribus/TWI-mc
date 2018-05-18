@@ -283,9 +283,7 @@ function store_service()
         icon : icon,
       'csrfmiddlewaretoken':  csrf_token }).done(function(data)
         {
-            console.log("DATA:" + data);
             var val = data.title + ' - ' + data.changed;
-            console.log("ID:" + id);
             if (id == 0)
             {
                 console.log(val);
@@ -327,6 +325,28 @@ function change_service(v)
     }
 }
 
+function delete_service()
+{
+    var id = $("#service-options").val();
+   
+    $.post("delete_admin_service", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
+    {
+        $("#service-options option[value='" + id + "']").remove();
+    });
+    clear_service();
+}
+
+function clear_service()
+{
+    $("#editor-container-service-de").children().first().html(''); 
+    $("#editor-container-service-en").children().first().html('');
+    $("#editor-container-service-short-de").children().first().html(''); 
+    $("#editor-container-service-short-en").children().first().html('');
+    $("#editor-title-service-de").val(''); 
+    $("#editor-title-service-en").val('');   
+    $("#editor-service-btn-delete").addClass("invisible");
+    $("#editor-icon-service").data("selectBox-selectBoxIt").selectOption("no_icon");
+}
 /* ------------------------------------ */
 /* Blog functions */
 /* ------------------------------------ */    

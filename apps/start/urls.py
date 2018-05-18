@@ -42,4 +42,6 @@ urlpatterns = [
     url(r'^get_blog', v.get_blog, name='get_blog'),
     url(r'^store_admin_service', v.store_admin_service, name='store_admin_service'),
     url(r'^change_admin_service_selection', v.change_admin_service_selection, name='change_admin_service_selection'),
+    url(r'^delete_admin_service', v.delete_admin_service, name='delete_admin_service'),
+    
 ]

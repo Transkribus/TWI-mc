@@ -415,6 +415,10 @@ def change_admin_article(request):
     data = serializers.serialize('json', data)
     return HttpResponse(data, content_type="application/json")
 
+def delete_admin_service(request):
+    idb = request.POST.get('id',0)
+    m.Service.objects.filter(pk=idb).delete()
+    return HttpResponse("ok", content_type="text/plain")
 
 def delete_admin_article(request):
     idb = request.POST.get('id',0)
