@@ -262,7 +262,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         <select name="editor-icon-service"  id="editor-icon-service">
              <option value="no_icon" selected>{% trans 'no icon' %}...</option>
             {% for i in icons %}
-            <option value="{{i.name}}" data-iconurl="" data-icon="{{i.css_class}}" data-text="{{i.name}}" data-selectedtext="">
+            <option value="{{i.css_class}}" data-iconurl="" data-icon="{{i.css_class}}" data-text="{{i.name}}" data-selectedtext="">
                 
             </option>
             {% endfor %}
@@ -536,7 +536,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         <select name="editor-icon-doc"  id="editor-icon-doc">
              <option value="no_icon" selected>{% trans 'no icon' %}...</option>
             {% for i in icons %}
-            <option value="{{i.name}}" data-iconurl="" data-icon="{{i.css_class}}" data-text="{{i.name}}" data-selectedtext="">
+            <option value="{{i.css_class}}" data-iconurl="" data-icon="{{i.css_class}}" data-text="{{i.name}}" data-selectedtext="">
                 
             </option>
             {% endfor %}
