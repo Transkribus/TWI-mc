@@ -179,6 +179,9 @@ var docs = [];
     <div class="container">
          <h4>
             {% trans 'Videos' %}  
+            <span class="header_add_info">
+                ({% trans 'Also visit our ' %} <a target="_plain" href="https://www.youtube.com/channel/UC-txVgM31rDTGlBnH-zpPjA">{% trans 'youtube-channel' %}</a>)
+            </span>
         </h4>
         <div class="row justify-content-center mp50" >
             {% for v in videos %}
@@ -193,7 +196,7 @@ var docs = [];
             
         </div>
         <br/>
-        {% trans 'Also visit our ' %} <a target="_plain" href="https://www.youtube.com/channel/UC-txVgM31rDTGlBnH-zpPjA">{% trans 'youtube-channel' %}</a>
+        
     </div>
 </section>
 
