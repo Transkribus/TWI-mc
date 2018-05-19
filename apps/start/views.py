@@ -9,6 +9,7 @@ from django.core.mail import send_mail
 from django.core import serializers
 from django.conf import settings
 from django.core.files.base import ContentFile
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from decimal import Decimal
 from apps.utils.services import TranskribusSession
@@ -31,6 +32,7 @@ ts = TranskribusSession()
 
 def login_view(request):
     template = loader.get_template('start/login.html')
+    context = { }
     return HttpResponse(template.render(context, request))
  
 def index(request):
@@ -82,7 +84,11 @@ def home_article_details(request):
     
     return HttpResponse(template.render(context, request))
     
-
+def admin_logged_in(user):
+    print (request.session['user'])    
+    return user in request.session
+    
+@user_passes_test(admin_logged_in)
 def admin(request):   
     template = loader.get_template('start/admin.html')
     b = m.BlogEntry.objects.filter(lang=translation.get_language())
@@ -136,7 +142,6 @@ def store_admin_service(request):
 
     title = (title_de, title_en)[translation.get_language() == 'de']
     json = '{"id" : ' + str(serv.pk) + ', "title" : "' + title  + '", "changed" : "' + str(serv.changed) + '"}'
-    print(json)
     print("store_admin_service")
     return HttpResponse(json, content_type="application/json")
         
@@ -283,7 +288,6 @@ def store_admin_quote(request):
         del request.session["quote_fname"]
     
     
-    print("ID" + str(idb))
     if idb == 0:
         q = m.Quote.objects.create(name=name, image=fname)
         m.QuoteEntries.objects.create(content=content_de, role=role_de, lang='de', quote=q)
@@ -296,7 +300,6 @@ def store_admin_quote(request):
         m.QuoteEntries.objects.filter(lang='en', quote=q).update(content=content_en, role=role_en)
         
     json = '{"id" : ' + str(q.id) + ', "name" : "' + name  +  '", "changed" : "' + str(q.changed) + '", "image" : "' + fname + '"}'
-    print (json);
     return HttpResponse(json, content_type="application/json") 
 
 def store_admin_doc(request):
@@ -332,7 +335,6 @@ def store_admin_video(request):
     title_en = request.POST.get('title_en','')
     content_de = request.POST.get('content_de','')
     content_en = request.POST.get('content_en','')
-    print(str(idb))
     if idb == 0:
         v = m.Video.objects.create(vid = vid)
         m.VideoDesc.objects.create(title=title_de, desc=content_de, lang='de', video=v)
@@ -358,7 +360,6 @@ def change_admin_inst_proj(request):
     ipe = m.InstitutionProjectEntries.objects.filter(project__inst__pk=idb, lang=translation.get_language())
 
     js = serializers.serialize('json',ipe)
-    print(js) 
     return HttpResponse(js, content_type="application/json")    
 
 
@@ -368,7 +369,6 @@ def change_admin_quote_selection(request):
     q = m.Quote.objects.filter(pk=idb)
     data = list(chain(q, qe))
     data = serializers.serialize('json',data)
-    print(json.dumps(json.loads(data), indent=4)) 
     return HttpResponse(data, content_type="application/json")   
 
 '''
@@ -377,9 +377,7 @@ is called when the project entries should be changed in the institution/project 
 def change_admin_inst_proj_selection(request):
     idb = request.POST.get('id',0)
     ipe = m.InstitutionProjectEntries.objects.filter(project__pk=idb)
-    print(idb)
     js = serializers.serialize('json',ipe)
-    print(js) 
     return HttpResponse(js, content_type="application/json")  
 
 
@@ -390,7 +388,6 @@ def change_admin_doc_selection(request):
     
     data = list(chain(d, de))
     data = serializers.serialize('json', data)
-    print(json.dumps(json.loads(data), indent=4)) 
     return HttpResponse(data, content_type="application/json")
 
 def change_admin_service_selection(request):
@@ -399,7 +396,6 @@ def change_admin_service_selection(request):
     se = m.ServiceEntries.objects.filter(service=idb)
     data = list(chain(s, se))
     data = serializers.serialize('json', data)
-    print(json.dumps(json.loads(data), indent=4)) 
     return HttpResponse(data, content_type="application/json")
 
 def change_admin_video_selection(request):
@@ -408,7 +404,6 @@ def change_admin_video_selection(request):
     ve = m.VideoDesc.objects.filter(video__pk=idb)
     data = list(chain(v, ve))
     data = serializers.serialize('json', data)
-    print(json.dumps(json.loads(data), indent=4)) 
     return HttpResponse(data, content_type="application/json")
 
 def change_admin_article(request):
@@ -454,7 +449,6 @@ def get_inst_projects(request):
     idb = request.POST.get('id',0)
     entr = m.InstitutionProjectEntries.objects.filter(project__pk=idb, lang=translation.get_language())
     js = serializers.serialize('json',entr)
-    print(js) 
     return HttpResponse(js, content_type="application/json")  
 
 '''
@@ -466,7 +460,6 @@ def get_blog(request):
     idb = request.POST.get('id',0)
     be = m.BlogEntry.objects.filter(blog=idb, lang=translation.get_language())
     js = serializers.serialize('json',be)
-    print(js) 
     return HttpResponse(js, content_type="application/json")  
 
 def get_blog_entry(idb):
@@ -478,8 +471,6 @@ def get_blog_entry(idb):
 def change_admin_blog(request):
     idb = request.POST.get('id',0)
     data = get_blog_entry(idb)  
-
-    print(json.dumps(json.loads(data), indent=4)) 
     return HttpResponse(data, content_type="application/json")
     
 def delete_admin_blog(request):
@@ -508,8 +499,6 @@ def change_admin_inst(request):
     idb = request.POST.get('id',0)
     print(idb)
     data = get_inst_entry(idb)  
-
-    print(json.dumps(json.loads(data), indent=4)) 
     return HttpResponse(data, content_type="application/json")
 
 # def store_admin(request):
@@ -543,9 +532,7 @@ def login_process(request):
       
     try:
         request.session['user'] = ts.login(e,p)
-        print(request.session['user'])
         request.session.modified = True 
-        
     except:
         messages.warning(request, "login_failed")
      
@@ -585,7 +572,6 @@ def change_lang(request):
 def contact(request):
     full_name = request.POST.get('full_name','')
     email = request.POST.get('email','')
-    print (email)
     phone = request.POST.get('phone','')
     message = request.POST.get('message','')
     message += "email:" + email
@@ -605,9 +591,6 @@ def upload_img(request):
     path = default_storage.save(settings.IMG_DIR + fname, ContentFile(file.read()))
     request.session[type + "_fname"] = fname
     request.session.modified = True
-    
-    print("path:" + path)
-    print("fname:" + fname)
     
     return HttpResponse(json.dumps(fname), content_type="application/json") 
 
@@ -639,46 +622,10 @@ def script(request):
 #     for i in range(1,9):        
 #         m.Article.objects.create(a_key=i, language="DE", title="TD" + str(i), content="<b>content TD" + str(i) + "</b>", changed=datetime.date)
 #         m.Article.objects.create(a_key=i, language="EN", title="TE" + str(i), content="<b>content TE" + str(i) + "</b>", changed=datetime.date)
-    s = m.Service.objects.create(image_css='icon-strategy')
-    m.ServiceEntries.objects.create(title='Discover the power of keyword spotting', subtitle='Keyword spotting is a magic way to search directly in the image. You will be able to explore every word you are looking for in a collection of highly diverse documents', content='C_de', lang='de', service=s)
-    m.ServiceEntries.objects.create(title='Discover the power of keyword spotting', subtitle='Keyword spotting is a magic way to search directly in the image. You will be able to explore every word you are looking for in a collection of highly diverse documents', content='C_en', lang='en', service=s)
-
-    s = m.Service.objects.create(image_css='icon-lightbulb')
-    m.ServiceEntries.objects.create(title='Organize your project', subtitle='Upload as many documents you want, train your specific text recognition models, invite collegues, share your documents and models with colleges, export documents in any format at any time…', content='C_de', lang='de', service=s)
-    m.ServiceEntries.objects.create(title='Organize your project', subtitle='Upload as many documents you want, train your specific text recognition models, invite collegues, share your documents and models with colleges, export documents in any format at any time…', content='C_en', lang='en', service=s)
-
-    s = m.Service.objects.create(image_css='icon-lightbulb')
-    m.ServiceEntries.objects.create(title='Manage your private collection', subtitle='All documents are private in your personal Transkribus collection. Therefore enjoy the benefits of copyright exceptions available for personal use and research. ', content='C_de', lang='de', service=s)
-    m.ServiceEntries.objects.create(title='Manage your private collection', subtitle='All documents are private in your personal Transkribus collection. Therefore enjoy the benefits of copyright exceptions available for personal use and research. ', content='C_en', lang='en', service=s)
-
-    s = m.Service.objects.create(image_css='icon-lightbulb')
-    m.ServiceEntries.objects.create(title='Create your own neural network', subtitle='Transcribe some dozens of pages, train a neural network and recognize hundreds or thousands of documents, or transcribe faster than before…', content='C_de', lang='de', service=s)
-    m.ServiceEntries.objects.create(title='Create your own neural network', subtitle='Transcribe some dozens of pages, train a neural network and recognize hundreds or thousands of documents, or transcribe faster than before…', content='C_en', lang='en', service=s)
- 
-    s = m.Service.objects.create(image_css='icon-lightbulb')
-    m.ServiceEntries.objects.create(title='Transcribe in a highly standardized way', subtitle='Be it ancient Greek, Arabic or Latin, or a modern language you will be able to create a transcription on the highest scholarly level including annotations and comments.', content='C_de', lang='de', service=s)
-    m.ServiceEntries.objects.create(title='Transcribe in a highly standardized way', subtitle='Be it ancient Greek, Arabic or Latin, or a modern language you will be able to create a transcription on the highest scholarly level including annotations and comments.', content='C_en', lang='en', service=s)
- 
-    
-    s = m.Service.objects.create(image_css='icon-lightbulb')
-    m.ServiceEntries.objects.create(title='Collaborate with colleagues and share your documents', subtitle='Organize your project as a collaborative effort. Work at different places but in one collection. Export your documents or share them via the web-interface', content='C_de', lang='de', service=s)
-    m.ServiceEntries.objects.create(title='Collaborate with colleagues and share your documents', subtitle='Organize your project as a collaborative effort. Work at different places but in one collection. Export your documents or share them via the web-interface', content='C_en', lang='en', service=s)        
-    
-    s = m.Service.objects.create(image_css='icon-lightbulb')
-    m.ServiceEntries.objects.create(title='Scan your own documents with the smartphone', subtitle='A smartphone as document scanner? Yes, with the ScanTent and DocScan you will be able to scan books and other documents fast, reliable and in an excellent quality.', content='C_de', lang='de', service=s)
-    m.ServiceEntries.objects.create(title='Scan your own documents with the smartphone', subtitle='A smartphone as document scanner? Yes, with the ScanTent and DocScan you will be able to scan books and other documents fast, reliable and in an excellent quality.', content='C_en', lang='en', service=s)        
-    
-    s = m.Service.objects.create(image_css='icon-lightbulb')
-    m.ServiceEntries.objects.create(title='Teach students and volunteers to read ancient scripts', subtitle='Students should, volunteers want to be able to read historical scripts. In both cases the only way to get better is: exercise, exercise, exercise on real world material. And by using the mobile phone…', content='C_de', lang='de', service=s)
-    m.ServiceEntries.objects.create(title='Teach students and volunteers to read ancient scripts', subtitle='Students should, volunteers want to be able to read historical scripts. In both cases the only way to get better is: exercise, exercise, exercise on real world material. And by using the mobile phone…', content='C_en', lang='en', service=s)        
-    
+      
 #     s = m.Service.objects.create(image_css='icon-lightbulb')
 #     m.ServiceEntries.objects.create(title='', subtitle='', content='C_de', lang='de', service=s)
 #     m.ServiceEntries.objects.create(title='', subtitle='', content='C_en', lang='en', service=s)        
 
-    
     return HttpResponse('done', content_type="text/plain")
-    
-
-
     
