@@ -29,6 +29,10 @@ from PIL import Image
 
 ts = TranskribusSession()
 
+def login_view(request):
+    template = loader.get_template('start/login.html')
+    return HttpResponse(template.render(context, request))
+ 
 def index(request):
     template = loader.get_template('start/homepage.html')
     subscribed_users = randint(0,1000)

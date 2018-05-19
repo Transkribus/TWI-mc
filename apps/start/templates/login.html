@@ -1,0 +1,23 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html>
+    <head>{% trans 'login_transkribus' %}</head>
+    <body>
+        <h4>
+            <span class="glyphicon glyphicon-log-in"></span>
+            {% trans 'login_transkribus' %}
+        </h4>
+        <br>
+        <form action="login_process" method="post">
+            {% csrf_token %}
+            <input type="text" name="email" placeholder="{% trans 'email' %}">
+            <input type="password" name="password" placeholder="Password">
+            <input type="submit" name="login" class="login loginmodal-submit" value="{% trans 'login' %}">
+        </form>
+        <div class="login-help">
+            <a href="https://transkribus.eu" target="_plain">{% trans 'register' %}</a>
+        </div>
+    </body>
+</html>
