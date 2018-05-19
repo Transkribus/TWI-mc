@@ -1,0 +1,802 @@
+[
+{
+  "model": "start.supportedicons",
+  "pk": 1,
+  "fields": {
+    "name": "adjustments",
+    "css_class": "icon-adjustments"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 2,
+  "fields": {
+    "name": "alarmclock",
+    "css_class": "icon-alarmclock"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 3,
+  "fields": {
+    "name": "anchor",
+    "css_class": "icon-anchor"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 4,
+  "fields": {
+    "name": "aperture",
+    "css_class": "icon-aperture"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 5,
+  "fields": {
+    "name": "attachment",
+    "css_class": "icon-attachment"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 6,
+  "fields": {
+    "name": "bargraph",
+    "css_class": "icon-bargraph"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 7,
+  "fields": {
+    "name": "basket",
+    "css_class": "icon-basket"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 8,
+  "fields": {
+    "name": "beaker",
+    "css_class": "icon-beaker"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 9,
+  "fields": {
+    "name": "bike",
+    "css_class": "icon-bike"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 10,
+  "fields": {
+    "name": "book-open",
+    "css_class": "icon-book-open"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 11,
+  "fields": {
+    "name": "briefcase",
+    "css_class": "icon-briefcase"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 12,
+  "fields": {
+    "name": "browser",
+    "css_class": "icon-browser"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 13,
+  "fields": {
+    "name": "calendar",
+    "css_class": "icon-calendar"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 14,
+  "fields": {
+    "name": "camera",
+    "css_class": "icon-camera"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 15,
+  "fields": {
+    "name": "caution",
+    "css_class": "icon-caution"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 16,
+  "fields": {
+    "name": "chat",
+    "css_class": "icon-chat"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 17,
+  "fields": {
+    "name": "circle-compass",
+    "css_class": "icon-circle-compass"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 18,
+  "fields": {
+    "name": "clipboard",
+    "css_class": "icon-clipboard"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 19,
+  "fields": {
+    "name": "clock",
+    "css_class": "icon-clock"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 20,
+  "fields": {
+    "name": "cloud",
+    "css_class": "icon-cloud"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 21,
+  "fields": {
+    "name": "compass",
+    "css_class": "icon-compass"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 22,
+  "fields": {
+    "name": "desktop",
+    "css_class": "icon-desktop"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 23,
+  "fields": {
+    "name": "dial",
+    "css_class": "icon-dial"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 24,
+  "fields": {
+    "name": "document",
+    "css_class": "icon-document"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 25,
+  "fields": {
+    "name": "documents",
+    "css_class": "icon-documents"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 26,
+  "fields": {
+    "name": "download",
+    "css_class": "icon-download"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 27,
+  "fields": {
+    "name": "dribbble",
+    "css_class": "icon-dribbble"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 28,
+  "fields": {
+    "name": "edit",
+    "css_class": "icon-edit"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 29,
+  "fields": {
+    "name": "envelope",
+    "css_class": "icon-envelope"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 30,
+  "fields": {
+    "name": "expand",
+    "css_class": "icon-expand"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 31,
+  "fields": {
+    "name": "facebook",
+    "css_class": "icon-facebook"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 32,
+  "fields": {
+    "name": "flag",
+    "css_class": "icon-flag"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 33,
+  "fields": {
+    "name": "focus",
+    "css_class": "icon-focus"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 34,
+  "fields": {
+    "name": "gears",
+    "css_class": "icon-gears"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 35,
+  "fields": {
+    "name": "genius",
+    "css_class": "icon-genius"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 36,
+  "fields": {
+    "name": "gift",
+    "css_class": "icon-gift"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 37,
+  "fields": {
+    "name": "global",
+    "css_class": "icon-global"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 38,
+  "fields": {
+    "name": "globe",
+    "css_class": "icon-globe"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 39,
+  "fields": {
+    "name": "googleplus",
+    "css_class": "icon-googleplus"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 40,
+  "fields": {
+    "name": "grid",
+    "css_class": "icon-grid"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 41,
+  "fields": {
+    "name": "happy",
+    "css_class": "icon-happy"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 42,
+  "fields": {
+    "name": "hazardous",
+    "css_class": "icon-hazardous"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 43,
+  "fields": {
+    "name": "heart",
+    "css_class": "icon-heart"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 44,
+  "fields": {
+    "name": "hotairballoon",
+    "css_class": "icon-hotairballoon"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 45,
+  "fields": {
+    "name": "hourglass",
+    "css_class": "icon-hourglass"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 46,
+  "fields": {
+    "name": "key",
+    "css_class": "icon-key"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 47,
+  "fields": {
+    "name": "laptop",
+    "css_class": "icon-laptop"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 48,
+  "fields": {
+    "name": "layers",
+    "css_class": "icon-layers"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 49,
+  "fields": {
+    "name": "lifesaver",
+    "css_class": "icon-lifesaver"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 50,
+  "fields": {
+    "name": "lightbulb",
+    "css_class": "icon-lightbulb"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 51,
+  "fields": {
+    "name": "linegraph",
+    "css_class": "icon-linegraph"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 52,
+  "fields": {
+    "name": "linkedin",
+    "css_class": "icon-linkedin"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 53,
+  "fields": {
+    "name": "lock",
+    "css_class": "icon-lock"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 54,
+  "fields": {
+    "name": "magnifying-glass",
+    "css_class": "icon-magnifying-glass"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 55,
+  "fields": {
+    "name": "map",
+    "css_class": "icon-map"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 56,
+  "fields": {
+    "name": "map-pin",
+    "css_class": "icon-map-pin"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 57,
+  "fields": {
+    "name": "megaphone",
+    "css_class": "icon-megaphone"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 58,
+  "fields": {
+    "name": "mic",
+    "css_class": "icon-mic"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 59,
+  "fields": {
+    "name": "mobile",
+    "css_class": "icon-mobile"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 60,
+  "fields": {
+    "name": "newspaper",
+    "css_class": "icon-newspaper"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 61,
+  "fields": {
+    "name": "notebook",
+    "css_class": "icon-notebook"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 62,
+  "fields": {
+    "name": "paintbrush",
+    "css_class": "icon-paintbrush"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 63,
+  "fields": {
+    "name": "paperclip",
+    "css_class": "icon-paperclip"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 64,
+  "fields": {
+    "name": "pencil",
+    "css_class": "icon-pencil"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 65,
+  "fields": {
+    "name": "phone",
+    "css_class": "icon-phone"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 66,
+  "fields": {
+    "name": "picture",
+    "css_class": "icon-picture"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 67,
+  "fields": {
+    "name": "pictures",
+    "css_class": "icon-pictures"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 68,
+  "fields": {
+    "name": "piechart",
+    "css_class": "icon-piechart"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 69,
+  "fields": {
+    "name": "presentation",
+    "css_class": "icon-presentation"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 70,
+  "fields": {
+    "name": "pricetags",
+    "css_class": "icon-pricetags"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 71,
+  "fields": {
+    "name": "printer",
+    "css_class": "icon-printer"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 72,
+  "fields": {
+    "name": "profile-female",
+    "css_class": "icon-profile-female"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 73,
+  "fields": {
+    "name": "profile-male",
+    "css_class": "icon-profile-male"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 74,
+  "fields": {
+    "name": "puzzle",
+    "css_class": "icon-puzzle"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 75,
+  "fields": {
+    "name": "quote",
+    "css_class": "icon-quote"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 76,
+  "fields": {
+    "name": "recycle",
+    "css_class": "icon-recycle"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 77,
+  "fields": {
+    "name": "refresh",
+    "css_class": "icon-refresh"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 78,
+  "fields": {
+    "name": "ribbon",
+    "css_class": "icon-ribbon"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 79,
+  "fields": {
+    "name": "rss",
+    "css_class": "icon-rss"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 80,
+  "fields": {
+    "name": "sad",
+    "css_class": "icon-sad"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 81,
+  "fields": {
+    "name": "scissors",
+    "css_class": "icon-scissors"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 82,
+  "fields": {
+    "name": "scope",
+    "css_class": "icon-scope"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 83,
+  "fields": {
+    "name": "search",
+    "css_class": "icon-search"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 84,
+  "fields": {
+    "name": "shield",
+    "css_class": "icon-shield"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 85,
+  "fields": {
+    "name": "speedometer",
+    "css_class": "icon-speedometer"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 86,
+  "fields": {
+    "name": "strategy",
+    "css_class": "icon-strategy"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 87,
+  "fields": {
+    "name": "streetsign",
+    "css_class": "icon-streetsign"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 88,
+  "fields": {
+    "name": "tablet",
+    "css_class": "icon-tablet"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 89,
+  "fields": {
+    "name": "target",
+    "css_class": "icon-target"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 90,
+  "fields": {
+    "name": "telescope",
+    "css_class": "icon-telescope"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 91,
+  "fields": {
+    "name": "toolbox",
+    "css_class": "icon-toolbox"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 92,
+  "fields": {
+    "name": "tools",
+    "css_class": "icon-tools"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 93,
+  "fields": {
+    "name": "tools-2",
+    "css_class": "icon-tools-2"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 94,
+  "fields": {
+    "name": "trophy",
+    "css_class": "icon-trophy"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 95,
+  "fields": {
+    "name": "tumblr",
+    "css_class": "icon-tumblr"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 96,
+  "fields": {
+    "name": "twitter",
+    "css_class": "icon-twitter"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 97,
+  "fields": {
+    "name": "upload",
+    "css_class": "icon-upload"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 98,
+  "fields": {
+    "name": "video",
+    "css_class": "icon-video"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 99,
+  "fields": {
+    "name": "wallet",
+    "css_class": "icon-wallet"
+  }
+},
+{
+  "model": "start.supportedicons",
+  "pk": 100,
+  "fields": {
+    "name": "wine",
+    "css_class": "icon-wine"
+  }
+}
+]
