@@ -12,6 +12,8 @@ from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from decimal import Decimal
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 from apps.utils.services import TranskribusSession
 from django.core.files.storage import default_storage
 import uuid 
@@ -85,10 +87,11 @@ def home_article_details(request):
     return HttpResponse(template.render(context, request))
     
 def admin_logged_in(user):
-    print (request.session['user'])    
-    return user in request.session
+    print (str(user))
+    print (str(user.is_superuser))
+    return user.is_superuser
     
-@user_passes_test(admin_logged_in)
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def admin(request):   
     template = loader.get_template('start/admin.html')
     b = m.BlogEntry.objects.filter(lang=translation.get_language())
@@ -524,6 +527,7 @@ def logout_process(request):
     ts.invalidate()
     del request.session['user']
     request.session.modified = True
+    logout(request)
     return HttpResponseRedirect("index")
  
 def login_process(request):
@@ -531,9 +535,20 @@ def login_process(request):
     p = request.POST.get('password','')
       
     try:
-        request.session['user'] = ts.login(e,p)
+        curr_user = ts.login(e,p)
+        print("CURR_USER: " + str(curr_user))
+        if not (curr_user is None):
+            User.objects.filter(username=e).delete()
+            user = User.objects.create_user(curr_user['userName'], curr_user['email'], p, is_superuser = True, first_name=curr_user['firstname'], last_name= curr_user['lastname'])
+            user.save()
+            #user = authenticate(username=u, password=p) 
+            
+            login(request, user)
+            print("USER: " + str(user))
+        request.session['user'] = curr_user
         request.session.modified = True 
-    except:
+    except Exception as e:
+        print ("log failed:" + str(e))
         messages.warning(request, "login_failed")
      
     return HttpResponseRedirect("index")
