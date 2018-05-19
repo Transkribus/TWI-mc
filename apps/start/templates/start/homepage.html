@@ -130,6 +130,73 @@ var inst = [];
 </section>
 
 
+<script>
+var docs = [];
+{% for d in docs %}
+    var content = '{{d.content|safe}}';
+    docs[{{d.doc.pk}}] = content;
+{% endfor %} 
+</script>
+
+<section id="documents" class="bg-gray pt120 pb120">
+    <div class="container">
+        <div class="section_title text-center mb50 fadeIn wow animated" data-wow-delay="100ms">
+            <i class="icon-newspaper"></i>
+            <h4>
+                {% trans 'Documents' %}
+            </h4>
+            <div class="title_divider"></div>
+            <p>
+                {% trans 'take a closer look at our work' %}
+            </p>
+        </div>
+         <div class="row justify-content-center">
+            {% for d in docs %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
+                        <i class="justify-content-center {{d.doc.icon}}"></i>
+                        <div class="content justify-content-center text-center">
+                            <h5>
+                                {{d.title}}
+                            </h5>
+                            <p>
+                                {{d.desc|safe}}
+                            </p>
+                            <a id="documents_a_{{d.doc.pk}}" class="btn btn-rounded btn-light" onclick="more_documents('documents_a_{{d.doc.pk}}', {{d.doc.pk}}, '{% trans 'Learn more' %}' , '{% trans 'hide' %}')">
+                                {% trans 'Learn more' %}
+                            </a>
+                        </div>
+                        <div id="documents_more_{{d.doc.pk}}">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %} 
+        </div>
+    </div>
+</section>
+
+<section id="videos" class="bg-light pt120 pb120">
+    <div class="container">
+         <h4>
+            {% trans 'Videos' %}  
+        </h4>
+        <div class="row justify-content-center mp50" >
+            {% for v in videos %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="embed-responsive embed-responsive-4by3">
+                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{v.video.vid}}"></iframe>
+                    </div>
+                     <b>{{v.title}}</b> <br/>
+                     {{v.desc|safe}}
+                </div>
+            {% endfor %}
+            
+        </div>
+        <br/>
+        {% trans 'Also visit our ' %} <a target="_plain" href="https://www.youtube.com/channel/UC-txVgM31rDTGlBnH-zpPjA">{% trans 'youtube-channel' %}</a>
+    </div>
+</section>
+
 <!--about section -->
 <section id="about" class="bg-light pt120 pb120">
     <div class="container">
@@ -251,7 +318,6 @@ var services = [];
                     </div>
                 </div>
             {% endfor %}
-
         </div>
     </div>
 </section>
@@ -386,125 +452,7 @@ var services = [];
 </section>
 <!--SECTION TESTIMONIAL END -->
 
-<section id="documents" class="bg-gray pt120 pb120">
-    <div class="container">
-        <div class="section_title text-center mb50 fadeIn wow animated" data-wow-delay="100ms">
-            <i class="icon-newspaper"></i>
-            <h4>
-                {% trans 'Documents' %}
-            </h4>
-            <div class="title_divider"></div>
-            <p>
-                {% trans 'take a closer look at our work' %}
-            </p>
-        </div>
-         <div class="row justify-content-center">
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
-                    <i class="justify-content-center {{s.service.image_css}}"></i>
-                    <div class="content justify-content-center text-center">
-                        <h5>
-                            {% trans 'White papers' %}
-                        </h5>
-                        <p>
-                            TODO: List of white papers here
-                        </p>
-                        <a href="service_detail?id={{s.service.pk}}" target="_plain" class="btn btn-rounded btn-light" >
-                            {% trans 'Learn more' %}
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
-                    <i class="justify-content-center {{s.service.image_css}}"></i>
-                    <div class="content justify-content-center text-center">
-                        <h5>
-                            {% trans 'Paper from Melissa' %}
-                        </h5>
-                        <p>
-                            TODO: Add paper here
-                        </p>
-                        <a href="service_detail?id={{s.service.pk}}" target="_plain" class="btn btn-rounded btn-light" >
-                            {% trans 'Learn more' %}
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
-                    <i class="justify-content-center {{s.service.image_css}}"></i>
-                    <div class="content justify-content-center text-center">
-                        <h5>
-                            {% trans 'HowTo guides' %}
-                        </h5>
-                        <p>
-                            TODO: Add Howto guides
-                        </p>
-                        <a href="service_detail?id={{s.service.pk}}" target="_plain" class="btn btn-rounded btn-light" >
-                            {% trans 'Learn more' %}
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
-                    <i class="justify-content-center {{s.service.image_css}}"></i>
-                    <div class="content justify-content-center text-center">
-                        <h5>
-                            {% trans 'Research Papers' %}
-                        </h5>
-                        <p>
-                            TODO: Add Research Papers
-                        </p>
-                        <a href="service_detail?id={{s.service.pk}}" target="_plain" class="btn btn-rounded btn-light" >
-                            {% trans 'Learn more' %}
-                        </a>
-                    </div>
-                </div>
-            </div>
-             <div class="col-12 col-md-6 col-lg-4">
-                <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
-                    <i class="justify-content-center {{s.service.image_css}}"></i>
-                    <div class="content justify-content-center text-center">
-                        <h5>
-                            {% trans 'Deliverables' %}
-                        </h5>
-                        <p>
-                            TODO: Add Deliverables
-                        </p>
-                        <a href="service_detail?id={{s.service.pk}}" target="_plain" class="btn btn-rounded btn-light" >
-                            {% trans 'Learn more' %}
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<section id="videos" class="bg-light pt120 pb120">
-    <div class="container">
-         <h4>
-            {% trans 'Videos' %}  
-        </h4>
-        <div class="row justify-content-center mp50" >
-            {% for v in videos %}
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="embed-responsive embed-responsive-4by3">
-                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{v.video.vid}}"></iframe>
-                    </div>
-                     <b>{{v.title}}</b> <br/>
-                     {{v.desc|safe}}
-                </div>
-            {% endfor %}
-            
-        </div>
-        <br/>
-        {% trans 'Also visit our ' %} <a target="_plain" href="https://www.youtube.com/channel/UC-txVgM31rDTGlBnH-zpPjA">{% trans 'youtube-channel' %}</a>
-    </div>
-</section>
 
 <!--Calendar-->
 <section id="calendar" class="bg-light pt120 pb120">

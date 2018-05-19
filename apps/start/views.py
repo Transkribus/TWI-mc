@@ -124,7 +124,7 @@ def store_admin_service(request):
         m.ServiceEntries.objects.create(title=title_de, subtitle=subtitle_de, content=content_de, service=serv, lang="de")
         m.ServiceEntries.objects.create(title=title_en, subtitle=subtitle_en, content=content_en, service=serv, lang="en")
     else:
-        serv = m.HomeArticle.objects.filter(pk=idb)
+        serv = m.Service.objects.filter(pk=idb)
         serv.update(image_css=icon)
         serv = serv.first()
         m.ServiceEntries.objects.filter(lang="de", service=serv).update(title=title_de, subtitle=subtitle_de, content=content_de)

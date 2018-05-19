@@ -53,7 +53,6 @@ function change_inst_select(id)
 
 function more_service(btn, id, show_str, hide_str)
 { 
-    console.log( btn);
     if ($("#services_more_" + id).html().trim().length == 0)
     {
         $("#" + btn).html(hide_str);
@@ -62,5 +61,18 @@ function more_service(btn, id, show_str, hide_str)
     {
          $("#" + btn).html(show_str);
         $("#services_more_" + id).html('');
+    }
+}
+
+function more_documents(btn, id, show_str, hide_str)
+{
+    if ($("#documents_more_" + id).html().trim().length == 0)
+    {
+        $("#" + btn).html(hide_str);
+        $("#documents_more_" + id).html(docs[id]);
+    } else
+    {
+         $("#" + btn).html(show_str);
+        $("#documents_more_" + id).html('');
     }
 }
