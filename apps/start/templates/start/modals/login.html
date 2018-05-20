@@ -6,7 +6,7 @@
             
             <h4>
                 <span class="glyphicon glyphicon-log-in"></span>
-                {% trans 'login_transkribus' %}</h4>
+                {% trans 'Login' %}</h4>
             <br>
             <form action="login_process" method="post">
                 {% csrf_token %}
@@ -15,7 +15,7 @@
                 <input type="submit" name="login" class="login loginmodal-submit" value="{% trans 'login' %}">
             </form>
             <div class="login-help">
-                <a href="https://transkribus.eu" target="_plain">{% trans 'register' %}</a>
+                <a href="https://transkribus.eu" target="_plain">{% trans 'Register' %}</a>
             </div>
         </div>
     </div>

@@ -29,7 +29,7 @@
        
                 
                 <li class="nav-item">
-                    <a class="nav-link active" target="_plain" href="index">{% trans 'back' %}</a>
+                    <a class="nav-link active" target="_plain" href="index">{% trans 'Back' %}</a>
                 </li>
             </ul>
         </div>
@@ -39,17 +39,14 @@
 <br/><br/><br/>
 <section id="home" class="home bg-light">
     <div class="container">
-        
         {{article.shortdesc|safe}}
         <br/>
         {{article.content|safe}}        
         <br/>
-        
     </div>
 </section>
 
 {% include "start/includes/footer.html" %} 
 
- 
 </body>
 </html>

@@ -142,34 +142,34 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
                     <a class="nav-link " href="#blog">{% trans 'Blog' %}</a>
                 </li>
                  <li class="nav-item">
-                    <a class="nav-link " href="#institutions">{% trans 'institutions' %}</a>
+                    <a class="nav-link " href="#institutions">{% trans 'Institutions' %}</a>
                 </li>
                  <li class="nav-item">
-                    <a class="nav-link " href="#institutions_projects">{% trans 'institutions_projects' %}</a>
+                    <a class="nav-link " href="#institutions_projects">{% trans 'Institutions projects' %}</a>
                 </li>
       
                 <li class="nav-item">
-                    <a class="nav-link " href="#quotes">{% trans 'quotes' %}</a>
+                    <a class="nav-link " href="#quotes">{% trans 'Quotes' %}</a>
                 </li>
       
                 <li class="nav-item">
-                    <a class="nav-link " href="#documents">{% trans 'documents' %}</a>
+                    <a class="nav-link " href="#documents">{% trans 'Documents' %}</a>
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link " href="#videos">{% trans 'videos' %}</a>
+                    <a class="nav-link " href="#videos">{% trans 'Videos' %}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#services">{% trans 'services' %}</a>
+                    <a class="nav-link " href="#services">{% trans 'Services' %}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><span class="admin">{{LANGUAGE_CODE}} </span></a>
                     <ul class="sub_menu">
                         {% for language in languages %}
                             {% if language.code == LANGUAGE_CODE %}
-                                <li>X<span class="glyphicon glyphicon-ok check_left"></span> &nbsp; {{ language.name_local }}</li>
+                                <li>X<span class="glyphicon glyphicon-ok check_left"></span> &nbsp; {{language.name_local}}</li>
                             {% else %}
-                                <li><a href="change_lang?lang={{language.code}}"><span class="check_left"> &nbsp;</span>{{ language.name_local }}</a></li>
+                                <li><a href="change_lang?lang={{language.code}}"><span class="check_left"> &nbsp;</span>{{language.name_local}}</a></li>
                             {% endif %}
                         {% endfor %}
                     </ul>
@@ -185,9 +185,9 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         <h1>{% trans 'Home Articles' %}</h1>
         
          <input type="hidden" name="editor-id-article" id= "editor-id-article" value="0"> <!-- change when a document ist loaded for editing -->
-        {% trans 'stored home articles' %} :
+        {% trans 'Stored home articles' %} :
         <select name="article-options" id="article-options"  onchange="change_article($(this).val())">
-            <option value="0" selected>{% trans 'new home article entry' %}...</option>
+            <option value="0" selected>{% trans 'New home article entry' %}...</option>
              {% for a in articles %}
                 <option value="{{a.article.pk}}">{{a.title}} - {{a.article.changed}}</option>
             {% endfor %}
@@ -210,13 +210,13 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
              <div class="editor-article-tab-{{l.0}} tabcontent-article" id="editor-article-tab-{{l.0}}">
                 <div class="form-group">
                    <label for="editor-title-article-{{l.0}}">
-                        {% language "{{l.0}}" %}main title{% endlanguage %}
+                        {% language "{{l.0}}" %}Main title{% endlanguage %}
                     </label>
                    <input class="form-control" type="text" name="editor-title-article-{{l.0}}" id ="editor-title-article-{{l.0}}" />
                 </div>
                 <div class="form-group">
                    <label for="editor-container-article-short-{{l.0}}">
-                        {% language "{{l.0}}" %}sub title{% endlanguage %}
+                        {% language "{{l.0}}" %}Sub title{% endlanguage %}
                    </label>
                   
                     <div class="editor-container" id="editor-container-article-short-{{l.0}}"> 
@@ -232,7 +232,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
                 
             </div>
         {% endfor %}            
-        <button id="editor-store-article" onclick="store_article()">{% trans 'store' %}</button>    
+        <button id="editor-store-article" onclick="store_article()">{% trans 'Store' %}</button>    
     </div>
 </section>
 
@@ -245,22 +245,22 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
          <input type="hidden" name="editor-id-service" id= "editor-id-service" value="0"> <!-- change when a document ist loaded for editing -->
         {% trans 'stored service entries' %} :
         <select name="service-options" id="service-options"  onchange="change_service($(this).val())">
-            <option value="0" selected>{% trans 'new service entry' %}...</option>
+            <option value="0" selected>{% trans 'New service entry' %}...</option>
              {% for s in services %}
                 <option value="{{s.service.pk}}">{{s.title}} - {{s.service.changed}}</option>
             {% endfor %}
         </select>
         
-        <button id="editor-service-btn-delete" class="invisible" onclick="delete_service()">{% trans 'delete' %}</button> 
+        <button id="editor-service-btn-delete" class="invisible" onclick="delete_service()">{% trans 'Delete' %}</button> 
         
         <br/><br/>
     
         <label for="editor-icon-service">
-            {% language "{{l.0}}" %}icon{% endlanguage %}:
+            {% language "{{l.0}}" %}Icon{% endlanguage %}:
         </label>
         
         <select name="editor-icon-service"  id="editor-icon-service">
-             <option value="no_icon" selected>{% trans 'no icon' %}...</option>
+             <option value="no_icon" selected>{% trans 'No icon' %}...</option>
             {% for i in icons %}
             <option value="{{i.css_class}}" data-iconurl="" data-icon="{{i.css_class}}" data-text="{{i.name}}" data-selectedtext="">
                 
@@ -277,13 +277,13 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
              <div class="editor-service-tab-{{l.0}} tabcontent-service" id="editor-service-tab-{{l.0}}">
                 <div class="form-group">
                    <label for="editor-title-service-{{l.0}}">
-                        {% language "{{l.0}}" %}main title{% endlanguage %}
+                        {% language "{{l.0}}" %}Nain title{% endlanguage %}
                     </label>
                    <input class="form-control" type="text" name="editor-title-service-{{l.0}}" id ="editor-title-service-{{l.0}}" />
                 </div>
                 <div class="form-group">
                    <label for="editor-container-service-short-{{l.0}}">
-                        {% language "{{l.0}}" %}sub title{% endlanguage %}
+                        {% language "{{l.0}}" %}Sub title{% endlanguage %}
                    </label>
                   
                     <div class="editor-container" id="editor-container-service-short-{{l.0}}"> 
@@ -299,7 +299,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
                 
             </div>
         {% endfor %}            
-        <button id="editor-store-service" onclick="store_service()">{% trans 'store' %}</button>    
+        <button id="editor-store-service" onclick="store_service()">{% trans 'Store' %}</button>    
     </div>
 </section>
 
@@ -311,16 +311,16 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         <h1>{% trans 'Blog entries' %}</h1>
                 
         <input type="hidden" name="editor-id-blog" id= "editor-id-blog" value="0"> <!-- change when a document ist loaded for editing -->
-        {% trans 'stored blog entries' %} :
+        {% trans 'Stored blog entries' %} :
         <select name="blog-options" id="blog-options"  onchange="change_blog($(this).val())">
-            <option value="0" selected>{% trans 'new blog entry' %}...</option>
+            <option value="0" selected>{% trans 'New blog entry' %}...</option>
              {% for b in blogs %}
                 <option value="{{b.blog.pk}}">{{b.title}} - {{b.blog.changed}}</option>
             {% endfor %}
         </select>
         <img id="editor-blog-img" class="invisible" src="" /> 
         
-        <button id="editor-blog-btn-delete" class="invisible" onclick="delete_blog()">{% trans 'delete' %}</button> 
+        <button id="editor-blog-btn-delete" class="invisible" onclick="delete_blog()">{% trans 'Delete' %}</button> 
         
         <br/><br/>
         <form class="dropzone" action="upload_img" method="post" enctype="multipart/form-data" id="blog_dropzone">
@@ -336,13 +336,13 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
              <div class="editor-blog-tab-{{l.0}} tabcontent-blog" id="editor-blog-tab-{{l.0}}">
                 <div class="form-group">
                    <label for="editor-title-blog-{{l.0}}">
-                        {% language "{{l.0}}" %}main title{% endlanguage %}
+                        {% language "{{l.0}}" %}Main title{% endlanguage %}
                     </label>
                    <input class="form-control" type="text" name="editor-title-blog-{{l.0}}" id ="editor-title-blog-{{l.0}}" />
                 </div>
                 <div class="form-group">
                    <label for="editor-subtitle-blog-{{l.0}}">
-                        {% language "{{l.0}}" %}sub title{% endlanguage %}
+                        {% language "{{l.0}}" %}Sub title{% endlanguage %}
                    </label>
                    <input class="form-control" type="text" name="editor-subtitle-blog-{{l.0}}" id ="editor-subtitle-blog-{{l.0}}" />
                 </div>  
@@ -350,22 +350,22 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
                 </div> 
             </div>
         {% endfor %}            
-        <button id="editor-store-blog" onclick="store_blog()">{% trans 'store' %}</button>
+        <button id="editor-store-blog" onclick="store_blog()">{% trans 'Store' %}</button>
     </div>
 </section>
 
 <section id="institutions" class="bg-light pt120 pb120">
     <div class="container">
         <h1>{% trans 'Institutions' %}</h1>
-        {% trans 'select institution' %}: 
+        {% trans 'Select institution' %}: 
         <select name="inst-options" id="inst-options" onchange="change_inst($(this).val())">
-            <option value="0" selected>{% trans 'new institution' %}...</option>
+            <option value="0" selected>{% trans 'New institution' %}...</option>
              {% for i in inst %}
                 <option value="{{i.inst.pk}}">{{i.name}}</option>
             {% endfor %}
         </select>
         <img id="editor-inst-img" class="invisible" src="" /> 
-        <button id="editor-inst-btn-delete" class="invisible" onclick="delete_inst()">{% trans 'delete' %}</button> 
+        <button id="editor-inst-btn-delete" class="invisible" onclick="delete_inst()">{% trans 'Delete' %}</button> 
         
         <br/><br/>
         <form class="dropzone" action="upload_img" method="post" enctype="multipart/form-data" id="inst_dropzone">
@@ -376,11 +376,11 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         
         
          <label for="loc-coords-lat">
-            {% trans 'location coordinates' %}
+            {% trans 'Location coordinates' %}
         </label>
         <div class="row justify-content-center">
-            <input class="form-control col-12 col-md-6" type="text" name="loc-coord-long" id ="loc-coord-long" placeholder="{% trans 'longitude' %}" pattern="^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$" />
-            <input class="form-control col-12 col-md-6" type="text" name="loc-coord-lat" id ="loc-coord-lat"  placeholder="{% trans 'latitude' %}" pattern="^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$"/>
+            <input class="form-control col-12 col-md-6" type="text" name="loc-coord-long" id ="loc-coord-long" placeholder="{% trans 'Longitude' %}" pattern="^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$" />
+            <input class="form-control col-12 col-md-6" type="text" name="loc-coord-lat" id ="loc-coord-lat"  placeholder="{% trans 'Latitude' %}" pattern="^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$"/>
         </div>
          <label for="loc-name">
             {% trans 'URL' %}
@@ -397,11 +397,11 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
              <div class="editor-inst-tab-{{l.0}} tabcontent-inst" id="editor-inst-tab-{{l.0}}">
        
                 <label for="inst-name">
-                     {% language "{{l.0}}" %}name{% endlanguage %}
+                     {% language "{{l.0}}" %}Name{% endlanguage %}
                 </label>
                 <input class="form-control" type="text" name="inst-name-{{l.0}}" id ="inst-name-{{l.0}}" />
                 <label for="loc-name">
-                     {% language "{{l.0}}" %}location name{% endlanguage %}
+                     {% language "{{l.0}}" %}Location name{% endlanguage %}
                 </label>
                 <input class="form-control" type="text" name="loc-name-{{l.0}}" id ="loc-name-{{l.0}}" />
                 <div class="editor-container" id="editor-container-inst-{{l.0}}">
@@ -417,22 +417,22 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
      <div class="container">
         <h1>{% trans 'Institution - Projects' %}</h1>
         
-        {% trans 'select institution' %}: 
+        {% trans 'Select institution' %}: 
         <select name="inst-proj-options" id="inst-proj-options" onchange="change_inst_proj($(this).val())">
              {% for i in inst %}
                 <option value="{{i.inst.pk}}">{{i.name}}</option>
             {% endfor %}
         </select>
         
-        {% trans 'select project' %}: 
+        {% trans 'Select project' %}: 
         <select name="inst-proj-proj-options" id="inst-proj-proj-options"  onchange="change_inst_proj_proj($(this).val())">
-             <option value="0" selected>{% trans 'new project' %}...</option>
+             <option value="0" selected>{% trans 'New project' %}...</option>
              {% for i in first_inst_proj_entries %}
                 <option value="{{i.project.pk}}">{{i.title}}</option>
             {% endfor %}
         </select>
         
-         <button id="editor-inst-proj-btn-delete" class="invisible" onclick="delete_inst_proj()">{% trans 'delete' %}</button> 
+         <button id="editor-inst-proj-btn-delete" class="invisible" onclick="delete_inst_proj()">{% trans 'Delete' %}</button> 
         <br/><br/>
          <div class="tab">
             <button class="tablinks-inst-proj" onclick="openTabs('editor-inst-proj-tab-de', 'inst-proj', event)">DE</button>
@@ -444,7 +444,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
              <div class="editor-inst-proj-tab-{{l.0}} tabcontent-inst-proj" id="editor-inst-proj-tab-{{l.0}}">
                  <div class="form-group">
                    <label for="editor-title-inst-proj-{{l.0}}">
-                        {% language "{{l.0}}" %}main title{% endlanguage %}
+                        {% language "{{l.0}}" %}Main title{% endlanguage %}
                     </label>
                    <input class="form-control" type="text" name="editor-title-inst-proj-{{l.0}}" id ="editor-title-inst-proj-{{l.0}}" />
                 </div>
@@ -455,7 +455,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
                 </div> 
             </div>
         {% endfor %}            
-        <button id="editor-store-inst-proj" onclick="store_inst_proj()">{% trans 'store' %}</button>
+        <button id="editor-store-inst-proj" onclick="store_inst_proj()">{% trans 'Store' %}</button>
     </div> 
 </section>
 
@@ -467,14 +467,14 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         
         {% trans 'select quote' %}: 
         <select name="quote-options" id="quote-options" onchange="change_quote($(this).val())">
-            <option value="0" selected>{% trans 'new quote' %}...</option>
+            <option value="0" selected>{% trans 'New quote' %}...</option>
              {% for q in quotes %}
                 <option value="{{q.quote.pk}}">{{q.quote.name}}</option>
             {% endfor %}
         </select>
         <img id="editor-quote-img" class="invisible" src="" /> 
         
-        <button id="editor-quote-btn-delete" class="invisible" onclick="delete_quote()">{% trans 'delete' %}</button> 
+        <button id="editor-quote-btn-delete" class="invisible" onclick="delete_quote()">{% trans 'Delete' %}</button> 
 
         <br/><br/>
         <form class="dropzone" action="upload_img" method="post" enctype="multipart/form-data" id="quote_dropzone">
@@ -498,7 +498,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
              <div class="editor-quote-tab-{{l.0}} tabcontent-quote" id="editor-quote-tab-{{l.0}}">
                  <div class="form-group">
                    <label for="editor-role-quote-{{l.0}}">
-                        {% language "{{l.0}}" %}role{% endlanguage %}
+                        {% language "{{l.0}}" %}Role{% endlanguage %}
                     </label>
                    <input class="form-control" type="text" name="editor-role-quote-{{l.0}}" id ="editor-role-quote-{{l.0}}" />
                 </div>
@@ -509,7 +509,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
                 </div> 
             </div>
         {% endfor %}            
-        <button id="editor-store-quote" onclick="store_quote()">{% trans 'store' %}</button>
+        <button id="editor-store-quote" onclick="store_quote()">{% trans 'Store' %}</button>
     </div> 
 </section>
 
@@ -518,23 +518,23 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
      <div class="container">
         <h1>{% trans 'Documents' %}</h1>
         
-        {% trans 'select document' %}: 
+        {% trans 'Select document' %}: 
         <select name="doc-options" id="doc-options" onchange="change_doc($(this).val())">
-            <option value="0" selected>{% trans 'new document' %}...</option>
+            <option value="0" selected>{% trans 'New document' %}...</option>
             {% for d in docs %}
                 <option value="{{d.doc.pk}}">{{d.title}} ( {{d.changed}} )</option>
             {% endfor %}
         </select>
-        <button id="editor-doc-btn-delete" class="invisible" onclick="delete_doc()">{% trans 'delete' %}</button> 
+        <button id="editor-doc-btn-delete" class="invisible" onclick="delete_doc()">{% trans 'Delete' %}</button> 
          <br/><br/>
          
          <label for="editor-icon-doc">
-             {% language "{{l.0}}" %}icon{% endlanguage %}
+             {% language "{{l.0}}" %}Icon{% endlanguage %}
          </label>
 
 
         <select name="editor-icon-doc"  id="editor-icon-doc">
-             <option value="no_icon" selected>{% trans 'no icon' %}...</option>
+             <option value="no_icon" selected>{% trans 'No icon' %}...</option>
             {% for i in icons %}
             <option value="{{i.css_class}}" data-iconurl="" data-icon="{{i.css_class}}" data-text="{{i.name}}" data-selectedtext="">
                 
@@ -552,21 +552,21 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
             <div class="editor-doc-tab-{{l.0}} tabcontent-doc" id="editor-doc-tab-{{l.0}}">
                  <div class="form-group">
                    <label for="editor-title-doc-{{l.0}}">
-                        {% language "{{l.0}}" %}title{% endlanguage %}
+                        {% language "{{l.0}}" %}Title{% endlanguage %}
                     </label>
                    <input class="form-control" type="text" name="editor-title-doc-{{l.0}}" id ="editor-title-doc-{{l.0}}" />
             
                     
             
                     <label for="editor-doc-desc-{{l.0}}">
-                        {% language "{{l.0}}" %}description{% endlanguage %}
+                        {% language "{{l.0}}" %}Description{% endlanguage %}
                     </label>
                     <div class="editor-container" id="editor-container-doc-desc-{{l.0}}">
                  
                     </div>
                     
                      <label for="editor-doc-content-{{l.0}}">
-                        {% language "{{l.0}}" %}content{% endlanguage %}
+                        {% language "{{l.0}}" %}Content{% endlanguage %}
                     </label>
                     <div class="editor-container" id="editor-container-doc-content-{{l.0}}">
                  
@@ -574,8 +574,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
                 </div>
             </div>
         {% endfor %}            
-        <button id="editor-store-doc" onclick="store_doc()">{% trans 'store' %}</button>
-        
+        <button id="editor-store-doc" onclick="store_doc()">{% trans 'Store' %}</button>
     </div> 
 </section>
 
@@ -584,21 +583,21 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
      <div class="container">
         <h1>{% trans 'Videos' %}</h1>
         
-        {% trans 'select video' %}: 
+        {% trans 'Select video' %}: 
         <select name="video-options" id="video-options" onchange="change_video($(this).val())">
-            <option value="0" selected>{% trans 'new video' %}...</option>
+            <option value="0" selected>{% trans 'New video' %}...</option>
             {% for v in videos %}
                 <option value="{{v.video.pk}}">{{v.title}} ({{v.video.vid}})</option>
             {% endfor %}
         </select>
-        <button id="editor-video-btn-delete" class="invisible" onclick="delete_video()">{% trans 'delete' %}</button> 
+        <button id="editor-video-btn-delete" class="invisible" onclick="delete_video()">{% trans 'Delete' %}</button> 
 
         <br/><br/>
         
         
          <div class="form-group">
            <label for="editor-id-video">
-                {% trans 'youtube-id' %}
+                {% trans 'Youtube-id' %}
             </label>
            <input class="form-control" type="text" name="editor-id-video" id ="editor-id-video" />
         </div>
@@ -611,7 +610,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
              <div class="editor-video-tab-{{l.0}} tabcontent-video" id="editor-video-tab-{{l.0}}">
                  <div class="form-group">
                    <label for="editor-title-video-{{l.0}}">
-                        {% language "{{l.0}}" %}title{% endlanguage %}
+                        {% language "{{l.0}}" %}Title{% endlanguage %}
                     </label>
                    <input class="form-control" type="text" name="editor-title-video-{{l.0}}" id ="editor-title-video-{{l.0}}" />
                 </div>
@@ -621,12 +620,9 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
                 </div> 
             </div>
         {% endfor %}            
-        <button id="editor-store-video" onclick="store_video()">{% trans 'store' %}</button>
+        <button id="editor-store-video" onclick="store_video()">{% trans 'Store' %}</button>
     </div> 
 </section>
 
-
 {% include "start/includes/footer.html" %} 
-
-  
 </body>

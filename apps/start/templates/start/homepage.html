@@ -147,7 +147,7 @@ var docs = [];
             </h4>
             <div class="title_divider"></div>
             <p>
-                {% trans 'take a closer look at our work' %}
+                {% trans 'Take a closer look at our work' %}
             </p>
         </div>
          <div class="row justify-content-center">
@@ -180,7 +180,7 @@ var docs = [];
          <h4>
             {% trans 'Videos' %}  
             <span class="header_add_info">
-                ({% trans 'Also visit our ' %} <a target="_plain" href="https://www.youtube.com/channel/UC-txVgM31rDTGlBnH-zpPjA">{% trans 'youtube-channel' %}</a>)
+                ({% trans 'Also visit our ' %} <a target="_plain" href="https://www.youtube.com/channel/UC-txVgM31rDTGlBnH-zpPjA">{% trans 'Youtube-channel' %}</a>)
             </span>
         </h4>
         <div class="row justify-content-center mp50" >
@@ -193,10 +193,8 @@ var docs = [];
                      {{v.desc|safe}}
                 </div>
             {% endfor %}
-            
         </div>
         <br/>
-        
     </div>
 </section>
 
@@ -310,9 +308,9 @@ var services = [];
                                 {{s.title}}
                             </h5>
                             <p>
-                                {{s.subtitle|   safe}}
+                                {{s.subtitle|safe}}
                             </p>
-                            <a id="services_a_{{s.service.pk}}" class="btn btn-rounded btn-light" onclick="more_service('services_a_{{s.service.pk}}', {{s.service.pk}}, '{% trans 'Learn more' %}' , '{% trans 'hide' %}')">
+                            <a id="services_a_{{s.service.pk}}" class="btn btn-rounded btn-light" onclick="more_service('services_a_{{s.service.pk}}', {{s.service.pk}}, '{% trans 'Learn more' %}' , '{% trans 'Hide' %}')">
                                 {% trans 'Learn more' %}
                             </a>
                         </div>
@@ -366,7 +364,7 @@ var services = [];
                     <i class="lnr  lnr-clock"></i>
                     <span class="counter">{{trained_models}}</span>
                     <h5 class="">
-                        {% trans 'trained_models' %}
+                        {% trans 'Trained models' %}
                     </h5>
                 </div>
             </div>
@@ -489,51 +487,51 @@ var services = [];
                         <div class="row justify-content-center">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>{% trans 'Full Name' %}</label>
-                                    <input type="text" class="form-control" placeholder="{% trans 'Full Name' %}" name="full_name">
+                                    <label>{% trans 'Full name' %}</label>
+                                    <input type="text" class="form-control" placeholder="{% trans 'Full name' %}" name="full_name">
                                 </div>
                             </div>
     
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label>{% trans 'Email Address' %}</label>
-                                    <input type="email" class="form-control" placeholder="{% trans 'Your Email' %}" name="email">
+                                    <label>{% trans 'Email address' %}</label>
+                                    <input type="email" class="form-control" placeholder="{% trans 'Your email' %}" name="email">
                                 </div>
                             </div>
     
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>{% trans 'Phone Number' %}</label>
-                                    <input type="text" class="form-control" placeholder="{% trans 'Phone Number' %}" name="phone">
+                                    <label>{% trans 'Phone number' %}</label>
+                                    <input type="text" class="form-control" placeholder="{% trans 'Phone number' %}" name="phone">
                                 </div>
                             </div>
     
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>{% trans 'Your Message' %}</label>
-                                    <textarea cols="4" class="form-control" placeholder="{% trans 'Your Message' %}" name="message"></textarea>
+                                    <label>{% trans 'Your message' %}</label>
+                                    <textarea cols="4" class="form-control" placeholder="{% trans 'Your message' %}" name="message"></textarea>
                                 </div>
                             </div>
     
                             <div class="col-12">
-                                <input type="submit" class="btn btn-primary btn_center">{% trans 'contact us' %}</input>
+                                <input type="submit" class="btn btn-primary btn_center">{% trans 'Contact us' %}</input>
                             </div>
                         </div>
                     </form>
                      <div class="row justify-content-center" style="padding-top:20px">
                         <div class="col-12 col-md-6">
-                            TRANSKRIBUS Team at University of Innsbruck <br/>
-                            E-Mail: <a href="mailto:email@transkribus.eu">email@transkribus.eu</a> 
+                            {% trans 'TRANSKRIBUS Team at University of Innsbruck' %} <br/>
+                            {% trans 'E-mail' %}: <a href="mailto:email@transkribus.eu">email@transkribus.eu</a> 
                          </div>
                          <div class="col-12 col-md-6">
-                            Digitisation and Digital Preservation group <br/>
-                            University of Innsbruck <br/>
-                            Innrain 52 <br/>
-                            6020 Innsbruck <br/>
-                            Austria <br/>
-                            Phone: 0043-(0)512-507-8454 <br/>
+                            {% trans 'Digitisation and Digital Preservation group' %} <br/>
+                            {% trans 'University of Innsbruck' %} <br/>
+                            {% trans 'Innrain 52' %} <br/>
+                            {% trans '6020 Innsbruck' %} <br/>
+                            {% trans 'Austria' %} <br/>
+                            {% trans 'Phone:' %} 0043-(0)512-507-8454 <br/>
                             
-                             <a data-toggle="modal" data-target="#impressumModal">Impressum</a> <br/>
+                             <a data-toggle="modal" data-target="#impressumModal">{% trans 'Impressum' %}</a> <br/>
                          </div>
                      </div>
 
