@@ -7,20 +7,27 @@
             <div class="col-md-10 col-12 text-center-xs">
                 <ul class="list-inline">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#home">Home</a>
+                        <a class="nav-link active" href="#home">{% trans 'Projects' %}</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link " href="{{base_path}}#institutions">{% trans 'Institutions' %}</a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link " href="#about">{% trans 'About' %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#about">about</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link " href="#services">services</a>
+                        <a class="nav-link " href="#services">{% trans 'Services' %}</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link " href="#blog">Blog</a>
+                        <a class="nav-link " href="#blog">{% trans 'Latest News' %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link " href="#contact">contact us</a>
+                        <a class="nav-link " href="{{base_path}}#calendar">{% trans 'Calendar' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="#contact">{% trans 'Contact us' %}</a>
                     </li>
                 </ul>
             </div>
