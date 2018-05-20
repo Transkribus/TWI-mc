@@ -35,11 +35,11 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link " href="{{base_path}}#institutions">{% trans 'institutions' %}</a>
+                    <a class="nav-link " href="{{base_path}}#institutions">{% trans 'Institutions' %}</a>
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link " href="{{base_path}}#about">{% trans 'about' %}</a>
+                    <a class="nav-link " href="{{base_path}}#about">{% trans 'About' %}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="{{base_path}}#services">{% trans 'Services' %}</a>
@@ -76,6 +76,12 @@
                 
                 <li class="nav-item">
                     <a class="nav-link " href="{{base_path}}#videos">{% trans 'Videos' %}</a>
+                     <ul class="sub_menu">
+                        <li>
+                            <a target="_plain" href="https://www.youtube.com/channel/UC-txVgM31rDTGlBnH-zpPjA">{% trans 'Youtube-channel' %}</a>
+                        </li>
+                    </ul>
+                    
                 </li>
                 
                 <li class="nav-item">
@@ -83,10 +89,10 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link " href="{{base_path}}#contact">{% trans 'contact us' %}</a>
+                    <a class="nav-link " href="{{base_path}}#contact">{% trans 'Contact us' %}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link">{% trans 'account' %}</a>
+                    <a class="nav-link">{% trans 'Account' %}</a>
                     {% if request.session.user %}
                      <ul class="sub_menu">
                         <li>
@@ -97,23 +103,23 @@
                         </li>
                         
                          {% if request.session.user.isAdmin == 'true' %}
-                            <li><a href="start_admin">{% trans 'admin_page' %}</a></li>
+                            <li><a href="start_admin">{% trans 'Administrator' %}</a></li>
                         {% endif %}
                         
                          <li>
-                            <a class="nav-link " data-toggle="modal" data-target="{{base_path}}#modifyAccountModal" href="{{base_path}}#">{% trans 'modify account' %}</a>
+                            <a class="nav-link " data-toggle="modal" data-target="{{base_path}}#modifyAccountModal" href="{{base_path}}#">{% trans 'Modify Account' %}</a>
                         </li>
-                        <li><a href="logout">{% trans 'logout' %}</a></li>
+                        <li><a href="logout">{% trans 'Logout' %}</a></li>
                         
                      </ul>
                      {% else %}
                     <ul class="sub_menu"> 
                         <li>
-                            <a class="nav-link " data-toggle="modal" data-target="#createAccountModal" href="#">{% trans 'register' %}</a>
+                            <a class="nav-link " data-toggle="modal" data-target="#createAccountModal" href="#">{% trans 'Register' %}</a>
                         </li>
                             
                         <li>
-                            <a class="nav-link" href="#" data-toggle="modal" data-target="#login_modal">{% trans 'login' %}</a>
+                            <a class="nav-link" href="#" data-toggle="modal" data-target="#login_modal">{% trans 'Login' %}</a>
                         </li>
                                 
                     </ul>
