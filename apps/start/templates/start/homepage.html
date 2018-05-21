@@ -106,7 +106,7 @@ var inst = [];
                 }    
                 else
                 {
-                    var height = 20;
+                    var height = 25;
                     var width= Math.ceil(height / {{i.inst.img_height}} * {{i.inst.img_width}});
                 
                     m = new google.maps.Marker({
@@ -531,7 +531,8 @@ var services = [];
                             {% trans 'Austria' %} <br/>
                             {% trans 'Phone:' %} 0043-(0)512-507-8454 <br/>
                             
-                             <a data-toggle="modal" data-target="#impressumModal">{% trans 'Impressum' %}</a> <br/>
+                            <!--  <a data-toggle="modal" data-target="#impressumModal">{% trans 'Impressum' %}</a> <br/> -->
+                            <a href="https://www.uibk.ac.at/impressum/" target="_plain">{% trans 'Impressum' %}</a>
                          </div>
                      </div>
 
