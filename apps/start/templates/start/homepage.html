@@ -47,11 +47,9 @@ var projects_str = '{% trans 'Projects' %}'
 
 <script>
 var inst = [];
+
 {% for i in inst %}
-    var lat = {{i.inst.lat|unlocalize}};
-    var lng = {{i.inst.lng|unlocalize}};
-    var desc = '{{i.desc|safe}}';
-    inst[{{i.inst.pk}}] = {lat:lat, lng:lng, desc:desc};
+    inst[{{i.inst.pk}}] = {lat:{{i.inst.lat|unlocalize}}, lng:{{i.inst.lng|unlocalize}}, desc:'{{i.desc|safe}}'};
 {% endfor %} 
 </script>
 

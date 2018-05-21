@@ -43,6 +43,7 @@ def index(request):
     collaborations = randint(0,1000)
     uploaded_docs = randint(0,1000)
     trained_models = randint(0,1000)
+    print("lang:" + translation.get_language())
     
     context = {
         'blogs' : m.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed'),
@@ -461,10 +462,9 @@ def delete_admin_video(request):
     m.Video.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
-@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def get_inst_projects(request):
     idb = request.POST.get('id',0)
-    entr = m.InstitutionProjectEntries.objects.filter(project__pk=idb, lang=translation.get_language())
+    entr = m.InstitutionProjectEntries.objects.filter(project__inst=idb, lang=translation.get_language())
     js = serializers.serialize('json',entr)
     return HttpResponse(js, content_type="application/json")  
 
