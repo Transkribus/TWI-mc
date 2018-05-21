@@ -303,7 +303,7 @@ function change_service(v)
     {
          $.post("change_admin_service_selection", {'id': v, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
         {
-            $("#editor-icon-service").data("selectBox-selectBoxIt").selectOption(data[0].fields.icon);
+            $("#editor-icon-service").data("selectBox-selectBoxIt").selectOption(data[0].fields.image_css);
             var en = getentrybylang(data,"en");
             quills['service-short-en'].clipboard.dangerouslyPasteHTML(en.fields.subtitle);
             quills['service-en'].clipboard.dangerouslyPasteHTML(en.fields.content);
