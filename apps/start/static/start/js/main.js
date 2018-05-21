@@ -19,8 +19,9 @@ function blog_detail(id)
     $.post("get_blog", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
     {
     
-        var subtitle = (data[0].fields.subtitle != null && data[0].fields.subtitle.length == 0) ? "" : "(" + data[0].fields.subtitle + ")"; 
-        var str = "<h4>" + data[0].fields.title + subtitle + "</h4>";
+        var subtitle = (data[0].fields.subtitle != null && data[0].fields.subtitle.length == 0) ? "" : "<h5>" + data[0].fields.subtitle + "</h5><br/>"; 
+        var str = "<h4>" + data[0].fields.title  + " (" + data[0].fields.changed + ")</h4>";
+        str += subtitle;
         str += data[0].fields.content;
         $('#blog_detail').html(str);
     });
