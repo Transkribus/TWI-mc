@@ -87,8 +87,6 @@ def home_article_details(request):
     return HttpResponse(template.render(context, request))
     
 def admin_logged_in(user):
-    print (str(user))
-    print (str(user.is_superuser))
     return user.is_superuser
     
 @user_passes_test(admin_logged_in, login_url='/start/login_view')
@@ -121,6 +119,7 @@ def admin(request):
 
     return HttpResponse(template.render(context, request))
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def store_admin_service(request):
     idb = int(request.POST.get('id',0))
 
@@ -148,6 +147,7 @@ def store_admin_service(request):
     print("store_admin_service")
     return HttpResponse(json, content_type="application/json")
         
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def store_admin_article(request):
     idb = int(request.POST.get('id',0))
 
@@ -179,7 +179,8 @@ def store_admin_article(request):
     title = (title_de, title_en)[translation.get_language() == 'de']
     json = '{"id" : ' + str(art.pk) + ', "title" : "' + title  + '", "changed" : "' + str(art.changed) + '", "image" : "' + fname + '"}'
     return HttpResponse(json, content_type="application/json")
-              
+ 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')              
 def store_admin_blog(request):
     idb = int(request.POST.get('id',0))
     title_de = request.POST.get('title_de','')
@@ -210,7 +211,7 @@ def store_admin_blog(request):
     json = '{"id" : ' + str(b.pk) + ', "title" : "' + title  + '", "changed" : "' + str(b.changed) + '", "image" : "' + fname + '"}'
     return HttpResponse(json, content_type="application/json")
 
-
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def store_admin_inst(request):
     idb = int(request.POST.get('id',0))
     
@@ -254,6 +255,7 @@ def store_admin_inst(request):
     json = '{"id" : ' + str(inst.pk) + ', "name" : "' + name + '", "changed" : "' + str(inst.changed)  + '", "image" : "' + fname + '"}'
     return HttpResponse(json, content_type="application/json") 
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def store_admin_inst_proj(request):
     idb = int(request.POST.get('id',0))
 
@@ -275,7 +277,7 @@ def store_admin_inst_proj(request):
     json = '{"id" : ' + str(p.pk) + ', "title" : "' + title  + '", "changed" : "' + str(p.changed) + '"}'
     return HttpResponse(json, content_type="application/json") 
 
-
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def store_admin_quote(request):
     idb = int(request.POST.get('id',0))
  
@@ -305,6 +307,7 @@ def store_admin_quote(request):
     json = '{"id" : ' + str(q.id) + ', "name" : "' + name  +  '", "changed" : "' + str(q.changed) + '", "image" : "' + fname + '"}'
     return HttpResponse(json, content_type="application/json") 
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def store_admin_doc(request):
     idb = int(request.POST.get('id',0))
     title_de = request.POST.get('title_de','')
@@ -330,7 +333,7 @@ def store_admin_doc(request):
     json = '{"id" : ' + str(d.pk) + ', "title" : "' + title +  '", "changed" : "' + str(d.changed) + '"}'
     return HttpResponse(json, content_type="application/json")     
     
-    
+@user_passes_test(admin_logged_in, login_url='/start/login_view')   
 def store_admin_video(request):
     idb = int(request.POST.get('id',0))
     vid = request.POST.get('vid','')
@@ -358,6 +361,7 @@ def store_admin_video(request):
 '''
 is called when another institution is selected in the institution/project area
 '''
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def change_admin_inst_proj(request):
     idb = request.POST.get('id',0)
     ipe = m.InstitutionProjectEntries.objects.filter(project__inst__pk=idb, lang=translation.get_language())
@@ -365,7 +369,7 @@ def change_admin_inst_proj(request):
     js = serializers.serialize('json',ipe)
     return HttpResponse(js, content_type="application/json")    
 
-
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def change_admin_quote_selection(request):
     idb = request.POST.get('id',0)
     qe = m.QuoteEntries.objects.filter(quote=idb)
@@ -377,13 +381,14 @@ def change_admin_quote_selection(request):
 '''
 is called when the project entries should be changed in the institution/project area
 '''
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def change_admin_inst_proj_selection(request):
     idb = request.POST.get('id',0)
     ipe = m.InstitutionProjectEntries.objects.filter(project__pk=idb)
     js = serializers.serialize('json',ipe)
     return HttpResponse(js, content_type="application/json")  
 
-
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def change_admin_doc_selection(request):
     idb = request.POST.get('id',0)
     d = m.Document.objects.filter(pk=idb)
@@ -393,6 +398,7 @@ def change_admin_doc_selection(request):
     data = serializers.serialize('json', data)
     return HttpResponse(data, content_type="application/json")
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def change_admin_service_selection(request):
     idb = request.POST.get('id',0)
     s = m.Service.objects.filter(pk=idb)
@@ -401,6 +407,7 @@ def change_admin_service_selection(request):
     data = serializers.serialize('json', data)
     return HttpResponse(data, content_type="application/json")
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def change_admin_video_selection(request):
     idb = request.POST.get('id',0)
     v = m.Video.objects.filter(pk=idb)
@@ -409,6 +416,7 @@ def change_admin_video_selection(request):
     data = serializers.serialize('json', data)
     return HttpResponse(data, content_type="application/json")
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def change_admin_article(request):
     idb = request.POST.get('id',0)
     be = m.HomeArticleEntry.objects.filter(article=idb)
@@ -417,37 +425,43 @@ def change_admin_article(request):
     data = serializers.serialize('json', data)
     return HttpResponse(data, content_type="application/json")
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def delete_admin_service(request):
     idb = request.POST.get('id',0)
     m.Service.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def delete_admin_article(request):
     idb = request.POST.get('id',0)
     m.HomeArticle.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def delete_admin_projinst(request):
     idb = request.POST.get('id',0)
     m.InstitutionProject.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
   
-  
+@user_passes_test(admin_logged_in, login_url='/start/login_view')  
 def delete_admin_quote(request):
     idb = request.POST.get('id',0)
     m.Quote.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def delete_admin_doc(request):
     idb = request.POST.get('id',0)
     m.Document.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def delete_admin_video(request):
     idb = request.POST.get('id',0)
     m.Video.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def get_inst_projects(request):
     idb = request.POST.get('id',0)
     entr = m.InstitutionProjectEntries.objects.filter(project__pk=idb, lang=translation.get_language())
@@ -471,19 +485,21 @@ def get_blog_entry(idb):
     combined = list(chain(b, be))
     return serializers.serialize('json', combined)
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def change_admin_blog(request):
     idb = request.POST.get('id',0)
     data = get_blog_entry(idb)  
     return HttpResponse(data, content_type="application/json")
-    
+
+@user_passes_test(admin_logged_in, login_url='/start/login_view')    
 def delete_admin_blog(request):
     idb = request.POST.get('id',0)
     m.Blog.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def delete_admin_inst(request):
     idb = request.POST.get('id',0)
-    
     m.Institution.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
@@ -497,7 +513,7 @@ def get_inst_entry(idb):
     combined = list(chain(b, be))
     return serializers.serialize('json', combined)
 
- 
+@user_passes_test(admin_logged_in, login_url='/start/login_view') 
 def change_admin_inst(request):   
     idb = request.POST.get('id',0)
     print(idb)
@@ -598,6 +614,7 @@ def contact(request):
 # Services
 # ############################################################
 
+@user_passes_test(admin_logged_in, login_url='/start/login_view')
 def upload_img(request):
     file = request.FILES['file']
     type = request.POST.get('type')
@@ -608,39 +625,3 @@ def upload_img(request):
     request.session.modified = True
     
     return HttpResponse(json.dumps(fname), content_type="application/json") 
-
-# ############################################################
-    
-    
-    
-def testData():
-    articles = []
-    for i in range(1,9):        
-        articles.append(m.Article(a_key=i, language="DE", title="TD" + str(i), content="<b>content TD" + str(i) + "</b>", changed=datetime.date))
-        #articles.append(m.Article(a_key=i, language="EN", title="TE" + str(i), content="<b>content TE1" + str(i) + "</b>", changed=datetime.date))
-    return articles
-    
-# def arrange(articles):
-#     rearrg = {}
-#     for a in articles:
-#         k = a.a_key
-#         l = []
-#         if k in rearrg:
-#             l = rearrg[k]
-#         l.append(a)
-#         rearrg[k] = l
-#     return rearrg
-
-
-# Handle with care!
-def script(request):
-#     for i in range(1,9):        
-#         m.Article.objects.create(a_key=i, language="DE", title="TD" + str(i), content="<b>content TD" + str(i) + "</b>", changed=datetime.date)
-#         m.Article.objects.create(a_key=i, language="EN", title="TE" + str(i), content="<b>content TE" + str(i) + "</b>", changed=datetime.date)
-      
-#     s = m.Service.objects.create(image_css='icon-lightbulb')
-#     m.ServiceEntries.objects.create(title='', subtitle='', content='C_de', lang='de', service=s)
-#     m.ServiceEntries.objects.create(title='', subtitle='', content='C_en', lang='en', service=s)        
-
-    return HttpResponse('done', content_type="text/plain")
-    
