@@ -189,7 +189,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         <select name="article-options" id="article-options"  onchange="change_article($(this).val())">
             <option value="0" selected>{% trans 'New home article entry' %}...</option>
              {% for a in articles %}
-                <option value="{{a.article.pk}}">{{a.title}} - {{a.article.changed}}</option>
+                <option value="{{a.article.pk}}">{{a.title}} ({{a.article.changed|date:"d/m/Y"}})</option>
             {% endfor %}
         </select>
         <img id="editor-article-img" class="invisible" src="" /> 
@@ -247,7 +247,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         <select name="service-options" id="service-options"  onchange="change_service($(this).val())">
             <option value="0" selected>{% trans 'New service entry' %}...</option>
              {% for s in services %}
-                <option value="{{s.service.pk}}">{{s.title}} - {{s.service.changed}}</option>
+                <option value="{{s.service.pk}}">{{s.title}} ({{s.service.changed|date:"d/m/Y"}})</option>
             {% endfor %}
         </select>
         
@@ -315,7 +315,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         <select name="blog-options" id="blog-options"  onchange="change_blog($(this).val())">
             <option value="0" selected>{% trans 'New blog entry' %}...</option>
              {% for b in blogs %}
-                <option value="{{b.blog.pk}}">{{b.title}} - {{b.blog.changed}}</option>
+                <option value="{{b.blog.pk}}">{{b.title}} ({{b.blog.changed|date:"d/m/Y"}})</option>
             {% endfor %}
         </select>
         <img id="editor-blog-img" class="invisible" src="" /> 
@@ -469,7 +469,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         <select name="quote-options" id="quote-options" onchange="change_quote($(this).val())">
             <option value="0" selected>{% trans 'New quote' %}...</option>
              {% for q in quotes %}
-                <option value="{{q.quote.pk}}">{{q.quote.name}}</option>
+                <option value="{{q.quote.pk}}">{{q.quote.name}}  ({{q.quote.changed|date:"d/m/Y"}})</option>
             {% endfor %}
         </select>
         <img id="editor-quote-img" class="invisible" src="" /> 
@@ -522,7 +522,7 @@ var quills_placeholder = '{% trans 'Enter Text...' %}'
         <select name="doc-options" id="doc-options" onchange="change_doc($(this).val())">
             <option value="0" selected>{% trans 'New document' %}...</option>
             {% for d in docs %}
-                <option value="{{d.doc.pk}}">{{d.title}} ( {{d.changed}} )</option>
+                <option value="{{d.doc.pk}}">{{d.title}} ({{d.changed|date:"d/m/Y"}})</option>
             {% endfor %}
         </select>
         <button id="editor-doc-btn-delete" class="invisible" onclick="delete_doc()">{% trans 'Delete' %}</button> 
