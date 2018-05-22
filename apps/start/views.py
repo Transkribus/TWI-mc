@@ -46,7 +46,7 @@ def index(request):
     print("lang:" + translation.get_language())
     
     context = {
-        'blogs' : m.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed'),
+        'blogs' : m.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed')[:15],
         'inst' :  m.InstitutionDescription.objects.filter(lang=translation.get_language()),
         'articles' : m.HomeArticleEntry.objects.filter(lang=translation.get_language()),
         'services' : m.ServiceEntries.objects.filter(lang=translation.get_language()),
