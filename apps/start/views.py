@@ -254,7 +254,9 @@ def store_admin_inst(request):
     else:
         inst = m.Institution.objects.filter(pk=idb)
         if fname != "":
-            inst.update(image=fname, img_width=img_width, img_height=img_height, lng=lng, lat=lat, link=url)
+            inst.update(image=fname,img_width=img_width, img_height=img_height)
+        
+        inst.update(lng=lng, lat=lat, link=url)
         inst = inst.first()
         m.InstitutionDescription.objects.filter(lang='de', inst=inst).update(name=name_de, loclabel=loc_name_de, desc=content_de)
         m.InstitutionDescription.objects.filter(lang='en', inst=inst).update(name=name_en, loclabel=loc_name_en, desc=content_en)
