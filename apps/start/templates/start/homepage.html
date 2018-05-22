@@ -66,9 +66,7 @@ var inst = [];
         <div id="inst_projects"></div>
         
         <div id="map" class="img-rounded"></div>
-        <script>
-            
-            
+        <script>  
             function fitMarkers()
             {
                 var bounds = new google.maps.LatLngBounds();                        
@@ -392,7 +390,7 @@ var services = [];
         </div>
         <div class="row justify-content-center">
             <div class="col-12">
-                <div class="blog_carousel owl-carousel">
+                <div class="blog_carousel owl-carousel" id="blog_carousel">
                     {% for b in blogs %} 
                         <div class="item ">
                             <article class="blog_box_one">

@@ -475,6 +475,7 @@ This special task is necessary because joined tables cannot be fully serialized 
 
 def get_blog(request):
     idb = request.POST.get('id',0)
+    print("IDB:" + str(idb))
     be = m.BlogEntry.objects.filter(blog=idb, lang=translation.get_language())
     js = serializers.serialize('json',be)
     return HttpResponse(js, content_type="application/json")  

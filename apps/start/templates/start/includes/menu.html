@@ -11,6 +11,14 @@
     <div class="loader-inner"></div>
 </div>
 
+
+<script>
+var blog = [];
+{% for b in blogs %}
+    blog[{{forloop.counter}}] = {{b.blog.pk}};
+{% endfor %} 
+</script>
+
 <!--header start here -->
 <header class="header navbar fixed-top navbar-expand-md header-light ">
     <div class="container">
@@ -64,7 +72,7 @@
                      <ul class="sub_menu">
                         {% for b in blogs %}
                          <li>
-                            <a href="{{base_path}}#blog" >{{b.title}} ({{b.changed}})</a>
+                            <a href="{{base_path}}#blog" onclick="select_act_blog({{forloop.counter0}}, {{b.blog.pk}})">{{b.title}} ({{b.changed}})</a>
                          </li>
                         {% endfor %} 
                      </ul>   

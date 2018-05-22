@@ -10,6 +10,13 @@ $(document).ready(function()
      
      var id = $("#institution-select option:first-child").val();
      change_inst_select(id);
+     
+     var owl = $("#blog_carousel").owlCarousel();
+     owl.on('changed.owl.carousel', function(event) 
+     {
+                console.log(event.item.index + ":" + blog[event.item.index]); 
+                blog_detail(blog[event.item.index]);
+    });
 });
 
 
@@ -38,7 +45,6 @@ function change_inst_select(id)
     //and also get the projects
     $.post("get_inst_projects", {'id': id, 'csrfmiddlewaretoken': csrf_token }).done( function(data)
     {
-        console.log(data);
         var str = "";
         if (data.length > 0)
         {
@@ -78,4 +84,10 @@ function more_documents(btn, id, show_str, hide_str)
          $("#" + btn).html(show_str);
         $("#documents_more_" + id).html('');
     }
+}
+
+function select_act_blog(pos, blog_id)
+{
+    $("#blog_carousel").trigger("to.owl.carousel", [pos, 1, true]);
+    blog_detail(blog_id);
 }
