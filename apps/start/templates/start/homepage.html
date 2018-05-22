@@ -254,7 +254,7 @@ var docs = [];
     </div>
 </section>
 
-<section class="bg-fixed-img pt120 pb120" style="background: url(https://placeholdit.co//i/900x900);">
+<section class="bg-fixed-img pt120 pb120" style="background: url(../static/start/img/buecher_900.jpg);">
     <div class="overlay overlay_primary"></div>
     <div class="container">
         <div class="row justify-content-center text-center">
@@ -431,8 +431,8 @@ var services = [];
 
 
 <!--SECTION TESTIMONIAL-->
-<section class="pt120 pb120 bg-primary">
-    <div class="container">
+<section class="pt120 pb120 bg-primary" >
+    <div class="container" >
         <div class="row justify-content-center">
             <div class="col-lg-7 col-md-10 col-12">
                 <div class="testimonial_carousel_one testimonial_box_light owl-carousel">
@@ -441,7 +441,11 @@ var services = [];
                             <div class="testimonial_box_three text-center">
                                 <i class="icon-quote"></i>
                                 <h5> {{q.content|safe}} </h5>
-                                <img src="https://placeholdit.co//i/100x100" alt="testimonials-user1">
+                                 {% if q.quote.image %}
+                                    <img src="../static/start/img/upload/{{q.quote.image}}" alt="{% trans 'Testimonial Picture' %}: {{q.quote.name}}">
+                                {% else %}
+                                    <img src="../static/start/img/avatar.jpg" alt="{% trans 'Testimonial Picture' %}: {{q.quote.name}}">
+                                {% endif %}
                                 <h6>
                                     {{q.quote.name}}
                                 </h6>
