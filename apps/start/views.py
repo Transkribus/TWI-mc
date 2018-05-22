@@ -32,6 +32,14 @@ from PIL import Image
 
 ts = TranskribusSession()
 
+
+def blog_all(request):
+    template = loader.get_template('start/blog_all.html')
+    context = {
+        'blogs' : m.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed'),
+    }
+    return HttpResponse(template.render(context, request))
+    
 def login_view(request):
     template = loader.get_template('start/login.html')
     context = { }
@@ -43,7 +51,6 @@ def index(request):
     collaborations = randint(0,1000)
     uploaded_docs = randint(0,1000)
     trained_models = randint(0,1000)
-    print("lang:" + translation.get_language())
     
     context = {
         'blogs' : m.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed')[:15],

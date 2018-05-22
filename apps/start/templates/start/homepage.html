@@ -15,6 +15,12 @@
 <script>
 var csrf_token = '{{ csrf_token }}';
 var projects_str = '{% trans 'Projects' %}'
+
+var blog = [];
+{% for b in blogs %}
+    blog[{{forloop.counter}}] = {{b.blog.pk}};
+{% endfor %} 
+
 </script>
 {% include "start/includes/menu.html" %}
 
@@ -384,6 +390,9 @@ var services = [];
                     <div class="title_divider"></div>
                     <p>
                         {% trans 'We share our best ideas in our blog' %}
+                    </p>
+                    <p>
+                        <a href="blog_all" target="_plain">{% trans 'Show all blog entries' %}</a>
                     </p>
                 </div>
             </div>

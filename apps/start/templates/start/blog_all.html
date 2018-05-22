@@ -1,0 +1,26 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+{% include "start/includes/head.html" %} 
+
+<body  data-spy="scroll" data-target="header">
+
+<br/><br/><br/>
+<section id="home" class="home bg-light">
+{% for b in blogs %}
+    <div class="container">
+        <h1>{{b.title}} ({{b.blog.changed}})</h1>
+        <h4>{{b.subtitle}}</h4>
+        <br/>
+        {{b.content|safe}}        
+        <br/>        
+    </div>
+{% endfor %} 
+</section>
+
+{% include "start/includes/footer.html" %} 
+</body>
+</html>
+

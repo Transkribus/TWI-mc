@@ -11,14 +11,6 @@
     <div class="loader-inner"></div>
 </div>
 
-
-<script>
-var blog = [];
-{% for b in blogs %}
-    blog[{{forloop.counter}}] = {{b.blog.pk}};
-{% endfor %} 
-</script>
-
 <!--header start here -->
 <header class="header navbar fixed-top navbar-expand-md header-light ">
     <div class="container">
