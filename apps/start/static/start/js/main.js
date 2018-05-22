@@ -14,7 +14,6 @@ $(document).ready(function()
      var owl = $("#blog_carousel").owlCarousel();
      owl.on('changed.owl.carousel', function(event) 
      {
-                console.log(event.item.index + ":" + blog[event.item.index]); 
                 blog_detail(blog[event.item.index]);
     });
 });
@@ -40,6 +39,7 @@ function change_inst_select(id)
 {
     ins = inst[id]
     map.setCenter({lat:ins.lat, lng:ins.lng});
+    map.setZoom(8);
     $("#inst_desc").html(ins.desc);
     
     //and also get the projects
