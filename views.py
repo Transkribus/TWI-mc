@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.shortcuts import render
 
-from apps.transkribus.mixins import LoginRequiredMixin
+from apps.transkribus.mixins import LoginRequiredWithCookieMixin
 
 from . import services
 from . import forms
@@ -35,11 +35,11 @@ def test(request):
     return HttpResponse('test', content_type='text/plain')
 
 
-class CollectionListView(LoginRequiredMixin, ListView):
+class CollectionListView(LoginRequiredWithCookieMixin, ListView):
     template_name = 'library/collection_list.html'
     queryset = models.Collection.objects.all()
     form_class = forms.ListForm
-    paginate_by = 10
+    paginate_by = 12
     paginator_class = paginator.Paginator
 
     def get_queryset(self):
@@ -93,7 +93,7 @@ class CollectionListView(LoginRequiredMixin, ListView):
         return context
 
 
-class DocumentListView(LoginRequiredMixin, ListView):
+class DocumentListView(LoginRequiredWithCookieMixin, ListView):
     template_name = 'library/document_list.html'
     form_class = forms.ListForm
     paginate_by = 10
@@ -175,7 +175,7 @@ class DocumentListView(LoginRequiredMixin, ListView):
         return context
 
 
-class PageListView(LoginRequiredMixin, ListView):
+class PageListView(LoginRequiredWithCookieMixin, ListView):
     template_name = 'library/page_list.html'
     form_class = forms.ListForm
     paginate_by = 10

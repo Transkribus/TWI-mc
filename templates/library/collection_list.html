@@ -82,42 +82,42 @@
       {% endif %}
     </header>
     
-    <main class="list">
-      {% for item in items %}
-      <hr>
-      
-      <div class="item media">
-        <div class="media-left media-top">
-          <img class="img" src="{{ item.thumb_url }}" alt="{{ item.title }}"/>
+    <main>
+      <div class="container">
+        <div class="row">
+          {% for item in items %}
+          <div class="card col-md-3 mb-3 mr-3">
+            <div class="card-header bg-transparent">
+              <img class="img" src="{{ item.thumb_url }}" alt="{{ item.title }}"/>
+            </div>
+            <div class="card-body">
+              <h4 class="card-title">{{ item.title }}</h4>
+              <p class="card-text">
+                {% if item.description %}
+                {{ item.description }}
+                {% else %}
+                <!-- {% trans 'No description provided' %} -->
+                {% endif %}
+              </p>
+              <p class="card-text">
+                <a href="{% url 'library:document-list' item.id %}">
+                  {% blocktrans count counter=item.item_count %}
+                  Show one document
+                  {% plural %}
+                  Show {{ counter }} documents
+                  {% endblocktrans %}
+                </a>
+              </p>
+              <p class="card-text">
+                <small class="text-muted">
+                  <a href="{% url 'library:collection-detail' item.id %}">Show Details</a>
+                </small>
+              </p>
+            </div>
+          </div>
+          {% endfor %}
         </div>
-        <div class="media-body">
-          <h4 class="media-heading">{{ item.title }}</h4>
-          <p>
-            {% if item.description %}
-            {{ item.description }}
-            {% else %}
-            <!-- {% trans 'No description provided' %} -->
-            {% endif %}
-          </p>
-          <p>
-            <a href="{% url 'library:document-list' item.id %}">
-              {% blocktrans count counter=item.item_count %}
-              Show one document
-              {% plural %}
-              Show {{ counter }} documents
-              {% endblocktrans %}
-            </a>
-          </p>
-          <p>
-            <a href="{% url 'library:collection-detail' item.id %}">Show Details</a>
-          </p>
-        </div>
-        
-        {% if forloop.last %}
-        <hr>
-        {% endif %}
       </div>
-      {% endfor %}
     </main>
 
     <footer>
