@@ -38,6 +38,7 @@
       <div class="card-body">
         <p class="card-text todo">
           Page: {{ item.page_nr }}<br>
+          Status: {{ item.status }}<br>
           Tool: {{ item.toolname }}<br>
           Last changed {{ item.username }}
           <a href="{% url 'edit:correct' col_id doc_id item.page_nr %}">Interface A</a>&nbsp;
@@ -51,7 +52,7 @@
     {# TODO: re-use footer from collection-list, document-list #}
     <div class="row">
       <div class="col-md-2">
-        {{ time_elapsed }}ms
+        TODO footer
       </div>
       {% if is_paginated %}
       <div class="col-md-10 text-right">

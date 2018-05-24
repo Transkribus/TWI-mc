@@ -203,6 +203,7 @@ class PageListView(LoginRequiredWithCookieMixin, ListView):
         items = [
             {
                 'page_nr': int(item['page_nr']),
+                'status': item['status'],
                 'thumb_url': helpers.get_thumb_url(
                     item['page__imagekey']),
                 'username': item['user'],
