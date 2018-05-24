@@ -19,13 +19,13 @@ __protect_oracle(IS_MANAGED)
 
 
 class Collection(models.Model):
+    id = models.FloatField(primary_key=True, db_column='collection_id')
     name = models.CharField(max_length=140)
     description = models.CharField(max_length=4000, blank=True, null=True)
-    collection_id = models.FloatField(primary_key=True)
     default_for_app = models.CharField(max_length=20, blank=True, null=True)
     is_crowdsourcing = models.FloatField()
     is_elearning = models.FloatField()
-    page = models.ForeignKey('Page', models.DO_NOTHING, blank=True, null=True)
+    page = models.ForeignKey('Page', on_delete=models.DO_NOTHING, blank=True, null=True)
 
     documents = models.ManyToManyField('Document', through='DocumentCollection', related_name='collections')
 
@@ -45,11 +45,11 @@ class Collection(models.Model):
 
 
 class UserCollection(models.Model):
+    id = models.FloatField(primary_key=True)
     user_id = models.FloatField()
     collection = models.ForeignKey(Collection, on_delete=models.DO_NOTHING, related_name='user_collection')
     is_default = models.FloatField()
     role = models.CharField(max_length=20)
-    id = models.FloatField(primary_key=True)
 
     class Meta:
         managed = IS_MANAGED
@@ -58,7 +58,7 @@ class UserCollection(models.Model):
 
 
 class Document(models.Model):
-    docid = models.FloatField(primary_key=True)
+    id = models.FloatField(primary_key=True, db_column='docid')
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255, blank=True, null=True)
     genre = models.CharField(max_length=63, blank=True, null=True)
@@ -68,16 +68,16 @@ class Document(models.Model):
     ultimestamp = models.FloatField()
     fimgstorecoll = models.CharField(max_length=63)
     description = models.CharField(max_length=4000, blank=True, null=True)
-    extid = models.CharField(max_length=255, blank=True, null=True)
     doctype = models.CharField(max_length=20, blank=True, null=True)
     status = models.FloatField(blank=True, null=True)
     language = models.CharField(max_length=1024, blank=True, null=True)
     createdfrom = models.FloatField(blank=True, null=True)
     createdto = models.CharField(max_length=20, blank=True, null=True)
+    extid = models.CharField(max_length=255, blank=True, null=True)
     uploaderid = models.FloatField(blank=True, null=True)
     origdocid = models.FloatField(blank=True, null=True)
-    img = models.ForeignKey('Image', models.DO_NOTHING, blank=True, null=True)
-    page = models.ForeignKey('Page', models.DO_NOTHING, blank=True, null=True)
+    img = models.ForeignKey('Image', on_delete=models.DO_NOTHING, blank=True, null=True)
+    page = models.ForeignKey('Page', on_delete=models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = IS_MANAGED
@@ -102,11 +102,11 @@ class DocumentCollection(models.Model):
 
 
 class Page(models.Model):
-    docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', related_name='pages')
+    id = models.FloatField(primary_key=True, db_column='pageid')
+    doc_id = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', related_name='pages')
     pagenr = models.FloatField()
     imagekey = models.CharField(max_length=24, blank=True, null=True)
     imgfilename = models.CharField(max_length=1024, blank=True, null=True)
-    pageid = models.FloatField(primary_key=True)
     image = models.ForeignKey('Image', models.DO_NOTHING)
     is_indexed = models.FloatField()
     tags_stored = models.DateTimeField(blank=True, null=True)
@@ -121,10 +121,10 @@ class Page(models.Model):
 
 
 class Transcript(models.Model):
-    tsid = models.FloatField(primary_key=True)
+    id = models.FloatField(primary_key=True, db_column='tsid')
     parent_tsid = models.FloatField(blank=True, null=True)
     xmlkey = models.CharField(max_length=24)
-    docid = models.FloatField(blank=True, null=True)
+    doc_id = models.FloatField(db_column='doc_id', blank=True, null=True)
     pagenr = models.FloatField(blank=True, null=True)
     status = models.CharField(max_length=24)
     userid = models.CharField(max_length=320)
@@ -148,15 +148,15 @@ class Transcript(models.Model):
 
 
 class Permission(models.Model):
-    docid = models.OneToOneField(Document, models.DO_NOTHING, db_column='docid', primary_key=True)
+    doc = models.OneToOneField(Document, on_delete=models.DO_NOTHING, db_column='docid', primary_key=True)
     username = models.CharField(max_length=320, blank=True, null=True)
     role = models.CharField(max_length=20)
-    userid = models.FloatField()
+    user_id = models.FloatField(db_column='userid')
 
     class Meta:
         managed = IS_MANAGED
         db_table = 'permissions'
-        unique_together = (('docid', 'userid'),)
+        unique_together = (('doc', 'user_id'),)
 
 class ActionType(models.Model):
     type_id = models.FloatField(primary_key=True)
