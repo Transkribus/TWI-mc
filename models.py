@@ -89,7 +89,7 @@ class Collection(models.Model):
     @property
     def thumb_url(self):
         if self.page is not None:
-            return helpers.get_thumb_url(self.page.imagekey)
+            return self.page.thumb_url
         else:
             return ''
 
@@ -170,15 +170,15 @@ class Dict(models.Model):
     class Meta:
         managed = IS_MANAGED
         db_table = 'dict'
-'''
-class DictCollection(models.Model):
-    dict = models.ForeignKey(Dict, models.DO_NOTHING)
-    collection = models.ForeignKey(Collection, models.DO_NOTHING)
 
-    class Meta:
-        managed = IS_MANAGED
-        db_table = 'dict_collection'
-'''
+# class DictCollection(models.Model):
+#     dict = models.ForeignKey(Dict, models.DO_NOTHING)
+#     collection = models.ForeignKey(Collection, models.DO_NOTHING)
+#
+#     class Meta:
+#         managed = IS_MANAGED
+#         db_table = 'dict_collection'
+
 class Document(models.Model):
     docid = models.FloatField(primary_key=True)
     title = models.CharField(max_length=255)
@@ -208,7 +208,7 @@ class Document(models.Model):
     @property
     def thumb_url(self):
         if self.page is not None:
-            return helpers.get_thumb_url(self.page.imagekey)
+            return self.page.thumb_url
         else:
             return ''
 
@@ -249,17 +249,17 @@ class EditDeclaration(models.Model):
         managed = IS_MANAGED
         db_table = 'edit_declaration'
         unique_together = (('feature', 'doc'),)
-'''
-class Event(models.Model):
-    event_id = models.FloatField()
-    time = models.DateTimeField()
-    message = models.CharField(max_length=4000)
-    title = models.CharField(max_length=255)
 
-    class Meta:
-        managed = IS_MANAGED
-        db_table = 'events'
-'''
+# class Event(models.Model):
+#     event_id = models.FloatField()
+#     time = models.DateTimeField()
+#     message = models.CharField(max_length=4000)
+#     title = models.CharField(max_length=255)
+#
+#     class Meta:
+#         managed = IS_MANAGED
+#         db_table = 'events'
+
 class Fimgstore(models.Model):
     storeid = models.FloatField(primary_key=True)
     host = models.CharField(max_length=127)
@@ -308,15 +308,15 @@ class Htr(models.Model):
     class Meta:
         managed = IS_MANAGED
         db_table = 'htr'
-'''
-class HtrCollection(models.Model):
-    collection = models.ForeignKey(Collection, models.DO_NOTHING)
-    htr = models.ForeignKey(Htr, models.DO_NOTHING)
 
-    class Meta:
-        managed = IS_MANAGED
-        db_table = 'htr_collection'
-'''
+# class HtrCollection(models.Model):
+#     collection = models.ForeignKey(Collection, models.DO_NOTHING)
+#     htr = models.ForeignKey(Htr, models.DO_NOTHING)
+#
+#     class Meta:
+#         managed = IS_MANAGED
+#         db_table = 'htr_collection'
+
 class HtrModel(models.Model):
     model_id = models.FloatField(primary_key=True)
     model_name = models.CharField(unique=True, max_length=100)
@@ -339,7 +339,7 @@ class HtrOutput(models.Model):
     key = models.CharField(max_length=24)
     htr = models.ForeignKey(Htr, models.DO_NOTHING)
     provider = models.CharField(max_length=60)
-    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
+    tsid = models.ForeignKey('Transcript', on_delete=models.DO_NOTHING, db_column='tsid', blank=True, null=True)
 
     class Meta:
         managed = IS_MANAGED
@@ -494,6 +494,10 @@ class Page(models.Model):
         managed = IS_MANAGED
         db_table = 'pages'
 
+    def thumb_url(self):
+        return helpers.get_thumb_url(self.imagekey)
+
+
 class Permission(models.Model):
     docid = models.OneToOneField(Document, models.DO_NOTHING, db_column='docid', primary_key=True)
     username = models.CharField(max_length=320, blank=True, null=True)
@@ -585,6 +589,8 @@ class TagDefCollection(models.Model):
         db_table = 'tag_defs_collection'
 
 class Transcript(models.Model):
+    tsid = models.FloatField(primary_key=True)
+    parent_tsid = models.FloatField(blank=True, null=True)
     xmlkey = models.CharField(max_length=24)
     docid = models.FloatField(blank=True, null=True)
     pagenr = models.FloatField(blank=True, null=True)
@@ -593,9 +599,7 @@ class Transcript(models.Model):
     timestamp = models.FloatField()
     user_id = models.FloatField(blank=True, null=True)
     toolname = models.CharField(max_length=2048, blank=True, null=True)
-    pageid = models.ForeignKey(Page, models.DO_NOTHING, db_column='pageid')
-    tsid = models.FloatField(primary_key=True)
-    parent_tsid = models.FloatField(blank=True, null=True)
+    page = models.ForeignKey(Page, on_delete=models.DO_NOTHING, db_column='pageid', related_name='transcript')
     note = models.CharField(max_length=1023, blank=True, null=True)
     nr_of_regions = models.FloatField(blank=True, null=True)
     nr_of_transcribed_regions = models.FloatField(blank=True, null=True)
