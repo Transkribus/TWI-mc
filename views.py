@@ -230,7 +230,7 @@ class CollectionDetailView(TemplateView):
         then = time.time()
 
         context = super(CollectionDetailView, self).get_context_data(**kwargs)
-        collection = models.Collection.objects.get(collection_id=context.pop('col_id'))
+        collection = models.Collection.objects.get(id=context.pop('col_id'))
 
         context.update({
             'title': collection.name,
