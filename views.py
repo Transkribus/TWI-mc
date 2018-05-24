@@ -158,34 +158,68 @@ class DocumentListView(LoginRequiredWithCookieMixin, ListView):
 class PageListView(LoginRequiredWithCookieMixin, ListView):
     template_name = 'library/page_list.html'
     form_class = forms.ListForm
+    paginator_class = paginator.Paginator
     paginate_by = 10
 
     def get_queryset(self):
 
         from django.db.models import Max
 
+        FIELDS = (
+            'id', 'page_id', 'status', 'timestamp',
+            'page_nr', 'page__imagekey',
+            'user',
+            'toolname'
+        )
+
         doc_id = 459
+        sort_by_fields = ('page_nr', )
+
         qs = models.Transcript.objects.filter(doc_id=doc_id)
 
-        transcripts = qs.values('page_id').annotate(
-            most_recent=Max('timestamp')).values(
-                'id', 'page_id', 'status', 'timestamp', 'page__imagekey', 'page__pagenr')
+        qs = qs.values('page_id').annotate(
+            most_recent=Max('timestamp')).order_by(*sort_by_fields).values(*FIELDS)
 
-        assert len(transcripts) == models.Page.objects.filter(doc_id=doc_id).count()
-        assert len(transcripts) != models.Transcript.objects.filter(doc_id=doc_id).count()
+        # NOTE: this is the test for correctness,
+        #
+        # for actual in qs:
+        #
+        #     page_id = actual['page_id']
+        #
+        #     expected = models.Transcript.objects.filter(
+        #         doc_id=doc_id, page_id=page_id
+        #     ).order_by('-timestamp')[0]
+        #
+        #     assert actual['id'] == expected.id
 
-        for actual in transcripts:
-
-            page_id = actual['page_id']
-
-            expected = models.Transcript.objects.filter(
-                doc_id=doc_id, page_id=page_id
-            ).order_by('-timestamp')[0]
-
-            assert actual['id'] == expected.id
+        return qs
 
     def get_context_data(self, **kwargs):
-        return {}
+
+        context = super(PageListView, self).get_context_data(**kwargs)
+
+        from . import helpers
+
+        items = [
+            {
+                'page_nr': int(item['page_nr']),
+                'thumb_url': helpers.get_thumb_url(
+                    item['page__imagekey']),
+                'username': item['user'],
+                'toolname': item['toolname'],
+            } for item in context.pop('object_list')
+        ]
+
+        # assert False, context['page_obj'].paginator.num_pages
+
+        context.update({
+            'col_id': self.kwargs['col_id'],
+            'doc_id': self.kwargs['doc_id'],
+            'items': items,
+            'page': context.pop('page_obj')
+        })
+
+        return context
 
 
 class CollectionDetailView(TemplateView):
