@@ -104,7 +104,7 @@ class DocumentCollection(models.Model):
 class Page(models.Model):
     id = models.FloatField(primary_key=True, db_column='pageid')
     doc_id = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', related_name='pages')
-    pagenr = models.FloatField()
+    page_nr = models.FloatField(db_column='pagenr')
     imagekey = models.CharField(max_length=24, blank=True, null=True)
     imgfilename = models.CharField(max_length=1024, blank=True, null=True)
     image = models.ForeignKey('Image', models.DO_NOTHING)
@@ -122,14 +122,16 @@ class Page(models.Model):
 
 class Transcript(models.Model):
     id = models.FloatField(primary_key=True, db_column='tsid')
+    # FIXME: does this work as well? if so, apply it
+    # parent = models.OneToOneField('Transcript', blank=True, null=True, db_column='parent_tsid')
     parent_tsid = models.FloatField(blank=True, null=True)
     xmlkey = models.CharField(max_length=24)
-    doc_id = models.FloatField(db_column='doc_id', blank=True, null=True)
-    pagenr = models.FloatField(blank=True, null=True)
-    status = models.CharField(max_length=24)
-    userid = models.CharField(max_length=320)
-    timestamp = models.FloatField()
+    doc_id = models.FloatField(db_column='docid', blank=True, null=True)
     user_id = models.FloatField(blank=True, null=True)
+    user = models.CharField(max_length=320, db_column='userid')
+    page_nr = models.FloatField(db_column='pagenr', blank=True, null=True)
+    status = models.CharField(max_length=24)
+    timestamp = models.FloatField()
     toolname = models.CharField(max_length=2048, blank=True, null=True)
     page = models.ForeignKey(Page, on_delete=models.DO_NOTHING, db_column='pageid', related_name='transcript')
     note = models.CharField(max_length=1023, blank=True, null=True)
