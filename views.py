@@ -234,7 +234,7 @@ class CollectionDetailView(TemplateView):
 
         context.update({
             'title': collection.name,
-            'id': int(collection.collection_id),
+            'id': int(collection.id),
             'description': collection.description,
             'item_count': collection.documents.count(),
             'role': '',
