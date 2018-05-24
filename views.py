@@ -54,7 +54,7 @@ class CollectionListView(LoginRequiredWithCookieMixin, ListView):
         items = [
             {
                 'title': item.name,
-                'id': int(item.collection_id),
+                'id': int(item.id),
                 'description': item.description,
                 'item_count': item.documents.count(),
                 'role': '',
@@ -104,7 +104,7 @@ class DocumentListView(LoginRequiredWithCookieMixin, ListView):
         else:
             qs = documents
 
-        self.col_id = collection.collection_id
+        self.col_id = collection.id
         self.col_name = collection.name
 
         if sort_by == 'td':
@@ -121,7 +121,7 @@ class DocumentListView(LoginRequiredWithCookieMixin, ListView):
         items = (
             {
                 'title': item.title,
-                'id': int(item.docid),
+                'id': int(item.id),
                 'description': item.description,
                 'item_count': item.pages.count(),
                 'script_type': item.scripttype.title(),
