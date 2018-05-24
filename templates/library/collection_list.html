@@ -2,35 +2,32 @@
 {% load i18n %}
 
 {% block scripts %}
-<!-- scrtip tags here -->
-{%endblock%}
+{% endblock %}
 
 {% block styles %}
 <style>
  .collections {
-   padding: 2em 0;
+   font-size: 0.875em;
  }
 
- .collections .list > .item > .media-left {
-   text-align: center;
- }
-
- .collections .list > .item > .media-left > .img {
+ .collections .collection .img {
    display: block;
-   width: auto;
-   min-width: 85px;
+
+   margin: 0 auto;
+
+   min-width: 80px;
    height: 120px;
-   background-color: rgba(0, 0, 0, 0.05);
+   background-color: rgba(0, 0, 0, 0.25);
  }
 </style>
-{%endblock%}
+{% endblock %}
 
 
 {% block content %}
 <div class="container">
   <section class="collections">
-
     <header>
+
       <div class="row">
         <div class="col-md-12">
           <ol class="breadcrumb">
@@ -42,13 +39,12 @@
         </div>
       </div>
       
-      <div class="row">
-        <form action="{% url 'library:collection-list' %}" method="get">
+      <form action="{% url 'library:collection-list' %}" method="get">
+        <div class="row">
           <div class="col-md-9">
             <label for="{{ form.search.id }}">
               Search for: {{ form.search }}
             </label>
-            
             {% if search %}
             <a href="{% url 'library:collection-list' %}">Show All</a>
             {% endif %}
@@ -56,8 +52,8 @@
           <div class="col-md-3">
             {{ form.sort_by.label_tag }} {{ form.sort_by }}
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
 
       <div class="row">
         <div class="col-md-12">
@@ -82,42 +78,52 @@
       {% endif %}
     </header>
     
-    <main>
-      <div class="container">
-        <div class="row">
-          {% for item in items %}
-          <div class="card col-md-3 mb-3 mr-3">
-            <div class="card-header bg-transparent">
-              <img class="img" src="{{ item.thumb_url }}" alt="{{ item.title }}"/>
-            </div>
-            <div class="card-body">
-              <h4 class="card-title">{{ item.title }}</h4>
-              <p class="card-text">
-                {% if item.description %}
-                {{ item.description }}
-                {% else %}
-                <!-- {% trans 'No description provided' %} -->
-                {% endif %}
-              </p>
-              <p class="card-text">
-                <a href="{% url 'library:document-list' item.id %}">
-                  {% blocktrans count counter=item.item_count %}
-                  Show one document
-                  {% plural %}
-                  Show {{ counter }} documents
-                  {% endblocktrans %}
-                </a>
-              </p>
-              <p class="card-text">
-                <small class="text-muted">
-                  <a href="{% url 'library:collection-detail' item.id %}">Show Details</a>
-                </small>
-              </p>
-            </div>
-          </div>
-          {% endfor %}
+    <main class="container">
+      {% for item in items %}
+
+      <style>
+
+       .collections main {
+         padding-bottom: 1em;
+
+         display: flex;
+         flex-flow: row wrap;
+         justify-content: center;
+       }
+
+       .collections .pagination {
+         float: right;
+       }
+
+       .collection {
+         margin: 1em;
+         width: 240px;
+       }
+
+      </style>
+      <div class="collection card">
+        <div class="card-header bg-transparent">
+          <img class="img" src="{{ item.thumb_url }}" alt="{{ item.title }}"/>
+        </div>
+        <div class="card-body">
+          <p class="card-text text-ellipsis" style="height: 80px;">
+            {% if item.description %}
+            {{ item.description }}
+            {% else %}
+            <!-- {% trans 'No description provided' %} -->
+            {% endif %}
+          </p>
+          <p class="card-text">
+            <a href="{% url 'library:document-list' item.id %}">
+              {% trans "Documents" %}
+            </a>
+          </p>
+          <p class="card-text">
+            <a href="{% url 'library:collection-detail' item.id %}">Details</a>
+          </p>
         </div>
       </div>
+      {% endfor %}
     </main>
 
     <footer>
@@ -125,7 +131,6 @@
         <div class="col-md-2">
           {{ time_elapsed }}ms
         </div>
-        
         {% if is_paginated %}
         <div class="col-md-10 text-right">
           {% include 'library/includes/pagination.html' %}
