@@ -162,7 +162,27 @@ class PageListView(LoginRequiredWithCookieMixin, ListView):
 
     def get_queryset(self):
 
-        raise NotImplementedError("Sorry, not implemented ...")
+        from django.db.models import Max
+
+        doc_id = 459
+        qs = models.Transcript.objects.filter(doc_id=doc_id)
+
+        transcripts = qs.values('page_id').annotate(
+            most_recent=Max('timestamp')).values(
+                'id', 'page_id', 'status', 'timestamp', 'page__imagekey', 'page__pagenr')
+
+        assert len(transcripts) == models.Page.objects.filter(doc_id=doc_id).count()
+        assert len(transcripts) != models.Transcript.objects.filter(doc_id=doc_id).count()
+
+        for actual in transcripts:
+
+            page_id = actual['page_id']
+
+            expected = models.Transcript.objects.filter(
+                doc_id=doc_id, page_id=page_id
+            ).order_by('-timestamp')[0]
+
+            assert actual['id'] == expected.id
 
     def get_context_data(self, **kwargs):
         return {}
@@ -197,11 +217,11 @@ class DocumentDetailView(TemplateView):
         then = time.time()
 
         context = super(DocumentDetailView, self).get_context_data(**kwargs)
-        document = models.Document.objects.get(docid=context.pop('doc_id'))
+        document = models.Document.objects.get(id=context.pop('doc_id'))
 
         context.update({
             'title': document.title,
-            'id': int(document.docid),
+            'id': int(document.id),
             'description': document.description,
             'item_count': document.pages.count(),
             'script_type': document.scripttype,
