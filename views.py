@@ -15,31 +15,11 @@ from . import models
 from . import utils
 
 
-def test(request):
-    from django.http import HttpResponse
-
-    if request.GET.get('error') == '1':
-        # yes, we can!
-        1 / 0
-
-    return HttpResponse('test', content_type='text/plain')
-
-
-def test(request):
-    from django.http import HttpResponse
-
-    if request.GET.get('error') == '1':
-        # yes, we can!
-        1 / 0
-
-    return HttpResponse('test', content_type='text/plain')
-
-
 class CollectionListView(LoginRequiredWithCookieMixin, ListView):
     template_name = 'library/collection_list.html'
     queryset = models.Collection.objects.all()
     form_class = forms.ListForm
-    paginate_by = 12
+    paginate_by = 10
     paginator_class = paginator.Paginator
 
     def get_queryset(self):
@@ -54,7 +34,7 @@ class CollectionListView(LoginRequiredWithCookieMixin, ListView):
 
         user = self.request.user
 
-        qs = qs.filter(user_collection__user_id=user.data.user_id)
+        # qs = qs.filter(user_collection__user_id=user.data.user_id)
 
         if self.search:
             qs = qs.filter(name__icontains=self.search)
@@ -182,52 +162,10 @@ class PageListView(LoginRequiredWithCookieMixin, ListView):
 
     def get_queryset(self):
 
-        client = services.Helpers.create_client_from_request(self.request)
-
-        form = self.form_class(self.request.GET)
-        assert form.is_valid(), form.errors
-
-        col_id = self.kwargs['col_id'] = int(self.kwargs['col_id'])
-        doc_id = self.kwargs['doc_id'] = int(self.kwargs['doc_id'])
-
-        results = services.Helpers.get_page_list(col_id, doc_id)
-
-        self.meta_data = {
-            'col': client.get_col_meta_data(col_id),
-            'doc': client.get_doc_meta_data(col_id, doc_id)
-        }
-
-        self.form = form
-        self.col_id = col_id
-        self.doc_id = doc_id
-
-        return results
+        raise NotImplementedError("Sorry, not implemented ...")
 
     def get_context_data(self, **kwargs):
-        then = time.time()
-
-        context = super(ListView, self).get_context_data(**kwargs)
-
-        items = [
-            {
-                'id': item.page_id,
-                'thumb_url': item.thumb_url,
-
-            } for item in context.pop('object_list')
-        ]
-
-        page = context.pop('page_obj')
-
-        context.update({
-            'items': items,
-            'doc_id': self.doc_id,
-            'col_id': self.col_id,
-            'form': self.form,
-            'page': page,
-            'time_elapsed': round(1000 * (time.time() - then), 2)
-        })
-
-        return context
+        return {}
 
 
 class CollectionDetailView(TemplateView):
@@ -277,6 +215,7 @@ class DocumentDetailView(TemplateView):
         })
 
         return context
+
 
 def project_detail(request, slug_or_id):
 
@@ -364,3 +303,22 @@ def project_detail(request, slug_or_id):
     }
 
     return render(request, 'library/project_detail.html', context)
+
+
+def test(request):
+    from django.http import HttpResponse
+
+    if request.GET.get('error') == '1':
+        # yes, we can!
+        1 / 0
+
+    return HttpResponse('test', content_type='text/plain')
+
+def test(request):
+    from django.http import HttpResponse
+
+    if request.GET.get('error') == '1':
+        # yes, we can!
+        1 / 0
+
+    return HttpResponse('test', content_type='text/plain')
