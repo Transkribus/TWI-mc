@@ -187,7 +187,7 @@ class LazyJsonRequest(Request):
 
         params.update(self._params)
 
-        r = requests.request(self._method, self._url, params=params, timeout=5, **self._kwargs)
+        r = requests.request(self._method, self._url, params=params, timeout=None, **self._kwargs)
         r.raise_for_status()
 
         self._result = r.json()
