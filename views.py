@@ -34,7 +34,7 @@ class CollectionListView(LoginRequiredWithCookieMixin, ListView):
 
         user = self.request.user
 
-        # qs = qs.filter(user_collection__user_id=user.data.user_id)
+        qs = qs.filter(user_collection__user_id=user.data.user_id)
 
         if self.search:
             qs = qs.filter(name__icontains=self.search)
