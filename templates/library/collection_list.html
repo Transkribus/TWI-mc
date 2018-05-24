@@ -79,8 +79,6 @@
     </header>
     
     <main class="container">
-      {% for item in items %}
-
       <style>
 
        .collections main {
@@ -101,6 +99,7 @@
        }
 
       </style>
+      {% for item in items %}
       <div class="collection card">
         <div class="card-header bg-transparent">
           <img class="img" src="{{ item.thumb_url }}" alt="{{ item.title }}"/>
