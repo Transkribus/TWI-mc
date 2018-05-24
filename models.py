@@ -17,23 +17,146 @@ def __protect_oracle(is_managed):
 
 __protect_oracle(IS_MANAGED)
 
-class AbbrevTag(models.Model):
-    id = models.FloatField(primary_key=True)
-    docid = models.ForeignKey('Document', models.DO_NOTHING, db_column='docid', blank=True, null=True)
-    pageid = models.ForeignKey('Page', models.DO_NOTHING, db_column='pageid', blank=True, null=True)
-    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
-    regionid = models.CharField(max_length=256, blank=True, null=True)
-    offset = models.FloatField(blank=True, null=True)
-    length = models.FloatField(blank=True, null=True)
-    value = models.CharField(max_length=256, blank=True, null=True)
-    expansion = models.CharField(max_length=256, blank=True, null=True)
-    regiontype = models.CharField(max_length=256, blank=True, null=True)
-    context_before = models.CharField(max_length=256, blank=True, null=True)
-    context_after = models.CharField(max_length=256, blank=True, null=True)
+
+class Collection(models.Model):
+    name = models.CharField(max_length=140)
+    description = models.CharField(max_length=4000, blank=True, null=True)
+    collection_id = models.FloatField(primary_key=True)
+    default_for_app = models.CharField(max_length=20, blank=True, null=True)
+    is_crowdsourcing = models.FloatField()
+    is_elearning = models.FloatField()
+    page = models.ForeignKey('Page', models.DO_NOTHING, blank=True, null=True)
+
+    documents = models.ManyToManyField('Document', through='DocumentCollection', related_name='collections')
 
     class Meta:
         managed = IS_MANAGED
-        db_table = 'abbrev_tag'
+        db_table = 'collection'
+
+    def __str__(self):
+        return "%s" % self.name
+
+    @property
+    def thumb_url(self):
+        if self.page is not None:
+            return self.page.thumb_url
+        else:
+            return ''
+
+
+class UserCollection(models.Model):
+    user_id = models.FloatField()
+    collection = models.ForeignKey(Collection, on_delete=models.DO_NOTHING, related_name='user_collection')
+    is_default = models.FloatField()
+    role = models.CharField(max_length=20)
+    id = models.FloatField(primary_key=True)
+
+    class Meta:
+        managed = IS_MANAGED
+        db_table = 'user_collection'
+        unique_together = (('user_id', 'collection'),)
+
+
+class Document(models.Model):
+    docid = models.FloatField(primary_key=True)
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255, blank=True, null=True)
+    genre = models.CharField(max_length=63, blank=True, null=True)
+    writer = models.CharField(max_length=255, blank=True, null=True)
+    scripttype = models.CharField(max_length=63, blank=True, null=True)
+    uploader = models.CharField(max_length=320, blank=True, null=True)
+    ultimestamp = models.FloatField()
+    fimgstorecoll = models.CharField(max_length=63)
+    description = models.CharField(max_length=4000, blank=True, null=True)
+    extid = models.CharField(max_length=255, blank=True, null=True)
+    doctype = models.CharField(max_length=20, blank=True, null=True)
+    status = models.FloatField(blank=True, null=True)
+    language = models.CharField(max_length=1024, blank=True, null=True)
+    createdfrom = models.FloatField(blank=True, null=True)
+    createdto = models.CharField(max_length=20, blank=True, null=True)
+    uploaderid = models.FloatField(blank=True, null=True)
+    origdocid = models.FloatField(blank=True, null=True)
+    img = models.ForeignKey('Image', models.DO_NOTHING, blank=True, null=True)
+    page = models.ForeignKey('Page', models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        managed = IS_MANAGED
+        db_table = 'doc_md'
+
+    @property
+    def thumb_url(self):
+        if self.page is not None:
+            return self.page.thumb_url
+        else:
+            return ''
+
+
+class DocumentCollection(models.Model):
+    docid = models.OneToOneField(Document, on_delete=models.DO_NOTHING, db_column='docid', primary_key=True)
+    collection = models.ForeignKey(Collection, related_name='document_collection', on_delete=models.DO_NOTHING)
+
+    class Meta:
+        managed = IS_MANAGED
+        db_table = 'document_collection'
+        unique_together = (('docid', 'collection'),)
+
+
+class Page(models.Model):
+    docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', related_name='pages')
+    pagenr = models.FloatField()
+    imagekey = models.CharField(max_length=24, blank=True, null=True)
+    imgfilename = models.CharField(max_length=1024, blank=True, null=True)
+    pageid = models.FloatField(primary_key=True)
+    image = models.ForeignKey('Image', models.DO_NOTHING)
+    is_indexed = models.FloatField()
+    tags_stored = models.DateTimeField(blank=True, null=True)
+    img_problem = models.CharField(max_length=2048, blank=True, null=True)
+
+    class Meta:
+        managed = IS_MANAGED
+        db_table = 'pages'
+
+    def thumb_url(self):
+        return helpers.get_thumb_url(self.imagekey)
+
+
+class Transcript(models.Model):
+    tsid = models.FloatField(primary_key=True)
+    parent_tsid = models.FloatField(blank=True, null=True)
+    xmlkey = models.CharField(max_length=24)
+    docid = models.FloatField(blank=True, null=True)
+    pagenr = models.FloatField(blank=True, null=True)
+    status = models.CharField(max_length=24)
+    userid = models.CharField(max_length=320)
+    timestamp = models.FloatField()
+    user_id = models.FloatField(blank=True, null=True)
+    toolname = models.CharField(max_length=2048, blank=True, null=True)
+    page = models.ForeignKey(Page, on_delete=models.DO_NOTHING, db_column='pageid', related_name='transcript')
+    note = models.CharField(max_length=1023, blank=True, null=True)
+    nr_of_regions = models.FloatField(blank=True, null=True)
+    nr_of_transcribed_regions = models.FloatField(blank=True, null=True)
+    nr_of_words_in_regions = models.FloatField(blank=True, null=True)
+    nr_of_lines = models.FloatField(blank=True, null=True)
+    nr_of_transcribed_lines = models.FloatField(blank=True, null=True)
+    nr_of_words_in_lines = models.FloatField(blank=True, null=True)
+    nr_of_words = models.FloatField(blank=True, null=True)
+    nr_of_transcribed_words = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = IS_MANAGED
+        db_table = 'transcripts'
+
+
+class Permission(models.Model):
+    docid = models.OneToOneField(Document, models.DO_NOTHING, db_column='docid', primary_key=True)
+    username = models.CharField(max_length=320, blank=True, null=True)
+    role = models.CharField(max_length=20)
+    userid = models.FloatField()
+
+    class Meta:
+        managed = IS_MANAGED
+        db_table = 'permissions'
+        unique_together = (('docid', 'userid'),)
 
 class ActionType(models.Model):
     type_id = models.FloatField(primary_key=True)
@@ -67,32 +190,6 @@ class Client(models.Model):
     class Meta:
         managed = IS_MANAGED
         db_table = 'clients'
-
-class Collection(models.Model):
-    name = models.CharField(max_length=140)
-    description = models.CharField(max_length=4000, blank=True, null=True)
-    collection_id = models.FloatField(primary_key=True)
-    default_for_app = models.CharField(max_length=20, blank=True, null=True)
-    is_crowdsourcing = models.FloatField()
-    is_elearning = models.FloatField()
-    page = models.ForeignKey('Page', models.DO_NOTHING, blank=True, null=True)
-
-    documents = models.ManyToManyField('Document', through='DocumentCollection', related_name='collections')
-
-    class Meta:
-        managed = IS_MANAGED
-        db_table = 'collection'
-
-    def __str__(self):
-        return "%s" % self.name
-
-    @property
-    def thumb_url(self):
-        if self.page is not None:
-            return self.page.thumb_url
-        else:
-            return ''
-
 
 class CollectionLabel(models.Model):
     label_id = models.FloatField(primary_key=True)
@@ -137,28 +234,6 @@ class CrowdProjectMilestone(models.Model):
         managed = IS_MANAGED
         db_table = 'crowd_project_milestone'
 
-class DateTag(models.Model):
-    id = models.FloatField(primary_key=True)
-    pageid = models.ForeignKey('Page', models.DO_NOTHING, db_column='pageid', blank=True, null=True)
-    docid = models.ForeignKey('Document', models.DO_NOTHING, db_column='docid', blank=True, null=True)
-    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
-    regionid = models.CharField(max_length=256, blank=True, null=True)
-    offset = models.FloatField(blank=True, null=True)
-    length = models.FloatField(blank=True, null=True)
-    value = models.CharField(max_length=512, blank=True, null=True)
-    year = models.FloatField(blank=True, null=True)
-    month = models.FloatField(blank=True, null=True)
-    day = models.FloatField(blank=True, null=True)
-    calendar = models.CharField(max_length=256, blank=True, null=True)
-    notice = models.CharField(max_length=256, blank=True, null=True)
-    regiontype = models.CharField(max_length=256, blank=True, null=True)
-    context_before = models.CharField(max_length=256, blank=True, null=True)
-    context_after = models.CharField(max_length=256, blank=True, null=True)
-
-    class Meta:
-        managed = IS_MANAGED
-        db_table = 'date_tag'
-
 class Dict(models.Model):
     dict_id = models.FloatField(primary_key=True)
     name = models.CharField(max_length=50)
@@ -178,48 +253,6 @@ class Dict(models.Model):
 #     class Meta:
 #         managed = IS_MANAGED
 #         db_table = 'dict_collection'
-
-class Document(models.Model):
-    docid = models.FloatField(primary_key=True)
-    title = models.CharField(max_length=255)
-    author = models.CharField(max_length=255, blank=True, null=True)
-    genre = models.CharField(max_length=63, blank=True, null=True)
-    writer = models.CharField(max_length=255, blank=True, null=True)
-    scripttype = models.CharField(max_length=63, blank=True, null=True)
-    uploader = models.CharField(max_length=320, blank=True, null=True)
-    ultimestamp = models.FloatField()
-    fimgstorecoll = models.CharField(max_length=63)
-    description = models.CharField(max_length=4000, blank=True, null=True)
-    extid = models.CharField(max_length=255, blank=True, null=True)
-    doctype = models.CharField(max_length=20, blank=True, null=True)
-    status = models.FloatField(blank=True, null=True)
-    language = models.CharField(max_length=1024, blank=True, null=True)
-    createdfrom = models.FloatField(blank=True, null=True)
-    createdto = models.CharField(max_length=20, blank=True, null=True)
-    uploaderid = models.FloatField(blank=True, null=True)
-    origdocid = models.FloatField(blank=True, null=True)
-    img = models.ForeignKey('Image', models.DO_NOTHING, blank=True, null=True)
-    page = models.ForeignKey('Page', models.DO_NOTHING, blank=True, null=True)
-
-    class Meta:
-        managed = IS_MANAGED
-        db_table = 'doc_md'
-
-    @property
-    def thumb_url(self):
-        if self.page is not None:
-            return self.page.thumb_url
-        else:
-            return ''
-
-class DocumentCollection(models.Model):
-    docid = models.OneToOneField(Document, on_delete=models.DO_NOTHING, db_column='docid', primary_key=True)
-    collection = models.ForeignKey(Collection, related_name='document_collection', on_delete=models.DO_NOTHING)
-
-    class Meta:
-        managed = IS_MANAGED
-        db_table = 'document_collection'
-        unique_together = (('docid', 'collection'),)
 
 class EdFeature(models.Model):
     feature_id = models.FloatField(primary_key=True)
@@ -441,25 +474,6 @@ class Job(models.Model):
         managed = IS_MANAGED
         db_table = 'jobs'
 
-class OtherTag(models.Model):
-    id = models.FloatField(primary_key=True)
-    docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', blank=True, null=True)
-    pageid = models.ForeignKey('Page', models.DO_NOTHING, db_column='pageid', blank=True, null=True)
-    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
-    regionid = models.CharField(max_length=256, blank=True, null=True)
-    offset = models.FloatField(blank=True, null=True)
-    length = models.FloatField(blank=True, null=True)
-    value = models.CharField(max_length=256, blank=True, null=True)
-    tagname = models.CharField(max_length=256, blank=True, null=True)
-    attributes = models.CharField(max_length=2048, blank=True, null=True)
-    regiontype = models.CharField(max_length=256, blank=True, null=True)
-    context_before = models.CharField(max_length=256, blank=True, null=True)
-    context_after = models.CharField(max_length=256, blank=True, null=True)
-
-    class Meta:
-        managed = IS_MANAGED
-        db_table = 'other_tag'
-
 class PageImageVersion(models.Model):
     page_image_versions_id = models.FloatField(primary_key=True)
     pageid = models.ForeignKey('Page', models.DO_NOTHING, db_column='pageid')
@@ -479,35 +493,110 @@ class PageImageVersion(models.Model):
         db_table = 'page_image_versions'
         unique_together = (('pageid', 'type', 'tsid'),)
 
-class Page(models.Model):
-    docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', related_name='pages')
-    pagenr = models.FloatField()
-    imagekey = models.CharField(max_length=24, blank=True, null=True)
-    imgfilename = models.CharField(max_length=1024, blank=True, null=True)
-    pageid = models.FloatField(primary_key=True)
-    image = models.ForeignKey(Image, models.DO_NOTHING)
-    is_indexed = models.FloatField()
-    tags_stored = models.DateTimeField(blank=True, null=True)
-    img_problem = models.CharField(max_length=2048, blank=True, null=True)
+class SessionHistory(models.Model):
+    session_id = models.CharField(max_length=128)
+    created = models.DateTimeField()
+    last_refresh = models.DateTimeField(blank=True, null=True)
+    user_id = models.BigIntegerField(blank=True, null=True)
+    useragent = models.CharField(max_length=512, blank=True, null=True)
+    ip = models.CharField(max_length=50, blank=True, null=True)
+    destroyed = models.DateTimeField(blank=True, null=True)
+    session_history_id = models.FloatField(primary_key=True)
+    gui_version = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = IS_MANAGED
-        db_table = 'pages'
+        db_table = 'session_history'
+        unique_together = (('session_id', 'created'),)
 
-    def thumb_url(self):
-        return helpers.get_thumb_url(self.imagekey)
-
-
-class Permission(models.Model):
-    docid = models.OneToOneField(Document, models.DO_NOTHING, db_column='docid', primary_key=True)
-    username = models.CharField(max_length=320, blank=True, null=True)
-    role = models.CharField(max_length=20)
-    userid = models.FloatField()
+class Upload(models.Model):
+    upload_id = models.FloatField(primary_key=True)
+    created = models.DateTimeField()
+    finished = models.DateTimeField(blank=True, null=True)
+    user_id = models.FloatField(blank=True, null=True)
+    username = models.CharField(max_length=1024, blank=True, null=True)
+    nr_of_pages = models.FloatField(blank=True, null=True)
+    type = models.CharField(max_length=20)
+    job_id = models.FloatField(blank=True, null=True)
+    collection = models.ForeignKey(Collection, models.DO_NOTHING)
 
     class Meta:
         managed = IS_MANAGED
-        db_table = 'permissions'
-        unique_together = (('docid', 'userid'),)
+        db_table = 'uploads'
+
+class Wordgraph(models.Model):
+    docid = models.FloatField(blank=True, null=True)
+    wordgraphkey = models.CharField(max_length=24)
+    text = models.CharField(max_length=255, blank=True, null=True)
+    lineid = models.CharField(primary_key=True, max_length=100)
+    pagenr = models.FloatField(blank=True, null=True)
+    nbestkey = models.CharField(max_length=24, blank=True, null=True)
+    model = models.ForeignKey(HtrModel, models.DO_NOTHING, blank=True, null=True)
+    pageid = models.ForeignKey(Page, models.DO_NOTHING, db_column='pageid')
+
+    class Meta:
+        managed = IS_MANAGED
+        db_table = 'wordgraphs'
+        unique_together = (('lineid', 'pageid'),)
+
+class TagDef(models.Model):
+    id = models.FloatField(primary_key=True)
+    def_field = models.CharField(db_column='def', max_length=2048, blank=True, null=True)
+    color = models.CharField(max_length=20, blank=True, null=True)
+    col_id = models.FloatField(blank=True, null=True)
+    description = models.CharField(max_length=2048, blank=True, null=True)
+
+    class Meta:
+        managed = IS_MANAGED
+        db_table = 'tag_defs'
+
+class TagDefCollection(models.Model):
+    collid = models.OneToOneField(Collection, models.DO_NOTHING, db_column='collid', primary_key=True)
+    tagdefs = models.BinaryField()
+
+    class Meta:
+        managed = IS_MANAGED
+        db_table = 'tag_defs_collection'
+
+class AbbrevTag(models.Model):
+    id = models.FloatField(primary_key=True)
+    docid = models.ForeignKey('Document', models.DO_NOTHING, db_column='docid', blank=True, null=True)
+    pageid = models.ForeignKey('Page', models.DO_NOTHING, db_column='pageid', blank=True, null=True)
+    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
+    regionid = models.CharField(max_length=256, blank=True, null=True)
+    offset = models.FloatField(blank=True, null=True)
+    length = models.FloatField(blank=True, null=True)
+    value = models.CharField(max_length=256, blank=True, null=True)
+    expansion = models.CharField(max_length=256, blank=True, null=True)
+    regiontype = models.CharField(max_length=256, blank=True, null=True)
+    context_before = models.CharField(max_length=256, blank=True, null=True)
+    context_after = models.CharField(max_length=256, blank=True, null=True)
+
+    class Meta:
+        managed = IS_MANAGED
+        db_table = 'abbrev_tag'
+
+class DateTag(models.Model):
+    id = models.FloatField(primary_key=True)
+    pageid = models.ForeignKey('Page', models.DO_NOTHING, db_column='pageid', blank=True, null=True)
+    docid = models.ForeignKey('Document', models.DO_NOTHING, db_column='docid', blank=True, null=True)
+    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
+    regionid = models.CharField(max_length=256, blank=True, null=True)
+    offset = models.FloatField(blank=True, null=True)
+    length = models.FloatField(blank=True, null=True)
+    value = models.CharField(max_length=512, blank=True, null=True)
+    year = models.FloatField(blank=True, null=True)
+    month = models.FloatField(blank=True, null=True)
+    day = models.FloatField(blank=True, null=True)
+    calendar = models.CharField(max_length=256, blank=True, null=True)
+    notice = models.CharField(max_length=256, blank=True, null=True)
+    regiontype = models.CharField(max_length=256, blank=True, null=True)
+    context_before = models.CharField(max_length=256, blank=True, null=True)
+    context_after = models.CharField(max_length=256, blank=True, null=True)
+
+    class Meta:
+        managed = IS_MANAGED
+        db_table = 'date_tag'
 
 class PersonTag(models.Model):
     id = models.FloatField(primary_key=True)
@@ -553,105 +642,21 @@ class PlaceTag(models.Model):
         managed = IS_MANAGED
         db_table = 'place_tag'
 
-class SessionHistory(models.Model):
-    session_id = models.CharField(max_length=128)
-    created = models.DateTimeField()
-    last_refresh = models.DateTimeField(blank=True, null=True)
-    user_id = models.BigIntegerField(blank=True, null=True)
-    useragent = models.CharField(max_length=512, blank=True, null=True)
-    ip = models.CharField(max_length=50, blank=True, null=True)
-    destroyed = models.DateTimeField(blank=True, null=True)
-    session_history_id = models.FloatField(primary_key=True)
-    gui_version = models.CharField(max_length=50, blank=True, null=True)
-
-    class Meta:
-        managed = IS_MANAGED
-        db_table = 'session_history'
-        unique_together = (('session_id', 'created'),)
-
-class TagDef(models.Model):
+class OtherTag(models.Model):
     id = models.FloatField(primary_key=True)
-    def_field = models.CharField(db_column='def', max_length=2048, blank=True, null=True)
-    color = models.CharField(max_length=20, blank=True, null=True)
-    col_id = models.FloatField(blank=True, null=True)
-    description = models.CharField(max_length=2048, blank=True, null=True)
+    docid = models.ForeignKey(Document, models.DO_NOTHING, db_column='docid', blank=True, null=True)
+    pageid = models.ForeignKey('Page', models.DO_NOTHING, db_column='pageid', blank=True, null=True)
+    tsid = models.ForeignKey('Transcript', models.DO_NOTHING, db_column='tsid', blank=True, null=True)
+    regionid = models.CharField(max_length=256, blank=True, null=True)
+    offset = models.FloatField(blank=True, null=True)
+    length = models.FloatField(blank=True, null=True)
+    value = models.CharField(max_length=256, blank=True, null=True)
+    tagname = models.CharField(max_length=256, blank=True, null=True)
+    attributes = models.CharField(max_length=2048, blank=True, null=True)
+    regiontype = models.CharField(max_length=256, blank=True, null=True)
+    context_before = models.CharField(max_length=256, blank=True, null=True)
+    context_after = models.CharField(max_length=256, blank=True, null=True)
 
     class Meta:
         managed = IS_MANAGED
-        db_table = 'tag_defs'
-
-class TagDefCollection(models.Model):
-    collid = models.OneToOneField(Collection, models.DO_NOTHING, db_column='collid', primary_key=True)
-    tagdefs = models.BinaryField()
-
-    class Meta:
-        managed = IS_MANAGED
-        db_table = 'tag_defs_collection'
-
-class Transcript(models.Model):
-    tsid = models.FloatField(primary_key=True)
-    parent_tsid = models.FloatField(blank=True, null=True)
-    xmlkey = models.CharField(max_length=24)
-    docid = models.FloatField(blank=True, null=True)
-    pagenr = models.FloatField(blank=True, null=True)
-    status = models.CharField(max_length=24)
-    userid = models.CharField(max_length=320)
-    timestamp = models.FloatField()
-    user_id = models.FloatField(blank=True, null=True)
-    toolname = models.CharField(max_length=2048, blank=True, null=True)
-    page = models.ForeignKey(Page, on_delete=models.DO_NOTHING, db_column='pageid', related_name='transcript')
-    note = models.CharField(max_length=1023, blank=True, null=True)
-    nr_of_regions = models.FloatField(blank=True, null=True)
-    nr_of_transcribed_regions = models.FloatField(blank=True, null=True)
-    nr_of_words_in_regions = models.FloatField(blank=True, null=True)
-    nr_of_lines = models.FloatField(blank=True, null=True)
-    nr_of_transcribed_lines = models.FloatField(blank=True, null=True)
-    nr_of_words_in_lines = models.FloatField(blank=True, null=True)
-    nr_of_words = models.FloatField(blank=True, null=True)
-    nr_of_transcribed_words = models.FloatField(blank=True, null=True)
-
-    class Meta:
-        managed = IS_MANAGED
-        db_table = 'transcripts'
-
-class Upload(models.Model):
-    upload_id = models.FloatField(primary_key=True)
-    created = models.DateTimeField()
-    finished = models.DateTimeField(blank=True, null=True)
-    user_id = models.FloatField(blank=True, null=True)
-    username = models.CharField(max_length=1024, blank=True, null=True)
-    nr_of_pages = models.FloatField(blank=True, null=True)
-    type = models.CharField(max_length=20)
-    job_id = models.FloatField(blank=True, null=True)
-    collection = models.ForeignKey(Collection, models.DO_NOTHING)
-
-    class Meta:
-        managed = IS_MANAGED
-        db_table = 'uploads'
-
-class UserCollection(models.Model):
-    user_id = models.FloatField()
-    collection = models.ForeignKey(Collection, on_delete=models.DO_NOTHING, related_name='user_collection')
-    is_default = models.FloatField()
-    role = models.CharField(max_length=20)
-    id = models.FloatField(primary_key=True)
-
-    class Meta:
-        managed = IS_MANAGED
-        db_table = 'user_collection'
-        unique_together = (('user_id', 'collection'),)
-
-class Wordgraph(models.Model):
-    docid = models.FloatField(blank=True, null=True)
-    wordgraphkey = models.CharField(max_length=24)
-    text = models.CharField(max_length=255, blank=True, null=True)
-    lineid = models.CharField(primary_key=True, max_length=100)
-    pagenr = models.FloatField(blank=True, null=True)
-    nbestkey = models.CharField(max_length=24, blank=True, null=True)
-    model = models.ForeignKey(HtrModel, models.DO_NOTHING, blank=True, null=True)
-    pageid = models.ForeignKey(Page, models.DO_NOTHING, db_column='pageid')
-
-    class Meta:
-        managed = IS_MANAGED
-        db_table = 'wordgraphs'
-        unique_together = (('lineid', 'pageid'),)
+        db_table = 'other_tag'
