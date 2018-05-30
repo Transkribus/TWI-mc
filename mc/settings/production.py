@@ -247,8 +247,9 @@ MEDIA_URL =  SERVERBASE+'/media/' #not currently used
 
 ## Auth backend that logs in to transkribus.eu and extends the django.contrib.auth.User
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'apps.transkribus.backends.TranskribusBackend'
+    'apps.transkribus.backends.TranskribusBackend',
+    # NOTE: ModelBackend is required for admin login
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 #Location of TRP server for transkribus REST services
