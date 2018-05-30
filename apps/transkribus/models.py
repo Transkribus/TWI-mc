@@ -31,6 +31,9 @@ class User(AbstractUser):
             'username', 'email', 'last_name', 'first_name', 'is_staff'
         ])
 
+    def is_developer(self):
+        return self.groups.filter(name='Developers').exists()
+    
     # NOTE: backwards compatibility
     @property
     def tsdata(self):
