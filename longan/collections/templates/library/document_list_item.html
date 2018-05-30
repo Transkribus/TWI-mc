@@ -8,7 +8,7 @@
     {% endif %}
   </div>
   <div class="col-md-8">
-    <h4><a href="{% url 'library:page-list' id item.id %}">{{ item.title }}</a></h4>
+    <h4><a href="{% url 'collections:page-list' id item.id %}">{{ item.title }}</a></h4>
     {% if False %}
     <dl>
       {% if item.author %}
@@ -86,8 +86,8 @@
     {% endif %}
   </div>
   <div class="col-md-2">
-    <!-- <a href="{% url 'edit:document-view' id item.id %}">{% trans "Viewer" %}</a> -->
-    <a href="{% url 'library:document-detail' id item.id %}">{% trans "Details" %}</a>
-    <a href="{% url 'library:page-list' id item.id %}">{% trans "Pages" %}</a>
+    {# <a href="{% url 'edit:document-view' id item.id %}">{% trans "Viewer" %}</a> #}
+    <a href="{% url 'collections:document-detail' id item.id %}">{% trans "Details" %}</a>
+    <a href="{% url 'collections:page-list' id item.id %}">{% trans "Pages" %}</a>
   </div>
 </div> <!-- row -->

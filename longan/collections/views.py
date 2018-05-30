@@ -14,7 +14,7 @@ from . import models
 
 
 class CollectionListView(LoginRequiredWithCookieMixin, ListView):
-    template_name = 'library/collection_list.html'
+    template_name = 'collections/collection_list.html'
     queryset = models.Collection.objects.all()
     form_class = forms.ListForm
     paginate_by = 10
@@ -72,7 +72,7 @@ class CollectionListView(LoginRequiredWithCookieMixin, ListView):
 
 
 class DocumentListView(LoginRequiredWithCookieMixin, ListView):
-    template_name = 'library/document_list.html'
+    template_name = 'collections/document_list.html'
     form_class = forms.ListForm
     paginate_by = 10
     paginator_class = paginator.Paginator
@@ -154,7 +154,7 @@ class DocumentListView(LoginRequiredWithCookieMixin, ListView):
 
 
 class PageListView(LoginRequiredWithCookieMixin, ListView):
-    template_name = 'library/page_list.html'
+    template_name = 'collections/page_list.html'
     form_class = forms.ListForm
     paginator_class = paginator.Paginator
     paginate_by = 10
@@ -222,7 +222,7 @@ class PageListView(LoginRequiredWithCookieMixin, ListView):
 
 
 class CollectionDetailView(TemplateView):
-    template_name = 'library/collection_detail.html'
+    template_name = 'collections/collection_detail.html'
 
     def get_context_data(self, **kwargs):
         then = time.time()
@@ -244,7 +244,7 @@ class CollectionDetailView(TemplateView):
 
 
 class DocumentDetailView(TemplateView):
-    template_name = 'library/document_detail.html'
+    template_name = 'collections/document_detail.html'
 
     def get_context_data(self, **kwargs):
         then = time.time()

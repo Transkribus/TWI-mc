@@ -52,12 +52,12 @@
       <div class="col-md-12">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <a href="{% url 'library:collection-list' %}">
+            <a href="{% url 'collections:collection-list' %}">
               <span class="glyphicon glyphicon-home"></span> {% trans 'Home'%}
             </a>
           </li>
           <li class="breadcrumb-item">
-            <a href="{% url 'library:collection-list' %}">
+            <a href="{% url 'collections:collection-list' %}">
               {% trans 'Collections'%}
             </a>
           </li>
@@ -65,14 +65,14 @@
         </ol>
       </div>
     </div>
-    <form action="{% url 'library:document-list' id %}" method="get">
+    <form action="{% url 'collections:document-list' id %}" method="get">
       <div class="row">
         <div class="col-md-9">
           <label for="search">
             Search for: <input id="search" name="search" type="search" value="{{search}}">
           </label>
           {% if search %}
-          <a href="{% url 'library:document-list' id %}">Show All</a>
+          <a href="{% url 'collections:document-list' id %}">Show All</a>
           {% endif %}
         </div>
         <div class="col-md-3 text-right">
@@ -104,7 +104,7 @@
     {% endif %}
       <main class="documents">
         {% for item in items %}
-        {% include 'library/document_list_item.html' %}
+        {% include 'collections/document_list_item.html' %}
         {% endfor %}
       </main>
     </div>
@@ -123,7 +123,7 @@
       </div>
       {% if is_paginated %}
       <div class="col-md-10 text-right">
-        {% include 'library/includes/pagination.html' %}
+        {% include 'collections/includes/pagination.html' %}
       </div>
       {% endif %}
   </footer>

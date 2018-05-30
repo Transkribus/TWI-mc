@@ -3,7 +3,7 @@ from django.conf import settings
 class TranskribusRouter:
 
     DATABASE_NAME = 'UIBK'
-    APP_NAME = 'library'
+    APP_NAME = 'collections'
 
     def db_for_read(self, model, **hints):
 
