@@ -15,11 +15,11 @@ DATABASES = {
     }
 }
 
-STATIC_URL = BASE_URL + STATIC_URL
-MEDIA_URL = BASE_URL +  MEDIA_URL
+STATIC_URL = '/'.join([BASE_URL, STATIC_URL])
+MEDIA_URL = '/'.join([BASE_URL, MEDIA_URL])
 
-LOGIN_REDIRECT_URL = BASE_URL + '/library'
-LOGOUT_REDIRECT_URL = BASE_URL + '/library'
+LOGIN_REDIRECT_URL = '/'.join([BASE_URL, LOGIN_REDIRECT_URL])
+LOGOUT_REDIRECT_URL = '/'.join([BASE_URL, LOGOUT_REDIRECT_URL])
 
 SERVER_EMAIL = 'email@transkribus.eu'
 
@@ -33,7 +33,6 @@ LOGGING = {
     'disable_existing_loggers': False,
      'formatters': {
         'request': {
-            # reformat your log messages if you fancy
             'format':'[%(asctime)s] - %(levelname)s - %(module)s : %(message)s',
             'datefmt' : '%d/%b/%Y %H:%M:%S'
         },
