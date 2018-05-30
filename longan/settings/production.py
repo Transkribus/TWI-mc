@@ -15,6 +15,8 @@ DATABASES = {
     }
 }
 
+DATABASE_ROUTERS = ['library.routers.TranskribusRouter']
+
 STATIC_URL = '/'.join([BASE_URL, STATIC_URL])
 MEDIA_URL = '/'.join([BASE_URL, MEDIA_URL])
 

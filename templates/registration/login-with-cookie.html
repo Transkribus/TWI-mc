@@ -11,25 +11,8 @@
       {% if form.errors %}
       <p>{% trans "Your username and password didn't match. Please try again." %}</p>
       {% endif %}
-      {% comment %} An error code has been passed in from a transkribus request {% endcomment %}
-      {% if request.GET.error %}
-      <div class="alert alert-danger" role="alert">
-	<strong>{% trans 'Sorry! There was a problem logging in: ' %}</strong>{{ request.GET.error|login_error_message|safe }}
-      </div>
-      {% endif %}
-      
-      <!-- Though this might be logout when session ends... but looks not to be. Referrer: {{ request.META.HTTP_REFERER }}	-->
-      {% if next %}
-      {% if user.is_authenticated %}
-      <p>Your account doesn't have access to this page. To proceed,
-	please login with an account that has access.</p>
-      {% else %}
-      <p>{% trans "Please login with your" %} <a href="https://transkribus.eu">Transkribus</a> {% trans "user account. <!-- If you do not have a Transkribus user account, please register for free at the" %} <a href="{% url 'register' %}">{% trans "Transkribus website" %}.</a> -->
-      </p>
-      {% endif %}
-      {% endif %}
       <hr>
-      <form method="post" action="{% url 'login-with-cookie' %}">
+      <form method="post" action="{% url 'login' %}">
 	{% csrf_token %}
 	{% bootstrap_form form %}
         <hr>
@@ -38,9 +21,7 @@
       </form>
       <hr>
       <div class="text-center">
-        <a href="{% url 'register' %}">{% trans "Create Account" %}</a></li>&nbsp;
-        {# Assumes you setup the password_reset view in your URLconf #}
-        <a href="{% url 'password_reset' %}">{% trans "Lost password?" %}</a>
+        {# <a href="{% url 'password_reset' %}">{% trans "Lost password?" %}</a> #}
       </div>
     </div>
   </div>

@@ -15,18 +15,22 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 
 from transkribus.views import LoginWithCookie
 
 urlpatterns = [
 
     url(r'^home/', include('home.urls', namespace='home')),
-    url(r'^library/', include('collections.urls', namespace='collections')),
-    url(r'^projects/', include('projects.urls', namespace='projects')),
     url(r'^sandbox/', include('sandbox.urls', namespace='sandbox')),
 
-    url('^login/$', LoginWithCookie.as_view(template_name='registration/login-with-cookie.html'), name='login-with-cookie'),
+    url(r'^collections/', include('library.urls', namespace='collections')),
+    url(r'^projects/', include('projects.urls', namespace='projects')),
     url(r'^admin/', admin.site.urls),
+
+    # accounts
+    url('logout/', LogoutView.as_view(), name='logout'),
+    url('^login/$', LoginWithCookie.as_view(template_name='registration/login-with-cookie.html'), name='login'),
 
     # url(r'^search/', include('search.urls', app_name='search', namespace='search')),
     # url(r'^view/', include('edit.urls', app_name='edit', namespace='edit')),
