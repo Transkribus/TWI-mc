@@ -23,6 +23,7 @@ import settings
 from apps import transkribus
 
 from apps.transkribus import views
+
 urlpatterns = [
     ##Pass on to app urls.py##
     #this causes various fails for some reason, though it would be nice to pass in app_name to library....
