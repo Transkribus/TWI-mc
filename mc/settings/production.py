@@ -178,10 +178,6 @@ LOCALE_PATHS = [
     os.path.join(BASE_DIR, "locale"),
 ]
 
-ADMINS = [('Rory', 'rory.mcnicholl@london.ac.uk'), ('Berthold', 'berthold.ulreich@alumni.uni-graz.at')]
-
-SERVER_EMAIL = 'email@transkribus.eu'
-
 LANGUAGE_CODE = 'en'
 #Added for READ lang set == official EU languages
 from django.utils.translation import ugettext_lazy as _
@@ -252,6 +248,7 @@ MEDIA_URL =  SERVERBASE+'/media/' #not currently used
 ## Auth backend that logs in to transkribus.eu and extends the django.contrib.auth.User
 AUTHENTICATION_BACKENDS = [
     'apps.transkribus.backends.TranskribusBackend',
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 #Location of TRP server for transkribus REST services
