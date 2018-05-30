@@ -1,5 +1,5 @@
-# TWI-mc
- Longan: Transkribus web interfaces
+# Longan
+ Next verion of transkribus web interfaces
 
 ## Configuration
 
