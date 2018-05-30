@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib.auth.views import LoginView
 
 
