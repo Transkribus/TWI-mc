@@ -1,24 +1,24 @@
 [submodule "apps/querystring_parser"]
-	path = apps/querystring_parser
+	path = longan/querystring_parser
 	url = https://github.com/bernii/querystring-parser.git
 [submodule "apps/utils"]
-	path = apps/utils
+	path = longan/utils
 	url = https://github.com/Transkribus/TWI-utils.git
 [submodule "apps/dashboard"]
-	path = apps/dashboard
+	path = longan/dashboard
 	url = https://github.com/Transkribus/TWI-dashboard.git
 [submodule "apps/library"]
-	path = apps/library
+	path = longan/library
 	url = https://github.com/Transkribus/TWI-library.git
 [submodule "apps/search"]
-	path = apps/search
+	path = longan/search
 	url = https://github.com/Transkribus/TWI-search.git
 [submodule "apps/navigation"]
-	path = apps/navigation
+	path = longan/navigation
 	url = https://github.com/Transkribus/TWI-navigation.git
 [submodule "apps/edit"]
-	path = apps/edit
+	path = longan/edit
 	url = https://github.com/Transkribus/TWI-edit.git
 [submodule "apps/sandbox"]
-	path = apps/sandbox
+	path = longan/sandbox
 	url = https://bitbucket.org/bejohu/twi-sandbox.git
