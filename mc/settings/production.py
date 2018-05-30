@@ -72,14 +72,14 @@ INSTALLED_APPS = [
     'apps.utils',
     'apps.library',
 #    'review',
-    'apps.dashboard',
+    # 'apps.dashboard',
     'apps.edit',
     'apps.search',
 #    'apps.navigation'
     'apps.transkribus',
     'apps.sandbox',
     'waffle',
-]
+] + ['apps.projects']
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
