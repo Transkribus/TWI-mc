@@ -2,12 +2,11 @@ from django.db import models
 
 from django.contrib.auth.models import AbstractUser
 
+
 from . import helpers
 
 
 class User(AbstractUser):
-    # class Meta:
-    #     proxy = True
 
     def __str__(self):
         return "{!s}".format(self.username)
@@ -21,14 +20,14 @@ class User(AbstractUser):
             first_name=data['first_name'],
             last_name=data['last_name'],
             # is_active=data['is_active'],
-            is_staff=data['is_staff'],
-            # is_superuser=data['is_superuser'],
+            # is_staff=data['is_staff'],
+            is_superuser=data['is_superuser'],
 
         )
 
     def update(self, **data):
         helpers.update_changed(self, data, [
-            'username', 'email', 'last_name', 'first_name', 'is_staff'
+            'username', 'email', 'last_name', 'first_name', 'is_superuser', # 'is_staff'
         ])
 
     def is_developer(self):
