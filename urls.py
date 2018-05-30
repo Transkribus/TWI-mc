@@ -1,4 +1,5 @@
 from django.conf.urls import url, include
+from django.views.generic.base import RedirectView
 
 from apps.transkribus.decorators import login_required 
 
@@ -21,5 +22,8 @@ urlpatterns = [
     ])),
     
     url(r'^(?P<col_id>\d+)/$', views.DocumentListView.as_view(), name='document-list--compat'),
+
+    url(r'^projects/(?P<slug_or_id>[\w-]+)/$', RedirectView.as_view(
+        pattern_name='projects:project-detail', permanent=True))
 
 ]
