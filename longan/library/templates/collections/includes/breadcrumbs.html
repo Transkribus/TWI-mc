@@ -1,0 +1,23 @@
+{% load i18n %}
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="{% url 'collections:collection-list' %}">
+      &#x1f3e0; {% trans 'Home'%}</a>
+  </li>
+  {% if collection %}
+  {% if document %}
+  <li class="breadcrumb-item">
+    <a href="{% url 'collections:document-list' collection.id %}">
+      {{ collection.name }} ({{ collection.id }})
+    </a>
+    <li class="breadcrumb-item active">
+      {{ document.title }} ({{ document.id }})
+    </li>
+  </li>
+  {% else %}
+  <li class="breadcrumb-item active">
+    {{ collection.name }} ({{ collection.id }})
+  </li>
+  {% endif %}
+  {% endif %}
+</ol>

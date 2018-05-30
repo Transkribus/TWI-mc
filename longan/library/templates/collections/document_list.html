@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<style>
+
+ .documents {
+   font-size: 0.875em;
+   background-color: white;
+ }
+
+ .controls {
+   background-color: rgba(255, 255, 255, 0.25);
+ }
+
+ .filters {
+   height: 100%;
+   background-color: rgba(0, 0, 0, 0.1);
+ }
+
+ .documents .row {
+   padding: 1em 0;
+ }
+
+ .documents .image {
+   display: block;
+   margin: 0 auto;
+   width: auto;
+   height: 120px;
+   text-align: center;
+   font-size: 0.875em;
+ }
+
+ .documents .image--empty {
+   width: 80px;
+   background-color: rgba(0, 0, 0, 0.25);
+ }
+
+ .documents dt,
+ .documents dd {
+   display: inline;
+ }
+
+ .documents dd {
+   margin-right: 1em;
+ }
+
+</style>
+<div class="container">
+  <header class="controls">
+    <div class="row">
+      <div class="col-md-12">
+        {% include 'collections/includes/breadcrumbs.html' %}
+      </div>
+    </div>
+    <form action="{% url 'collections:document-list' id %}" method="get">
+      <div class="row">
+        <div class="col-md-9">
+          <label for="search">
+            Search for: <input id="search" name="search" type="search" value="{{search}}">
+          </label>
+          {% if search %}
+          <a href="{% url 'collections:document-list' id %}">Show All</a>
+          {% endif %}
+        </div>
+        <div class="col-md-3 text-right">
+          {{ form.sort_by.label_tag }} {{ form.sort_by }}
+        </div>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col-md-12">
+        {# FIXME: re-use this in other templates #}
+        {% with total=paginator.count from=page.start_index to=page.end_index %}
+        {% blocktrans count counter=total %}
+        1 Result
+        {% plural %}
+        Results {{ from }} to {{ to }} of {{ counter }}
+        {% endblocktrans %}
+        {% if search %}
+        for <em>{{ search }}</em>
+        {% endif %}
+        {% endwith %}
+      </div>
+    </div>
+  </header>
+  <div class="row">
+    {% if filters %}
+    <div class="col-md-10">
+    {% else %}
+    <div class="col-md-12">
+    {% endif %}
+      <main class="documents">
+        {% for item in items %}
+        {% include 'collections/document_list_item.html' %}
+        {% endfor %}
+      </main>
+    </div>
+    {% if filters %}
+    <div class="col-md-2">
+      <div class="filters">
+        filters
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <footer>
+    <div class="row">
+      <div class="col-md-2">
+        {{ time_elapsed }}ms
+      </div>
+      {% if is_paginated %}
+      <div class="col-md-10 text-right">
+        {% include 'collections/includes/pagination.html' %}
+      </div>
+      {% endif %}
+  </footer>
+</div>
+{% endblock content %}
+{% block footer %}
+{% endblock footer %}
