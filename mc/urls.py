@@ -31,13 +31,13 @@ urlpatterns = [
     #index is dashboard for now
 
     # apps/urls.py ##
-    url(r'^dashboard/', include('apps.dashboard.urls', app_name='dashboard', namespace='dashboard')),
+    # url(r'^dashboard/', include('apps.dashboard.urls', app_name='dashboard', namespace='dashboard')),
     url(r'^library/', include('apps.library.urls', app_name='library', namespace='library')),
     url(r'^search/', include('apps.search.urls', app_name='search', namespace='search')),
     url(r'^view/', include('apps.edit.urls', app_name='edit', namespace='edit')),
     url(r'^edit/', include('apps.edit.urls', app_name='edit', namespace='edit')),
     url(r'^utils/', include('apps.utils.urls', app_name='utils', namespace='utils')),
-    # Sandbox
+    url(r'^projects/', include('apps.projects.urls', app_name='projects', namespace='projects')),
     url(r'^sandbox/', include('apps.sandbox.urls', app_name='sandbox', namespace='sandbox')),
 
     ## Project pages for My collection ##
