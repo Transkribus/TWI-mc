@@ -21,12 +21,12 @@ from transkribus.views import LoginWithCookie
 urlpatterns = [
 
     url(r'^home/', include('home.urls', namespace='home')),
-    url(r'^library/', include('library.urls', app_name='library', namespace='library')),
-    url(r'^projects/', include('projects.urls', app_name='projects', namespace='projects')),
-    url(r'^sandbox/', include('sandbox.urls', app_name='sandbox', namespace='sandbox')),
+    url(r'^collections/', include('collections.urls', namespace='collections')),
+    url(r'^projects/', include('projects.urls', namespace='projects')),
+    url(r'^sandbox/', include('sandbox.urls', namespace='sandbox')),
 
-    url(r'^admin/', admin.site.urls),
     url('^login/$', LoginWithCookie.as_view(template_name='registration/login-with-cookie.html'), name='login-with-cookie'),
+    url(r'^admin/', admin.site.urls),
 
     # url(r'^search/', include('search.urls', app_name='search', namespace='search')),
     # url(r'^view/', include('edit.urls', app_name='edit', namespace='edit')),
