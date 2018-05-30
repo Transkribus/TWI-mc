@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^(?P<col_id>\d+)/$', views.DocumentListView.as_view(), name='document-list--compat'),
 
     url(r'^projects/(?P<slug_or_id>[\w-]+)/$', RedirectView.as_view(
-        pattern_name='projects:project-detail', permanent=True))
+        pattern_name='projects:project-detail',
+        permanent=True, query_string=True))
 
 ]
