@@ -1,0 +1,44 @@
+<style>
+ .progress {
+   /* NOTE: bootstrap misguidedly sets a fixed height */
+   height: 1.5em;
+   background-color: #337ab7;
+ }
+
+ .progress-bar {
+   padding: 0.5em 0;                 
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   overflow: hidden;
+   font-size: 0.85em;
+ }
+
+ .progress-bar--state_new {
+   background-color: rgba(0, 0, 0, 0.8);
+ }
+ .progress-bar--state_in-progress {
+   background-color: rgba(0, 0, 0, 0.6);
+ }
+ .progress-bar--state_done {
+   background-color: rgba(0, 0, 0, 0.4);
+ }
+ .progress-bar--state_final {
+   background-color: rgba(0, 0, 0, 0.2);
+ }
+ .progress-bar--state_gt {
+   background-color: rgba(0, 0, 0, 0);
+ }
+ .progress-bar--state_transcribed {
+   background-color: rgba(0, 0, 0, 0);
+ }
+ .progress-bar--state_not-transcribed {
+   background-color: rgba(0, 0, 0, 0.5);
+ }
+</style>
+<div class="progress">
+  {% for item in items %}
+  <div class="progress-bar progress-bar--state_{{ item.class_name }}" style="width: {{ item.percent }}%;" title="{{ item.name }} ({{ item.count }})">
+    {{ item.count }} <!--{{ item.name }} -->
+  </div>
+  {% endfor %}
+</div>
