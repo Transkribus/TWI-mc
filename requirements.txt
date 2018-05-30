@@ -7,4 +7,4 @@ pytz==2018.3
 requests==2.11.1
 six==1.10.0
 django-waffle
-
+xmltodict
