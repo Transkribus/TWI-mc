@@ -21,13 +21,6 @@ MEDIA_URL = '/'.join([BASE_URL, MEDIA_URL])
 LOGIN_REDIRECT_URL = '/'.join([BASE_URL, LOGIN_REDIRECT_URL])
 LOGOUT_REDIRECT_URL = '/'.join([BASE_URL, LOGOUT_REDIRECT_URL])
 
-SERVER_EMAIL = 'email@transkribus.eu'
-
-ADMINS = [
-    ('Rory', 'rory.mcnicholl@london.ac.uk'),
-    ('Berthold', 'berthold.ulreich@alumni.uni-graz.at')
-]
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
