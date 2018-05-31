@@ -45,6 +45,14 @@ python manage.py migrate
 python manage.py collectstatic
 ```
 
+## Populate Test Database
+
+Obtain database dump for most recent commit of *models.py*.
+
+```
+python manage.py loaddata db-${COMMIT}.json
+```
+
 ## Run
 
 ### Local
