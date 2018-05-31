@@ -1,13 +1,13 @@
 {% load i18n %}
 <ol class="breadcrumb">
   <li class="breadcrumb-item">
-    <a href="{% url 'collections:collection-list' %}">
+    <a href="{% url 'library:collection-list' %}">
       &#x1f3e0; {% trans 'Home'%}</a>
   </li>
   {% if collection %}
   {% if document %}
   <li class="breadcrumb-item">
-    <a href="{% url 'collections:document-list' collection.id %}">
+    <a href="{% url 'library:document-list' collection.id %}">
       {{ collection.name }} ({{ collection.id }})
     </a>
     <li class="breadcrumb-item active">

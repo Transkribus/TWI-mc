@@ -29,18 +29,18 @@
   <header>
     <div class="row">
       <div class="col-md-12">
-        {% include 'collections/includes/breadcrumbs.html' %}
+        {% include 'library/includes/breadcrumbs.html' %}
       </div>
     </div>
     
-    <form action="{% url 'collections:collection-list' %}" method="get">
+    <form action="{% url 'library:collection-list' %}" method="get">
       <div class="row">
         <div class="col-md-9">
           <label for="{{ form.search.id }}">
             Search for: {{ form.search }}
           </label>
           {% if search %}
-          <a href="{% url 'collections:collection-list' %}">Show All</a>
+          <a href="{% url 'library:collection-list' %}">Show All</a>
           {% endif %}
         </div>
         <div class="col-md-3">
@@ -106,12 +106,12 @@
           {% endif %}
         </p>
         <p class="card-text">
-          <a href="{% url 'collections:document-list' item.id %}">
+          <a href="{% url 'library:document-list' item.id %}">
             {% trans "Documents" %}
           </a>
         </p>
         <p class="card-text">
-          <a href="{% url 'collections:collection-detail' item.id %}">Details</a>
+          <a href="{% url 'library:collection-detail' item.id %}">Details</a>
         </p>
       </div>
     </div>
@@ -125,7 +125,7 @@
       </div>
       {% if is_paginated %}
       <div class="col-md-10 text-right">
-        {% include 'collections/includes/pagination.html' %}
+        {% include 'library/includes/pagination.html' %}
       </div>
       {% endif %}
     </div>

@@ -50,17 +50,17 @@
   <header class="controls">
     <div class="row">
       <div class="col-md-12">
-        {% include 'collections/includes/breadcrumbs.html' %}
+        {% include 'library/includes/breadcrumbs.html' %}
       </div>
     </div>
-    <form action="{% url 'collections:document-list' id %}" method="get">
+    <form action="{% url 'library:document-list' id %}" method="get">
       <div class="row">
         <div class="col-md-9">
           <label for="search">
             Search for: <input id="search" name="search" type="search" value="{{search}}">
           </label>
           {% if search %}
-          <a href="{% url 'collections:document-list' id %}">Show All</a>
+          <a href="{% url 'library:document-list' id %}">Show All</a>
           {% endif %}
         </div>
         <div class="col-md-3 text-right">
@@ -92,7 +92,7 @@
     {% endif %}
       <main class="documents">
         {% for item in items %}
-        {% include 'collections/document_list_item.html' %}
+        {% include 'library/document_list_item.html' %}
         {% endfor %}
       </main>
     </div>
@@ -111,7 +111,7 @@
       </div>
       {% if is_paginated %}
       <div class="col-md-10 text-right">
-        {% include 'collections/includes/pagination.html' %}
+        {% include 'library/includes/pagination.html' %}
       </div>
       {% endif %}
   </footer>

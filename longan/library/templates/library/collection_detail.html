@@ -9,16 +9,15 @@
   <header>
     <div class="row">
       <div class="col-md-12">
-        {% include 'collections/includes/breadcrumbs.html' %}
+        {% include 'library/includes/breadcrumbs.html' %}
       </div>
     </div>
   </header>
 
-  <main class="list">
+  <main class="collection">
     <style>
      .img {
        display: inline-block;
-       width: auto;
        min-height: 180px;
      }
     </style>
@@ -36,26 +35,6 @@
         <td>{{ item_count }}</td>
       </tr>
       <tr>
-        <th>Script type</th>
-        <td>{{ script_type }}</td>
-      </tr>
-      <tr>
-        <th>Language</th>
-        <td>{{ language }}</td>
-      </tr>
-      <tr>
-        <th>Author</th>
-        <td>{{ author }}</td>
-      </tr>
-      <tr>
-        <th>Writer</th>
-        <td>{{ writer }}</td>
-      </tr>
-      <tr>
-        <th>Genre</th>
-        <td>{{ genre }}</td>
-      </tr>
-      <tr>
         <th>Thumb image</th>
         <td><img class="img" src="{{ thumb_url }}" /></td>
       </tr>
@@ -70,5 +49,3 @@
   </footer>
 </div>
 {% endblock content %}
-{% block footer %}
-{% endblock footer %}

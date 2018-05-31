@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^home/', include('home.urls', namespace='home')),
     url(r'^sandbox/', include('sandbox.urls', namespace='sandbox')),
 
-    url(r'^collections/', include('library.urls', namespace='collections')),
+    url(r'^library/', include('library.urls', namespace='library')),
     url(r'^projects/', include('projects.urls', namespace='projects')),
     url(r'^admin/', admin.site.urls),
 

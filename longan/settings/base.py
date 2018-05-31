@@ -91,8 +91,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = '/collections'
-LOGOUT_REDIRECT_URL = '/collections'
+LOGIN_REDIRECT_URL = '/library'
+LOGOUT_REDIRECT_URL = '/library'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
