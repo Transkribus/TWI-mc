@@ -19,19 +19,20 @@ from django.core.files.storage import default_storage
 import uuid 
 import os
 from random import randint
-from . import models
 from itertools import chain
-
-#from .forms import NameForm
 import datetime
 import json
 import requests
 from PIL import Image
+import logging
+from . import models
 
 #from . import Services as serv 
 
 ts = TranskribusSession()
 
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 def blog_all(request):
     template = loader.get_template('start/blog_all.html')
@@ -152,7 +153,6 @@ def store_admin_service(request):
 
     title = (title_de, title_en)[translation.get_language() == 'de']
     json = '{"id" : ' + str(serv.pk) + ', "title" : "' + title  + '", "changed" : "' + str(serv.changed) + '"}'
-    print("store_admin_service")
     return HttpResponse(json, content_type="application/json")
         
 @user_passes_test(admin_logged_in, login_url='/start/login_view')
@@ -524,25 +524,6 @@ def change_admin_inst(request):
     idb = request.POST.get('id',0)
     data = get_inst_entry(idb)  
     return HttpResponse(data, content_type="application/json")
-
-# def store_admin(request):
-#     print("store_admin")
-#     #TODO limit access to logged in admins
-#     title = request.POST.get('title','')
-#     content = request.POST.get('content','')
-#     id = request.POST.get('id','')
-#     lang = request.POST.get('lang','')
-# 
-#     try:
-#       art = models.Article.objects.get(a_key = id, language=lang)
-#       art.content = content
-#       art.title = title
-#       art.save() #add or update
-#     except ObjectDoesNotExist:
-#       art = models.Article.objects.create(a_key = id, content = content, title=title, language=lang)
-#         
-#     return HttpResponseRedirect("admin")
-#     
     
 def logout_process(request):
     ts.invalidate()
@@ -567,7 +548,7 @@ def login_process(request):
         request.session['user'] = curr_user
         request.session.modified = True 
     except Exception as e:
-        print ("log failed:" + str(e))
+        logger.warning ("logint failed:" + str(e))
         messages.warning(request, "login_failed")
      
     return HttpResponseRedirect("index")
@@ -589,9 +570,9 @@ def register_process(request):
     r = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
     result = r.json()
     if result['success']:
-        print('success')
+        logger.info('success')
         #res = ts.register(request)
-        #print(res)
+        #logger.info(res)
     else:
         messages.warning(request, "login_failed")
     
