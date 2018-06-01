@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from django.template import loader
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.utils import translation
@@ -26,6 +26,7 @@ import requests
 from PIL import Image
 import logging
 from . import models
+from locale import format_string
 
 #from . import Services as serv 
 
@@ -152,8 +153,8 @@ def store_admin_service(request):
         models.ServiceEntries.objects.filter(lang="en", service=serv).update(title=title_en, subtitle=subtitle_en, content=content_en)
 
     title = (title_de, title_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(serv.pk) + ', "title" : "' + title  + '", "changed" : "' + str(serv.changed) + '"}'
-    return HttpResponse(json, content_type="application/json")
+    json = {"id" :  str(serv.pk) , "title" : title , "changed" :  format_date(serv.changed) }
+    return JsonResponse(json)
         
 @user_passes_test(admin_logged_in)
 def store_admin_article(request):
@@ -185,8 +186,8 @@ def store_admin_article(request):
         models.HomeArticleEntry.objects.filter(article=art, lang="en").update(title=title_en, shortdesc=subtitle_en, content=content_en)
                     
     title = (title_de, title_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(art.pk) + ', "title" : "' + title  + '", "changed" : "' + str(art.changed) + '", "image" : "' + fname + '"}'
-    return HttpResponse(json, content_type="application/json")
+    json = {"id" :  str(art.pk) , "title" :  title  , "changed" :  format_date(art.changed) , "image" :  fname }
+    return JsonResponse(json)
  
 @user_passes_test(admin_logged_in)              
 def store_admin_blog(request):
@@ -216,8 +217,8 @@ def store_admin_blog(request):
         models.BlogEntry.objects.filter(blog=b, lang="en").update(title=title_en, subtitle=subtitle_en, content=content_en)
             
     title = (title_de, title_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(b.pk) + ', "title" : "' + title  + '", "changed" : "' + str(b.changed) + '", "image" : "' + fname + '"}'
-    return HttpResponse(json, content_type="application/json")
+    json = {"id" : str(b.pk) , "title" : title, "changed" :  formate_date(b.changed) , "image" :  fname }
+    return JsonResponse(json)
 
 @user_passes_test(admin_logged_in)
 def store_admin_inst(request):
@@ -262,8 +263,8 @@ def store_admin_inst(request):
         models.InstitutionDescription.objects.filter(lang='en', inst=inst).update(name=name_en, loclabel=loc_name_en, desc=content_en)
                     
     name = (name_de, name_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(inst.pk) + ', "name" : "' + name + '", "changed" : "' + str(inst.changed)  + '", "image" : "' + fname + '"}'
-    return HttpResponse(json, content_type="application/json") 
+    json = {"id" : str(inst.pk) , "name" :  name , "changed" :  format_date(inst.changed)  , "image" :  fname }
+    return JsonResponse(json) 
 
 @user_passes_test(admin_logged_in)
 def store_admin_inst_proj(request):
@@ -284,8 +285,8 @@ def store_admin_inst_proj(request):
         models.InstitutionProjectEntries.objects.filter(lang='en', project=p).update(title=title_en, desc=content_en)
                 
     title = (title_de, title_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(p.pk) + ', "title" : "' + title  + '", "changed" : "' + str(p.changed) + '"}'
-    return HttpResponse(json, content_type="application/json") 
+    json = {"id" :  str(p.pk) , "title" :  title , "changed" : format_dat(p.changed)}
+    return JsonResponse(json) 
 
 @user_passes_test(admin_logged_in)
 def store_admin_quote(request):
@@ -314,8 +315,8 @@ def store_admin_quote(request):
         models.QuoteEntries.objects.filter(lang='de', quote=q).update(content=content_de, role=role_de)
         models.QuoteEntries.objects.filter(lang='en', quote=q).update(content=content_en, role=role_en)
         
-    json = '{"id" : ' + str(q.id) + ', "name" : "' + name  +  '", "changed" : "' + str(q.changed) + '", "image" : "' + fname + '"}'
-    return HttpResponse(json, content_type="application/json") 
+    json = {"id" :  str(q.id) , "name" :  name , "changed" : date_format(q.changed) , "image" :  fname }
+    return JsonResponse(json) 
 
 @user_passes_test(admin_logged_in)
 def store_admin_doc(request):
@@ -340,8 +341,8 @@ def store_admin_doc(request):
         models.DocumentEntries.objects.filter(doc=d, lang='en').update(title=title_en, desc=desc_en, content= content_en)
         
     title = (title_de, title_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(d.pk) + ', "title" : "' + title +  '", "changed" : "' + str(d.changed) + '"}'
-    return HttpResponse(json, content_type="application/json")     
+    json = {"id" : str(d.pk) , "title" : title , "changed" : format_date(d.changed)}
+    return JsonResponse(json)     
     
 @user_passes_test(admin_logged_in)   
 def store_admin_video(request):
@@ -363,8 +364,8 @@ def store_admin_video(request):
         models.VideoDesc.objects.filter(lang='en', video=v).update(title=title_en, desc=content_en)    
     
     title = (title_de, title_en)[translation.get_language() == 'de']
-    json = '{"id" : ' + str(v.pk) + ', "title" : "' + title + ' (' + vid + ')", "changed" : "' + str(v.changed) + '"}'
-    return HttpResponse(json, content_type="application/json")     
+    json = {"id" : str(v.pk) , "title" :  title + ' (' + vid + ')' , "changed" : format_date(v.changed)}
+    return JsonResponse(json)     
 
 '''
 is called when another institution is selected in the institution/project area
@@ -609,3 +610,10 @@ def upload_img(request):
     request.session.modified = True
     
     return HttpResponse(json.dumps(fname), content_type="application/json") 
+
+# ############################################################
+# Utils
+# ############################################################
+
+def format_date(f):
+    return f.strftime('(%d/%m/%Y)')
