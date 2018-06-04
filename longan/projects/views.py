@@ -16,7 +16,8 @@ def project_detail(request, slug_or_id):
         'hebrew-press': 6070,
         'arabic-press-papers': 8838,
         'nz-alpine-journal': 13547,
-        'tengnagel': 3850
+        'tengnagel': 3850,
+        'hazfirah': 17989
     }
 
     TITLES = {
