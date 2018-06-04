@@ -47,7 +47,7 @@ python manage.py collectstatic
 
 ## Populate Test Database
 
-Obtain database dump for most recent commit of *models.py*.
+Obtain database dump for most recent commit of _models.py_.
 
 ```
 python manage.py loaddata db-${COMMIT}.json
@@ -58,6 +58,6 @@ python manage.py loaddata db-${COMMIT}.json
 ### Local
 
 ```bash
-export DJANGO_SETTINGS_MODULE=settings.local
-python manage.py runserver --settings=settings.local
+export DJANGO_SETTINGS_MODULE=longan.settings.local
+python manage.py runserver --settings=longan.settings.local
 ```
