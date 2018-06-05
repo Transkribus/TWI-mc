@@ -71,7 +71,6 @@ class UserData(models.Model):
         )
 
     def update(self, **data):
-        print(data)
         helpers.update_changed(self, data, [
             'session_id', 'user_id',
             'gender', 'affiliation',
