@@ -5,7 +5,10 @@ from django.utils.translation import ugettext_lazy as _
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.abspath(os.path.dirname(BASE_DIR))
-sys.path.append(BASE_DIR)
+APP_DIR = os.path.join(PROJECT_ROOT, 'longan')
+
+# NOTE: adds dir that contains apps to import paths
+sys.path.append(APP_DIR)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -20,7 +23,6 @@ INSTALLED_APPS += [
     'library',
     'transkribus',
     'sandbox',
-    # 'utils',
     # 'dashboard',
     # 'edit',
     # 'search',
@@ -52,7 +54,7 @@ CACHES = {
     }
 }
 
-ROOT_URLCONF = 'longan.urls'
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
@@ -65,23 +67,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # 'utils.contexts.appname',
-                # 'utils.contexts.urlname',
-		# 'utils.contexts.apphead',
-		# 'utils.contexts.nav_up',
-		# 'utils.contexts.version',
-		# 'utils.contexts.browser_list',
-                # 'utils.contexts.static_url', 
             ],
             'libraries' : {
-                # 'read_tags': 'utils.templatetags',
             },
         },
     },
 
 ]
-
-WSGI_APPLICATION = 'longan.wsgi.application'
 
 AUTH_USER_MODEL = 'transkribus.User'
 
