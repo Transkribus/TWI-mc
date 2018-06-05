@@ -189,7 +189,7 @@ function store_article()
         content_en: html_en,  
         'csrfmiddlewaretoken':  csrf_token }).done(function(data)
             {
-                var val = data.title + ' - ' + data.changed;
+                var val = data.title + ' ' + data.changed;
                 if (id == 0)
                 {
                     $("#article-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
@@ -283,7 +283,7 @@ function store_service()
         icon : icon,
       'csrfmiddlewaretoken':  csrf_token }).done(function(data)
         {
-            var val = data.title + ' - ' + data.changed;
+            var val = data.title + ' ' + data.changed;
             if (id == 0)
             {
                 console.log(val);
@@ -395,7 +395,7 @@ function store_blog()
         content_en: html_en,  
         'csrfmiddlewaretoken':  csrf_token }).done(function(data)
             {
-                var val = data.title + ' - ' + data.changed;
+                var val = data.title + ' ' + data.changed;
                 if (id == 0)
                 {
                     $("#blog-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
@@ -576,7 +576,7 @@ function store_inst_proj()
         'csrfmiddlewaretoken':  csrf_token
         }).done(function(data)
             {
-                var val = data.title + " - " + data.changed;
+                var val = data.title + " " + data.changed;
                 if (id == 0)
                 {
                     $("#inst-proj-proj-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
@@ -713,7 +713,7 @@ function store_quote()
         'csrfmiddlewaretoken':  csrf_token
         }).done(function(data)
             {
-                var val = data.name + " - " + data.changed;
+                var val = data.name + " " + data.changed;
                 if (id == 0)
                 {
                     $("#quote-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
@@ -811,7 +811,7 @@ function store_doc()
     'csrfmiddlewaretoken':  csrf_token
     }).done(function(data)
         {
-            var val = data.title + " - " + data.changed;
+            var val = data.title + ' ' + data.changed;
             if (id == 0)
             {
                 $("#doc-options").append('<option value="' + data.id +'" selected="selected">' + val + '</option>');
@@ -895,7 +895,7 @@ function store_video()
         'csrfmiddlewaretoken':  csrf_token
         }).done(function(data)
             {
-                var val = data.title + " - " + data.changed;
+                var val = data.title + ' ' + data.changed;
                 if (id == 0)
                 {
                     $("#video-options").append('<option value="' + data.id +'" selected="selected">' + data.title + '</option>');
