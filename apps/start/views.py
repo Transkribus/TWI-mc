@@ -88,7 +88,7 @@ def inst_detail(request):
     
     return HttpResponse(template.render(context, request))
 
-def home_article_details(request):
+def home_article_detail(request):
     idb = request.GET.get('id',0)
     context = {
         'article' : models.HomeArticleEntry.objects.get(article=idb, lang=translation.get_language())

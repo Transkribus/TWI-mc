@@ -1,5 +1,4 @@
 from django.conf.urls import include, url
-
 from . import views
 
 urlpatterns = [
@@ -26,7 +25,7 @@ urlpatterns = [
     url(r'^change_admin_pr_inst_selection', views.change_admin_inst_proj_selection, name='change_admin_inst_proj_selection'),
     url(r'^inst_detail', views.inst_detail , name='inst_detail'),
     url(r'^store_admin_article', views.store_admin_article , name='store_admin_article'),
-    url(r'^home_article_details', views.home_article_details , name='home_article_details'),
+    url(r'^home_article_detail', views.home_article_detail , name='home_article_detail'),
     url(r'^store_admin_quote', views.store_admin_quote , name='store_admin_quote'),   
     url(r'^store_admin_video', views.store_admin_video , name='store_admin_video'),
     url(r'^change_admin_article', views.change_admin_article , name='change_admin_article'),
