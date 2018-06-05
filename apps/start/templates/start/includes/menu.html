@@ -97,12 +97,12 @@
                      <ul class="sub_menu">
                         <li>
                             <a href="#">
-                            {{request.session.user.firstname}} {{request.session.user.lastname}}
-                                ({{request.session.user.userName}})
+                            {{request.session.user.first_name}} {{request.session.user.last_name}}
+                                ({{request.session.user.username}})
                             </a>
                         </li>
                         
-                         {% if request.session.user.isAdmin == 'true' %}
+                         {% if True  %} <!-- TODO: request.session.user.is_superuser == 'True' -->
                             <li><a href="start_admin">{% trans 'Administrator' %}</a></li>
                         {% endif %}
                         
