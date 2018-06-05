@@ -26,6 +26,8 @@ import requests
 from PIL import Image
 import logging
 from . import models
+from . import decorators
+
 from locale import format_string
 
 #from . import Services as serv 
@@ -95,11 +97,8 @@ def home_article_details(request):
     template = loader.get_template('start/home_article_detail.html')
     
     return HttpResponse(template.render(context, request))
-    
-def admin_logged_in(user):
-    return user.is_superuser
-    
-@user_passes_test(admin_logged_in)
+        
+@user_passes_test(decorators.admin_logged_in)
 def admin(request):   
     template = loader.get_template('start/admin.html')
     b = models.BlogEntry.objects.filter(lang=translation.get_language())
@@ -129,7 +128,7 @@ def admin(request):
 
     return HttpResponse(template.render(context, request))
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def store_admin_service(request):
     idb = int(request.POST.get('id',0))
 
@@ -156,7 +155,7 @@ def store_admin_service(request):
     json = {"id" :  str(serv.pk) , "title" : title , "changed" :  format_date(serv.changed) }
     return JsonResponse(json)
         
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def store_admin_article(request):
     idb = int(request.POST.get('id',0))
 
@@ -189,7 +188,7 @@ def store_admin_article(request):
     json = {"id" :  str(art.pk) , "title" :  title  , "changed" :  format_date(art.changed) , "image" :  fname }
     return JsonResponse(json)
  
-@user_passes_test(admin_logged_in)              
+@user_passes_test(decorators.admin_logged_in)              
 def store_admin_blog(request):
     idb = int(request.POST.get('id',0))
     title_de = request.POST.get('title_de','')
@@ -220,7 +219,7 @@ def store_admin_blog(request):
     json = {"id" : str(b.pk) , "title" : title, "changed" :  formate_date(b.changed) , "image" :  fname }
     return JsonResponse(json)
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def store_admin_inst(request):
     idb = int(request.POST.get('id',0))
     
@@ -266,7 +265,7 @@ def store_admin_inst(request):
     json = {"id" : str(inst.pk) , "name" :  name , "changed" :  format_date(inst.changed)  , "image" :  fname }
     return JsonResponse(json) 
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def store_admin_inst_proj(request):
     idb = int(request.POST.get('id',0))
 
@@ -288,7 +287,7 @@ def store_admin_inst_proj(request):
     json = {"id" :  str(p.pk) , "title" :  title , "changed" : format_dat(p.changed)}
     return JsonResponse(json) 
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def store_admin_quote(request):
     idb = int(request.POST.get('id',0))
  
@@ -318,7 +317,7 @@ def store_admin_quote(request):
     json = {"id" :  str(q.id) , "name" :  name , "changed" : date_format(q.changed) , "image" :  fname }
     return JsonResponse(json) 
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def store_admin_doc(request):
     idb = int(request.POST.get('id',0))
     title_de = request.POST.get('title_de','')
@@ -344,7 +343,7 @@ def store_admin_doc(request):
     json = {"id" : str(d.pk) , "title" : title , "changed" : format_date(d.changed)}
     return JsonResponse(json)     
     
-@user_passes_test(admin_logged_in)   
+@user_passes_test(decorators.admin_logged_in)   
 def store_admin_video(request):
     idb = int(request.POST.get('id',0))
     vid = request.POST.get('vid','')
@@ -370,7 +369,7 @@ def store_admin_video(request):
 '''
 is called when another institution is selected in the institution/project area
 '''
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def change_admin_inst_proj(request):
     idb = request.POST.get('id',0)
     ipe = models.InstitutionProjectEntries.objects.filter(project__inst__pk=idb, lang=translation.get_language())
@@ -378,7 +377,7 @@ def change_admin_inst_proj(request):
     js = serializers.serialize('json',ipe)
     return HttpResponse(js, content_type="application/json")    
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def change_admin_quote_selection(request):
     idb = request.POST.get('id',0)
     qe = models.QuoteEntries.objects.filter(quote=idb)
@@ -390,14 +389,14 @@ def change_admin_quote_selection(request):
 '''
 is called when the project entries should be changed in the institution/project area
 '''
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def change_admin_inst_proj_selection(request):
     idb = request.POST.get('id',0)
     ipe = models.InstitutionProjectEntries.objects.filter(project__pk=idb)
     js = serializers.serialize('json',ipe)
     return HttpResponse(js, content_type="application/json")  
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def change_admin_doc_selection(request):
     idb = request.POST.get('id',0)
     d = models.Document.objects.filter(pk=idb)
@@ -407,7 +406,7 @@ def change_admin_doc_selection(request):
     data = serializers.serialize('json', data)
     return HttpResponse(data, content_type="application/json")
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def change_admin_service_selection(request):
     idb = request.POST.get('id',0)
     s = models.Service.objects.filter(pk=idb)
@@ -416,7 +415,7 @@ def change_admin_service_selection(request):
     data = serializers.serialize('json', data)
     return HttpResponse(data, content_type="application/json")
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def change_admin_video_selection(request):
     idb = request.POST.get('id',0)
     v = models.Video.objects.filter(pk=idb)
@@ -425,7 +424,7 @@ def change_admin_video_selection(request):
     data = serializers.serialize('json', data)
     return HttpResponse(data, content_type="application/json")
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def change_admin_article(request):
     idb = request.POST.get('id',0)
     be = models.HomeArticleEntry.objects.filter(article=idb)
@@ -434,37 +433,37 @@ def change_admin_article(request):
     data = serializers.serialize('json', data)
     return HttpResponse(data, content_type="application/json")
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def delete_admin_service(request):
     idb = request.POST.get('id',0)
     models.Service.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def delete_admin_article(request):
     idb = request.POST.get('id',0)
     models.HomeArticle.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def delete_admin_projinst(request):
     idb = request.POST.get('id',0)
     models.InstitutionProject.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
   
-@user_passes_test(admin_logged_in)  
+@user_passes_test(decorators.admin_logged_in)  
 def delete_admin_quote(request):
     idb = request.POST.get('id',0)
     models.Quote.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def delete_admin_doc(request):
     idb = request.POST.get('id',0)
     models.Document.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def delete_admin_video(request):
     idb = request.POST.get('id',0)
     models.Video.objects.filter(pk=idb).delete()
@@ -492,19 +491,19 @@ def get_blog_entry(idb):
     combined = list(chain(b, be))
     return serializers.serialize('json', combined)
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def change_admin_blog(request):
     idb = request.POST.get('id',0)
     data = get_blog_entry(idb)  
     return HttpResponse(data, content_type="application/json")
 
-@user_passes_test(admin_logged_in)    
+@user_passes_test(decorators.admin_logged_in)    
 def delete_admin_blog(request):
     idb = request.POST.get('id',0)
     models.Blog.objects.filter(pk=idb).delete()
     return HttpResponse("ok", content_type="text/plain")
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def delete_admin_inst(request):
     idb = request.POST.get('id',0)
     models.Institution.objects.filter(pk=idb).delete()
@@ -520,7 +519,7 @@ def get_inst_entry(idb):
     combined = list(chain(b, be))
     return serializers.serialize('json', combined)
 
-@user_passes_test(admin_logged_in) 
+@user_passes_test(decorators.admin_logged_in) 
 def change_admin_inst(request):   
     idb = request.POST.get('id',0)
     data = get_inst_entry(idb)  
@@ -599,7 +598,7 @@ def contact(request):
 # Services
 # ############################################################
 
-@user_passes_test(admin_logged_in)
+@user_passes_test(decorators.admin_logged_in)
 def upload_img(request):
     file = request.FILES['file']
     type = request.POST.get('type')
