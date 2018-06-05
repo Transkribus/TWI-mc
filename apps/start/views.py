@@ -50,7 +50,6 @@ def login_view(request):
     return HttpResponse(template.render(context, request))
  
 def index(request):
-    template = loader.get_template('start/homepage.html')
     subscribed_users = randint(0,1000)
     collaborations = randint(0,1000)
     uploaded_docs = randint(0,1000)
@@ -70,11 +69,10 @@ def index(request):
         'docs' : models.DocumentEntries.objects.filter(lang=translation.get_language()),
         'recaptcha_key' : settings.RECAPTCHA_KEY 
     }
-    return HttpResponse(template.render(context, request))
+    return render(request, 'start/homepage.html', context)
 
 def inst_detail(request):
     idb = request.GET.get('id',0)
-    template = loader.get_template('start/inst_detail.html')
     inst = models.Institution.objects.get(pk=idb)
     desc = models.InstitutionDescription.objects.get(inst=inst, lang=translation.get_language())
     proj = models.InstitutionProjectEntries.objects.filter(project__inst=inst, lang=translation.get_language())
@@ -86,21 +84,17 @@ def inst_detail(request):
         'proj' : proj
     }
     
-    return HttpResponse(template.render(context, request))
+    return render(request,'start/inst_detail.html', context)
 
 def home_article_detail(request):
     idb = request.GET.get('id',0)
     context = {
         'article' : models.HomeArticleEntry.objects.get(article=idb, lang=translation.get_language())
     }
-    
-    template = loader.get_template('start/home_article_detail.html')
-    
-    return HttpResponse(template.render(context, request))
+    return render(request, 'start/home_article_detail.html', context)
         
 @user_passes_test(decorators.admin_logged_in)
 def admin(request):   
-    template = loader.get_template('start/admin.html')
     b = models.BlogEntry.objects.filter(lang=translation.get_language())
     i = models.InstitutionDescription.objects.filter(lang=translation.get_language())
     a = models.HomeArticleEntry.objects.filter(lang=translation.get_language())
@@ -126,9 +120,9 @@ def admin(request):
         'services' : models.ServiceEntries.objects.filter(lang=translation.get_language()) 
     }
 
-    return HttpResponse(template.render(context, request))
+    return render(request,'start/admin.html',context)
 
-@user_passes_test(decorators.admin_logged_in)
+@user_passes_test(decorators.admin_logged_in, )
 def store_admin_service(request):
     idb = int(request.POST.get('id',0))
 
@@ -301,7 +295,6 @@ def store_admin_quote(request):
     if "quote_fname" in request.session:
         fname = request.session["quote_fname"]
         del request.session["quote_fname"]
-    
     
     if idb == 0:
         q = models.Quote.objects.create(name=name, image=fname)
@@ -559,7 +552,7 @@ def register_process(request):
     pw_again = request.POST.get('pw_again')
     firstName = request.POST.get('firstName')
     lastName = request.POST.get('lastName')
-    #     orcid = request.POST.get('orcid')
+    #  orcid = request.POST.get('orcid')
     gender = request.POST.get('gender')
     
     recaptcha_response = request.POST.get('g-recaptcha-response')
