@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-22 10:54+0000\n"
+"POT-Creation-Date: 2018-06-05 06:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Eva M. Lang, ABP <eva.lang@bistum-passau.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1041,6 +1041,7 @@ msgstr "Zitate"
 #: apps/start/templates/start/admin.html:156
 #: apps/start/templates/start/admin.html:519
 #: apps/start/templates/start/homepage.html:148
+#: apps/start/templates/start/includes/footer.html:28
 #: apps/start/templates/start/includes/menu.html:74
 msgid "Documents"
 msgstr "Dokumente"
@@ -1048,13 +1049,14 @@ msgstr "Dokumente"
 #: apps/start/templates/start/admin.html:160
 #: apps/start/templates/start/admin.html:584
 #: apps/start/templates/start/homepage.html:183
+#: apps/start/templates/start/includes/footer.html:32
 #: apps/start/templates/start/includes/menu.html:78
 msgid "Videos"
 msgstr "Videos"
 
 #: apps/start/templates/start/admin.html:163
 #: apps/start/templates/start/admin.html:243
-#: apps/start/templates/start/homepage.html:294
+#: apps/start/templates/start/homepage.html:304
 #: apps/start/templates/start/includes/footer.html:20
 #: apps/start/templates/start/includes/menu.html:45
 msgid "Services"
@@ -1218,8 +1220,8 @@ msgstr "Schauen sie sich unsere Arbeit genauer an"
 #: apps/start/templates/start/homepage.html:218
 #: apps/start/templates/start/homepage.html:234
 #: apps/start/templates/start/homepage.html:249
-#: apps/start/templates/start/homepage.html:315
-#: apps/start/templates/start/homepage.html:316
+#: apps/start/templates/start/homepage.html:325
+#: apps/start/templates/start/homepage.html:326
 #, fuzzy
 #| msgid "Learn More"
 msgid "Learn more"
@@ -1275,70 +1277,83 @@ msgstr ""
 "der Angebote"
 
 #: apps/start/templates/start/homepage.html:266
-msgid "Watch a video on YouTube – Read our HowTo guides"
-msgstr "Schauen sie sich ein Video auf Youtube an - Lesen sie die Anleitungen"
+msgid "Watch a video on YouTube"
+msgstr "Schauen sie sich ein Video auf Youtube an"
 
-#: apps/start/templates/start/homepage.html:269
-msgid "Download version 1.4. Download version 1.4 for Mac"
-msgstr "Download Version 1.4. Download Version 1.4 für Mac"
+#: apps/start/templates/start/homepage.html:270
+msgid "Read our HowTo guides"
+msgstr "Lesen sie die Anleitungen"
 
-#: apps/start/templates/start/homepage.html:298
+#: apps/start/templates/start/homepage.html:275
+msgid "Download version 1.4."
+msgstr "Version 1.4. herunterladen"
+
+#: apps/start/templates/start/homepage.html:279
+msgid "Download version 1.4 for Mac"
+msgstr "Version 1.4. für Mac herunterladen"
+
+#: apps/start/templates/start/homepage.html:308
 msgid ""
 "Transkribus revolutionizes the way you are accessing and working with "
 "historical documents"
 msgstr "Transkribus revolutioniert den Zugriff und die Arbeitsweise"
 
-#: apps/start/templates/start/homepage.html:315
+#: apps/start/templates/start/homepage.html:325
 msgid "Hide"
 msgstr "Ausblenden"
 
-#: apps/start/templates/start/homepage.html:339
+#: apps/start/templates/start/homepage.html:349
 #, fuzzy
 #| msgid "Most Active Users"
 msgid "Subscribed Users"
 msgstr "Angemeldete Benutzer"
 
-#: apps/start/templates/start/homepage.html:349
+#: apps/start/templates/start/homepage.html:359
 #, fuzzy
 #| msgid "Collections"
 msgid "Collaborations"
 msgstr "Kooperationen"
 
-#: apps/start/templates/start/homepage.html:359
+#: apps/start/templates/start/homepage.html:369
 #, fuzzy
 #| msgid "Documents"
 msgid "Uploaded Documents"
 msgstr "Hochgeladene Dokumente"
 
-#: apps/start/templates/start/homepage.html:369
+#: apps/start/templates/start/homepage.html:379
 msgid "Trained models"
 msgstr "Geschulte Modelle"
 
-#: apps/start/templates/start/homepage.html:388
+#: apps/start/templates/start/homepage.html:398
 #: apps/start/templates/start/includes/footer.html:24
 #: apps/start/templates/start/includes/menu.html:63
 msgid "Latest News"
 msgstr "Neueste Nachrichten"
 
-#: apps/start/templates/start/homepage.html:392
+#: apps/start/templates/start/homepage.html:402
 msgid "We share our best ideas in our blog"
 msgstr "Wir teilen unsere besten Ideen in unserem Blog"
 
-#: apps/start/templates/start/homepage.html:395
+#: apps/start/templates/start/homepage.html:405
 msgid "Show all blog entries"
 msgstr "Zeige alle Blog Einträge"
 
-#: apps/start/templates/start/homepage.html:417
+#: apps/start/templates/start/homepage.html:427
 #, fuzzy
 #| msgid "Learn More"
 msgid "Read More"
 msgstr "Weiterlesen"
 
-#: apps/start/templates/start/homepage.html:478
+#: apps/start/templates/start/homepage.html:455
+#: apps/start/templates/start/homepage.html:457
+msgid "Testimonial Picture"
+msgstr ""
+
+#: apps/start/templates/start/homepage.html:492
 msgid "Contact Us"
 msgstr "Kontakt"
 
-#: apps/start/templates/start/homepage.html:482
+#: apps/start/templates/start/homepage.html:496
 msgid ""
 "If you have a specific service or question in mind, please don’t hesitate to "
 "contact us and discuss it with our team of professionals."
@@ -1346,86 +1361,86 @@ msgstr ""
 "Wenn sie eine spezielle Dienstleistung oder Fragen haben, zögern sie nicht "
 "uns zu kontaktieren und es mit unserem Expertenteam zu besprechen"
 
-#: apps/start/templates/start/homepage.html:495
-#: apps/start/templates/start/homepage.html:496
+#: apps/start/templates/start/homepage.html:509
+#: apps/start/templates/start/homepage.html:510
 msgid "Full name"
 msgstr "Vollständiger Name"
 
-#: apps/start/templates/start/homepage.html:502
+#: apps/start/templates/start/homepage.html:516
 msgid "Email address"
 msgstr "E-Mail Adresse"
 
-#: apps/start/templates/start/homepage.html:503
+#: apps/start/templates/start/homepage.html:517
 #, fuzzy
 #| msgid "Your version"
 msgid "Your email"
 msgstr "Ihre E-Mail"
 
-#: apps/start/templates/start/homepage.html:509
-#: apps/start/templates/start/homepage.html:510
+#: apps/start/templates/start/homepage.html:523
+#: apps/start/templates/start/homepage.html:524
 #, fuzzy
 #| msgid "Page number"
 msgid "Phone number"
 msgstr "Telefonnummer"
 
-#: apps/start/templates/start/homepage.html:516
-#: apps/start/templates/start/homepage.html:517
+#: apps/start/templates/start/homepage.html:530
+#: apps/start/templates/start/homepage.html:531
 msgid "Your message"
 msgstr "Ihre Nachricht"
 
-#: apps/start/templates/start/homepage.html:522
-#: apps/start/templates/start/includes/footer.html:30
+#: apps/start/templates/start/homepage.html:536
+#: apps/start/templates/start/includes/footer.html:38
 #: apps/start/templates/start/includes/menu.html:92
 msgid "Contact us"
 msgstr "Kontakt"
 
-#: apps/start/templates/start/homepage.html:528
+#: apps/start/templates/start/homepage.html:542
 msgid "TRANSKRIBUS Team at University of Innsbruck"
 msgstr "TRANSKRIBUS Team an der Universität Innsbruck"
 
-#: apps/start/templates/start/homepage.html:529
+#: apps/start/templates/start/homepage.html:543
 msgid "E-mail"
 msgstr "E-Mail"
 
-#: apps/start/templates/start/homepage.html:532
+#: apps/start/templates/start/homepage.html:546
 msgid "Digitisation and Digital Preservation group"
 msgstr "Gruppe für Digitalisierung und digitale Archivierung"
 
-#: apps/start/templates/start/homepage.html:533
+#: apps/start/templates/start/homepage.html:547
 msgid "University of Innsbruck"
 msgstr "Universität Innsbruck"
 
-#: apps/start/templates/start/homepage.html:534
+#: apps/start/templates/start/homepage.html:548
 msgid "Innrain 52"
 msgstr "Innrain 52"
 
-#: apps/start/templates/start/homepage.html:535
+#: apps/start/templates/start/homepage.html:549
 msgid "6020 Innsbruck"
 msgstr "6020 Innsbruck"
 
-#: apps/start/templates/start/homepage.html:536
+#: apps/start/templates/start/homepage.html:550
 msgid "Austria"
 msgstr "Österreich"
 
-#: apps/start/templates/start/homepage.html:537
+#: apps/start/templates/start/homepage.html:551
 msgid "Phone:"
 msgstr "Telefonnummer"
 
-#: apps/start/templates/start/homepage.html:539
-#: apps/start/templates/start/homepage.html:540
+#: apps/start/templates/start/homepage.html:553
+#: apps/start/templates/start/homepage.html:554
 msgid "Impressum"
 msgstr "Impressum"
 
-#: apps/start/templates/start/includes/footer.html:27
+#: apps/start/templates/start/includes/footer.html:35
 #: apps/start/templates/start/includes/menu.html:88
 msgid "Calendar"
 msgstr "Kalender"
 
-#: apps/start/templates/start/includes/footer.html:36
+#: apps/start/templates/start/includes/footer.html:44
 msgid "Copyright 2018 DEA - All Rights Reserved"
 msgstr "Urheberrecht 2018 DEA - Alle Rechte sind vorbehalten"
 
-#: apps/start/templates/start/includes/footer.html:40
+#: apps/start/templates/start/includes/footer.html:48
 #, fuzzy
 #| msgid ""
 #| " and has received funding from the European Union's Horizon 2020 Research "
