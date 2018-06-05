@@ -17,7 +17,7 @@ class CollectionListView(LoginRequiredWithCookieMixin, ListView):
     template_name = 'library/collection_list.html'
     queryset = models.Collection.objects.all()
     form_class = forms.ListForm
-    paginate_by = 10
+    paginate_by = 12
     paginator_class = paginator.Paginator
 
     def get_queryset(self):
@@ -74,7 +74,7 @@ class CollectionListView(LoginRequiredWithCookieMixin, ListView):
 class DocumentListView(LoginRequiredWithCookieMixin, ListView):
     template_name = 'library/document_list.html'
     form_class = forms.ListForm
-    paginate_by = 10
+    paginate_by = 12
     paginator_class = paginator.Paginator
 
     def get_queryset(self):
