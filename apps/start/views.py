@@ -25,14 +25,10 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.files.storage import default_storage
-from apps.utils.services import TranskribusSession
+#from apps.utils.services import TranskribusSession
+import apps.transkribus.services  
 from . import models
 from . import decorators
-
-
-#from . import Services as serv 
-
-ts = TranskribusSession()
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -519,7 +515,7 @@ def change_admin_inst(request):
     return HttpResponse(data, content_type="application/json")
     
 def logout_process(request):
-    ts.invalidate()
+    apps.transkribus.services.logout(request.session['user']['session_id'])
     del request.session['user']
     request.session.modified = True
     logout(request)
@@ -530,13 +526,12 @@ def login_process(request):
     p = request.POST.get('password','')
       
     try:
-        curr_user = ts.login(e,p)
+        curr_user = apps.transkribus.services.login(e,p)
+        print(curr_user)
         if not (curr_user is None):
             User.objects.filter(username=e).delete()
-            user = User.objects.create_user(curr_user['userName'], curr_user['email'], p, is_superuser = True, first_name=curr_user['firstname'], last_name= curr_user['lastname'])
+            user = User.objects.create_user(curr_user['username'], curr_user['email'], p, is_superuser = True, first_name=curr_user['first_name'], last_name= curr_user['last_name'])
             user.save()
-            #user = authenticate(username=u, password=p) 
-            
             login(request, user)
         request.session['user'] = curr_user
         request.session.modified = True 
