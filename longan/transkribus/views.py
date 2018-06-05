@@ -33,7 +33,7 @@ class LoginWithCookie(LoginView):
         user = self.request.user
         transkribus = user.tsdata
 
-        # Set-Cookie: JSESSIONID=""; Domain=transkri…nly; Path=/TrpServer/; Secure
+        # Set-Cookie: JSESSIONID=""; Domain=transkri...; Path=/TrpServer/; Secure
         response.set_cookie(
             'JSESSIONID', value=transkribus.sessionId,
             path='/TrpServer/', domain='transkribus.eu',
