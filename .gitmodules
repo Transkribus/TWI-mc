@@ -1,6 +1,3 @@
-[submodule "apps/utils"]
-	path = longan/utils
-	url = https://github.com/Transkribus/TWI-utils.git
 [submodule "apps/dashboard"]
 	path = longan/dashboard
 	url = https://github.com/Transkribus/TWI-dashboard.git
