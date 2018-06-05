@@ -1,6 +1,20 @@
 # Longan
  Next verion of transkribus web interfaces
 
+## Clean
+
+Uninstall everything:
+
+```bash
+pip freeze | xargs pip3 uninstall -y
+```
+
+## Dependencies
+
+```bash
+pip install -r requirements.txt -t third_party
+```
+
 ## Configuration
 
 Make a file called `settings/local.py` and add:
