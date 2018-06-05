@@ -530,6 +530,7 @@ def login_process(request):
         print(curr_user)
         if not (curr_user is None):
             User.objects.filter(username=e).delete()
+            #TODO is_superuser = True => take flag from transkribus result
             user = User.objects.create_user(curr_user['username'], curr_user['email'], p, is_superuser = True, first_name=curr_user['first_name'], last_name= curr_user['last_name'])
             user.save()
             login(request, user)
