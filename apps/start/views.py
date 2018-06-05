@@ -1,3 +1,14 @@
+import uuid 
+import os
+from random import randint
+from itertools import chain
+import datetime
+import json
+import requests
+from PIL import Image
+import logging
+from locale import format_string
+from decimal import Decimal
 from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from django.template import loader
@@ -11,24 +22,13 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
-from decimal import Decimal
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from apps.utils.services import TranskribusSession
 from django.core.files.storage import default_storage
-import uuid 
-import os
-from random import randint
-from itertools import chain
-import datetime
-import json
-import requests
-from PIL import Image
-import logging
+from apps.utils.services import TranskribusSession
 from . import models
 from . import decorators
 
-from locale import format_string
 
 #from . import Services as serv 
 
