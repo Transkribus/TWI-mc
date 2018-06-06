@@ -13,7 +13,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(PROJECT_ROOT, 'tmp/db.sqlite3'),
         'OPTIONS': {
-            'TIMEOUT': 60
+            'timeout': 60
         }
     }
 }
