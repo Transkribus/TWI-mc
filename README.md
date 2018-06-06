@@ -46,6 +46,10 @@ RECAPTCHA_PUBLIC_KEY = 'your-public-key'
 RECAPTCHA_PRIVATE_KEY = 'your-private-key'
 ```
 
+### Logging
+
+When logging to a file make sure it's located at a location such as `/var/log/my-app/errors` rather than inside your project directory. Otherwise your webserver will put a file in your project directory that you are not permitted to move or delete.
+
 ## Database Migrations
 
 To set up and run (with the local development environment):
