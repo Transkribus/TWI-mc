@@ -1,8 +1,7 @@
 from .base import *
+from .secret import *
 
 BASE_URL = '/read'
-
-SECRET_KEY = 'secret'
 
 DEBUG = False
 
