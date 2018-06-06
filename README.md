@@ -19,11 +19,14 @@ pip install -r requirements.txt -t third_party
 
 ## Configuration
 
+Create `config/settings/secret.py` like so:
+```python
+SECRET_KEY = 'your-secret-key'
+```
+
 Review `config/settings/production.py`:
 
 ```python
-SECRET_KEY = 'your-secret-key-goes-here'
-
 ALLOWED_HOSTS = ['your-domain-goes-here']
 
 DATABASES = {
