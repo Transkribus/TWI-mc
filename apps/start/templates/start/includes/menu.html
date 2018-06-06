@@ -102,7 +102,7 @@
                             </a>
                         </li>
                         
-                         {% if True  %} <!-- TODO: request.session.user.is_superuser == 'True' -->
+                         {% if request.session.user.is_superuser   %} 
                             <li><a href="start_admin">{% trans 'Administrator' %}</a></li>
                         {% endif %}
                         
