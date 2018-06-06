@@ -2,7 +2,9 @@ import logging
 import json
 
 def boolean(value):
-    if value == 'true':
+    if value == True:
+        return True
+    elif value == 'true':
         return True
     elif value == '1':
         return True
