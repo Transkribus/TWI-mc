@@ -36,9 +36,9 @@ LOGGING = {
     },
     'handlers': {
         'logfile': {
-            'level': 'WARN',
+            'level': 'ERROR',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(PROJECT_ROOT, 'logs', 'errors'),
+            'filename': os.path.join('/var/logs/path/to/dir/errors'),
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'request',
@@ -51,7 +51,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console', 'logfile'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'WARN'),
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
         },
     },
 }
