@@ -1,20 +1,30 @@
 # Longan
  Next verion of transkribus web interfaces
 
+## Clean
+
+Uninstall everything:
+
+```bash
+pip freeze | xargs pip uninstall -y
+```
+
+## Dependencies
+
+```bash
+pip install -r requirements.txt -t third_party
+```
+
+
+
 ## Configuration
 
-Make a file called `settings/local.py` and add:
+Review `config/settings/production.py`:
 
 ```python
-from .base import *
-
 SECRET_KEY = 'your-secret-key-goes-here'
 
-DEBUG = True
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ALLOWED_HOSTS = ['your-domain-goes-here']
 
 DATABASES = {
     'default': {
@@ -33,10 +43,10 @@ To set up and run (with the local development environment):
 
 ```bash
 python manage.py makemigrations transkribus
+python manage.py makemigrations home
 python manage.py makemigrations sandbox
 python manage.py makemigrations waffle
 python manage.py migrate
-
 ```
 
 ## Static Files
@@ -54,6 +64,12 @@ python manage.py loaddata db-${COMMIT}.json
 ```
 
 ## Run
+
+### Production
+
+```bash
+ln longan/wsgi.py mc/wsgi.py
+```
 
 ### Local
 
