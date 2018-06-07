@@ -48,13 +48,14 @@ RECAPTCHA_PRIVATE_KEY = 'your-private-key'
 
 ### Logging
 
-When logging to a file make sure it's located at a location such as `/var/log/my-app/errors` rather than inside your project directory. Otherwise your webserver will put a file in your project directory that you are not permitted to move or delete.
+When logging to a file make sure it's located at a location such as `/var/log/my-app/errors` rather than inside your project directory. Otherwise your webserver might end up with a file created by the web server that you are not permitted to move or delete.
 
 ## Database Migrations
 
 To set up and run (with the local development environment):
 
 ```bash
+export DJANGO_SETTINGS_MODULE=config.settings.production
 python manage.py makemigrations transkribus
 python manage.py makemigrations home
 python manage.py makemigrations sandbox
@@ -63,6 +64,8 @@ python manage.py migrate
 ```
 
 ## Create Admin
+
+This is step does not apply to the local environment.
 
 ```bash
 python manage.py createsuperuser
@@ -84,17 +87,17 @@ python manage.py loaddata db-${COMMIT}.json
 
 ## Run
 
-### Production
+### Local
+
+For running the application locally use this:
 
 ```bash
-ln longan/wsgi.py mc/wsgi.py
+python manage.py runserver --settings=longan.settings.local
 ```
 
-NOTE: This might not work with apache mod_wsgi.
-
-### Local
+Or ...
 
 ```bash
 export DJANGO_SETTINGS_MODULE=longan.settings.local
-python manage.py runserver --settings=longan.settings.local
+python manage.py runserver
 ```
