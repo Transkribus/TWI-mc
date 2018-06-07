@@ -1,6 +1,5 @@
 from .base import *
-
-SECRET = 'this-is-just-for-local-development'
+from .secret import *
 
 DEBUG = True
 
