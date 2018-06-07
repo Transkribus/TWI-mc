@@ -1,9 +1,11 @@
 from django.conf import settings
 
+from .apps import LibraryConfig as AppConfig
+
 class TranskribusRouter:
 
     DATABASE_NAME = 'UIBK'
-    APP_NAME = 'collections'
+    APP_NAME = AppConfig.name
 
     def db_for_read(self, model, **hints):
 
