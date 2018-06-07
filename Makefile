@@ -1,10 +1,13 @@
 .PHONY: migrations
 
-PYTHON_VERSION := 3.6
+PYTHON_VERSION ?= 3.6
 PIP := pip${PYTHON_VERSION}
 PYTHON := python${PYTHON_VERSION}
 APP_MAIN := twi-mc
 APP_SETTINGS := config.settings.production
+
+debug:
+	echo ${PYTHON_VERSION}
 
 virtualenv:
 	python${PYTHON_VERSION} -m venv venv
