@@ -1,7 +1,36 @@
 # Longan
  Next verion of transkribus web interfaces
 
-## Clean
+## Makefile
+
+First, set you must set the Python version you would like to use, e.g.:
+
+```bash
+export PYTHON_VERSION=3.6
+```
+
+It is recommended that you also create a virtual environment:
+
+```bash
+make virtualenv
+source venv/bin/activate
+```
+
+Then you can run:
+
+```bash
+make install
+```
+
+To verify that the project is set up correctly run:
+
+```bash
+make check
+```
+
+## Manual
+
+### Clean
 
 Uninstall everything:
 
@@ -9,13 +38,13 @@ Uninstall everything:
 pip freeze | xargs pip uninstall -y
 ```
 
-## Dependencies
+### Dependencies
 
 ```bash
 pip install -r requirements.txt -t third_party
 ```
 
-## Configuration
+### Configuration
 
 If you're mainly interested in running the application locally for testing or development, what `config/settings/local.py` is most likely what you're looking for. In that case you can skip to the [section on migrations section](#database-migrations).
 
@@ -46,11 +75,11 @@ RECAPTCHA_PUBLIC_KEY = 'your-public-key'
 RECAPTCHA_PRIVATE_KEY = 'your-private-key'
 ```
 
-### Logging
+#### Logging
 
 When logging to a file make sure it's located at a location such as `/var/log/my-app/errors` rather than inside your project directory. Otherwise your webserver might end up with a file created by the web server that you are not permitted to move or delete.
 
-## Database Migrations
+### Database Migrations
 
 To set up and run (with the local development environment):
 
@@ -63,7 +92,7 @@ python manage.py makemigrations waffle
 python manage.py migrate
 ```
 
-## Create Admin
+### Create Admin
 
 This is step does not apply to the local environment.
 
@@ -71,13 +100,13 @@ This is step does not apply to the local environment.
 python manage.py createsuperuser
 ```
 
-## Static Files
+### Static Files
 
 ```bash
 python manage.py collectstatic
 ```
 
-## Populate Test Database
+### Populate Test Database
 
 Obtain database dump for most recent commit of _models.py_.
 
@@ -85,9 +114,9 @@ Obtain database dump for most recent commit of _models.py_.
 python manage.py loaddata db-${COMMIT}.json
 ```
 
-## Run
+### Run
 
-### Local
+#### Local
 
 For running the application locally use this:
 
