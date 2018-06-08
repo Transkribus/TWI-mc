@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-{% include "start/includes/head.html" %} 
+{% include "home/includes/head.html" %} 
 
 <body  data-spy="scroll" data-target="header">
 <script>
@@ -22,14 +22,14 @@ var blog = [];
 {% endfor %} 
 
 </script>
-{% include "start/includes/menu.html" %}
+{% include "home/includes/menu.html" %}
 
  
 <!--cover section slider -->
 <section id="home" class="home bg-light">
     <ul class="hero_carousel owl-carousel owl-theme">
          {% for a in articles %} 
-              <li class="vh80"  style="background: url('{{baseUrl}}start/img/upload/{{a.article.image}}') no-repeat fixed center;">
+              <li class="vh80"  style="background: url('{{baseUrl}}home/img/upload/{{a.article.image}}') no-repeat fixed center;">
                     <div class="slider_content">
                         <div class="slider-content-inner">
                             <div class="container">
@@ -64,7 +64,7 @@ var inst = [];
         <h1>{% trans 'Institutions' %} </h1>
         <select id="institution-select"  onchange="change_inst_select($(this).val())">
             {% for i in inst %}
-                <option value="{{i.inst.pk}}" data-iconurl="../static/start/img/upload/{{i.inst.image}}" data-text="{{i.name}}" />
+                <option value="{{i.inst.pk}}" data-iconurl="../static/home/img/upload/{{i.inst.image}}" data-text="{{i.name}}" />
              {% endfor %} 
         </select>
        <br/><br/>
@@ -117,7 +117,7 @@ var inst = [];
                           title: '{{i.name}}',
                           id : '{{i.pk}}',
                           description : '{{i.loclabel}}',
-                          icon : {url: '../static/start/img/upload/{{i.inst.image}}', scaledSize: new google.maps.Size(width, height)} 
+                          icon : {url: '../static/home/img/upload/{{i.inst.image}}', scaledSize: new google.maps.Size(width, height)} 
                         });
                 }
                 marker.push(m);
@@ -254,7 +254,7 @@ var docs = [];
     </div>
 </section>
 
-<section class="bg-fixed-img pt120 pb120" style="background: url(../static/start/img/buecher_900.jpg);">
+<section class="bg-fixed-img pt120 pb120" style="background: url(../static/home/img/buecher_900.jpg);">
     <div class="overlay overlay_primary"></div>
     <div class="container">
         <div class="row justify-content-center text-center">
@@ -262,11 +262,21 @@ var docs = [];
                 <h3 class="color-light">
                     {% trans 'Our expert client (TranskribusX) enables you to carry out all Transkribus services by your own. Free of charge with unlimited use of services.' %}
                 </h3>
-                <a href="#" class="btn btn-rounded btn-light">
-                   {% trans 'Watch a video on YouTube – Read our HowTo guides' %}
+                <a href="https://www.youtube.com/channel/UC-txVgM31rDTGlBnH-zpPjA" style="width:400px" target="_plain" class="btn btn-rounded btn-light">
+                   {% trans 'Watch a video on YouTube' %}
                 </a>
-                <a href="#" class="btn btn-rounded btn-light">
-                   {% trans 'Download version 1.4. Download version 1.4 for Mac' %}
+                <br/>
+                <a href="https://transkribus.eu/wiki/images/7/77/How_to_use_TRANSKRIBUS_-_10_steps.pdf" style="width:400px" target="_plain" class="btn btn-rounded btn-light">
+                   {% trans 'Read our HowTo guides' %}
+                </a>
+                
+                <br/>
+                 <a href="https://transkribus.eu/TrpServer/rest/downloadLatestGui" style="width:400px" target="_plain" class="btn btn-rounded btn-light">
+                   {% trans 'Download version 1.4.' %}
+                </a>
+                <br/>
+                <a href="https://transkribus.eu/TrpServer/rest/downloadLatestGui?packageType=mac" style="width:400px" target="_plain" class="btn btn-rounded btn-light">
+                   {% trans 'Download version 1.4 for Mac' %}
                 </a>
             </div>
         </div>
@@ -404,7 +414,7 @@ var services = [];
                         <div class="item ">
                             <article class="blog_box_one">
                                 <div class="blog_box_img" style="height:500px">
-                                    <img src="../static/start/img/upload/{{b.blog.image}}" alt="{{b.title}}" >
+                                    <img src="../static/home/img/upload/{{b.blog.image}}" alt="{{b.title}}" >
                                 </div>
                                 <div class="blog_box_body">
                                     <span>{{b.changed}}</span>
@@ -442,9 +452,9 @@ var services = [];
                                 <i class="icon-quote"></i>
                                 <h5> {{q.content|safe}} </h5>
                                  {% if q.quote.image %}
-                                    <img src="../static/start/img/upload/{{q.quote.image}}" alt="{% trans 'Testimonial Picture' %}: {{q.quote.name}}">
+                                    <img src="../static/home/img/upload/{{q.quote.image}}" alt="{% trans 'Testimonial Picture' %}: {{q.quote.name}}">
                                 {% else %}
-                                    <img src="../static/start/img/avatar.jpg" alt="{% trans 'Testimonial Picture' %}: {{q.quote.name}}">
+                                    <img src="../static/home/img/avatar.jpg" alt="{% trans 'Testimonial Picture' %}: {{q.quote.name}}">
                                 {% endif %}
                                 <h6>
                                     {{q.quote.name}}
@@ -591,14 +601,14 @@ var services = [];
 
 
 
-{% include "start/includes/footer.html" %} 
+{% include "home/includes/footer.html" %} 
 
 
 <!-- Custom js -->
-<script src="{% static 'start/assets/js/main.js' %}"></script>
+<script src="{% static 'home/assets/js/main.js' %}"></script>
 <script src='https://www.google.com/recaptcha/api.js'></script>
 
-{% include "start/modals/imprint.html" %} 
+{% include "home/modals/imprint.html" %} 
 
 
 

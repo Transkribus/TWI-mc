@@ -2,7 +2,7 @@ INSTALLED_APPS = [
     'start.apps.StartConfig'
 ]
 
-APP_BASEURL = '/start/'
+APP_BASEURL = '/home/'
 #APPEND_SLASH = True
 
 
