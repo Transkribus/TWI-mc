@@ -29,6 +29,8 @@ urlpatterns = [
     url(r'^projects/', include('projects.urls', namespace='projects')),
     url(r'^admin/', admin.site.urls),
 
+    url(r'^edit/', include('edit.urls', namespace='edit')),
+
     # accounts
     url('logout/', LogoutView.as_view(), name='logout'),
     url('^login/$', LoginWithCookie.as_view(template_name='registration/login-with-cookie.html'), name='login'),
