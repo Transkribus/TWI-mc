@@ -12,9 +12,11 @@ SECRET_KEY = 'your-secret-key'
 
 Review the settings for you desired environment. For local development just use `local.py`. In most cases the settings will probably work without any making any changes.
 
-To set up the application for production use `config/settings/production.py`:
+To set up the application for production adjust `config/settings/production.py`:
 
 ```python
+BASE_URL = '/insert-your-url-here'
+
 ALLOWED_HOSTS = ['your-domain-goes-here']
 
 DATABASES = {
