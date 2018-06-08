@@ -3,7 +3,7 @@ from .secret import *
 
 BASE_URL = '/readTest'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['transkribus.eu']
 
@@ -16,8 +16,6 @@ DATABASES = {
         }
     }
 }
-
-DATABASE_ROUTERS = ['library.routers.TranskribusRouter']
 
 STATIC_URL = '/'.join([BASE_URL, STATIC_URL])
 MEDIA_URL = '/'.join([BASE_URL, MEDIA_URL])
