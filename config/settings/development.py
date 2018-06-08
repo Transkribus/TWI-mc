@@ -1,9 +1,11 @@
 from .base import *
 from .secret import *
 
-BASE_URL = '/readTest'
+BASE_URL = '/longan'
 
-DEBUG = True
+DEBUG = False
+
+MANAGED = True
 
 ALLOWED_HOSTS = ['transkribus.eu']
 
@@ -33,10 +35,10 @@ LOGGING = {
         },
     },
     'handlers': {
-        'logfile': {
+        'file': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(PROJECT_ROOT, 'logs', 'errors'),
+            'filename': os.path.join(PROJECT_ROOT, 'tmp', 'errors'),
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'request',
@@ -48,7 +50,7 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'logfile'],
+            'handlers': ['console', 'file'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
         },
     },
