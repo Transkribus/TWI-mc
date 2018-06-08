@@ -1,11 +1,11 @@
+import logging
 import requests
 #import urllib2
 from django.conf import settings
 import sys
 #from . import settings
 from django.core.urlresolvers import reverse,resolve
-from apps.utils.utils import t_log
-import logging
+from compat.utils.utils import t_log
 
 def get_nav(siblings,focus_id,sibling_id,sibling_content,focus=None):
 
