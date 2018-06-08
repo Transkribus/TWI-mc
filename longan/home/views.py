@@ -11,7 +11,10 @@ from locale import format_string
 
 import requests
 
-from PIL import Image
+try:
+    from PIL import Image
+except ImportError:
+    logging.error("Failed to import Python Imaging Library (PIL)")
 
 from django.shortcuts import render
 from django.views.generic.detail import DetailView
