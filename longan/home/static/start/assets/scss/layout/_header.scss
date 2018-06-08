@@ -1,0 +1,243 @@
+//main header
+.header{
+  min-height: 50px;
+  padding: 0;
+  margin:0;
+  margin-top: 20px;
+  @include single-transition(all,ease-in-out,0.4s);
+  .menu{
+    position: relative;
+  }
+
+  .logo{
+    padding-top: 0;
+    padding-bottom: 0;
+    font-weight: 600;
+    text-transform: capitalize;
+    font-size: 28px;
+    color: $color-light;
+    span{
+      display: block;
+    }
+    img{
+      float: left;
+      width: 39px;
+      margin-right: 3px;
+    }
+  }
+
+  ul.menu li a.nav-link{
+    padding: 20px 12px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: capitalize;
+    display: block;
+    color: $color-light;
+    &:hover{
+      color: $color-primary;
+    }
+  }
+  a.nav-link.active{
+    color: $color-primary !important;
+  }
+
+
+ li{
+    ul{
+      display: none;
+      visibility: hidden;
+    }
+    ul.multi_col{
+      position: absolute;
+      list-style: none;
+      margin: 0;
+      white-space: nowrap;
+      background: $color-dark;
+      border-radius: 3px;
+      @include single-transition(all,0.1s, ease-in-out);
+      padding: 20px;
+      min-width: 250px;
+      float: left;
+      right: 0;
+      li{
+        min-width: 200px;
+        display: inline-block;
+        ul{
+          display: block;
+          visibility: visible;
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          li{
+            display: block;
+            a{
+              color: #999999 !important;
+              padding:7px 10px !important;
+              display: block;
+              margin-left: 0;
+              font-size: 13px;
+              line-height: 22px;
+              word-break: break-all;
+              font-size: 13px;
+              text-transform: capitalize;
+              &:hover{
+                color: #ffffff !important;
+                transform: translate3d(2px, 0, 0);
+                -webkit-transform: translate3d(2px, 0, 0);
+              }
+            }
+          }
+        }
+      }
+    }
+    ul.sub_menu{
+      position: absolute;
+      background: $color-dark;
+      min-width: 250px;
+      padding: 10px;
+      border-radius: 3px;
+      box-shadow: 1px 1px 42px rgba(0, 0, 0, 0.08);
+      li{
+        display: block;
+        a{
+          color: #999999 !important;
+          padding:7px 10px;
+          display: block;
+          margin-left: 0;
+          line-height: 22px;
+          word-break: break-word;
+          font-size: 13px;
+          text-transform: capitalize;
+          &:hover{
+            color: #ffffff !important;
+            transform: translate3d(2px, 0, 0);
+            -webkit-transform: translate3d(2px, 0, 0);
+          }
+        }
+      }
+    }
+  }
+
+}
+
+.navbar{
+  padding: 0;
+}
+
+//header light
+header.header-light{
+  background-color: #FFFFFF;
+  -webkit-box-shadow: 0 0 42px rgba(0,0,0,0.08);
+  box-shadow: 0 0 42px rgba(0,0,0,0.08);
+  .logo{
+    color: $color-black;
+  }
+
+  ul.menu li a.nav-link{
+    color: $color-black;
+    &:hover{
+      color: $color-primary;
+    }
+  }
+  a.nav-link.active{
+    color: $color-primary !important;
+  }
+}
+
+//sticky header
+header.sticky_header{
+  margin-top: 0;
+  background-color: #FFFFFF;
+  -webkit-box-shadow: 0 0 42px rgba(0,0,0,0.08);
+  box-shadow: 0 0 42px rgba(0,0,0,0.08);
+  @include single-transition(all,ease-in-out,0.4s);
+  .logo{
+    color: $color-black;
+  }
+
+  ul.menu li a.nav-link{
+    color: $color-black;
+    &:hover{
+      color: $color-primary;
+    }
+  }
+  a.nav-link.active{
+    color: $color-primary !important;
+  }
+}
+
+//menu button
+.navbar-toggler{
+  border: 1px solid $color-primary;
+  padding: 5px 10px;
+  font-size: 22px;
+  outline: 0 !important;
+  box-shadow: 0 0 0 !important;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+
+@media (min-width:767px){
+  header li:hover > ul{
+    display: block;
+    visibility: visible;
+  }
+}
+
+
+@media(max-width:767px){
+  .header{
+    position: relative !important;
+    margin-top: 0;
+    background-color: #FFFFFF;
+    -webkit-box-shadow: 0 0 42px rgba(0,0,0,0.08);
+    box-shadow: 0 0 42px rgba(0,0,0,0.08);
+    @include single-transition(all,ease-in-out,0.4s);
+
+    .container{
+      padding: 15px !important;
+    }
+    .logo{
+      color: $color-black;
+    }
+
+    ul.menu li a.nav-link{
+      color: $color-black;
+      padding: 10px 7px !important;
+      &:hover{
+        color: $color-primary;
+      }
+    }
+    a.nav-link.active{
+      color: $color-primary !important;
+    }
+  }
+
+  header li > ul{
+    position: static;
+    visibility: visible;
+    width: 100%;
+  }
+  header li ul.multi_col{
+    position: static;
+    visibility: visible;
+    width: 100%;
+    li {
+      display: block;
+      width: 100%;
+    }
+  }
+  header li ul.sub_menu{
+    position: static;
+    visibility: visible;
+    width: 100%;
+  }
+  .header-light ul.menu{
+    padding-bottom: 15px;
+    li a.nav-link{
+      padding: 8px 5px;
+    }
+  }
+
+}
