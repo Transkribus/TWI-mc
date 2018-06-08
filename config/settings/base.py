@@ -23,6 +23,7 @@ INSTALLED_APPS += [
     'library',
     'transkribus',
     'sandbox',
+    'compat',
     # 'dashboard',
     # 'edit',
     # 'search',
