@@ -20,8 +20,9 @@ INSTALLED_APPS = [
 ]
 
 INSTALLED_APPS += [
-    'library',
+    'home',
     'projects',
+    'library',
     'transkribus',
     'sandbox',
     'compat',

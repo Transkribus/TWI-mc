@@ -1,0 +1,251 @@
+
+.footer_three{
+  position: relative;
+  background-color: $color-light;
+  color: $color-dark;
+  .footer_logo{
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+  h4.footer_title{
+    font-weight: 500;
+    text-transform: capitalize;
+    font-size: 20px;
+    position: relative;
+    margin-bottom: 30px;
+    &:after{
+      content: "";
+      border-bottom: solid 1px #ddd;
+      position: absolute;
+      width: 60px;
+      bottom: -10px;
+      left: 0;
+    }
+  }
+  ul.footer_list{
+    width: 49%;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    li a{
+      font-size: 13px;
+      text-transform: capitalize;
+      padding: 4px 0;
+      display: block;
+      color: #868e96;
+      &:hover{
+        color: $color-dark;
+      }
+    }
+  }
+  .footer_info_list{
+    margin-top: 15px;
+    display: block;
+    padding: 0;
+    li{
+      display: block;
+      margin: 10px 0;
+      font-size: 13px;
+      span{
+        padding: 6px;
+      }
+    }
+  }
+  .footer_social{
+    li{
+      display: inline-block;
+      a{
+        font-size: 18px;
+        display: block;
+        padding: 8px;
+        color: #333;
+        &:hover{
+          color: #000000;
+        }
+      }
+    }
+  }
+  .footer_copy{
+    padding: 15px 0;
+    border-top: solid 1px #f7f7f7;
+    color: #000;
+    font-size: 12px;
+    margin-top: 70px;
+  }
+}
+
+.footer_dark{
+  background-color: $color-black !important;
+  color: #FFFFFF !important;
+  h4{
+    color: #ffffff !important;
+  }
+  p{
+    color: #ddd !important;
+  }
+  a{
+    color: #ffffff !important;
+    &:hover{
+      color: #f7f7f7 !important;
+    }
+    &:focus{
+      color: #f7f7f7 !important;
+    }
+  }
+}
+
+.footer_light{
+  background-color: $color-light;
+  color: #333333;
+  h4{
+    color: $color-black;
+  }
+  p{
+    color: #555555;
+  }
+}
+
+.footer_gray{
+  background-color: $color-gray;
+  color: #333333;
+  h4{
+    color: $color-black;
+  }
+  p{
+    color: #555555;
+  }
+}
+
+.footer_one{
+  padding: 25px 0;
+  background-color: #FFFFFF;
+  .list-inline{
+    li{
+      float: left;
+      a{
+        padding: 5px 7px;
+        font-size: 12px;
+        text-transform: capitalize;
+        color: #000000;
+        &:hover{
+          color: $color-primary;
+        }
+      }
+    }
+  }
+  .social-lis-inline{
+    li{
+      float: right;
+      a{
+        padding: 5px;
+        font-size: 16px;
+        text-transform: capitalize;
+        color: #333333;
+        &:hover{
+          color: #000000;
+        }
+      }
+    }
+  }
+  p{
+    margin-top: 10px;
+    font-size: 11px;
+    color: #868e96;
+    text-align: right;
+  }
+  h5{
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+}
+
+.footer_two{
+  position: relative;
+  background-color: $color-light;
+  padding: 10px 0;
+  .footer_logo{
+    a{
+      font-size: 24px;
+      text-transform: capitalize;
+      color: #000000;
+      font-weight: 800;
+    }
+  }
+  .footer_social{
+    text-align: right;
+    a{
+      padding: 10px;
+      font-size: 18px;
+      color: #333333;
+      font-weight: 400;
+      &:hover{
+        color: #000000;
+      }
+    }
+  }
+  .footer_list{
+    li a {
+      font-weight: 400;
+      font-size: 13px;
+      color: #000000;
+      &:hover{
+        color: $color-primary;
+      }
+    }
+  }
+}
+
+.footer_four{
+  padding: 25px 0;
+  background-color: #FFFFFF;
+  text-align: center;
+  .list-inline{
+    li{
+      float: none;
+      display: inline-block;
+      a{
+        padding: 5px 7px;
+        font-size: 12px;
+        text-transform: capitalize;
+        color: #000000;
+        &:hover{
+          color: $color-primary;
+        }
+      }
+    }
+  }
+  p{
+    margin-top: 10px;
+    font-size: 11px;
+    color: #868e96;
+  }
+}
+.box_shadow{
+  box-shadow: 0 0 42px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width:767px) {
+.footer_one{
+  .list-inline{
+    text-align: center;
+    margin: 0 auto;
+    display: inline-block;
+  }
+  p{
+   text-align: center;
+  }
+}
+
+  .footer_two{
+    .footer_logo{
+      text-align: center;
+    }
+    .footer_social {
+      text-align: center;
+      margin-top: 15px;
+    }
+  }
+
+}

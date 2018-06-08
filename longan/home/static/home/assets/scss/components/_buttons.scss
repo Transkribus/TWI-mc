@@ -1,0 +1,111 @@
+.btn{
+  font-size: 13px;
+  line-height: 25px;
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #fff;
+  padding: 12px 35px;
+  border-radius: 4px;
+  outline: 0 !important;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0) !important;
+  cursor: pointer;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  letter-spacing: 1px;
+  background-color: $color-black;
+  border: solid 1px $color-black;
+  @include single-transition(all , 300ms , ease-in-out);
+  &:hover{
+    color: $color-black;
+    background-color: #fff;
+    border: solid 1px $color-black;
+    @include single-transition(all , 300ms , ease-in-out);
+  }
+  &:focus{
+    outline: 0 !important;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+.btn-sm{
+  padding: 10px 25px;
+}
+.btn-lg{
+  padding: 14px 55px;
+}
+.btn_center{
+  margin: 0 auto;
+  display: block;
+}
+.btn-icon{
+  font-size: 14px;
+  margin-left: 7px;
+}
+.btn-rounded{
+  border-radius: 50px;
+}
+
+.btn_shape{
+  border-radius: 0;
+}
+
+.btn-outline-primary{
+  background-color: transparent;
+  color: $color-primary;
+  border: solid 1px $color-primary;
+  @include single-transition(all , 300ms , ease-in-out);
+  &:hover{
+    color: #ffffff;
+    background-color: $color-primary;
+    border: solid 1px $color-primary;
+    @include single-transition(all , 300ms , ease-in-out);
+  }
+}
+.btn-primary{
+  background-color: $color-primary;
+  color: $color-light;
+  border: solid 1px $color-primary;
+  @include single-transition(all , 300ms , ease-in-out);
+  &:hover{
+    background-color: $color-black;
+    border: solid 1px $color-black;
+    color: $color-light;
+    @include single-transition(all , 300ms , ease-in-out);
+  }
+}
+.btn-dark{
+  background-color: $color-dark;
+  color: $color-light;
+  border: solid 1px $color-dark;
+  @include single-transition(all , 300ms , ease-in-out);
+  &:hover{
+    color: $color-black;
+    background-color: $color-light;
+    border: solid 1px $color-light;
+    @include single-transition(all , 300ms , ease-in-out);
+  }
+}
+.btn-light{
+  background-color: #FFFFFF;
+  color: $color-primary;
+  border: solid 1px #FFFFFF;
+  @include single-transition(all , 300ms , ease-in-out);
+  &:hover{
+    color: #FFFFFF;
+    background-color: $color-black;
+    border: solid 1px $color-black;
+    @include single-transition(all , 300ms , ease-in-out);
+  }
+}
+.btn-trans{
+  background-color: transparent;
+  color: $color-light;
+  border: solid 1px $color-primary;
+  @include single-transition(all , 300ms , ease-in-out);
+  &:hover{
+    color: $color-light;
+    background-color: $color-primary;
+    border: solid 1px $color-primary;
+    @include single-transition(all , 300ms , ease-in-out);
+  }
+}

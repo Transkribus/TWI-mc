@@ -1,0 +1,618 @@
+{% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_language_info_list for LANGUAGES as languages %}
+{% load l10n %}
+{% static "" as baseUrl %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "home/includes/head.html" %} 
+
+<body  data-spy="scroll" data-target="header">
+<script>
+var csrf_token = '{{ csrf_token }}';
+var projects_str = '{% trans 'Projects' %}'
+
+var blog = [];
+{% for b in blogs %}
+    blog[{{forloop.counter}}] = {{b.blog.pk}};
+{% endfor %} 
+
+</script>
+{% include "home/includes/menu.html" %}
+
+ 
+<!--cover section slider -->
+<section id="home" class="home bg-light">
+    <ul class="hero_carousel owl-carousel owl-theme">
+         {% for a in articles %} 
+              <li class="vh80"  style="background: url('{{baseUrl}}home/img/upload/{{a.article.image}}') no-repeat fixed center;">
+                    <div class="slider_content">
+                        <div class="slider-content-inner">
+                            <div class="container">
+                                <div class="slider-content-center">
+                                    <h2>{{a.title}}</h2>
+                                    <div class="title_divider"></div>
+                                    <p> {{a.shortdesc|safe}}</p>
+                                    <a href="home_article_details?id={{a.article.pk}}" target="_plain" class=" btn btn-rounded btn-primary " >
+                                        {% trans 'View Details' %}
+                                    </a>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </li>
+        {% endfor %}        
+    </ul>
+</section>
+<!--cover section slider end -->
+
+<script>
+var inst = [];
+
+{% for i in inst %}
+    inst[{{i.inst.pk}}] = {lat:{{i.inst.lat|unlocalize}}, lng:{{i.inst.lng|unlocalize}}, desc:'{{i.desc|safe}}'};
+{% endfor %} 
+</script>
+
+<section id="institutions" class="bg-light pt120 pb120">
+    <div class="container">
+        <h1>{% trans 'Institutions' %} </h1>
+        <select id="institution-select"  onchange="change_inst_select($(this).val())">
+            {% for i in inst %}
+                <option value="{{i.inst.pk}}" data-iconurl="../static/home/img/upload/{{i.inst.image}}" data-text="{{i.name}}" />
+             {% endfor %} 
+        </select>
+       <br/><br/>
+        <div id="inst_desc"></div>
+        <div id="inst_projects"></div>
+        
+        <div id="map" class="img-rounded"></div>
+        <script>  
+            function fitMarkers()
+            {
+                var bounds = new google.maps.LatLngBounds();                        
+                for (var i = 0; i < marker.length; i++) 
+                {
+                    bounds.extend(marker[i].getPosition());
+                }    
+                map.fitBounds(bounds);
+            }
+           
+            var map;
+            var marker = [];
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat:  47.259659, lng: 11.400375},
+                zoom: 8
+            });
+            {% for i in inst %}
+                var lat = {{i.inst.lat|unlocalize}};
+                var lng = {{i.inst.lng|unlocalize}};
+                
+                
+               
+               if ({{i.inst.img_height}} == 0 )
+               {
+                    m = new google.maps.Marker({
+                          position: {lat:  lat, lng:  lng},
+                          map: map,
+                          title: '{{i.name}}',
+                          id : '{{i.pk}}',
+                          description : '{{i.loclabel}}'
+                        });
+                }    
+                else
+                {
+                    var height = 25;
+                    var width= Math.ceil(height / {{i.inst.img_height}} * {{i.inst.img_width}});
+                
+                    m = new google.maps.Marker({
+                          position: {lat:  lat, lng:  lng},
+                          map: map,
+                          title: '{{i.name}}',
+                          id : '{{i.pk}}',
+                          description : '{{i.loclabel}}',
+                          icon : {url: '../static/home/img/upload/{{i.inst.image}}', scaledSize: new google.maps.Size(width, height)} 
+                        });
+                }
+                marker.push(m);
+                
+            {% endfor %} 
+            fitMarkers();
+          }
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-MuEGMTUtJpr_qgHJICtzY0E7ByCS4hU&amp;callback=initMap"
+        async defer></script>   
+    </div> <!-- content -->
+</section>
+
+
+<script>
+var docs = [];
+{% for d in docs %}
+    var content = '{{d.content|safe}}';
+    docs[{{d.doc.pk}}] = content;
+{% endfor %} 
+</script>
+
+<section id="documents" class="bg-gray pt120 pb120">
+    <div class="container">
+        <div class="section_title text-center mb50 fadeIn wow animated" data-wow-delay="100ms">
+            <i class="icon-newspaper"></i>
+            <h4>
+                {% trans 'Documents' %}
+            </h4>
+            <div class="title_divider"></div>
+            <p>
+                {% trans 'Take a closer look at our work' %}
+            </p>
+        </div>
+         <div class="row justify-content-center">
+            {% for d in docs %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
+                        <i class="justify-content-center {{d.doc.icon}}"></i>
+                        <div class="content justify-content-center text-center">
+                            <h5>
+                                {{d.title}}
+                            </h5>
+                            <p>
+                                {{d.desc|safe}}
+                            </p>
+                            <a id="documents_a_{{d.doc.pk}}" class="btn btn-rounded btn-light" onclick="more_documents('documents_a_{{d.doc.pk}}', {{d.doc.pk}}, '{% trans 'Learn more' %}' , '{% trans 'hide' %}')">
+                                {% trans 'Learn more' %}
+                            </a>
+                        </div>
+                        <div id="documents_more_{{d.doc.pk}}">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %} 
+        </div>
+    </div>
+</section>
+
+<section id="videos" class="bg-light pt120 pb120">
+    <div class="container">
+         <h4>
+            {% trans 'Videos' %}  
+            <span class="header_add_info">
+                ({% trans 'Also visit our ' %} <a target="_plain" href="https://www.youtube.com/channel/UC-txVgM31rDTGlBnH-zpPjA">{% trans 'Youtube-channel' %}</a>)
+            </span>
+        </h4>
+        <div class="row justify-content-center mp50" >
+            {% for v in videos %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="embed-responsive embed-responsive-4by3">
+                        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{{v.video.vid}}"></iframe>
+                    </div>
+                     <b>{{v.title}}</b> <br/>
+                     {{v.desc|safe}}
+                </div>
+            {% endfor %}
+        </div>
+        <br/>
+    </div>
+</section>
+
+<!--about section -->
+<section id="about" class="bg-light pt120 pb120">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-4 col-lg-4">
+                <div class="icon_box_one text-center fadeInLeft wow animated" data-wow-delay="100ms">
+                    <i class=" icon-tools icon-lg color-green"></i>
+                    <h5>
+                        {% trans 'READ – H2020 Project' %}
+                    </h5>
+                    <p>
+                        {% trans 'All started with two EU funded projects' %}
+                    </p>
+                    <br/>
+                    <a href="https://read.transkribus.eu/" target="_plain" class="btn btn-rounded btn-light" >
+                        {% trans 'Learn more' %}
+                    </a>
+                </div>
+            </div>
+
+            <div class=" col-md-4 col-lg-4 col-12">
+                <div class="icon_box_one text-center fadeInLeft wow animated" data-wow-delay="100ms">
+                    <i class="  icon-speedometer icon-lg color-blue"></i>
+                    <h5>
+                        Transkribus
+
+                    </h5>
+                    <p>
+                        {% trans 'A research infrastructure for digitizing, transcribing, recognizing and searching historical documents of any language and script' %}
+                    </p>
+                    <a href="https://read.transkribus.eu/" target="_plain" class="btn btn-rounded btn-light" >
+                        {% trans 'Learn more' %}
+                    </a>
+                </div>
+            </div>
+
+            <div class=" col-md-4 col-lg-4 col-12">
+                <div class="icon_box_one text-center fadeInLeft wow animated" data-wow-delay="100ms">
+                    <i class="icon-search icon-lg color-red"></i>
+                    <h5>
+                        {% trans 'The future' %}
+                    </h5>
+                    <p>
+                        {% trans 'We are in the transition phase from a project to a permanent service' %}
+                    </p>
+                    <a href="https://read.transkribus.eu/" target="_plain" class="btn btn-rounded btn-light" >
+                        {% trans 'Learn more' %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-fixed-img pt120 pb120" style="background: url(../static/home/img/buecher_900.jpg);">
+    <div class="overlay overlay_primary"></div>
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-12 col-md-9">
+                <h3 class="color-light">
+                    {% trans 'Our expert client (TranskribusX) enables you to carry out all Transkribus services by your own. Free of charge with unlimited use of services.' %}
+                </h3>
+                <a href="https://www.youtube.com/channel/UC-txVgM31rDTGlBnH-zpPjA" style="width:400px" target="_plain" class="btn btn-rounded btn-light">
+                   {% trans 'Watch a video on YouTube' %}
+                </a>
+                <br/>
+                <a href="https://transkribus.eu/wiki/images/7/77/How_to_use_TRANSKRIBUS_-_10_steps.pdf" style="width:400px" target="_plain" class="btn btn-rounded btn-light">
+                   {% trans 'Read our HowTo guides' %}
+                </a>
+                
+                <br/>
+                 <a href="https://transkribus.eu/TrpServer/rest/downloadLatestGui" style="width:400px" target="_plain" class="btn btn-rounded btn-light">
+                   {% trans 'Download version 1.4.' %}
+                </a>
+                <br/>
+                <a href="https://transkribus.eu/TrpServer/rest/downloadLatestGui?packageType=mac" style="width:400px" target="_plain" class="btn btn-rounded btn-light">
+                   {% trans 'Download version 1.4 for Mac' %}
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!--about section end-->
+
+
+<script>
+var services = [];
+{% for s in services %}
+    var content = '{{s.content|safe}}';
+    services[{{s.service.pk}}] = content;
+{% endfor %} 
+</script>
+
+<!--our services -->
+<section id="services" class="pt120 pb120 bg-gray">
+    <div class="container">
+        <div class="row justify-content-center mb50">
+            <div class="col-12 col-sm-10 col-md-7">
+                <div class="section_title text-center mb50 fadeInDown wow animated" data-wow-delay="100ms">
+                    <i class="icon-layers"></i>
+                    <h4>
+                         {% trans 'Services' %}
+                    </h4>
+                    <div class="title_divider"></div>
+                    <p>
+                         {% trans 'Transkribus revolutionizes the way you are accessing and working with historical documents' %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+             {% for s in services %} 
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="icon_box_two text-center fadeInLeft wow animated " data-wow-delay="100ms">
+                        <i class="justify-content-center {{s.service.image_css}}"></i>
+                        <div class="content justify-content-center text-center">
+                            <h5>
+                                {{s.title}}
+                            </h5>
+                            <p>
+                                {{s.subtitle|safe}}
+                            </p>
+                            <a id="services_a_{{s.service.pk}}" class="btn btn-rounded btn-light" onclick="more_service('services_a_{{s.service.pk}}', {{s.service.pk}}, '{% trans 'Learn more' %}' , '{% trans 'Hide' %}')">
+                                {% trans 'Learn more' %}
+                            </a>
+                        </div>
+                        <div id="services_more_{{s.service.pk}}">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!--our services end-->
+
+<!--counter -->
+<section class="pt120 pb120 bg-black">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="counter_box_one counter_light  text-center fadeInLeft wow animated" data-wow-delay="100ms">
+                    <i class="lnr lnr-gift"></i>
+                    <span class="counter">{{subscribed_users}}</span>
+                    <h5 class="">
+                       {% trans 'Subscribed Users' %}
+                    </h5>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="counter_box_one counter_light  text-center  fadeInUp wow animated" data-wow-delay="200ms">
+                    <i class="lnr  lnr-users"></i>
+                    <span class="counter">{{collaborations}}</span>
+                    <h5 class="">
+                        {% trans 'Collaborations' %}
+                    </h5>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="counter_box_one counter_light text-center  fadeInDown wow animated" data-wow-delay="300ms">
+                    <i class="lnr  lnr-apartment"></i>
+                    <span class="counter">{{uploaded_docs}}</span>
+                    <h5 class="">
+                        {% trans 'Uploaded Documents' %}
+                    </h5>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-12">
+                <div class="counter_box_one counter_light text-center fadeInRight wow animated" data-wow-delay="400ms">
+                    <i class="lnr  lnr-clock"></i>
+                    <span class="counter">{{trained_models}}</span>
+                    <h5 class="">
+                        {% trans 'Trained models' %}
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--counter end -->
+
+
+
+<!--SECTION BLOG-->
+<section id="blog" class="bg-light pt120 pb120">
+    <div class="container">
+        <div class="row justify-content-center mb20">
+            <div class="col-12 col-sm-10 col-md-6">
+                <div class="section_title text-center mb50 fadeIn wow animated" data-wow-delay="100ms">
+                    <i class="icon-newspaper"></i>
+                    <h4>
+                        {% trans 'Latest News' %}
+                    </h4>
+                    <div class="title_divider"></div>
+                    <p>
+                        {% trans 'We share our best ideas in our blog' %}
+                    </p>
+                    <p>
+                        <a href="blog_all" target="_plain">{% trans 'Show all blog entries' %}</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="blog_carousel owl-carousel" id="blog_carousel">
+                    {% for b in blogs %} 
+                        <div class="item ">
+                            <article class="blog_box_one">
+                                <div class="blog_box_img" style="height:500px">
+                                    <img src="../static/home/img/upload/{{b.blog.image}}" alt="{{b.title}}" >
+                                </div>
+                                <div class="blog_box_body">
+                                    <span>{{b.changed}}</span>
+                                    <h4>{{b.title}}</h4>
+                                    <p>
+                                        {{b.subtitle}}
+                                    </p>
+                                </div>
+                                
+                                <a class="btn btn-rounded btn-light" onclick="blog_detail({{b.blog.pk}})">{% trans 'Read More' %}</a>
+                            </article>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div  class="row">
+            <div id="blog_detail" class="col-12">
+            </div>
+        </div>
+    </div>
+</section>
+<!--SECTION  BLOG end-->
+
+
+<!--SECTION TESTIMONIAL-->
+<section class="pt120 pb120 bg-primary" >
+    <div class="container" >
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-10 col-12">
+                <div class="testimonial_carousel_one testimonial_box_light owl-carousel">
+                    {% for q in quotes %} 
+                        <div class="item">
+                            <div class="testimonial_box_three text-center">
+                                <i class="icon-quote"></i>
+                                <h5> {{q.content|safe}} </h5>
+                                 {% if q.quote.image %}
+                                    <img src="../static/home/img/upload/{{q.quote.image}}" alt="{% trans 'Testimonial Picture' %}: {{q.quote.name}}">
+                                {% else %}
+                                    <img src="../static/home/img/avatar.jpg" alt="{% trans 'Testimonial Picture' %}: {{q.quote.name}}">
+                                {% endif %}
+                                <h6>
+                                    {{q.quote.name}}
+                                </h6>
+                                <p>
+                                    {{q.role}}
+                                </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--SECTION TESTIMONIAL END -->
+
+
+
+<!--Calendar-->
+<section id="calendar" class="bg-light pt120 pb120">
+    <div class="container">
+        <iframe src="https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23FFFFFF&amp;src=478cij0o4oahfug9f1tg64t55k%40group.calendar.google.com&amp;color=%230F4B38&amp;ctz=Europe%2FBerlin" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+    </div>
+</section>
+
+<!--contact us -->
+<section id="contact" class="bg-gray pt120 pb120">
+    <div class="container">
+        <div class="row justify-content-center mb50">
+            <div class="col-12 col-sm-12 col-md-7">
+                <div class="section_title text-center mb50  fadeIn wow animated" data-wow-delay="100ms">
+                    <i class="icon-chat"></i>
+                    <h4>
+                        {% trans 'Contact Us' %}
+                    </h4>
+                    <div class="title_divider"></div>
+                    <p>
+                        {% trans 'If you have a specific service or question in mind, please don’t hesitate to contact us and discuss it with our team of professionals.' %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10">
+                <div class="contact_box_shadow">
+                    <form action="contact" method="post">
+                        {% csrf_token %}
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label>{% trans 'Full name' %}</label>
+                                    <input type="text" class="form-control" placeholder="{% trans 'Full name' %}" name="full_name">
+                                </div>
+                            </div>
+    
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label>{% trans 'Email address' %}</label>
+                                    <input type="email" class="form-control" placeholder="{% trans 'Your email' %}" name="email">
+                                </div>
+                            </div>
+    
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>{% trans 'Phone number' %}</label>
+                                    <input type="text" class="form-control" placeholder="{% trans 'Phone number' %}" name="phone">
+                                </div>
+                            </div>
+    
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>{% trans 'Your message' %}</label>
+                                    <textarea cols="4" class="form-control" placeholder="{% trans 'Your message' %}" name="message"></textarea>
+                                </div>
+                            </div>
+    
+                            <div class="col-12">
+                                <input type="submit" class="btn btn-primary btn_center">{% trans 'Contact us' %}</input>
+                            </div>
+                        </div>
+                    </form>
+                     <div class="row justify-content-center" style="padding-top:20px">
+                        <div class="col-12 col-md-6">
+                            {% trans 'TRANSKRIBUS Team at University of Innsbruck' %} <br/>
+                            {% trans 'E-mail' %}: <a href="mailto:email@transkribus.eu">email@transkribus.eu</a> 
+                         </div>
+                         <div class="col-12 col-md-6">
+                            {% trans 'Digitisation and Digital Preservation group' %} <br/>
+                            {% trans 'University of Innsbruck' %} <br/>
+                            {% trans 'Innrain 52' %} <br/>
+                            {% trans '6020 Innsbruck' %} <br/>
+                            {% trans 'Austria' %} <br/>
+                            {% trans 'Phone:' %} 0043-(0)512-507-8454 <br/>
+                            
+                            <!--  <a data-toggle="modal" data-target="#impressumModal">{% trans 'Impressum' %}</a> <br/> -->
+                            <a href="https://www.uibk.ac.at/impressum/" target="_plain">{% trans 'Impressum' %}</a>
+                         </div>
+                     </div>
+
+                    <div class="row justify-content-center">
+                        <iframe src="https://maps.google.com.ua/maps?q=Universität+Innsbruck+Innrain&amp;hl=en&amp;output=embed" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--contact us end -->
+
+<!--section brand -->
+<!-- <div class="bg-light pt120 pb120">
+    <div class="container">
+        <div class="brand_carousel owl-carousel">
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+            <div class="brand_item no_max text-center">
+                <img src="https://placeholdit.co//i/150x70" alt="brand">
+            </div>
+        </div>
+    </div>
+</div> -->
+<!--section brand end -->
+
+
+
+{% include "home/includes/footer.html" %} 
+
+
+<!-- Custom js -->
+<script src="{% static 'home/assets/js/main.js' %}"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
+{% include "home/modals/imprint.html" %} 
+
+
+
+
+ 
+</body>
+</html>
