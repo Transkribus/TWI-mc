@@ -39,7 +39,7 @@ class User(AbstractUser):
 
         user = self
 
-        from utils.services import TranskribusSession
+        from compat.services import TranskribusSession
         cookies = {'JSESSIONID': self.data.session_id}
         trp_sess = TranskribusSession()
         trp_sess.s.cookies.update(cookies)
