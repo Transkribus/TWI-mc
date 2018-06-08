@@ -3,3 +3,5 @@ django-waffle==0.14.0
 requests==2.11.1
 django-bootstrap3==9.1.0
 django-recaptcha==1.1.0
+# compat
+xmltodict
