@@ -1,21 +1,13 @@
 {% extends "base.html" %}
+{% load static %}
+{% block title %}Projects - Transkribus{% endblock %}
 {% block styles %}
+<link href="{% static 'projects/css/base.css' %}" rel="stylesheet">
 <style>
- body
+ body {}
 
  .collections p {
    font-size: 0.875em;
- }
-
- .collections {
-   display: flex;
-   flex-flow: row wrap;
- }
-
- .collection.card {
-   max-width: 240px;
-   margin-right: 1.75em;
-   margin-bottom: 1.75em;
  }
 
  .collection .card-header {
@@ -23,21 +15,15 @@
    text-align: center;
  }
 
- .collection img {
-   display: inline-block;
-   width: auto;
-   height: 120px;
- }
-
 </style>
 {% endblock styles %}
 {% block content %}
   <h1>Projects</h1>
-  <div class="collections">
+  <div class="card-list">
     {% for collection in collections %}
-    <div class="collection card bg-light">
-      <div class="card-header">
-        <img class="card-img-top" src="{{ collection.thumb_url }}" alt="{{ collection.name }}">
+    <div class="card-list-item card bg-light">
+      <div class="card-list-item-header card-header">
+        <img class="thumbnail card-img-top" src="{{ collection.thumb_url }}" alt="{{ collection.name }}">
       </div>
       <div class="card-body">
         <h5 class="card-title">{{ collection.name }}</h5>

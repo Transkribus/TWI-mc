@@ -1,13 +1,58 @@
 {% extends "base.html" %}
-{% load i18n static %}
-{% block title %}{{ collection.name }} - Project Page{% endblock %}
+{% load static %}
+{% load i18n %}
+{% block title %}Project - {{ collection.name }} - Transkribus{% endblock %}
+{% block styles %}
+<link href="{% static 'projects/css/base.css' %}" rel="stylesheet">
+<style>
+ .card-list-item.active {
+   box-shadow: 0 0 8px rgba(0, 0, 255, 0.25);
+ }
+</style>
+{% endblock styles %}
 {% block scripts %}
 <script src="{% static "sandbox/js/lib/utils.js" %}"></script>
 <script src="{% static "sandbox/js/lib/api.js" %}"></script>
+<script>
+ window.addEventListener('load', function (evt) {
+
+   var mainNode = document.querySelector('.js-project');
+   var activeNode = null;
+
+   mainNode.addEventListener('click', function (evt) {
+     /* highlight most recently clicked card, so people don't lose
+        track of where they left off */
+     if (evt.target.classList.contains('js-link')) {
+       var node = evt.target;
+       while (node.parentNode && !test(node)) {
+         node = node.parentNode;
+       }
+
+       if (activeNode && activeNode.classList.contains('active')) {
+         activeNode.classList.remove('active');
+
+       }
+
+       activeNode = node;
+
+       if (activeNode) {
+         activeNode.classList.add('active');
+       }
+
+     }
+   }, false);
+   function test(node) {
+     if (!node.classList)
+       return true;
+     console.log(node.classList);
+     return node.classList.contains('js-card-list-item');
+   }
+ });
+</script>
 {% endblock %}
 {% block content %}
 <div class="container">
-  <section class="project">
+  <section class="project js-project">
     <header>
       <div class="row">
         <div class="col-md-12">
@@ -79,11 +124,14 @@
           <p>
             {% include 'projects/includes/progress.html' with items=document.progress %}
           </p>
-          <div class="page-list">
+          {% load cache %}
+          {% cache 60 pagelist collection.id document.id %}
+          <div class="card-list">
             {% for page in document.pages %}
-            {% include 'projects/project_detail_page_list_item.html' %}
+            {% include 'projects/meh.html' %}
             {% endfor %}
           </div>
+          {% endcache %}
           {% endwith %}
           {% endif %}
         </div>
