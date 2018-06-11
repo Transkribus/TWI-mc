@@ -36,7 +36,18 @@ class CamelCaseDict:
         if camelized not in self._data:
             raise AttributeError(key)
 
-        return self._data[camelized]
+        value = self._data[camelized]
+
+        if isinstance(value, dict):
+            return CamelCaseDict(value)
+
+        return value
+
+    def __getitem__(self, key):
+        try:
+            return self.__getattr__(key)
+        except AttributeError:
+            raise KeyError(key)
 
     def get(self, key, default=None):
         try:
@@ -358,6 +369,21 @@ class API(LazyJsonClient):
             '/collections/findDocuments',
             '/collections/countFindDocuments'
         ], params)
+
+    def get_project_list(self, sort_by=None):
+        params = {
+            'sortColumn': 'colName',
+            'sortDirection': 'DESC' if sort_by == 'td' else 'ASC'
+        }
+        return self._build_list_with_count('GET', [
+            '/crowdsourcing/list',
+            '/collections/count'
+        ], params)
+
+
+    def join_project(self, col_id):
+        assert isinstance(col_id, int)
+        return self._build_object('POST', '/crowdsourcing/%d/subscribe' % col_id)
 
 
 class Helpers:
