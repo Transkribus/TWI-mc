@@ -21,8 +21,8 @@ from transkribus.views import LoginWithCookieView
 
 urlpatterns = [
 
-    # url(r'^', include('home.urls', namespace='home')),
-    url(r'^home/', include('home.urls', namespace='home')),
+    url(r'^', include('home.urls', namespace='home')),
+    # url(r'^home/', include('home.urls', namespace='home')),
     url(r'^sandbox/', include('sandbox.urls', namespace='sandbox')),
 
     url(r'^library/', include('library.urls', namespace='library')),

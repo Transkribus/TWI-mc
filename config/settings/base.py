@@ -26,9 +26,8 @@ INSTALLED_APPS += [
     'transkribus',
     'sandbox',
     'compat',
-    'edit',
     # 'dashboard',
-    # 'edit',
+    'edit',
     # 'search',
     # 'review',
     # 'navigation'
