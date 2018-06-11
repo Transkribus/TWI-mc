@@ -79,6 +79,8 @@ AUTHENTICATION_BACKENDS = [
     'transkribus.backends.ModelBackend',
 ]
 
+APPEND_SLASH = True
+
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = '/projects'
 LOGOUT_REDIRECT_URL = '/projects'
