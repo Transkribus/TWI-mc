@@ -97,18 +97,25 @@ def project_detail(request, slug_or_id):
     return render(request, 'projects/project_detail.html', context)
 
 def subscribe_view(request, id=None):
-    from django.http import HttpResponse
-    context = {}
-    if request.method == 'POST':
-        client = services.Helpers.create_client_from_request(request)
 
-        try:
-            client.join_project(int(id))
-        except Exception as error:
-            logging.error(error)
-        return redirect('projects:project-detail', slug_or_id=id)
-    else:
+    context = {}
+
+    if request.method != 'POST':
         return render(request, 'projects/subscribe.html', context)
+
+    client = services.Helpers.create_client_from_request(request)
+
+    from requests import exceptions
+
+    try:
+        client.join_project(int(id))
+    except exceptions.HTTPError:
+        logging.error(error)
+    else:
+        context['is_error'] = True
+        return render(request, 'projects/subscribe.html', context)
+
+    return redirect('projects:project-detail', slug_or_id=id)
 
 class ProjectListView(LoginRequiredWithCookieMixin, ListView):
     template_name = 'projects/project_list.html'
