@@ -6,6 +6,9 @@ from requests.exceptions import HTTPError
 from . import utils
 from . import services
 
+def project_list(request):
+    return render(request, template_name='projects/project_list.html')
+
 def project_detail(request, slug_or_id):
 
     SLUGS = {
