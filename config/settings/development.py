@@ -25,6 +25,12 @@ MEDIA_URL = '/'.join([BASE_URL, MEDIA_URL])
 LOGIN_REDIRECT_URL = '/'.join([BASE_URL, LOGIN_REDIRECT_URL])
 LOGOUT_REDIRECT_URL = '/'.join([BASE_URL, LOGOUT_REDIRECT_URL])
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+    }
+}
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

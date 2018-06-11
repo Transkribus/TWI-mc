@@ -51,12 +51,6 @@ MIDDLEWARE_CLASSES = [
     'waffle.middleware.WaffleMiddleware',
 ]
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
-    }
-}
-
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
