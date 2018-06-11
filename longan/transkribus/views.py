@@ -3,7 +3,7 @@ import logging
 from django.contrib.auth.views import LoginView
 
 
-class LoginWithCookie(LoginView):
+class LoginWithCookieView(LoginView):
 
     def form_invalid(self, form):
 
