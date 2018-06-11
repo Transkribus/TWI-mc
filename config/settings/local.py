@@ -12,8 +12,6 @@ DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = ['library.routers.TranskribusRouter']
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
