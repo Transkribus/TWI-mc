@@ -2950,7 +2950,7 @@
   }
 },
 {
-  "model": "auth.user",
+  "model": "transkribus.user",
   "pk": 14,
   "fields": {
     "password": "pbkdf2_sha256$36000$p85mCXynVVjE$1wwJHrEbMjgXR4VVTZC+xLVzVkPbpMZiqLT0Z6ztvWA=",
