@@ -1,10 +1,19 @@
+import logging
+
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.views.generic import ListView
 
 from requests.exceptions import HTTPError
 
+from transkribus.mixins import LoginRequiredWithCookieMixin
+# TODO: do NOT import from library, rather move shared code to core app
+from library import paginator
+
 from . import utils
 from . import services
+from . import notmodels
+
 
 def project_detail(request, slug_or_id):
 
@@ -38,8 +47,7 @@ def project_detail(request, slug_or_id):
         collection = client.get_col_meta_data(col_id)
     except HTTPError as error:
         if error.response.status_code == 403:
-            from django.http import HttpResponseForbidden
-            return HttpResponseForbidden("Forbidden")
+            return redirect('projects:subscribe', id=col_id)
         elif error.response.status_code == 404:
             raise Http404
 
@@ -87,3 +95,37 @@ def project_detail(request, slug_or_id):
     }
 
     return render(request, 'projects/project_detail.html', context)
+
+def subscribe_view(request, id=None):
+    from django.http import HttpResponse
+    context = {}
+    if request.method == 'POST':
+        client = services.Helpers.create_client_from_request(request)
+
+        try:
+            client.join_project(int(id))
+        except Exception as error:
+            logging.error(error)
+        return redirect('projects:project-detail', id=id)
+    else:
+        return render(request, 'projects/subscribe.html', context)
+
+class ProjectListView(LoginRequiredWithCookieMixin, ListView):
+    template_name = 'projects/project_list.html'
+    paginator_class = paginator.Paginator
+    paginate_by = 10
+
+    def get_queryset(self):
+        client = services.Helpers.create_client_from_request(self.request)
+        projects = client.get_project_list()
+        return projects
+
+    def get_context_data(self, **kwargs):
+        context = super(ProjectListView, self).get_context_data(**kwargs)
+
+        context.update({
+            'collections': (notmodels.Collection(item) for item in context.pop('object_list')),
+            'page': context.pop('page_obj')
+        })
+
+        return context

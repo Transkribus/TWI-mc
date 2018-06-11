@@ -12,8 +12,6 @@ DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = ['library.routers.TranskribusRouter']
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -32,7 +30,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'WARN'),
         },
     },
 }
