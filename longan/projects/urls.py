@@ -6,7 +6,8 @@ from transkribus.decorators import login_required
 from . import views
 
 urlpatterns = [
-    url(r'^$', login_required(views.project_list), name='project-list'),
-    # url(r'^$', login_required(cache_page(3600 * 24)(views.project_list)), name='project-list'),
-    url(r'^(?P<slug_or_id>[\w-]+)/$', login_required(cache_page(60 * 5)(views.project_detail)), name='project-detail')
+    url(r'^$', views.ProjectListView.as_view(), name='project-list'),
+    # url(r'^$', cache_page(3600 * 24)(views.ProjectListView.as_view()), name='project-list'),
+    url(r'^(?P<slug_or_id>[\w-]+)/$', login_required(cache_page(60 * 5)(views.project_detail)), name='project-detail'),
+    url(r'^(?P<id>\d+)/subscribe/$', login_required(views.subscribe_view), name='subscribe')
 ]
