@@ -1,3 +1,5 @@
+import logging
+
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
@@ -99,8 +101,12 @@ def subscribe_view(request, id=None):
     context = {}
     if request.method == 'POST':
         client = services.Helpers.create_client_from_request(request)
-        client.join_project(int(id))
-        return render(request, 'projects/subscribe.html', context)
+
+        try:
+            client.join_project(int(id))
+        except Exception as error:
+            logging.error(error)
+        return redirect('projects:project-detail', id=id)
     else:
         return render(request, 'projects/subscribe.html', context)
 
