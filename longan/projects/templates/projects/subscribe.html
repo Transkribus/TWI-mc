@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% block content %}
-<h1>Join this Project</h1>
-<p>Please click the button below in order to join this project.</p>
+<h1>{% trans "Join this Project" %}</h1>
+<p>{% trans "To contribute please join this project." %}</p>
 <form method="post">
   {% csrf_token %}
-  <button type="submit" class="btn btn-primary">Join</button>
+  <button type="submit" class="btn btn-primary">{% trans "Join This Project Now" %}</button>
 </form>
 {% endblock content %}
