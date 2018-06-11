@@ -76,7 +76,9 @@ class PageList:
             'user': data['userName'] if not '@' in data['userName'] else data['userName'][:data['userName'].index('@')],
             'num_lines_total': data['nrOfLines'],
             'num_lines_done': data['nrOfTranscribedLines'],
-            'progress': progress
+            'thumb_url': page_data['thumbUrl'],
+            'has_layout': data['nrOfLines'] > 0,
+            'progress': progress,
         }
 
     def __iter__(self):

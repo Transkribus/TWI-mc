@@ -77,7 +77,7 @@ def project_detail(request, slug_or_id):
             'name': collection.col_name,
             'num_docs': collection.nr_of_documents,
             'title': TITLES.get(collection.col_id),
-            'progress': stats.progress
+            'progress': stats.progress,
         },
         'selected_document_id': doc_id,
         'selected_document': None if doc is None else {
