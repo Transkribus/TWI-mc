@@ -41,12 +41,13 @@
 
      }
    }, false);
+
    function test(node) {
      if (!node.classList)
        return true;
-     console.log(node.classList);
      return node.classList.contains('js-card-list-item');
    }
+
  });
 </script>
 {% endblock %}
@@ -128,7 +129,7 @@
           {% cache 60 pagelist collection.id document.id %}
           <div class="card-list">
             {% for page in document.pages %}
-            {% include 'projects/meh.html' %}
+            {% include 'projects/project_detail_card_list_item.html' %}
             {% endfor %}
           </div>
           {% endcache %}

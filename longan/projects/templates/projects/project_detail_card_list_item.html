@@ -1,0 +1,31 @@
+{% load i18n %}
+<div class="card-list-item js-card-list-item card bg-light">
+  <div class="card-list-item-header card-header">
+    {% comment %}
+    <img class="thumbnail card-img-top" src="{{ page.thumb_url }}" alt="{{ collection.name }}">
+    {% endcomment %}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title"><a href="#page-{{ page.num }}">{{ page.num }}</a></h5>
+    <p class="card-text">
+      {% if page.has_layout %}
+      <span class="badge badge-secondary">{{ page.status }}</span>      
+      {% else %}
+      <span class="badge badge-danger">Segmentation Not Available</span>
+      {% endif %}
+    </p>
+    {% if page.has_layout %}
+    <p class="card-text">
+      {% include 'projects/includes/progress.html' with items=page.progress %}
+    </p>
+    {% endif %}
+    <p class="card-text">
+      Changed by <strong>{{ page.user }}</strong>
+    </p>
+  </div>
+  <div class="card-footer">
+    <a class="link js-link" target="_blank" href="{% url 'edit:correct' collection.id document.id page.num %}"> Interface A</a>
+    &nbsp;<span class="text-muted">|</span>&nbsp;
+    <a class="link js-link" target="_blank" href="{% url 'sandbox:transcribe' %}?test=0&colId={{ collection.id }}&docId={{ document.id }}&pageId={{ page.num }}">Interface B</a>
+  </div>
+</div>
