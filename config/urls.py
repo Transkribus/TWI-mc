@@ -23,7 +23,7 @@ from transkribus.views import LoginWithCookieView
 urlpatterns = [
 
 
-    url(r'^$', RedirectView.as_view(pattern_name='projects:project-list', query_string=True)),
+    url(r'^$', RedirectView.as_view(pattern_name='projects:project-list', query_string=True, permanent=True)),
 
     url(r'^projects/', include('projects.urls', namespace='projects')),
     url(r'^home/', include('home.urls', namespace='home')),
