@@ -2,6 +2,7 @@ import warnings
 import functools
 
 from urllib import parse
+
 import requests
 
 @functools.lru_cache(maxsize=256)
@@ -201,7 +202,15 @@ class LazyJsonRequest(Request):
         r = requests.request(self._method, self._url, params=params, timeout=60, **self._kwargs)
         r.raise_for_status()
 
-        self._result = r.json()
+        # NOTE: hackish way to handle endpoints that return empty body rather than '{}'
+        import json
+
+        try:
+            self._result = r.json()
+        except json.JSONDecodeError as error:
+            warnings.warn(error)
+            return {}
+
         return self._result
 
     def __repr__(self):
@@ -377,7 +386,7 @@ class API(LazyJsonClient):
         }
         return self._build_list_with_count('GET', [
             '/crowdsourcing/list',
-            '/collections/count'
+            '/crowdsourcing/count'
         ], params)
 
 
