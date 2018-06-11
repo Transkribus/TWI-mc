@@ -12,6 +12,12 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
+    }
+}
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
