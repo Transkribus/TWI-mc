@@ -21,15 +21,14 @@ from transkribus.views import LoginWithCookieView
 
 urlpatterns = [
 
+    url(r'^', include('projects.urls', namespace='projects')),
     # url(r'^', include('home.urls', namespace='home')),
     url(r'^home/', include('home.urls', namespace='home')),
     url(r'^sandbox/', include('sandbox.urls', namespace='sandbox')),
-
     url(r'^library/', include('library.urls', namespace='library')),
-    url(r'^projects/', include('projects.urls', namespace='projects')),
-    url(r'^admin/', admin.site.urls),
-
     url(r'^edit/', include('edit.urls', namespace='edit')),
+
+    url(r'^admin/', admin.site.urls),
 
     # accounts
     url('logout/', LogoutView.as_view(), name='logout'),
