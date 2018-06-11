@@ -106,7 +106,7 @@ def subscribe_view(request, id=None):
             client.join_project(int(id))
         except Exception as error:
             logging.error(error)
-        return redirect('projects:project-detail', id=id)
+        return redirect('projects:project-detail', slug_or_id=id)
     else:
         return render(request, 'projects/subscribe.html', context)
 
