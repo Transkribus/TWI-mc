@@ -64,7 +64,7 @@ var inst = [];
         <h1>{% trans 'Institutions' %} </h1>
         <select id="institution-select"  onchange="change_inst_select($(this).val())">
             {% for i in inst %}
-                <option value="{{i.inst.pk}}" data-iconurl="../static/home/img/upload/{{i.inst.image}}" data-text="{{i.name}}" />
+                <option value="{{i.inst.pk}}" data-iconurl="{{baseUrl}}/home/img/upload/{{i.inst.image}}" data-text="{{i.name}}" ></option>
              {% endfor %} 
         </select>
        <br/><br/>
@@ -117,7 +117,7 @@ var inst = [];
                           title: '{{i.name}}',
                           id : '{{i.pk}}',
                           description : '{{i.loclabel}}',
-                          icon : {url: '../static/home/img/upload/{{i.inst.image}}', scaledSize: new google.maps.Size(width, height)} 
+                          icon : {url: '{{baseUrl}}/home/img/upload/{{i.inst.image}}', scaledSize: new google.maps.Size(width, height)} 
                         });
                 }
                 marker.push(m);
@@ -452,9 +452,9 @@ var services = [];
                                 <i class="icon-quote"></i>
                                 <h5> {{q.content|safe}} </h5>
                                  {% if q.quote.image %}
-                                    <img src="../static/home/img/upload/{{q.quote.image}}" alt="{% trans 'Testimonial Picture' %}: {{q.quote.name}}">
+                                    <img src="{{baseUrl}}/home/img/upload/{{q.quote.image}}" alt="{% trans 'Testimonial Picture' %}: {{q.quote.name}}">
                                 {% else %}
-                                    <img src="../static/home/img/avatar.jpg" alt="{% trans 'Testimonial Picture' %}: {{q.quote.name}}">
+                                    <img src="{{baseUrl}}/home/img/avatar.jpg" alt="{% trans 'Testimonial Picture' %}: {{q.quote.name}}">
                                 {% endif %}
                                 <h6>
                                     {{q.quote.name}}
@@ -533,7 +533,7 @@ var services = [];
                             </div>
     
                             <div class="col-12">
-                                <input type="submit" class="btn btn-primary btn_center">{% trans 'Contact us' %}</input>
+                                <input type="submit" class="btn btn-primary btn_center" >{% trans 'Contact us' %}</input>
                             </div>
                         </div>
                     </form>
@@ -565,41 +565,6 @@ var services = [];
 </section>
 <!--contact us end -->
 
-<!--section brand -->
-<!-- <div class="bg-light pt120 pb120">
-    <div class="container">
-        <div class="brand_carousel owl-carousel">
-            <div class="brand_item no_max text-center">
-                <img src="https://placeholdit.co//i/150x70" alt="brand">
-            </div>
-            <div class="brand_item no_max text-center">
-                <img src="https://placeholdit.co//i/150x70" alt="brand">
-            </div>
-
-            <div class="brand_item no_max text-center">
-                <img src="https://placeholdit.co//i/150x70" alt="brand">
-            </div>
-            <div class="brand_item no_max text-center">
-                <img src="https://placeholdit.co//i/150x70" alt="brand">
-            </div>
-            <div class="brand_item no_max text-center">
-                <img src="https://placeholdit.co//i/150x70" alt="brand">
-            </div>
-            <div class="brand_item no_max text-center">
-                <img src="https://placeholdit.co//i/150x70" alt="brand">
-            </div>
-            <div class="brand_item no_max text-center">
-                <img src="https://placeholdit.co//i/150x70" alt="brand">
-            </div>
-            <div class="brand_item no_max text-center">
-                <img src="https://placeholdit.co//i/150x70" alt="brand">
-            </div>
-        </div>
-    </div>
-</div> -->
-<!--section brand end -->
-
-
 
 {% include "home/includes/footer.html" %} 
 
@@ -610,9 +575,5 @@ var services = [];
 
 {% include "home/modals/imprint.html" %} 
 
-
-
-
- 
 </body>
 </html>
