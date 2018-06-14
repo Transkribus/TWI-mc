@@ -1,0 +1,111 @@
+.capture {
+  color: white;
+  background-color: white;
+  box-shadow: none;
+  border: none;
+  height; 0px;
+}
+
+.btn-toolbar-centered {
+    text-align: center;
+}
+
+.btn-toolbar-centered > .btn-group {
+    float: none !important;
+}
+
+/* We crop the image like this... */
+.transcript-div {
+	background-color: gray;
+	overflow: hidden;
+}
+
+/* And in order to move the map along with the image, we have this div... */
+.transcript-map-div {
+	overflow: hidden;
+	position: relative;
+	transform-origin: 0px 0px;/* Required by the zoom transform... */
+}
+
+.line-div {
+    background-color: gray;
+    overflow: hidden;
+    position: relative;
+    transform-origin: 0px 0px;/* Required by the zoom transform... */
+}
+
+/* We make the transcript fit neatly... */
+.transcript-img {
+	max-width: 100% !important;
+}
+
+/* Thumbnails: */
+.thumb-row {
+	overflow: hidden;
+}
+.thumbs {
+
+}
+.thumb-current {
+    padding: 3%;
+    background-color: blue;
+}
+.thumb-img:hover {
+    padding: 3%;
+    background-color: white;
+}
+.thumb-img {
+    padding: 3%;
+}
+/* Thumbs should reflect page transcription status. */
+.no-segmentation {
+	background-color: red;
+}
+.transcribed {
+	background-color: green;
+}
+.only-segmented {
+	background-color: yellow;
+}
+.line-list-div {
+	overflow-y: auto;
+	overflow-x: scroll;
+}
+.line-list {
+	font-size: 25px;
+	letter-spacing: 5px;
+}
+ol.line-list {
+    list-style: none;
+    padding-left: 0;
+}
+/* Temporary solution to give the original version the same look. Using ".line-list" is a problematic selector. TODO New selector? Other solution? */
+.original-line-list {
+	font-size: 25px;
+	letter-spacing: 5px;
+}
+ol.original-line-list {
+    list-style: none;
+    padding-left: 0;
+}
+li {
+    white-space: nowrap;
+}
+
+.fix_scroll_top {
+    background: white;
+    z-index: 1000;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+}
+
+.option-box {
+    display: none;
+    background: white;
+    padding: 1px;
+    margin: 0;
+    margin-bottom: 5px;
+}
