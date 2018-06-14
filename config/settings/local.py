@@ -12,7 +12,11 @@ DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = ['library.routers.TranskribusRouter']
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache'
+    }
+}
 
 LOGGING = {
     'version': 1,
@@ -32,7 +36,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'WARN'),
         },
     },
 }

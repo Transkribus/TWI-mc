@@ -16,22 +16,23 @@ try:
 except ImportError:
     logging.error("Failed to import Python Imaging Library (PIL)")
 
+from django.conf import settings
 from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.staticfiles.templatetags.staticfiles import static
-from django.utils import translation
 from django.core.mail import send_mail
 from django.core import serializers
-from django.conf import settings
 from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.staticfiles.templatetags.staticfiles import static
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.core.files.storage import default_storage
+from django.utils import translation
 
 import transkribus.services  
 
@@ -58,7 +59,9 @@ def index(request):
     collaborations = randint(0,1000)
     uploaded_docs = randint(0,1000)
     trained_models = randint(0,1000)
-    
+
+    auth_form = AuthenticationForm()
+
     context = {
         'blogs' : models.BlogEntry.objects.filter(lang=translation.get_language()).select_related().order_by('-blog__changed')[:15],
         'inst' :  models.InstitutionDescription.objects.filter(lang=translation.get_language()),
@@ -71,7 +74,8 @@ def index(request):
         'uploaded_docs' : uploaded_docs,
         'trained_models' : trained_models,
         'docs' : models.DocumentEntries.objects.filter(lang=translation.get_language()),
-        'recaptcha_key' : settings.RECAPTCHA_KEY 
+        'recaptcha_key' : settings.RECAPTCHA_KEY,
+        'auth_form': auth_form,
     }
     return render(request, 'home/homepage.html', context)
 

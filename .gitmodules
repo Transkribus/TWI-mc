@@ -1,9 +1,6 @@
 [submodule "apps/search"]
 	path = longan/search
 	url = https://github.com/Transkribus/TWI-search.git
-[submodule "apps/navigation"]
-	path = longan/navigation
-	url = https://github.com/Transkribus/TWI-navigation.git
 [submodule "apps/edit"]
 	path = longan/edit
 	url = https://github.com/Transkribus/TWI-edit.git

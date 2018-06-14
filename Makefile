@@ -34,3 +34,6 @@ mostlyclean:
 clean: mostlyclean
 	# TODO: flush database, drop tables, remove migrations
 	echo -e "Not Implemented!\a"
+
+run:
+	${PYTHON} manage.py runserver --settings=config.settings.local

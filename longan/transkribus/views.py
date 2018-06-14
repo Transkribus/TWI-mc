@@ -3,11 +3,11 @@ import logging
 from django.contrib.auth.views import LoginView
 
 
-class LoginWithCookie(LoginView):
+class LoginWithCookieView(LoginView):
 
     def form_invalid(self, form):
 
-        response = super(LoginWithCookie, self).form_invalid(form)
+        response = super(LoginWithCookieView, self).form_invalid(form)
 
         try:
             response.delete_cookie('JSESSIONID', path='/', domain='transkribus.eu')
@@ -19,7 +19,7 @@ class LoginWithCookie(LoginView):
     def form_valid(self, form):
 
         # NOTE: super.form_valid is where user is authenticated
-        response = super(LoginWithCookie, self).form_valid(form)
+        response = super(LoginWithCookieView, self).form_valid(form)
 
         try:
             self.set_cookie(self.request, response)

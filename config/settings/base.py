@@ -26,9 +26,8 @@ INSTALLED_APPS += [
     'transkribus',
     'sandbox',
     'compat',
-    'edit',
     # 'dashboard',
-    # 'edit',
+    'edit',
     # 'search',
     # 'review',
     # 'navigation'
@@ -52,18 +51,12 @@ MIDDLEWARE_CLASSES = [
     'waffle.middleware.WaffleMiddleware',
 ]
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
-    }
-}
-
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(PROJECT_ROOT, 'templates')],
+        'DIRS': [os.path.join(APP_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -86,9 +79,11 @@ AUTHENTICATION_BACKENDS = [
     'transkribus.backends.ModelBackend',
 ]
 
+APPEND_SLASH = True
+
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = '/library'
-LOGOUT_REDIRECT_URL = '/library'
+LOGIN_REDIRECT_URL = '/projects'
+LOGOUT_REDIRECT_URL = '/projects'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

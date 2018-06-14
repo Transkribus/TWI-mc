@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="jumbotron">
+  <h1 class="display-4">{% trans "Join this Project" %}</h1>
+  <p class="lead">{% trans "To become contributor please join this project." %}</p>
+  <hr class="my-4">
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">{% trans "Join This Project Now" %}</button>
+  </form>
+</div>
+{% endblock content %}

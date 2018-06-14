@@ -2,6 +2,7 @@ import warnings
 import functools
 
 from urllib import parse
+
 import requests
 
 @functools.lru_cache(maxsize=256)
@@ -36,7 +37,18 @@ class CamelCaseDict:
         if camelized not in self._data:
             raise AttributeError(key)
 
-        return self._data[camelized]
+        value = self._data[camelized]
+
+        if isinstance(value, dict):
+            return CamelCaseDict(value)
+
+        return value
+
+    def __getitem__(self, key):
+        try:
+            return self.__getattr__(key)
+        except AttributeError:
+            raise KeyError(key)
 
     def get(self, key, default=None):
         try:
@@ -190,7 +202,15 @@ class LazyJsonRequest(Request):
         r = requests.request(self._method, self._url, params=params, timeout=60, **self._kwargs)
         r.raise_for_status()
 
-        self._result = r.json()
+        # NOTE: hackish way to handle endpoints that return empty body rather than '{}'
+        import json
+
+        try:
+            self._result = r.json()
+        except json.JSONDecodeError as error:
+            warnings.warn(error)
+            return {}
+
         return self._result
 
     def __repr__(self):
@@ -358,6 +378,21 @@ class API(LazyJsonClient):
             '/collections/findDocuments',
             '/collections/countFindDocuments'
         ], params)
+
+    def get_project_list(self, sort_by=None):
+        params = {
+            'sortColumn': 'colName',
+            'sortDirection': 'DESC' if sort_by == 'td' else 'ASC'
+        }
+        return self._build_list_with_count('GET', [
+            '/crowdsourcing/list',
+            '/crowdsourcing/count'
+        ], params)
+
+
+    def join_project(self, col_id):
+        assert isinstance(col_id, int)
+        return self._build_object('POST', '/crowdsourcing/%d/subscribe' % col_id)
 
 
 class Helpers:

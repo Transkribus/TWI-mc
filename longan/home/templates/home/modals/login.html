@@ -1,22 +1,36 @@
 {% load static %}
 {% load i18n %}
+{% load bootstrap3 %}
 <div class="modal fade" id="login_modal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-        <div class="loginmodal-container">
-            
-            <h4>
-                <span class="glyphicon glyphicon-log-in"></span>
-                {% trans 'Login' %}</h4>
-            <br>
-            <form action="login_process" method="post">
-                {% csrf_token %}
-                <input type="text" name="email" placeholder="{% trans 'email' %}">
-                <input type="password" name="password" placeholder="Password">
-                <input type="submit" name="login" class="login loginmodal-submit" value="{% trans 'login' %}">
-            </form>
-            <div class="login-help">
-                <a href="https://transkribus.eu" target="_plain">{% trans 'Register' %}</a>
-            </div>
-        </div>
+  <div class="modal-dialog">
+    <div class="loginmodal-container">
+      <h4>
+        <span class="glyphicon glyphicon-log-in"></span>
+        {% trans 'Login' %}</h4>
+      <br>
+      {% if auth_form.errors %}
+      <p>{% trans "Your username and password didn't match. Please try again." %}</p>
+      {% endif %}
+      <hr>
+      <form method="post" action="{% url 'login' %}">
+	{% csrf_token %}
+	{% bootstrap_form auth_form %}
+        <hr>
+	<button type="submit" class="btn btn-default btn-block"/>{% trans 'Login'%}</button>
+	<input type="hidden" name="next" value="{{ next }}" />
+      </form>
+      {# login before change #}
+      {% comment %}
+      <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="email" placeholder="{% trans 'email' %}">
+        <input type="password" name="password" placeholder="Password">
+        <input type="submit" name="login" class="login loginmodal-submit" value="{% trans 'login' %}">
+      </form>
+      {% endcomment %}
+      <div class="login-help">
+        <a href="https://transkribus.eu" target="_plain">{% trans 'Register' %}</a>
+      </div>
     </div>
+  </div>
 </div>

@@ -30,13 +30,9 @@ RECAPTCHA_PUBLIC_KEY = 'your-public-key'
 RECAPTCHA_PRIVATE_KEY = 'your-private-key'
 ```
 
-### Logging
-
-When logging to a file make sure it's located at a location such as `/var/log/my-app/errors` rather than inside your project directory. Otherwise your webserver might end up with a file created by the web server that you are not permitted to move or delete.
-
 ## Setup
 
-### Scripted
+### Make
 
 First, set you must set the Python version you would like to use, e.g.:
 
@@ -63,6 +59,12 @@ To verify that the project is set up correctly run:
 make check
 ```
 
+Then start a local server for development using:
+
+```bash
+make run
+```
+
 ### Manual
 
 #### Clean
@@ -84,7 +86,7 @@ pip install -r requirements.txt -t third_party
 To set up and run (with the local development environment):
 
 ```bash
-export DJANGO_SETTINGS_MODULE=config.settings.production
+export DJANGO_SETTINGS_MODULE=config.settings.local
 python manage.py makemigrations transkribus
 python manage.py makemigrations home
 python manage.py makemigrations sandbox

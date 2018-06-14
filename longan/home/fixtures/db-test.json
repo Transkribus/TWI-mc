@@ -1,0 +1,2970 @@
+[
+{
+  "model": "contenttypes.contenttype",
+  "pk": 1,
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 2,
+  "fields": {
+    "app_label": "auth",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 3,
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 4,
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 5,
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 6,
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 7,
+  "fields": {
+    "app_label": "utils",
+    "model": "tsdata"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 8,
+  "fields": {
+    "app_label": "start",
+    "model": "quoteentries"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 9,
+  "fields": {
+    "app_label": "start",
+    "model": "institutionproject"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 10,
+  "fields": {
+    "app_label": "start",
+    "model": "blogentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 11,
+  "fields": {
+    "app_label": "start",
+    "model": "institutionprojectentries"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 12,
+  "fields": {
+    "app_label": "start",
+    "model": "service"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 13,
+  "fields": {
+    "app_label": "start",
+    "model": "serviceentries"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 14,
+  "fields": {
+    "app_label": "start",
+    "model": "institution"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 15,
+  "fields": {
+    "app_label": "start",
+    "model": "documententries"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 16,
+  "fields": {
+    "app_label": "start",
+    "model": "institutiondescription"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 17,
+  "fields": {
+    "app_label": "start",
+    "model": "video"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 18,
+  "fields": {
+    "app_label": "start",
+    "model": "document"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 19,
+  "fields": {
+    "app_label": "start",
+    "model": "quote"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 20,
+  "fields": {
+    "app_label": "start",
+    "model": "blog"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 21,
+  "fields": {
+    "app_label": "start",
+    "model": "videodesc"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 22,
+  "fields": {
+    "app_label": "start",
+    "model": "homearticle"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 23,
+  "fields": {
+    "app_label": "start",
+    "model": "homearticleentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 24,
+  "fields": {
+    "app_label": "start",
+    "model": "supportedicons"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "0ykr8z3tnu4vxxvzpkp4arwlo45mrq6n",
+  "fields": {
+    "session_data": "MmM0ZWZkM2UxOGU1MDk5M2IyOWIwMmMxYWY4OTA0NjExNjg5MDllYjp7fQ==",
+    "expire_date": "2018-05-12T00:02:15.445Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "3egdh9461wo5m3znl0q0ghrs0dzmpvae",
+  "fields": {
+    "session_data": "YmE5OWMwMjI4Yzc1ZDQxYTU1ZDY1MzY3MDM4ZTE0MTQyMGUxOTcwNTp7Il9sYW5ndWFnZSI6ImRlIn0=",
+    "expire_date": "2018-05-21T02:58:27.178Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "3vkn94apoexq74pk5mkwt0ws010qkh4x",
+  "fields": {
+    "session_data": "ZDQwNzhiYmRmNjFiNmIzYjUwNTM0MmJjMTY4YjZlMTIyODIzNDg4NTp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImFwcHMudXRpbHMuYmFja2VuZHMuVHJhbnNrcmlidXNCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjYiLCJfYXV0aF91c2VyX2hhc2giOiJjMTUyMjg5MGExYWRkOGJhNTgxNjRlMmQ2NmFmYWNkNDZhYmIwM2RmIiwidXNlciI6eyJpc0FkbWluIjoidHJ1ZSIsImNyZWF0ZWQiOnsibmFub3MiOiIwIn0sImFmZmlsaWF0aW9uIjoiTm9uZSIsInVzZXJOYW1lIjoiYWxiZXJ0LmdyZWlub2NrZXJAZ21haWwuY29tIiwic2Vzc2lvbklkIjoiMjdCMzAyQjNFMTFCRkU0Q0Y0RjBBRENBNjZBNEU0MzYiLCJmaXJzdG5hbWUiOiJBbGJlcnQiLCJpc0FjdGl2ZSI6IjEiLCJpcCI6IjkxLjE0MS4zLjc3IiwibGFzdG5hbWUiOiJHcmVpblx1MDBmNmNrZXIiLCJnZW5kZXIiOiJNYWxlIiwiZW1haWwiOiJhbGJlcnQuZ3JlaW5vY2tlckBnbWFpbC5jb20iLCJsb2dpblRpbWUiOiIyMDE4LTA1LTIwVDE5OjQ3OjAwLjU5OCswMjowMCIsInVzZXJJZCI6Ijg5MjUiLCJ1c2VyQWdlbnQiOiJweXRob24tcmVxdWVzdHMvMi4xMS4xIn0sIl9sYW5ndWFnZSI6ImVuIn0=",
+    "expire_date": "2018-05-21T02:49:31.745Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "5pzrsa9xla6olvobz098eoquw5ig785c",
+  "fields": {
+    "session_data": "MmM0ZWZkM2UxOGU1MDk5M2IyOWIwMmMxYWY4OTA0NjExNjg5MDllYjp7fQ==",
+    "expire_date": "2018-04-27T01:45:18.648Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "d7az2o30lphdhnu6eru7bnyu6oioasxx",
+  "fields": {
+    "session_data": "NjNkYzFlOWJlZTgyMDhjMzRiNTliMGM4MjVhNzlhMzJjMGMzZjhiNzp7Il9sYW5ndWFnZSI6ImRlIiwiX2F1dGhfdXNlcl9pZCI6IjEyIiwidXNlciI6eyJlbWFpbCI6ImFsYmVydC5ncmVpbm9ja2VyQGdtYWlsLmNvbSIsImNyZWF0ZWQiOnsibmFub3MiOiIwIn0sImlwIjoiMTc4LjE2NS4xMzAuODQiLCJpc0FkbWluIjoidHJ1ZSIsImxvZ2luVGltZSI6IjIwMTgtMDUtMjFUMjA6MTg6MzYuODIzKzAyOjAwIiwidXNlcklkIjoiODkyNSIsInVzZXJBZ2VudCI6InB5dGhvbi1yZXF1ZXN0cy8yLjExLjEiLCJzZXNzaW9uSWQiOiIwRDVFQjcxOTcxMTQxOTM5OTRCNEI2MjM3MkQ2MjFFQyIsImxhc3RuYW1lIjoiR3JlaW5cdTAwZjZja2VyIiwiYWZmaWxpYXRpb24iOiJOb25lIiwidXNlck5hbWUiOiJhbGJlcnQuZ3JlaW5vY2tlckBnbWFpbC5jb20iLCJnZW5kZXIiOiJNYWxlIiwiaXNBY3RpdmUiOiIxIiwiZmlyc3RuYW1lIjoiQWxiZXJ0In0sIl9hdXRoX3VzZXJfaGFzaCI6IjlmNWQwMGZlYTYzYzJkYWMzNzQ0MTQ5MGRjYWY5YzU1MGI3NzRlNzMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJhcHBzLnV0aWxzLmJhY2tlbmRzLlRyYW5za3JpYnVzQmFja2VuZCJ9",
+    "expire_date": "2018-05-22T03:47:00.405Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "dn380bgatg9uq7mst1b5q8gdhs7wceui",
+  "fields": {
+    "session_data": "MmM0ZWZkM2UxOGU1MDk5M2IyOWIwMmMxYWY4OTA0NjExNjg5MDllYjp7fQ==",
+    "expire_date": "2018-05-09T16:53:07.964Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "f1es8mu3aigxhuj5atjpf8qg17ty5sgq",
+  "fields": {
+    "session_data": "ZTlkYWQxYTY1N2YwMTQ3YTNlNWJlYWIxOWZjZWE0MDA3OGI0ODNmNDp7Il9sYW5ndWFnZSI6ImVuIn0=",
+    "expire_date": "2018-05-04T18:43:33.565Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "f3suji8f2tob8fioq3nechcoydqqm7fc",
+  "fields": {
+    "session_data": "MmM0ZWZkM2UxOGU1MDk5M2IyOWIwMmMxYWY4OTA0NjExNjg5MDllYjp7fQ==",
+    "expire_date": "2018-05-17T00:32:23.148Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "fxumkxjty5j5kda7kc4wppidiqzpjecg",
+  "fields": {
+    "session_data": "NGZmYzkzMzRmMTQyZjY5YTFiMGVjMGVjOTcyMGUwNzBjOTNmODE4ZTp7InVzZXIiOnsidXNlcklkIjoiODkyNSIsInVzZXJOYW1lIjoiYWxiZXJ0LmdyZWlub2NrZXJAZ21haWwuY29tIiwiZW1haWwiOiJhbGJlcnQuZ3JlaW5vY2tlckBnbWFpbC5jb20iLCJhZmZpbGlhdGlvbiI6Ik5vbmUiLCJmaXJzdG5hbWUiOiJBbGJlcnQiLCJsYXN0bmFtZSI6IkdyZWluXHUwMGY2Y2tlciIsImdlbmRlciI6Ik1hbGUiLCJpc0FjdGl2ZSI6IjEiLCJpc0FkbWluIjoidHJ1ZSIsImNyZWF0ZWQiOnsibmFub3MiOiIwIn0sImxvZ2luVGltZSI6IjIwMTgtMDUtMjFUMTA6MDY6MTQuODY0KzAyOjAwIiwic2Vzc2lvbklkIjoiNTU5NzM5OERDRDUyMTMxNDY3MDU1NDlFMzUxMEFCNkEiLCJ1c2VyQWdlbnQiOiJweXRob24tcmVxdWVzdHMvMi4xMS4xIiwiaXAiOiIxNzguMTY1LjEzMC44NCJ9LCJfbGFuZ3VhZ2UiOiJlbiIsIl9hdXRoX3VzZXJfaWQiOiI4IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiYXBwcy51dGlscy5iYWNrZW5kcy5UcmFuc2tyaWJ1c0JhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiIyZTAxNTE3Y2U2MjE0ZGU0NzgxMTliYjcwOTJmMDU0MWVlNDFmOGYwIn0=",
+    "expire_date": "2018-05-21T16:06:15.004Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "h0z0zb5pjwgcx24iiizejg58imcy3u1t",
+  "fields": {
+    "session_data": "YmE5OWMwMjI4Yzc1ZDQxYTU1ZDY1MzY3MDM4ZTE0MTQyMGUxOTcwNTp7Il9sYW5ndWFnZSI6ImRlIn0=",
+    "expire_date": "2018-05-21T03:48:36.260Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "i40w0don8eut62j84gy7of4q93yjwf8q",
+  "fields": {
+    "session_data": "YmE5OWMwMjI4Yzc1ZDQxYTU1ZDY1MzY3MDM4ZTE0MTQyMGUxOTcwNTp7Il9sYW5ndWFnZSI6ImRlIn0=",
+    "expire_date": "2018-05-22T21:06:09.936Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ql1dei6tpbagxuad2zxweeiiwe2abtzl",
+  "fields": {
+    "session_data": "OTg0MDAyYmMyNDE3ODQ4YzdkMWQwZjRiZjEzYTM2NWY2OGM0Mjk0Nzp7Il9sYW5ndWFnZSI6ImRlIiwidXNlciI6eyJ1c2VyTmFtZSI6ImFsYmVydC5ncmVpbm9ja2VyQGdtYWlsLmNvbSIsInNlc3Npb25JZCI6IjBENUVCNzE5NzExNDE5Mzk5NEI0QjYyMzcyRDYyMUVDIiwiZmlyc3RuYW1lIjoiQWxiZXJ0IiwiZ2VuZGVyIjoiTWFsZSIsImlzQWN0aXZlIjoiMSIsImNyZWF0ZWQiOnsibmFub3MiOiIwIn0sImxhc3RuYW1lIjoiR3JlaW5cdTAwZjZja2VyIiwibG9naW5UaW1lIjoiMjAxOC0wNS0yMVQyMDoxNzoyOC42NzQrMDI6MDAiLCJhZmZpbGlhdGlvbiI6Ik5vbmUiLCJlbWFpbCI6ImFsYmVydC5ncmVpbm9ja2VyQGdtYWlsLmNvbSIsInVzZXJBZ2VudCI6InB5dGhvbi1yZXF1ZXN0cy8yLjExLjEiLCJ1c2VySWQiOiI4OTI1IiwiaXAiOiIxNzguMTY1LjEzMC44NCIsImlzQWRtaW4iOiJ0cnVlIn0sIl9hdXRoX3VzZXJfYmFja2VuZCI6ImFwcHMudXRpbHMuYmFja2VuZHMuVHJhbnNrcmlidXNCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiZmNlMjRiZjlkOWQ1YzY0MTgwYmM0OTQwZjM4ZTg1ZmI3MDQzNzg0OSIsIl9hdXRoX3VzZXJfaWQiOiIxMSJ9",
+    "expire_date": "2018-05-22T03:21:32.664Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "rr0qqfk4qm1oxvsublxhbffy6qgstm69",
+  "fields": {
+    "session_data": "MmM0ZWZkM2UxOGU1MDk5M2IyOWIwMmMxYWY4OTA0NjExNjg5MDllYjp7fQ==",
+    "expire_date": "2018-05-16T17:33:49.537Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "uq9yh0ptzb47d4tnkphvten6bfc85gpw",
+  "fields": {
+    "session_data": "YmE5OWMwMjI4Yzc1ZDQxYTU1ZDY1MzY3MDM4ZTE0MTQyMGUxOTcwNTp7Il9sYW5ndWFnZSI6ImRlIn0=",
+    "expire_date": "2018-05-17T22:36:58.787Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "v6u58eil0cpdppqy6b4jzx0ujkpx1g9d",
+  "fields": {
+    "session_data": "MjhjMDE5NTk1ODczZDQ2MGFmMjUyNWQzOGQ0YTQxYWVhYTc4YzIxODp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImFwcHMudXRpbHMuYmFja2VuZHMuVHJhbnNrcmlidXNCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6IjEzIiwiX2F1dGhfdXNlcl9oYXNoIjoiOTgxMTM0NTM1OWEzMzIzNDUwN2U1MTkzOWYwOGQ2NTNjYTAyMWIyNiIsInVzZXIiOnsidXNlcklkIjoiODkyNSIsInVzZXJOYW1lIjoiYWxiZXJ0LmdyZWlub2NrZXJAZ21haWwuY29tIiwiZW1haWwiOiJhbGJlcnQuZ3JlaW5vY2tlckBnbWFpbC5jb20iLCJhZmZpbGlhdGlvbiI6Ik5vbmUiLCJmaXJzdG5hbWUiOiJBbGJlcnQiLCJsYXN0bmFtZSI6IkdyZWluXHUwMGY2Y2tlciIsImdlbmRlciI6Ik1hbGUiLCJpc0FjdGl2ZSI6IjEiLCJpc0FkbWluIjoidHJ1ZSIsImNyZWF0ZWQiOnsibmFub3MiOiIwIn0sImxvZ2luVGltZSI6IjIwMTgtMDUtMjJUMTM6MDM6MTcuNTk5KzAyOjAwIiwic2Vzc2lvbklkIjoiMTgzMjNBNTUzOThGRkZEMTFBODU4MzYwQTM5QUYyMDciLCJ1c2VyQWdlbnQiOiJweXRob24tcmVxdWVzdHMvMi4xMS4xIiwiaXAiOiIxNzguMTY1LjEyOS4xODIifX0=",
+    "expire_date": "2018-05-22T19:03:17.743Z"
+  }
+},
+{
+  "model": "home.homearticle",
+  "pk": 6,
+  "fields": {
+    "changed": "2018-05-20",
+    "image": "8c738abb-8afb-41df-98aa-d60b6fd7aaf5.jpg"
+  }
+},
+{
+  "model": "home.homearticle",
+  "pk": 7,
+  "fields": {
+    "changed": "2018-05-20",
+    "image": "a66f1d37-9977-47bb-bd7f-abf0f2c7a662.jpg"
+  }
+},
+{
+  "model": "home.homearticle",
+  "pk": 8,
+  "fields": {
+    "changed": "2018-05-20",
+    "image": "f15473aa-671f-437e-8fde-50cd2f5ad8c6.jpg"
+  }
+},
+{
+  "model": "home.homearticle",
+  "pk": 9,
+  "fields": {
+    "changed": "2018-05-20",
+    "image": "ec540c5e-9191-4223-b639-afefd12599c1.jpg"
+  }
+},
+{
+  "model": "home.homearticleentry",
+  "pk": 11,
+  "fields": {
+    "lang": "de",
+    "title": "Bildungseinrichtungen",
+    "shortdesc": "<p>Transkribieren Sie historische Dokumente? Handgeschrieben oder gedruckt, aus dem Mittelalter oder aus dem 20. Jahrhundert? M\u00f6chten Sie das hoch standardisiert, flexibel und zuverl\u00e4ssig machen? Und sch\u00e4tzen Sie Unterst\u00fctzung durch automatisierte Tools wie Handgeschriebene Texterkennung und Layoutanalyse?</p>",
+    "content": "<p>TRANSKRIBUS erm\u00f6glicht Ihnen:</p><ul><li>Registrieren Sie sich in der Plattform</li><li>&nbsp;Laden Sie ein Experten-Tool herunter, das speziell auf Ihre Bed\u00fcrfnisse zugeschnitten ist</li><li>&nbsp;Lade deine eigenen Dokumente / Bilder hoch</li><li>Verwalten Sie Ihre eigene private Sammlung (niemand sonst hat Zugriff auf Ihre Dokumente!)</li><li>segmentieren Sie die Bilder mit Unterst\u00fctzung von Layout-Analysewerkzeugen in Bl\u00f6cke, Linien / Grundlinien und W\u00f6rter</li><li>&nbsp;Verkn\u00fcpfen Sie den Text mit dem Bild, was den Wert Ihrer Transkription deutlich erh\u00f6ht (tats\u00e4chlich k\u00f6nnen Sie keinen Text ohne Verlinkung transkribieren!)</li><li>Text in beliebiger Sprache und mit beliebigem Zeichensatz transkribieren (eigene virtuelle Tastatur laden)</li><li>Exportieren Sie Ihre Dokumente jederzeit in verschiedenen Formaten wie TEI, RTF, PDF, XML.</li></ul><p>Nun, das h\u00f6rt sich interessant an, aber es wird wirklich aufregend, wenn man das bedenkt</p><ul><li>sobald Sie z. B. 100 Bilder k\u00f6nnen Sie uns mitteilen und wir werden eine HTR-Engine aus dem Computational Intelligence Technology Lab (CITlab) der Universit\u00e4t Rostock auf Ihren Unterlagen und</li><li>&nbsp;Sie k\u00f6nnen weitere Seiten Ihrer Dokumente mit Hilfe von automatisch erzeugtem, handgeschriebenem Text transkribieren.</li></ul><p>Loslegen!</p><ol><li>Registrieren</li><li>Laden Sie Transkribus herunter</li><li>Probieren Sie einige Testdokumente mit automatisch erzeugtem Volltext in der TranskribusCloud-Sammlung aus</li></ol>",
+    "changed": "2018-05-20",
+    "article": 6
+  }
+},
+{
+  "model": "home.homearticleentry",
+  "pk": 12,
+  "fields": {
+    "lang": "en",
+    "title": "Scholars",
+    "shortdesc": "<p>Are you transcribing historical documents? Handwritten or printed, from the middle ages or from the 20th century? Would you like to do this in a highly standardized, flexible and reliable way? And do you appreciate to get support from automated tools such as Handwritten Text Recognition and Layout Analysis?</p>",
+    "content": "<p>TRANSKRIBUS enables you to:</p><ul><li>register in the platform</li><li>download an expert tool specifically designed for your needs</li><li>upload your own documents/images</li><li>manage your own private collection (no one else has access to your documents!)</li><li>segment the images into blocks, lines/baselines and words with the support of layout analysis tools</li><li>link the text with the image which increases the value of your transcription significantly (actually you cannot transcribe text without linking!)</li><li>transcribe text in any language and with any character set (load your own virtual keyboard)</li><li>export your documents at every time in several formats such as TEI, RTF, PDF, XML.</li></ul><p>Now, this sounds interesting, but it starts to get really exciting if you consider that</p><ul><li>once you have properly transcribed e.g. 100 images you may inform us and we will train an HTR engine from the Computational Intelligence Technology Lab (CITlab) of the University of Rostock on your documents and</li><li>you will be able to transcribe further pages of your documents with the support of automatically produced handwritten text.</li></ul><p>Get started!</p><ol><li>Register</li><li>Download Transkribus</li><li>Try out some test documents with automatically produced full-text in the TranskribusCloud collection</li></ol>",
+    "changed": "2018-05-20",
+    "article": 6
+  }
+},
+{
+  "model": "home.homearticleentry",
+  "pk": 13,
+  "fields": {
+    "lang": "de",
+    "title": "Archive",
+    "shortdesc": "<p>Sind Sie f\u00fcr gro\u00dfe Sammlungen von handgeschriebenen und gedruckten Dokumenten verantwortlich? Glauben Sie, dass die Digitalisierung den Weg ebnet, um neue M\u00f6glichkeiten zu erschlie\u00dfen, um auf Archivmaterial zuzugreifen, es zu bereichern und zu erforschen? Und sind Sie offen daf\u00fcr, Geisteswissenschaftler und Freiwillige einzubeziehen, damit sie mit diesen Dokumenten effektiv arbeiten k\u00f6nnen - Daten produzieren, die auch in Ihr Repository integriert werden k\u00f6nnen?</p>",
+    "content": "<p>TRANSKRIBUS erm\u00f6glicht es Ihnen</p><ul><li>Befriedigen Sie die Bed\u00fcrfnisse Ihrer Benutzer, die mit Ihren Dokumenten arbeiten, indem Sie die volle Kontrolle \u00fcber Ihre Dokumente behalten. Mit TRANSKRIBUS erhalten Geisteswissenschaftler eines der fortschrittlichsten Transkriptionswerkzeuge, die derzeit verf\u00fcgbar sind. Aber was z\u00e4hlt am meisten: Transkriptionen werden nicht auf den privaten Computern Ihrer Benutzer \"verloren\", sondern stehen auch zur Verf\u00fcgung, um Ihre Dokumentensammlung anzureichern und in standardisierter und nahtloser Weise in Ihre Repositories zu integrieren.</li><li>organisieren Crowdsourcing-Projekte mit minimalem Aufwand. Basierend auf den Erfahrungen eines der erfolgreichsten Crowdsourcing-Projekte \"Transcribe Bentham\" werden Ihre Crowd-User mit einer speziellen Crowdsourcing-Schnittstelle arbeiten, die vom University College London in enger Zusammenarbeit mit dem University London Computer Center entwickelt wurde ist auch Teil der TRANSKRIBUS-Plattform.</li></ul><p>Nun, das h\u00f6rt sich interessant an, aber es wird wirklich aufregend, wenn man das bedenkt</p><ul><li>Sobald Ihre Mitarbeiter mindestens 100 Seiten korrekt transkribiert haben, wird es m\u00f6glich sein, eine hochmoderne HTR-Engine zu trainieren, die vom Computational Intelligence Technology Lab (CITlab) der Universit\u00e4t Rostock entwickelt wurde und den Rest der Dokumente automatisiert erkennt. Die Ergebnisse der automatisierten Transkription sind erstaunlich, und die gute Nachricht ist, dass es umso mehr m\u00f6glich sein wird, die Erkennungsgenauigkeit zu verbessern, je mehr Daten f\u00fcr das Training der HTR-Engine verf\u00fcgbar sind.</li></ul><p>Interessiert?</p><ol><li>Fordern Sie weitere Informationen an - wir beantworten Ihre Fragen gerne.</li><li>&nbsp;Registrieren Sie sich in der Plattform</li><li>&nbsp;TRANSKRIBUS herunterladen</li><li>&nbsp;Probiere das Tool aus - damit du einen Eindruck von der Arbeitsumgebung deiner Mitarbeiter und Freiwilligen bekommst.</li><li>&nbsp;Laden Sie einige Testdokumente (oder nur einige Bilder) in Ihre Privatsammlung hoch, um erste Experimente mit Ihren eigenen Dokumenten durchzuf\u00fchren (keine Sorge, niemand kann darauf zugreifen)</li></ol>",
+    "changed": "2018-05-20",
+    "article": 7
+  }
+},
+{
+  "model": "home.homearticleentry",
+  "pk": 14,
+  "fields": {
+    "lang": "en",
+    "title": "Archives",
+    "shortdesc": "<p>Are you responsible for large collections of handwritten and printed documents? Do you believe that digitisation paves the way to realise new opportunities to access, enrich and explore archival material? And are you open to involve humanities scholars and volunteers so that they can work with these documents in an effective way \u2013 producing data which can also be integrated in your repository?</p>",
+    "content": "<p>TRANSKRIBUS enables you to</p><ul><li>satisfy the needs of your users who are working with your documents by keeping full control over your documents. With TRANSKRIBUS humanities scholars will get one of the most advanced transcription tools currently available. But what counts most: Transcriptions will not get \u201clost\u201d on the private computers of your users, but will also be available for enriching your document collection and for getting integrated into your repositories in a standardized and seamless way.</li><li>organise crowd-sourcing projects with a minimum of effort. Based on the experiences of one of the most successful crowd-sourcing projects \u201cTranscribe Bentham\u201d your crowd-users will work with a dedicated crowd-sourcing interface which was developed by the University College London in close cooperation with the University London Computer Centre and which is also part of the TRANSKRIBUS platform.</li></ul><p>Now, this sounds interesting, but it starts to get really exciting if you consider that</p><ul><li>once your collaborators have properly transcribed at least 100 pages it will be possible to train a cutting edge HTR engine developed by the Computational Intelligence Technology Lab (CITlab) of the University of Rostock and to recognise the rest of the documents in an automated way. The results of the automated transcription are amazing, and the good news is that the more data are available for training the HTR engine, the more will it be possible to improve the recognition accuracy.</li></ul><p>Interested?</p><ol><li>Request more information \u2013 we are happy to answer your questions.</li><li>Register in the platform</li><li>Download TRANSKRIBUS</li><li>Try out the tool \u2013 so you will get an impression about the working environment of your collaborators and volunteers.</li><li>Upload some test documents (or just some images) to your private collection to make first experiments with your own documents (don\u2019t worry, no one else will be able to access them)</li></ol>",
+    "changed": "2018-05-20",
+    "article": 7
+  }
+},
+{
+  "model": "home.homearticleentry",
+  "pk": 15,
+  "fields": {
+    "lang": "de",
+    "title": "Freiwillige",
+    "shortdesc": "<p>Sind historische Briefe, Postkarten, Manuskripte oder mittelalterliche Dokumente f\u00fcr Sie faszinierend? Magst du es, die Handschrift zu entziffern - dieses wunderbare Gef\u00fchl, wenn du etwas lesen kannst, das den meisten anderen Menschen verborgen bleiben k\u00f6nnte? Und glauben Sie, dass jeder einen wertvollen Beitrag zu Wissenschaft und Forschung leisten kann?</p>",
+    "content": "<p>TRANSKRIBUS erm\u00f6glicht Ihnen</p><ul><li>mit eigenen Dokumenten zu arbeiten! In diesem Fall werden Sie in der Lage sein</li><li>Verwenden Sie das gleiche Werkzeug wie \"professionelle Wissenschaftler\" - Ihre Beitr\u00e4ge werden daher von der gleichen hohen Qualit\u00e4t sein, die f\u00fcr ernsthafte Wissenschaft erforderlich ist</li><li>Laden Sie Ihre eigenen Dokumente (oder die von Ihren Gro\u00dfeltern, Verwandten usw.) auf die Plattform hoch</li><li>behalten Sie die volle Kontrolle \u00fcber die Dokumente (keine Sorge, Sie entscheiden, wer Zugang zu den Dokumenten hat)</li><li>andere Nutzer mit einbeziehen, die Sie bei der Transkription Ihrer Dokumente unterst\u00fctzen oder sogar einen professionellen Transkriptionsdienst engagieren, der die Transkription f\u00fcr Sie \u00fcbernehmen kann</li><li>Exportieren Sie Ihre Dokumente nicht nur als RTF (Word-Datei) sondern auch als PDF (mit dem Bild im Vordergrund und dem Text im Hintergrund)</li></ul><p><br></p><p>Zweitens k\u00f6nnen Sie mit TRANSKRIBUS zur Transkription von Dokumenten beitragen, die von Geisteswissenschaftlern oder Archiven bereitgestellt werden, die Unterst\u00fctzung f\u00fcr ihre Forschung suchen. In diesem Fall k\u00f6nnen Sie:</p><ul><li>einen wertvollen und anerkannten Beitrag zu laufenden Transkriptionsprojekten leisten</li><li>Verwenden Sie entweder das voll funktionsf\u00e4hige TRANSKRIBUS-Tool oder</li><li>Zugriff auf ein vereinfachtes, webbasiertes Tool, das vom University College London in Zusammenarbeit mit dem University London Computer Center entwickelt wurde</li></ul>",
+    "changed": "2018-05-20",
+    "article": 8
+  }
+},
+{
+  "model": "home.homearticleentry",
+  "pk": 16,
+  "fields": {
+    "lang": "en",
+    "title": "Volunteers",
+    "shortdesc": "<p>Are historical letters, postcards, manuscripts or medieval documents fascinating for you? Do you enjoy deciphering handwriting \u2013 this wonderful feeling when you can read something which may be hidden to most other people? And do you believe that everyone can make a valuable contribution to scholarship and science?</p>",
+    "content": "<p>TRANSKRIBUS enables you</p><ul><li>to work with your own documents! In this case you will be able to</li><li>use the same tool as \u201cprofessional scholars\u201d \u2013 your contributions will therefore be of the same high quality which is required for serious science</li><li>upload your own documents (or those from your grandparents, relatives, etc\u2026) to the platform</li><li>keep full control on the documents (don\u2019t worry it is you who decides who has access to the documents)</li><li>involve other users who may support you in the transcription of your documents or even to engage a professional transcription service who can do the transcription for you)</li><li>export your documents not only as RTF (Word file) but also as PDF (with the image in the foreground and the text in the background)</li></ul><p>Second, TRANSKRIBUS enables you to contribute to the transcription of documents made available by humanities scholars or archives seeking support for their research. In this case you will be able to:</p><ul><li>make a valuable and well-acknowledged contribution to ongoing transcription projects</li><li>use either the full-featured TRANSKRIBUS tool or to</li><li>access a simplified, web-based tool which was developed by the University College London in cooperation with the University London Computer Centre</li></ul>",
+    "changed": "2018-05-20",
+    "article": 8
+  }
+},
+{
+  "model": "home.homearticleentry",
+  "pk": 17,
+  "fields": {
+    "lang": "de",
+    "title": "Wissenschaftler",
+    "shortdesc": "<p>Sind Sie Informatiker und arbeiten in den Bereichen Computer Vision, Dokumentenanalyse, Mustererkennung, Verarbeitung nat\u00fcrlicher Sprache oder einem verwandten Bereich? Sie suchen interessante Dokumente aus 1000 Jahren Handschrift, Druck und Verlagswesen? Und Sie w\u00fcrden wirklich gerne einige Referenzdaten in einem gut bekannten Format wie PAGE bekommen?</p>",
+    "content": "<p>TRANSKRIBUS wird Ihnen erm\u00f6glichen</p><ul><li>sich in der Plattform registrieren und \u00fcber interessante Transkriptionsprojekte informiert bleiben</li><li>&nbsp;Laden Sie Ihre eigenen Bilder hoch und f\u00fchren Sie sie gegen einige Tools aus, die im FP7-Projekt tranScriptortium entwickelt wurden</li><li>Verwenden des TRANSKRIBUS-Tools zum Kommentieren eigener Daten mit Regionen von Interesse und Speichern der Ergebnisse als PAGE-Datei (\u00e4hnlich wie ALETHEIA von USAL)</li><li>mit interessierten Geisteswissenschaftlern und Archiven auf der Basis klar definierter Referenzdaten und Benchmarks zu kommunizieren (an denselben Dokumenten arbeiten, mehrere Versionen desselben Dokuments speichern)</li></ul><p>Aber was wirklich aufregend ist, ist, dass TRANSKRIBUS auch ein Weg ist, eine sch\u00f6ne Umgebung f\u00fcr Ihre Forschungsergebnisse zu haben. Es erm\u00f6glicht Ihnen</p><ul><li>um Ihr Werkzeug in einer bekannten Computerumgebung (CentOS, WindowsServer) mit klar definierten Eingabe-Ausgabe-Formaten (PAGE in, PAGE out) zu exponieren</li><li>Feedback von einer Vielzahl von Benutzern wie Geisteswissenschaftlern und Freiwilligen zu sammeln</li><li>um zu sehen, wie Ihre Tools laufen, ohne sich um das Gesamtsystem zu k\u00fcmmern (Dokumentenmanagement, Benutzerverwaltung, Speicher, Bandbreite, Unterst\u00fctzung, Kommunikation, ...)</li></ul><p>N\u00e4chste Schritte</p><ol><li>Kontaktiere uns!</li><li>Registrieren Sie sich in der Plattform</li><li>Laden Sie TRANSKRIBUS herunter und probieren Sie es aus</li></ol>",
+    "changed": "2018-05-20",
+    "article": 9
+  }
+},
+{
+  "model": "home.homearticleentry",
+  "pk": 18,
+  "fields": {
+    "lang": "en",
+    "title": "Scientists",
+    "shortdesc": "<p>Are you a computer scientist and working in the fields of computer vision, document analysis, pattern recognition, natural language processing or a related field? You are seeking interesting documents from 1000 years of handwriting, printing and publishing? And you would really enjoy to get some reference data in a well-acknowledged format, such as PAGE?</p>",
+    "content": "<p>TRANSKRIBUS will enable you</p><ul><li>to register in the platform and stay informed about interesting transcription projects</li><li>to upload your own images and run them against some tools developed in the FP7 project tranScriptorium</li><li>to use the TRANSKRIBUS tool for annotating your own data with regions of interest and to store the results as PAGE file (similar to ALETHEIA from USAL)</li><li>to communicate with interested humanities scholars and archives on the basis of clearly defined reference data and benchmarks (work on the same documents, store several versions of the same document)</li></ul><p>But what is really exciting is that TRANSKRIBUS is also a way to have a beautiful environment for your research results. It enables you</p><ul><li>to expose your tool in a well-known computer environment (CentOS, WindowsServer) with clearly defined input-output formats (PAGE in, PAGE out)</li><li>to gather feedback from a variety of users such as humanities scholars and volunteers</li><li>to see your tools running without taking care of the overall system (document management, user management, storage, bandwidth, support, communication,\u2026)</li></ul><p>Next steps</p><ol><li>Contact us!</li><li>Register in the platform</li><li>Download TRANSKRIBUS and try it out</li></ol><p><br></p>",
+    "changed": "2018-05-20",
+    "article": 9
+  }
+},
+{
+  "model": "home.blog",
+  "pk": 4,
+  "fields": {
+    "changed": "2018-05-11",
+    "image": "e1a61cbf-fe6c-4aff-813e-53351e879e70.jpg"
+  }
+},
+{
+  "model": "home.blog",
+  "pk": 5,
+  "fields": {
+    "changed": "2018-05-20",
+    "image": "66223d1d-7ccc-43ab-97de-0a10b1dfac8f.png"
+  }
+},
+{
+  "model": "home.blog",
+  "pk": 6,
+  "fields": {
+    "changed": "2018-05-21",
+    "image": "d34517ff-b2e3-4c9b-a6ef-9a6957b4a867.png"
+  }
+},
+{
+  "model": "home.blog",
+  "pk": 7,
+  "fields": {
+    "changed": "2018-05-21",
+    "image": "a27924a1-cf01-41a4-bc54-5f44b91f22c5.png"
+  }
+},
+{
+  "model": "home.blogentry",
+  "pk": 7,
+  "fields": {
+    "title": "Pirchner",
+    "subtitle": "testest",
+    "content": "<p>Pirchner begann seine Musikerlaufbahn im Jazz, besch\u00e4ftigte sich aber schon fr\u00fch mit der damaligen zeitgen\u00f6ssischen Musik und ihren Theoretikern (<a href=\"https://de.wikipedia.org/wiki/Theodor_W._Adorno\" target=\"_blank\">Theodor W. Adorno</a>, <a href=\"https://de.wikipedia.org/wiki/Arnold_Sch%C3%B6nberg\" target=\"_blank\">Arnold Sch\u00f6nberg</a>, <a href=\"https://de.wikipedia.org/wiki/Olivier_Messiaen\" target=\"_blank\">Olivier Messiaen</a> u.&nbsp;a.). Ab 1963 war er <a href=\"https://de.wikipedia.org/wiki/Vibraphon\" target=\"_blank\">Vibraphonist</a> des <a href=\"https://de.wikipedia.org/wiki/Oscar_Klein\" target=\"_blank\">Oscar-Klein</a>-Quartetts. Auf der ersten Platte des <a href=\"https://de.wikipedia.org/wiki/Vienna_Art_Orchestra\" target=\"_blank\">Vienna Art Orchestra</a> spielt er <a href=\"https://de.wikipedia.org/wiki/Marimbaphon\" target=\"_blank\">Marimbaphon</a>. Gemeinsam mit dem Gitarristen <a href=\"https://de.wikipedia.org/wiki/Harry_Pepl\" target=\"_blank\">Harry Pepl</a> trat er in den fr\u00fchen 1980er Jahren als <em>Pirchner-Pepl-JazzZwio</em> auf, das teilweise mit <a href=\"https://de.wikipedia.org/wiki/Adelhard_Roidinger\" target=\"_blank\">Adelhard Roidinger</a> als Bassisten zum Trio erweitert wurde.</p><p>In den letzten 15 Jahren seines Lebens arbeitete er \u00fcberwiegend als Komponist. 1973 ver\u00f6ffentlichte er seine erste <a href=\"https://de.wikipedia.org/wiki/Langspielplatte\" target=\"_blank\">Langspielplatte</a> mit selbstgezeichnetem Cover, <em>ein halbes doppelalbum</em>, die im deutschen Sprachraum ein positives bis begeistertes Medienecho ausl\u00f6ste. Er spielt darauf eine gr\u00f6\u00dfere Anzahl verschiedener Instrumente im Playback, singt selbstgetextete Lieder, verfremdet bekannte Vorlagen und mischt, fast immer provozierend, Stile und Sounds. Das hat ihm seinen Ruf als Vertreter der <a href=\"https://de.wikipedia.org/wiki/Neue_Volksmusik\" target=\"_blank\">Neuen Volksmusik</a> und als Autor \u201ekritischer Heimatmusik\u201c eingetragen.</p><p>Einige der Lieder des <em>halben doppelalbums</em> verwendete er in der Folge in einem Film, den er 1974 zusammen mit Christian Berger produzierte: <a href=\"https://de.wikipedia.org/wiki/Der_Untergang_des_Alpenlandes\" target=\"_blank\"><em>Der Untergang des Alpenlandes</em></a>. Er schrieb nicht nur die Musik, sondern auch die Texte und trat im Film als S\u00e4nger und Schauspieler auf. Dabei verwendet er ironisch Tiroler Folklore-Stereotypen, was ihm heftige Kritik vonseiten konservativer Kreise eintrug. 1975 lud ihn <a href=\"https://de.wikipedia.org/wiki/Bert_Breit\" target=\"_blank\">Bert Breit</a> ein, zu einem Film \u00fcber <a href=\"https://de.wikipedia.org/wiki/Tirol\" target=\"_blank\">Tirol</a>, den Breit mit <a href=\"https://de.wikipedia.org/wiki/Otto_Gr%C3%BCnmandl\" target=\"_blank\">Otto Gr\u00fcnmandl</a> plante, Musik zu komponieren. Daraus entstand das <em>Streichquartett f\u00fcr Bl\u00e4serquintett</em>, PWV 15.</p><p>\u00d6sterreichweit bekannt wurde Pirchner durch sein Sounddesign f\u00fcr den <a href=\"https://de.wikipedia.org/wiki/ORF\" target=\"_blank\">ORF</a>-Kultursender <a href=\"https://de.wikipedia.org/wiki/%C3%961\" target=\"_blank\">\u00d61</a> 1994, das bis September 2017 in Verwendung war. 1995 komponierte er die B\u00fchnenmusik zu Hofmannsthals <a href=\"https://de.wikipedia.org/wiki/Jedermann\" target=\"_blank\">Jedermann</a> bei den <a href=\"https://de.wikipedia.org/wiki/Salzburger_Festspiele\" target=\"_blank\">Salzburger Festspielen</a>. Ein weiterer von einer gro\u00dfen \u00d6ffentlichkeit wahrgenommener Auftrag war die Musik zum Fernseh-Pausenfilm des <a href=\"https://de.wikipedia.org/wiki/Neujahrskonzert_der_Wiener_Philharmoniker\" target=\"_blank\">Neujahrskonzertes der Wiener Philharmoniker</a> am 1. Januar 2000.</p><p>Pirchners vielschichtige Musik verbindet auf ungewohnte Weise Elemente aus Jazz, Unterhaltungs- und sogenannter Ernster Musik. Vom elektronisch verarbeiteten Jodler zum schr\u00e4g harmonisierten Schubert, von einer Hommage f\u00fcr <a href=\"https://de.wikipedia.org/wiki/John_Cage\" target=\"_blank\">John Cage</a> zur Persiflage der jugendlichen Indienwallfahrer und Drogenkonsumenten, von der parodierten Werbesprache zu noch heute g\u00fcltigen sozialkritischen Texten spannt sich ein weiter Bogen. Oft changieren seine Arbeiten zwischen unmittelbarer Vitalit\u00e4t und einer Art Metamusik, die sich analytisch mit vielbenutzten Musikmodellen auseinandersetzt. Als <a href=\"https://de.wikipedia.org/wiki/Autodidakt\" target=\"_blank\">Autodidakt</a> hatte Pirchner angefangen; eigenwillig und in kein Stilklischee einzuordnen blieb er bis zu seinem Tod. Eine Webseite mit Auff\u00fchrungsarchiv und Werkverzeichnis wird von der Witwe Elfriede Pirchner gepflegt.</p>",
+    "lang": "de",
+    "blog": 4,
+    "changed": "2018-05-11"
+  }
+},
+{
+  "model": "home.blogentry",
+  "pk": 8,
+  "fields": {
+    "title": "Pirchner",
+    "subtitle": "subsub",
+    "content": "<p>He was born in <a href=\"https://en.wikipedia.org/wiki/Hall_in_Tirol\" target=\"_blank\">Hall in Tirol</a>, and had his musical start playing jazz. In 1963 he played <a href=\"https://en.wikipedia.org/wiki/Vibraphone\" target=\"_blank\">vibraphone</a> in the <a href=\"https://en.wikipedia.org/wiki/Oscar_Klein\" target=\"_blank\">Oscar-Klein</a>-Quartett.</p><p>The last 15 years of his life he worked as a composer only. In 1973, his first tape was published. In 1974, he composed the music for the film <a href=\"https://en.wikipedia.org/w/index.php?title=Der_Untergang_des_Alpenlandes&amp;action=edit&amp;redlink=1\" target=\"_blank\"><em>Der Untergang des Alpenlandes</em></a>. In 1975, <a href=\"https://en.wikipedia.org/w/index.php?title=Bert_Breit&amp;action=edit&amp;redlink=1\" target=\"_blank\">Bert Breit</a> invited him to compose the film music about <a href=\"https://en.wikipedia.org/wiki/State_of_Tyrol\" target=\"_blank\">Tyrol</a>, for which he composed the \"Streichquartett f\u00fcr Bl\u00e4serquintett\", PWV 15.</p><p>In Austria Pirchner was well-known, since he composed the \"Sounddesign\" for the <a href=\"https://en.wikipedia.org/wiki/ORF_(broadcaster)\" target=\"_blank\">ORF</a>-culture radio <a href=\"https://en.wikipedia.org/wiki/%C3%961\" target=\"_blank\">\u00d61</a> in 1994. In 1995, he composed the music for Hofmannsthals <a href=\"https://en.wikipedia.org/wiki/Jedermann_(play)\" target=\"_blank\">Jedermann</a> at the <a href=\"https://en.wikipedia.org/wiki/Salzburger_Festspiele\" target=\"_blank\">Salzburger Festspiele</a>.</p><p>He died in <a href=\"https://en.wikipedia.org/wiki/Innsbruck\" target=\"_blank\">Innsbruck</a>.</p>",
+    "lang": "en",
+    "blog": 4,
+    "changed": "2018-05-11"
+  }
+},
+{
+  "model": "home.blogentry",
+  "pk": 9,
+  "fields": {
+    "title": "Trainiere dein eigenes handgeschriebenes Texterkennungsmodell!",
+    "subtitle": "",
+    "content": "<p>Unsere Transkribus-Plattform bietet Zugang zu hochmoderner Technologie zur handschriftlichen Texterkennung, die alle Arten von historischen Dokumenten verarbeiten kann. Benutzer laden digitalisierte Bilder von historischem Material zu Transkribus hoch und transkribieren jede Seite, um Trainingsdaten f\u00fcr die handschriftliche Texterkennung zu erstellen. Ein Trainingssatz von mindestens 15.000 W\u00f6rtern oder etwa 75 Seiten reicht aus, um unsere Algorithmen des maschinellen Lernens zu erkennen und die f\u00fcr die Recherche und Volltextsuche geeigneten Transkripte zu schreiben.</p><p><br></p><p>Der Prozess des Trainings eines Handgeschriebenen Texterkennungsmodells findet auf unseren Servern statt - aber Transkribus-Benutzer k\u00f6nnen jetzt den Schulungsprozess zum ersten Mal selbst einrichten und \u00fcberwachen. Die Macht liegt in deinen H\u00e4nden!</p><p><a href=\"https://read.transkribus.eu/wp-content/uploads/2018/03/Train.png\" target=\"_blank\"><img src=\"https://read.transkribus.eu/wp-content/uploads/2018/03/Train.png\" width=\"502\" height=\"123\"></a></p><p>In unserem neuen How to Guide erfahren Sie mehr \u00fcber das Trainieren Ihres eigenen Modells:&nbsp;</p><ul><li><u>Wie man ein handgeschriebenes Texterkennungs-Modell in Transkribus ausbildet</u></li></ul><p>Die Trainingsfunktion wird in k\u00fcnftigen Versionen von Transkribus standardm\u00e4\u00dfig enthalten sein. Wenn Sie jetzt auf das Feature zugreifen m\u00f6chten, <u>senden Sie einfach eine E-Mail an das Transkribus-Team</u>.</p><p><br></p><p>Das Tolle an der Technologie zur handschriftlichen Texterkennung ist, dass sie von allem, was sie sieht, lernt. Da mehr und mehr Bilder und Transkripte an unsere Plattform gesendet werden, wird die Genauigkeit der Erkennung nur zunehmen. Wir freuen uns auf viele neue Modelle und Experimente!</p>",
+    "lang": "de",
+    "blog": 5,
+    "changed": "2018-05-20"
+  }
+},
+{
+  "model": "home.blogentry",
+  "pk": 10,
+  "fields": {
+    "title": "Train your own Handwritten Text Recognition model!",
+    "subtitle": "",
+    "content": "<p>Our <a href=\"https://transkribus.eu/Transkribus/\" target=\"_blank\">Transkribus</a> platform offers access to cutting-edge Handwritten Text Recognition technology capable of processing all kinds of historical documents.&nbsp;Users upload digitised images of historical material to Transkribus and transcribe each page to create training data for Handwritten Text Recognition.&nbsp;A training set of at least 15,000 words or around 75 pages is enough for our algorithims of machine learning to recognise the writing and produce transcripts suitable for research and full-text search.</p><p>The process of training a Handwritten Text Recognition model takes place on our servers \u2013 but Transkribus users can now set up and monitor the training process themselves for the first time.&nbsp;The power is in your hands!</p><p><a href=\"https://read.transkribus.eu/wp-content/uploads/2018/03/Train.png\" target=\"_blank\"><img src=\"https://read.transkribus.eu/wp-content/uploads/2018/03/Train.png\" width=\"502\" height=\"123\"></a></p><p>You can find out more information about how to train your own model in our new How to Guide:</p><ul><li><a href=\"https://transkribus.eu/wiki/images/3/34/HowToTranscribe_Train_A_Model.pdf\" target=\"_blank\">How To Train a Handwritten Text Recognition Model in Transkribus</a></li></ul><p>The training function will be included as a standard feature in future versions of Transkribus.&nbsp;If you would like access to the feature now, simply <a href=\"mailto:email@transkribus.eu\" target=\"_blank\">send an email to the Transkribus team</a>.</p><p>The great thing about Handwritten Text Recognition technology is that it learns from all that it sees.&nbsp;As more and more images and transcripts are submitted to our platform, the accuracy of the recognition will only increase.&nbsp;So we are looking forward to lots of new models and experiments!</p>",
+    "lang": "en",
+    "blog": 5,
+    "changed": "2018-05-20"
+  }
+},
+{
+  "model": "home.blogentry",
+  "pk": 11,
+  "fields": {
+    "title": "Besuchen Sie uns auf dem Scanathon 2018!",
+    "subtitle": "in London, Z\u00fcrich und Helsinki",
+    "content": "<p>Das READ-Projekt organisiert am Freitag, dem 8. Juni 2018, einen spannenden internationalen Scanathon. Parallele Veranstaltungen finden in Finnland, der Schweiz und im Vereinigten K\u00f6nigreich statt.</p><p>Beim Scanathon erfahren Sie mehr \u00fcber die M\u00f6glichkeiten von DocScan und ScanTent und die Technologie dahinter. Sie haben die M\u00f6glichkeit zu \u00fcben, mit den Werkzeugen eine Reihe von historischen Dokumenten zu digitalisieren und zu sehen, wie Sie qualitativ hochwertige Bilder auf effiziente Weise erzeugen k\u00f6nnen. Wir freuen uns auch \u00fcber Ihr Feedback zu unseren Prototypenwerkzeugen und deren Eignung f\u00fcr Archivarbeiten. Es wird eine Live-Videoverbindung zwischen den verschiedenen europ\u00e4ischen Archiven geben und schlie\u00dflich die Chance, ein ScanTent f\u00fcr Ihr Archiv zu gewinnen!</p><p>Wir laden Sie ein, sich mit neuen Werkzeugen vertraut zu machen, die wir f\u00fcr die Digitalisierung auf Abruf in Archiven entwickeln. Auf der Veranstaltung werden die DocScan Mobile App und das ScanTent-Ger\u00e4t vorgestellt, mit denen Archivnutzer hochwertige Bilder historischer Dokumente mit ihren Mobiltelefonen aufnehmen k\u00f6nnen. Benutzer k\u00f6nnen mit diesen Tools Dokumente f\u00fcr ihre eigene Forschung digitalisieren oder helfen, die digitalisierten Best\u00e4nde eines Archivs zu erweitern.</p><p><br></p><p>Der Scanathon 2018 findet am Freitag, den 8. Juni 2018, in drei europ\u00e4ischen St\u00e4dten statt. Die Veranstaltungen sind kostenlos, aber die Pl\u00e4tze sind begrenzt. Bitte melden Sie sich unten an:</p><ul><li>&nbsp;&nbsp;&nbsp;The National Archives, London, Vereinigtes K\u00f6nigreich - Anmelden um teilzunehmen</li><li>&nbsp;&nbsp;&nbsp;Das Nationalarchiv von Finnland, Helsinki, Finnland - melden sich an</li><li>&nbsp;&nbsp;&nbsp;Das Staatsarchiv Z\u00fcrich, Z\u00fcrich, Schweiz - senden Sie eine E-Mail zur Teilnahme</li></ul><p><a href=\"https://read.transkribus.eu/wp-content/uploads/2017/07/ispim.jpg\" target=\"_blank\"><img src=\"https://read.transkribus.eu/wp-content/uploads/2017/07/ispim-1024x768.jpg\" width=\"720\" height=\"540\"></a></p><p>DocScan und das ScanTent werden von einem der READ-Projektpartner, dem Computer Vision Lab der Technischen Universit\u00e4t Wien, entwickelt. Diese Scanathon-Veranstaltungen werden vom Bentham Project am University College London, dem National Archives of Finland und dem Staatsarchiv von Z\u00fcrich organisiert. Der London Scanathon wird gro\u00dfz\u00fcgig von den National Archives of the United Kingdom gehostet.</p>",
+    "lang": "de",
+    "blog": 6,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.blogentry",
+  "pk": 12,
+  "fields": {
+    "title": "Join us at the 2018 Scanathon!",
+    "subtitle": " in London, Zurich and Helsinki",
+    "content": "<p>The READ project is organising an exciting international Scanathon on Friday 8 June 2018, with parallel events taking place in Finland, Switzerland and the United Kingdom.</p><p><a href=\"https://read.transkribus.eu/wp-content/uploads/2018/05/ScanTent300dpi.png\" target=\"_blank\"><img src=\"https://read.transkribus.eu/wp-content/uploads/2018/05/ScanTent300dpi-269x300.png\" width=\"269\" height=\"300\"></a></p><p>We invite you to come along to learn about new tools that we are developing for \u2018digitisation on demand\u2019 in archives.&nbsp;The event will showcase the <a href=\"https://scantent.cvl.tuwien.ac.at/en/#docscan\" target=\"_blank\">DocScan mobile app</a> and the <a href=\"https://scantent.cvl.tuwien.ac.at/en/\" target=\"_blank\">ScanTent</a> device, which are designed to help archival users take high quality images of historical documents with their mobile phones. Users can use these tools to digitise documents for their own research or help to expand the digitised holdings of an archive.</p><p>The 2018 Scanathon will take place on the morning of Friday 8 June 2018 in three different European cities.&nbsp;The events are free to attend but places are limited, so please sign up below:</p><ul><li><strong>The National Archives, London, United Kingdom \u2013 </strong><a href=\"https://www.eventbrite.co.uk/e/scanathon-2018-at-the-national-archives-tickets-45026437286\" target=\"_blank\"><strong>register to attend</strong></a></li><li><strong>The National Archives of Finland, Helsinki, Finland \u2013 </strong><a href=\"https://www.arkisto.fi/Scanathon\" target=\"_blank\"><strong>register to attend</strong></a></li><li><strong>The State Archives of Zurich, Zurich, Switzerland \u2013 </strong><a href=\"mailto:tobias.hodel@hist.uzh.ch\" target=\"_blank\"><strong>send an email to attend</strong></a></li></ul><p><a href=\"https://read.transkribus.eu/wp-content/uploads/2017/07/ispim.jpg\" target=\"_blank\"><img src=\"https://read.transkribus.eu/wp-content/uploads/2017/07/ispim-1024x768.jpg\" width=\"720\" height=\"540\"></a></p><p>The ScanTent in action!</p><p>At the Scanathon you will learn about the capabilities of DocScan and the ScanTent and the technology behind them.&nbsp;You will have the chance to practice using the tools to digitise a range of historical documents and see how you can generate high-quality images in an efficient manner.&nbsp;We will also welcome your feedback on our prototype tools and their suitability for archival work.&nbsp;There will be a live video link between the different European archives&nbsp;and finally the chance to win a ScanTent for your archive!</p><p>DocScan and the ScanTent are being developed by one of the READ project partners, the&nbsp;<a href=\"https://cvl.tuwien.ac.at/\" target=\"_blank\">Computer Vision Lab</a> at the Technical University of Vienna.&nbsp;These Scanathon events are organised by the <a href=\"http://www.ucl.ac.uk/bentham-project\" target=\"_blank\">Bentham Project at University College London</a>, the <a href=\"http://www.arkisto.fi/en/frontpage\" target=\"_blank\">National Archives of Finland</a> and the <a href=\"https://staatsarchiv.zh.ch/internet/justiz_inneres/sta/en/home.html\" target=\"_blank\">State Archives of Zurich</a>.&nbsp;The London Scanathon is generously hosted by <a href=\"http://www.nationalarchives.gov.uk/\" target=\"_blank\">The National Archives</a> of the United Kingdom.</p>",
+    "lang": "en",
+    "blog": 6,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.blogentry",
+  "pk": 13,
+  "fields": {
+    "title": "Englische Radfahrer Tageb\u00fccher von der University of Warwick anerkannt",
+    "subtitle": "",
+    "content": "<p>Wir haben einige hervorragende Ergebnisse zu berichten, die sich auf eine interessante Sammlung von Dokumenten beziehen, die im Modern Records Center der University of Warwick stattfanden.</p><p>Die Archivarin Elizabeth Wood und ihr Team haben k\u00fcrzlich ein HTR-Modell (Handwritten Text Recognition) trainiert, um das Schreiben in einer Sammlung von Fahrradtageb\u00fcchern zu erkennen, die zu Beginn des 20. Jahrhunderts von David Allan Hamilton auf Englisch geschrieben wurden.</p><p>Die Seiten aus Hamiltons Tagebuch sind klein und oft mit Fotos, Karten und Skizzen des Lebens auf der Stra\u00dfe gebrochen. Dies bedeutete, dass das Team von Warwick beschloss, eine gr\u00f6\u00dfere Anzahl transkribierter Seiten einzureichen, um ihr Modell zu trainieren.</p><p>Das Hamilton-Modell wurde auf etwa 200 transkribierten Seiten (mit fast 20.000 W\u00f6rtern) aus einem Band von Hamiltons Tageb\u00fcchern trainiert.</p><p>Die automatisierten Transkripte, die mit diesem Modell erstellt wurden, weisen eine sehr beeindruckende Character Error Rate von nur 5% auf. Dies bedeutet, dass durchschnittlich 95% der Zeichen vom Computer korrekt transkribiert werden.</p><p><a href=\"https://read.transkribus.eu/wp-content/uploads/2018/04/Warwick_Hamilton-1.png\" target=\"_blank\"><img src=\"https://read.transkribus.eu/wp-content/uploads/2018/04/Warwick_Hamilton-1-300x288.png\" width=\"300\" height=\"288\"></a></p><p>Das Team des Modern Records Center arbeitet derzeit mit den automatisierten Transkripten und untersucht auch die M\u00f6glichkeit, neue Modelle f\u00fcr die Verarbeitung anderer Tageb\u00fccher in ihren Best\u00e4nden zu trainieren.<span class=\"ql-cursor\">\ufeff</span></p>",
+    "lang": "de",
+    "blog": 7,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.blogentry",
+  "pk": 14,
+  "fields": {
+    "title": "English Cycling diaries recognised by University of Warwick",
+    "subtitle": "",
+    "content": "<p>We\u2019ve got some terrific results to report relating to an interesting collection of documents held at the <a href=\"https://warwick.ac.uk/services/library/mrc/\" target=\"_blank\">Modern Records Centre</a> at the University of Warwick.</p><p>Archivist Elizabeth Wood and her team have recently trained a Handwritten Text Recognition (HTR) model to recognise the writing in a collection of cycling diaries written in English during the early twentieth century by David Allan Hamilton.</p><p>The pages from Hamilton\u2019s diary are small and frequently broken up with photos, maps and sketches of life on the road.&nbsp;This meant that the team at Warwick decided to submit a greater number of transcribed pages to train their model.</p><p>The Hamilton model was trained on around 200 transcribed pages (containing nearly 20,000 words) from one volume of Hamilton\u2019s diaries.</p><p>The automated transcripts produced by this model have a very impressive Character Error Rate of just 5% \u2013 meaning that an average of 95% of&nbsp;characters are transcribed correctly by the computer.</p><p><a href=\"https://read.transkribus.eu/wp-content/uploads/2018/04/Warwick_Hamilton-1.png\" target=\"_blank\"><img src=\"https://read.transkribus.eu/wp-content/uploads/2018/04/Warwick_Hamilton-1-300x288.png\" width=\"300\" height=\"288\"></a></p><p>Screenshot of automated transcription in Transkribus. Page from diary of David Allan Hamilton, 1916-1923, from the National Cycle Archive, Modern Records Centre, University of Warwick [document reference: MSS.328/N93/1].</p><p>The team at the Modern Records Centre are currently working with the automated transcripts and are also exploring the possibility of training new models to process other diaries in their holdings.</p>",
+    "lang": "en",
+    "blog": 7,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.institution",
+  "pk": 3,
+  "fields": {
+    "lat": "47.9000",
+    "lng": "11.9001",
+    "link": "https://htl-anichstrasse.tirol/",
+    "image": "bed9a099-adea-4af4-b6b7-01ed898d00f5.png",
+    "img_width": 4252,
+    "img_height": 886,
+    "changed": "2018-05-16"
+  }
+},
+{
+  "model": "home.institution",
+  "pk": 4,
+  "fields": {
+    "lat": "48.2100",
+    "lng": "16.3634",
+    "link": "https://www.univie.ac.at/",
+    "image": "ef0b37c3-d973-4ffa-a8d2-06ec0bebef5d.jpg",
+    "img_width": 220,
+    "img_height": 61,
+    "changed": "2018-05-16"
+  }
+},
+{
+  "model": "home.institution",
+  "pk": 5,
+  "fields": {
+    "lat": "54.0887",
+    "lng": "12.1400",
+    "link": "https://www.uni-rostock.de/en/",
+    "image": "d52bacbb-4288-4d1d-b267-742ecec4b894.png",
+    "img_width": 800,
+    "img_height": 174,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.institution",
+  "pk": 6,
+  "fields": {
+    "lat": "47.4515",
+    "lng": "8.5646",
+    "link": "",
+    "image": "",
+    "img_width": 0,
+    "img_height": 0,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.institution",
+  "pk": 7,
+  "fields": {
+    "lat": "39.4698",
+    "lng": "-0.3774",
+    "link": "http://www.upv.es/",
+    "image": "b88c4331-a06c-4028-93af-4f59fdefe3bc.png",
+    "img_width": 182,
+    "img_height": 61,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.institutiondescription",
+  "pk": 15,
+  "fields": {
+    "name": "HTL Anichstrasse",
+    "loclabel": "Innsbruck",
+    "desc": "<p><strong>Unsere Ausbildungsschwerpunkte:</strong></p><ul><li>Softwareentwicklung, Datenbanken, Softwareanbindungen, Netzwerktechnik, Webtechnologien</li><li>Mechatronik, Robotik, mechanische und elektrische Werkst\u00e4tte</li><li>Wirtschaftsrecht, Buchhaltung, Bilanzierung, Controlling, Marketing, Projektmanagement, Qualit\u00e4tsmanagement</li></ul><p><br></p><p>Durch die Vernetzung von Informatik, Maschinenbau und Wirtschaft sind unsere Absolventinnen und Absolventen auf die Industrie 4.0 mit ihrer zunehmenden Digitalisierung bestens vorbereitet.</p><p>Die breit gef\u00e4cherte Ausbildung f\u00f6rdert das kreative Potential und die Freude am Erstellen selbst gestalteter Endprodukte aus dem Hard- und Software-Bereich und bietet unseren Sch\u00fclerInnen und Sch\u00fcle auch nach der Matura ein breites Spektrum von M\u00f6glichkeiten zur individuellen Schwerpunktsetzung, sowohl im Studium als auch im Beruf.</p><p>&nbsp;</p>",
+    "lang": "de",
+    "inst": 3,
+    "changed": "2018-05-16"
+  }
+},
+{
+  "model": "home.institutiondescription",
+  "pk": 16,
+  "fields": {
+    "name": "HTL Anichstrasse",
+    "loclabel": "Innsbruck",
+    "desc": "<p><strong>Unsere Ausbildungsschwerpunkte:</strong></p><ul><li>Softwareentwicklung, Datenbanken, Softwareanbindungen, Netzwerktechnik, Webtechnologien</li><li>Mechatronik, Robotik, mechanische und elektrische Werkst\u00e4tte</li><li>Wirtschaftsrecht, Buchhaltung, Bilanzierung, Controlling, Marketing, Projektmanagement, Qualit\u00e4tsmanagement</li></ul><p><br></p><p>Durch die Vernetzung von Informatik, Maschinenbau und Wirtschaft sind unsere Absolventinnen und Absolventen auf die Industrie 4.0 mit ihrer zunehmenden Digitalisierung bestens vorbereitet.</p><p>Die breit gef\u00e4cherte Ausbildung f\u00f6rdert das kreative Potential und die Freude am Erstellen selbst gestalteter Endprodukte aus dem Hard- und Software-Bereich und bietet unseren Sch\u00fclerInnen und Sch\u00fcle auch nach der Matura ein breites Spektrum von M\u00f6glichkeiten zur individuellen Schwerpunktsetzung, sowohl im Studium als auch im Beruf.</p><p>&nbsp;</p>",
+    "lang": "en",
+    "inst": 3,
+    "changed": "2018-05-16"
+  }
+},
+{
+  "model": "home.institutiondescription",
+  "pk": 17,
+  "fields": {
+    "name": "Uni Wien",
+    "loclabel": "Wien",
+    "desc": "<h1>Zahlen, Daten &amp; Publikationen</h1><p>Die Universit\u00e4t Wien ist eine der \u00e4ltesten und gr\u00f6\u00dften Universit\u00e4ten Europas: An 19 Fakult\u00e4ten und Zentren arbeiten rund 9.500 MitarbeiterInnen, davon 6.600 WissenschafterInnen.</p><p>Die Universit\u00e4t Wien ist damit die gr\u00f6\u00dfte Forschungsinstitution \u00d6sterreichs sowie die gr\u00f6\u00dfte Bildungsst\u00e4tte: An der Universit\u00e4t Wien sind derzeit rund 94.000 nationale und internationale Studierende inskribiert. Mit 174 ordentlichen Studien verf\u00fcgt sie \u00fcber das vielf\u00e4ltigste Studienangebot des Landes. Die Universit\u00e4t Wien ist auch eine bedeutende Einrichtung f\u00fcr Weiterbildung in \u00d6sterreich. 1365 gegr\u00fcndet, feierte die Alma Mater Rudolphina Vindobonensis im Jahr 2015 ihr 650-j\u00e4hriges Gr\u00fcndungsjubil\u00e4um mit einem vielf\u00e4ltigen Jahresprogramm.</p><p>Im Folgenden finden Sie einige zentrale Zahlen &amp; Daten zu Studierenden, WissenschafterInnen, MitarbeiterInnen, Studienabschl\u00fcssen, universit\u00e4ren Erl\u00f6sen sowie Informationen zu <a href=\"https://www.univie.ac.at/ueber-uns/auf-einen-blick/zahlen-daten-broschueren/#c764\" target=\"_blank\">Brosch\u00fcren</a> der Universit\u00e4t Wien.</p>",
+    "lang": "de",
+    "inst": 4,
+    "changed": "2018-05-16"
+  }
+},
+{
+  "model": "home.institutiondescription",
+  "pk": 18,
+  "fields": {
+    "name": "Uni Wien",
+    "loclabel": "vienna",
+    "desc": "<h1>Zahlen, Daten &amp; Publikationen</h1><p>Die Universit\u00e4t Wien ist eine der \u00e4ltesten und gr\u00f6\u00dften Universit\u00e4ten Europas: An 19 Fakult\u00e4ten und Zentren arbeiten rund 9.500 MitarbeiterInnen, davon 6.600 WissenschafterInnen.</p><p>Die Universit\u00e4t Wien ist damit die gr\u00f6\u00dfte Forschungsinstitution \u00d6sterreichs sowie die gr\u00f6\u00dfte Bildungsst\u00e4tte: An der Universit\u00e4t Wien sind derzeit rund 94.000 nationale und internationale Studierende inskribiert. Mit 174 ordentlichen Studien verf\u00fcgt sie \u00fcber das vielf\u00e4ltigste Studienangebot des Landes. Die Universit\u00e4t Wien ist auch eine bedeutende Einrichtung f\u00fcr Weiterbildung in \u00d6sterreich. 1365 gegr\u00fcndet, feierte die Alma Mater Rudolphina Vindobonensis im Jahr 2015 ihr 650-j\u00e4hriges Gr\u00fcndungsjubil\u00e4um mit einem vielf\u00e4ltigen Jahresprogramm.</p><p>Im Folgenden finden Sie einige zentrale Zahlen &amp; Daten zu Studierenden, WissenschafterInnen, MitarbeiterInnen, Studienabschl\u00fcssen, universit\u00e4ren Erl\u00f6sen sowie Informationen zu <a href=\"https://www.univie.ac.at/ueber-uns/auf-einen-blick/zahlen-daten-broschueren/#c764\" target=\"_blank\">Brosch\u00fcren</a> der Universit\u00e4t Wien.</p>",
+    "lang": "en",
+    "inst": 4,
+    "changed": "2018-05-16"
+  }
+},
+{
+  "model": "home.institutiondescription",
+  "pk": 19,
+  "fields": {
+    "name": "Universit\u00e4t Rostock -  Computational Intelligence Technology Lab (CITlab)",
+    "loclabel": "Rostock",
+    "desc": "<p>Das Computational Intelligence Technology Lab (CITlab) verf\u00fcgt \u00fcber mehrj\u00e4hrige Erfahrung in der Entwicklung anwendungsorientierter Algorithmen und Engines zur Text- und Handschrifterkennung. Die Gruppe hat eine langfristige Zusammenarbeit mit PLANET entwickelt, um Computational Intelligence und neuronale netzwerkbasierte Technologie f\u00fcr Marktanwendungen zu nutzen, insbesondere in Bereichen wie der Verkehrs\u00fcberwachung und der Erkennung von Postanschriften. Das CITlab-Team hat seine F\u00e4higkeiten in den Jahren 2013 und 2014 in drei internationalen Wettbewerben im Bereich Dokumentenanalyse und HTR erfolgreich unter Beweis gestellt.</p>",
+    "lang": "de",
+    "inst": 5,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.institutiondescription",
+  "pk": 20,
+  "fields": {
+    "name": "University of Rostock \u2013 Computational Intelligence Technology Lab (CITlab)",
+    "loclabel": "Rostock",
+    "desc": "<p>The <a href=\"https://www.mathematik.uni-rostock.de/forschung/projekte/citlab/\" target=\"_blank\">Computational Intelligence Technology Lab (CITlab)</a>&nbsp;has several years of experience in the development of application-oriented algorithms and engines for text and handwriting recognition. The group has developed a long-term collaboration with <a href=\"http://www.planet.de\" target=\"_blank\">PLANET</a>&nbsp;to use&nbsp;computational intelligence and neural network based technology for market applications, particularly in areas like traffic surveillance and postal address recognition services.&nbsp;The&nbsp;CITlab team have proven&nbsp;their abilities with success in&nbsp;three international competitions on Document Analysis and HTR across 2013 and 2014.</p>",
+    "lang": "en",
+    "inst": 5,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.institutiondescription",
+  "pk": 21,
+  "fields": {
+    "name": "Staatsarchiv Z\u00fcrich",
+    "loclabel": "Z\u00fcrich",
+    "desc": "<p>Das Staatsarchiv Z\u00fcrich ist das Archiv des Kantons Z\u00fcrich und seine Rechtsvorg\u00e4nger. Es archiviert, entwickelt und bewahrt Dokumente aus der \u00fcber 1000-j\u00e4hrigen Z\u00fcrcher Geschichte. Die meisten Dokumente, die im Staatsarchiv Z\u00fcrich aufbewahrt werden, sind einzigartige Beispiele und die meisten von ihnen handschriftlich verfasst. Im Jahr 2009 wurde die Abteilung f\u00fcr Editing-Projekte gegr\u00fcndet und seither wurden mehrere bahnbrechende Projekte im Bereich Online-Publishing von historischem Quellenmaterial gestartet, die Transkriptionen und Manuskriptbilder kombinieren. Der \u00f6ffentliche Zugang zu Metadaten, Volltext-Transkriptionen und Bildern von Originaldokumenten wird durch den Online-Katalog des Archivs sowie durch die 2010 vom Landesarchiv Z\u00fcrich und vier weiteren Archiven eingerichtete Metasuchmaschine Archives Online sichergestellt.</p><p><br></p><p>Hauptaufgaben in READ: Demonstrator f\u00fcr Evaluierung und Bootstrapping in gro\u00dfem Ma\u00dfstab. Die Transliteration und Digitalisierung des handschriftlich verfassten Parlaments und Regierungsrates des Kantons Z\u00fcrich Protokolle 1803-1887 / 1897 wurde 2009 begonnen. Es befindet sich in einem fortgeschrittenen Stadium mit 150.000 Seiten Text in deutscher  Kurrent -Handschrift , die nun transkribiert sind. Das READ-Projekt wird Werkzeuge entwickeln, um gro\u00dfe Mengen dieser vorhandenen Transkripte zu verarbeiten, die urspr\u00fcnglich nicht f\u00fcr das Trainieren von HTR-Modellen (Handwritten Text Recognition) gedacht waren.</p>",
+    "lang": "de",
+    "inst": 6,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.institutiondescription",
+  "pk": 22,
+  "fields": {
+    "name": "Zurich State Archives",
+    "loclabel": "Zurich",
+    "desc": "<p>Zurich State Archives is the Archive of the Canton of Zurich and its legal predecessors.&nbsp;It files, develops and preserves documents from the more than 1000 years of Zurich\u2019s history.&nbsp;Most of the documents stored in the Zurich State Archives are unique examples and the majority of them are handwritten.&nbsp;In 2009, the division for Editing Projects was established and since then, several pioneering projects in online publishing of historical source material have been launched, combining transcriptions and manuscript images.&nbsp;Public access to metadata, full-text transcriptions and pictures of original documents is ensured by&nbsp;the archive\u2019s&nbsp;<a href=\"http://suche.staatsarchiv.djiktzh.ch/suchinfo.aspx\" target=\"_blank\">Online Catalogue</a>&nbsp;and also&nbsp;by the meta search engine <a href=\"http://www.archives-online.org/search.aspx\" target=\"_blank\">Archives Online</a>, established in 2010 by the State Archives of Zurich and four other archives.</p><p><strong>Key responsibilities in READ: </strong>Large scale demonstrator of evaluation and bootstrapping.&nbsp;The Transliteration and Digitisation of the handwritten Parliament and Government Council of the Canton of Zurich Protocols 1803\u20131887/1897 project started in 2009.&nbsp;It is in an advanced stage with 150,000 pages of text in German \u2018Kurrent\u2019 handwriting\u2019 now transcribed.&nbsp;The READ project will develop tools to process&nbsp;large quantities of these existing transcripts, which were not originally intended to be used for training Handwritten Text Recognition(HTR) models.</p>",
+    "lang": "en",
+    "inst": 6,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.institutiondescription",
+  "pk": 23,
+  "fields": {
+    "name": "Universitat Polit\u00e8cnica de Val\u00e8ncia",
+    "loclabel": "Valencia",
+    "desc": "<p>Universitat Polit\u00e8cnica de Val\u00e8ncia - Mustererkennung und menschliche Sprachtechnologie</p><p><br></p><p>Das Forschungszentrum f\u00fcr Mustererkennung und menschliche Sprachtechnologie (PRHLT) ist sowohl in grundlegenden als auch in angewandten Bereichen t\u00e4tig. Das PRHLT-Zentrum hat verschiedene Prototypen und Produkte f\u00fcr Text- und Sprach\u00fcbersetzung, computergest\u00fctzte \u00dcbersetzung, Spracherkennung, sowohl vollautomatische als auch interaktive handschriftliche Textbilderkennung und Bildsuche entwickelt. Vor kurzem koordinierte PRHLT das direkte Vorl\u00e4uferprojekt f\u00fcr READ, das FP7-Projekt tranScriptorium, bei dem die HTR-Technologie (Handwritten Text Recognition) auf historische Dokumente vom Mittelalter bis zum 20. Jahrhundert angewandt wurde.</p><p><br></p><p>Hauptaufgaben in READ: HTR basierend auf Hidden Markov Modellen, Keyword Spotting, Interaktiver Vorhersageprozess f\u00fcr Transkription und Zeilenerkennung.</p>",
+    "lang": "de",
+    "inst": 7,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.institutiondescription",
+  "pk": 24,
+  "fields": {
+    "name": "Universitat Polit\u00e8cnica de Val\u00e8ncia",
+    "loclabel": "Valencia",
+    "desc": "<p><a href=\"http://www.upv.es/\" target=\"_blank\">Universitat Polit\u00e8cnica de Val\u00e8ncia</a> \u2013 <a href=\"https://www.prhlt.upv.es/\" target=\"_blank\">Pattern Recognition and Human Language Technology</a></p><p>The <a href=\"https://www.prhlt.upv.es/\" target=\"_blank\">Pattern Recognition and Human Language Technology (PRHLT)</a> research centre is&nbsp;active both in fundamental and applied areas.&nbsp;The PRHLT centre has developed different prototypes and products for text and speech translation, computer-assisted translation, speech recognition, both fully automatic and interactive handwritten text image recognition and image retrieval.&nbsp;Recently PRHLT coordinated the direct predecessor&nbsp;project to READ, the FP7 project <a href=\"http://transcriptorium.eu/\" target=\"_blank\"><em>tranScriptorium</em></a><em>, </em>where&nbsp;Handwritten Text Recognition (HTR) technology has been applied to historical documents from the Middle Ages to the twentieth&nbsp;century.</p><p><strong>Key responsibilities in READ: </strong>HTR based on&nbsp;Hidden markov models, Keyword spotting, Interactive predictive process for transcription and line detection.</p>",
+    "lang": "en",
+    "inst": 7,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.institutionproject",
+  "pk": 2,
+  "fields": {
+    "inst": 3,
+    "changed": "2018-05-17"
+  }
+},
+{
+  "model": "home.institutionproject",
+  "pk": 3,
+  "fields": {
+    "inst": 3,
+    "changed": "2018-05-17"
+  }
+},
+{
+  "model": "home.institutionproject",
+  "pk": 4,
+  "fields": {
+    "inst": 7,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.institutionprojectentries",
+  "pk": 3,
+  "fields": {
+    "title": "Diplomarbeit",
+    "desc": "<p>Beim Halbfinale an der HTL-Salzburg f\u00fcr die L\u00e4nder Tirol, Vorarlberg und Salzburg konnte das Projekt-Team xxx mit ihrem Projekt \"Acti-Health\" das begehrte Ticket zum Finale in Wien erreichen.</p><p><br></p><p>Beteiligte Sch\u00fcler: </p><p><strong>Filip Rezo, Clemens Gamper</strong> (1 Diplomarbeiten an der Abteilung Elektronik und Technische Informatik)</p><p><strong>David Thaler, Matteo Pilz, Tobias Muigg, Florian Griesebner, Elias Gendu</strong> (2 Diplomarbeiten an der Abteilung Wirtschaftsingenieure)</p><p><br></p><p>Betreuer: </p><p><strong>Felix Klingler, Benedikt Frischmann, Martin Huber</strong></p>",
+    "lang": "de",
+    "project": 2,
+    "changed": "2018-05-17"
+  }
+},
+{
+  "model": "home.institutionprojectentries",
+  "pk": 4,
+  "fields": {
+    "title": "Thesis",
+    "desc": "<p>Beim Halbfinale an der HTL-Salzburg f\u00fcr die L\u00e4nder Tirol, Vorarlberg und Salzburg konnte das Projekt-Team xxx mit ihrem Projekt \"Acti-Health\" das begehrte Ticket zum Finale in Wien erreichen.</p><p><br></p><p>Beteiligte Sch\u00fcler: </p><p><strong>Filip Rezo, Clemens Gamper</strong> (1 Diplomarbeiten an der Abteilung Elektronik und Technische Informatik)</p><p><strong>David Thaler, Matteo Pilz, Tobias Muigg, Florian Griesebner, Elias Gendu</strong> (2 Diplomarbeiten an der Abteilung Wirtschaftsingenieure)</p><p><br></p><p>Betreuer: </p><p><strong>Felix Klingler, Benedikt Frischmann, Martin Huber</strong></p>",
+    "lang": "en",
+    "project": 2,
+    "changed": "2018-05-17"
+  }
+},
+{
+  "model": "home.institutionprojectentries",
+  "pk": 5,
+  "fields": {
+    "title": "Jugend forscht",
+    "desc": "<p>Die Universit\u00e4t Innsbruck schrieb auch in diesem Jahr wieder den 4-L\u00e4nder Sch\u00fclerwettbewerb <strong>\u201eJunge Forscher gesucht!\u201c</strong> aus. Er bietet Sch\u00fclerinnen und Sch\u00fclern zwischen 16 und 20 Jahren die M\u00f6glichkeit, Experimente, Ideen und Erfindungen aus den Geistes- und Naturwissenschaften wie auch aus Wirtschaft und Technik zu pr\u00e4sentieren. Den SiegerInnen winken Geldpreise bis zu 3000 Euro.</p><p><br></p><p>Der Sch\u00fclerwettbewerb wird bereits zum sechsten Mal von der EURAC (Europ\u00e4ischen Akademie Bozen) und der Universit\u00e4t Innsbruck gemeinsam mit der Autonomen Provinz Trient und der Schweizerischen Alpinen Mittelschule Davos ausgetragen. Unterst\u00fctzt wird der Wettbewerb vom Landesschulrat f\u00fcr Tirol und dem Land Tirol (Euregio).</p><p><br></p><p>In einem sehr spannenden Finale konnte das Projekt <strong>\"Ava-Drone\"</strong> den <strong>ersten Preis</strong> erreichen. Das Projektteam konnte 3.000 Euro Preisgeld einstecken.</p><p><br></p><p>Beteiligte Sch\u00fcler:</p><p><strong>Johannes Sterzinger, Florian Neururer, Laurin Rossmeier, Markus Pfeifer, Fabian Pfurtscheller </strong></p>",
+    "lang": "de",
+    "project": 3,
+    "changed": "2018-05-17"
+  }
+},
+{
+  "model": "home.institutionprojectentries",
+  "pk": 6,
+  "fields": {
+    "title": "young science",
+    "desc": "<p>Die Universit\u00e4t Innsbruck schrieb auch in diesem Jahr wieder den 4-L\u00e4nder Sch\u00fclerwettbewerb <strong>\u201eJunge Forscher gesucht!\u201c</strong> aus. Er bietet Sch\u00fclerinnen und Sch\u00fclern zwischen 16 und 20 Jahren die M\u00f6glichkeit, Experimente, Ideen und Erfindungen aus den Geistes- und Naturwissenschaften wie auch aus Wirtschaft und Technik zu pr\u00e4sentieren. Den SiegerInnen winken Geldpreise bis zu 3000 Euro. </p><p><br></p><p>Der Sch\u00fclerwettbewerb wird bereits zum sechsten Mal von der EURAC (Europ\u00e4ischen Akademie Bozen) und der Universit\u00e4t Innsbruck gemeinsam mit der Autonomen Provinz Trient und der Schweizerischen Alpinen Mittelschule Davos ausgetragen. Unterst\u00fctzt wird der Wettbewerb vom Landesschulrat f\u00fcr Tirol und dem Land Tirol (Euregio).</p><p><br></p><p>In einem sehr spannenden Finale konnte das Projekt <strong>\"Ava-Drone\"</strong> den <strong>ersten Preis</strong> erreichen. Das Projektteam konnte 3.000 Euro Preisgeld einstecken.</p><p><br></p><p>Beteiligte Sch\u00fcler: </p><p><strong>Johannes Sterzinger, Florian Neururer, Laurin Rossmeier, Markus Pfeifer, Fabian Pfurtscheller </strong></p>",
+    "lang": "en",
+    "project": 3,
+    "changed": "2018-05-17"
+  }
+},
+{
+  "model": "home.institutionprojectentries",
+  "pk": 7,
+  "fields": {
+    "title": "READ: Erkennung und Anreicherung von Archivdokumenten",
+    "desc": "<p>Laufzeit: 1. Februar 2017 bis 30. Juni 2019</p><p>Unterst\u00fctzt von: Horizont 2020 - Europ\u00e4ische Kommission (H2020) unter der Nummer 674943</p><p><br></p><p>Das \u00fcbergeordnete Ziel von READ ist es, eine virtuelle Forschungsumgebung zu schaffen, in der Archivare, Geisteswissenschaftler, Informatiker und Freiwillige mit dem Ziel zusammenarbeiten, Forschung, Innovation, Entwicklung und Nutzung modernster Technologien f\u00fcr die automatisierte Erkennung, Transkription, Indexierung und Bereicherung von handschriftlichen Archivdokumenten. Diese virtuelle Forschungsumgebung wird nicht von Grund auf aufgebaut, sondern wird von Forschung, Werkzeugen, Daten und Ressourcen profitieren, die in mehreren nationalen und EU-finanzierten Forschungs- und Entwicklungsprojekten generiert werden und eine Grundlage f\u00fcr die Erhaltung des Netzwerks und der Technologie in der Zukunft bieten. Diese IKT-basierte E-Infrastruktur wird die in Europa in einer sich ver\u00e4ndernden Welt genannte gesellschaftliche Herausforderung, n\u00e4mlich die \"\u00dcbertragung des europ\u00e4ischen Kulturerbes\" und die \"Nutzung der Vergangenheit\", als eine der Kernanforderungen einer reflektierenden Gesellschaft ansprechen. Basierend auf Forschung und Innovation, die durch die READ Virtual Research Environment erm\u00f6glicht wird, k\u00f6nnen wir \u00fcber die Volltextsuche hunderte Kilometer Archivdokumente erkunden und erschlie\u00dfen und somit einen der letzten versteckten Sch\u00e4tze der reichen kulturellen Eremitage Europas erschliessen.</p>",
+    "lang": "de",
+    "project": 4,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.institutionprojectentries",
+  "pk": 8,
+  "fields": {
+    "title": "READ: Recognition and Enrichment of Archival Documents",
+    "desc": "<p>Duration: 1 February 2017  to 30 June 2019 </p><p>Supported by:  Horizon 2020 - European Commission (H2020) under reference  674943</p><p>The overall objective of <a href=\"https://read.transkribus.eu/\" target=\"_blank\">READ</a> is to implement a Virtual Research Environment where archivists, humanities scholars, computer scientists and volunteers are collaborating with the ultimate goal of boosting research, innovation, development and usage of cutting edge technology for the automated recognition, transcription, indexing and enrichment of handwritten archival documents. This Virtual Research Environment will not be built from the ground up, but will benefit from research, tools, data and resources generated in multiple national and EU funded research and development projects and provide a basis for sustaining the network and the technology in the future. This ICT based e-infrastructure will address the Societal Challenge mentioned in Europe in a Changing World namely the \u201ctransmission of European cultural heritage\u201d and the \u201cuses of the past\u201d as one of the core requirements of a reflective society. Based on research and innovation enabled by the READ Virtual Research Environment we will be able to explore and access hundreds of kilometres of archival documents via full-text search and therefore be able to open up one of the last hidden treasures of Europe\u2019s rich cultural hertitage.</p>",
+    "lang": "en",
+    "project": 4,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.service",
+  "pk": 39,
+  "fields": {
+    "image_css": "icon-key",
+    "changed": "2018-05-18"
+  }
+},
+{
+  "model": "home.service",
+  "pk": 40,
+  "fields": {
+    "image_css": "icon-calendar",
+    "changed": "2018-05-18"
+  }
+},
+{
+  "model": "home.service",
+  "pk": 41,
+  "fields": {
+    "image_css": "icon-profile-male",
+    "changed": "2018-05-18"
+  }
+},
+{
+  "model": "home.service",
+  "pk": 42,
+  "fields": {
+    "image_css": "icon-book-open",
+    "changed": "2018-05-18"
+  }
+},
+{
+  "model": "home.service",
+  "pk": 43,
+  "fields": {
+    "image_css": "icon-global",
+    "changed": "2018-05-20"
+  }
+},
+{
+  "model": "home.service",
+  "pk": 44,
+  "fields": {
+    "image_css": "icon-megaphone",
+    "changed": "2018-05-20"
+  }
+},
+{
+  "model": "home.service",
+  "pk": 45,
+  "fields": {
+    "image_css": "icon-mobile",
+    "changed": "2018-05-20"
+  }
+},
+{
+  "model": "home.service",
+  "pk": 46,
+  "fields": {
+    "image_css": "icon-presentation",
+    "changed": "2018-05-20"
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 77,
+  "fields": {
+    "title": "Entdecken Sie die St\u00e4rke der Keyword-Erkennung",
+    "subtitle": "<p>Entdecken Sie die St\u00e4rke der Keyword-ErkennungKeyword Spotting ist ein magischer Weg, um direkt im Bild zu suchen. Sie werden in der Lage sein, jedes Wort, das Sie suchen, in einer Sammlung sehr unterschiedlicher Dokumente zu entdecken</p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>",
+    "lang": "de",
+    "changed": "2018-05-18",
+    "service": 39
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 78,
+  "fields": {
+    "title": "Discover the power of keyword spotting",
+    "subtitle": "<p>Keyword spotting is a magic way to search directly in the image. You will be able to explore every word you are looking for in a collection of highly diverse documents</p><p><br></p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>",
+    "lang": "en",
+    "changed": "2018-05-18",
+    "service": 39
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 79,
+  "fields": {
+    "title": "Organisieren Sie ihr Projekt",
+    "subtitle": "<p>Laden Sie beliebig viele Dokumente hoch, trainieren Sie Ihre spezifischen Texterkennungsmodelle, laden Sie Kollegen ein, teilen Sie Ihre Dokumente und Modelle mit Hochschulen, exportieren Sie Dokumente in jedem Format zu jeder Zeit ...</p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>",
+    "lang": "de",
+    "changed": "2018-05-18",
+    "service": 40
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 80,
+  "fields": {
+    "title": "Organize your project",
+    "subtitle": "<p>Upload as many documents you want, train your specific text recognition models, invite collegues, share your documents and models with colleges, export documents in any format at any time\u2026</p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>",
+    "lang": "en",
+    "changed": "2018-05-18",
+    "service": 40
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 81,
+  "fields": {
+    "title": "Verwalten Sie Ihre private Sammlung",
+    "subtitle": "<p>Alle Dokumente sind privat in Ihrer pers\u00f6nlichen Transkribus-Sammlung. Nutzen Sie daher die Vorteile von Urheberrechtsausnahmen, die f\u00fcr den pers\u00f6nlichen Gebrauch und die Forschung verf\u00fcgbar sind.</p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</p>",
+    "lang": "de",
+    "changed": "2018-05-18",
+    "service": 41
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 82,
+  "fields": {
+    "title": "Manage your private collection",
+    "subtitle": "<p>All documents are private in your personal Transkribus collection. Therefore enjoy the benefits of copyright exceptions available for personal use and research. </p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</p>",
+    "lang": "en",
+    "changed": "2018-05-18",
+    "service": 41
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 83,
+  "fields": {
+    "title": "Erstelle dein eigenes neuronales Netzwerk",
+    "subtitle": "<p>Transkribieren Sie einige Dutzend Seiten, trainieren Sie ein neuronales Netzwerk und erkennen Sie hunderte oder tausende von Dokumenten oder transkribieren Sie schneller als zuvor ...</p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</p>",
+    "lang": "de",
+    "changed": "2018-05-18",
+    "service": 42
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 84,
+  "fields": {
+    "title": "Create your own neural network",
+    "subtitle": "<p>Transcribe some dozens of pages, train a neural network and recognize hundreds or thousands of documents, or transcribe faster than before\u2026</p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</p>",
+    "lang": "en",
+    "changed": "2018-05-18",
+    "service": 42
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 85,
+  "fields": {
+    "title": "Transkribieren Sie hoch standardisiert",
+    "subtitle": "<p>Sei es Altgriechisch, Arabisch oder Latein, oder eine moderne Sprache, die Sie in der Lage sein werden, eine Transkription auf der h\u00f6chsten wissenschaftlichen Ebene einschlie\u00dflich Anmerkungen und Kommentare zu erstellen.</p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>",
+    "lang": "de",
+    "changed": "2018-05-20",
+    "service": 43
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 86,
+  "fields": {
+    "title": "Transcribe in a highly standardized way",
+    "subtitle": "<p>Be it ancient Greek, Arabic or Latin, or a modern language you will be able to create a transcription on the highest scholarly level including annotations and comments.</p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>",
+    "lang": "en",
+    "changed": "2018-05-20",
+    "service": 43
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 87,
+  "fields": {
+    "title": "Arbeiten sie mit Kollegen zusammen und teilen Sie Ihre Dokumente",
+    "subtitle": "<p>Organisieren Sie Ihr Projekt als eine gemeinsame Anstrengung. Arbeite an verschiedenen Orten, aber in einer Sammlung. Exportieren Sie Ihre Dokumente oder teilen Sie sie \u00fcber die Web-Oberfl\u00e4che</p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>",
+    "lang": "de",
+    "changed": "2018-05-20",
+    "service": 44
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 88,
+  "fields": {
+    "title": "Collaborate with colleagues and share your documents",
+    "subtitle": "<p>Organize your project as a collaborative effort. Work at different places but in one collection. Export your documents or share them via the web-interface</p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>",
+    "lang": "en",
+    "changed": "2018-05-20",
+    "service": 44
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 89,
+  "fields": {
+    "title": "Scannen Sie Ihre eigenen Dokumente mit dem Smartphone",
+    "subtitle": "<p>Ein Smartphone als Dokumentenscanner? Ja, mit dem ScanTent und DocScan k\u00f6nnen Sie B\u00fccher und andere Dokumente schnell, zuverl\u00e4ssig und in hervorragender Qualit\u00e4t scannen.</p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>",
+    "lang": "de",
+    "changed": "2018-05-20",
+    "service": 45
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 90,
+  "fields": {
+    "title": "Scan your own documents with the smartphone",
+    "subtitle": "<p>A smartphone as document scanner? Yes, with the ScanTent and DocScan you will be able to scan books and other documents fast, reliable and in an excellent quality.</p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>",
+    "lang": "en",
+    "changed": "2018-05-20",
+    "service": 45
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 91,
+  "fields": {
+    "title": "Bringen Sie Sch\u00fclern und Freiwilligen bei, alte Schriften zu lesen",
+    "subtitle": "<p>Studenten sollten, Freiwillige in der Lage sein, historische Skripte zu lesen. In beiden F\u00e4llen ist der einzige Weg, um besser zu werden: Bewegung, \u00dcbung, \u00dcbung auf realen Materialien. Und mit dem Handy ...</p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et</p>",
+    "lang": "de",
+    "changed": "2018-05-20",
+    "service": 46
+  }
+},
+{
+  "model": "home.serviceentries",
+  "pk": 92,
+  "fields": {
+    "title": "Teach students and volunteers to read ancient scripts",
+    "subtitle": "<p>Students should, volunteers want to be able to read historical scripts. In both cases the only way to get better is: exercise, exercise, exercise on real world material. And by using the mobile phone\u2026</p>",
+    "content": "<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et</p>",
+    "lang": "en",
+    "changed": "2018-05-20",
+    "service": 46
+  }
+},
+{
+  "model": "home.quote",
+  "pk": 1,
+  "fields": {
+    "name": "Hubert J aus K2",
+    "image": "5ef7586d-592f-4e34-b633-08b0e4f66ae5.jpg",
+    "changed": "2018-04-26"
+  }
+},
+{
+  "model": "home.quote",
+  "pk": 7,
+  "fields": {
+    "name": "Marianne Jung",
+    "image": "f66c68a3-b2b4-4e58-85f1-04b81ad0d44c.png",
+    "changed": "2018-05-22"
+  }
+},
+{
+  "model": "home.quote",
+  "pk": 8,
+  "fields": {
+    "name": "Frank M\u00fcller aus Bremen",
+    "image": "a7da154b-900d-49a5-b168-18d91075586c.png",
+    "changed": "2018-05-22"
+  }
+},
+{
+  "model": "home.quote",
+  "pk": 9,
+  "fields": {
+    "name": "Ernst Hermanns",
+    "image": "",
+    "changed": "2018-05-22"
+  }
+},
+{
+  "model": "home.quote",
+  "pk": 10,
+  "fields": {
+    "name": "Gerda Fischer",
+    "image": "",
+    "changed": "2018-05-22"
+  }
+},
+{
+  "model": "home.quoteentries",
+  "pk": 1,
+  "fields": {
+    "content": "<p>s'beschte2</p>",
+    "role": "SW-Entwickler2",
+    "changed": "2018-04-26",
+    "quote": 1,
+    "lang": "de"
+  }
+},
+{
+  "model": "home.quoteentries",
+  "pk": 2,
+  "fields": {
+    "content": "<p>good!2</p>",
+    "role": "SW-Developer2",
+    "changed": "2018-04-26",
+    "quote": 1,
+    "lang": "en"
+  }
+},
+{
+  "model": "home.quoteentries",
+  "pk": 13,
+  "fields": {
+    "content": "<p>;-) Hilfreich</p><p>Danke...!</p>",
+    "role": "",
+    "changed": "2018-05-22",
+    "quote": 7,
+    "lang": "de"
+  }
+},
+{
+  "model": "home.quoteentries",
+  "pk": 14,
+  "fields": {
+    "content": "<p>helpful</p><p>Thank you ..!</p>",
+    "role": "",
+    "changed": "2018-05-22",
+    "quote": 7,
+    "lang": "en"
+  }
+},
+{
+  "model": "home.quoteentries",
+  "pk": 15,
+  "fields": {
+    "content": "<p>Super Website bin begeistert </p>",
+    "role": "IT Experte",
+    "changed": "2018-05-22",
+    "quote": 8,
+    "lang": "de"
+  }
+},
+{
+  "model": "home.quoteentries",
+  "pk": 16,
+  "fields": {
+    "content": "<p>super website, i am excited</p>",
+    "role": "IT Expert",
+    "changed": "2018-05-22",
+    "quote": 8,
+    "lang": "en"
+  }
+},
+{
+  "model": "home.quoteentries",
+  "pk": 17,
+  "fields": {
+    "content": "<h2>Super Service</h2><p>Wir sind sehr zufrieden mit dem Service.</p><p>Super Preise, Super Service. Kann ich wirklich jedem empfehlen.</p>",
+    "role": "",
+    "changed": "2018-05-22",
+    "quote": 9,
+    "lang": "de"
+  }
+},
+{
+  "model": "home.quoteentries",
+  "pk": 18,
+  "fields": {
+    "content": "<p>Super Service</p><p>We are very satisfied with the service.</p><p>Great prices, great service. Can I really recommend to anyone.</p>",
+    "role": "",
+    "changed": "2018-05-22",
+    "quote": 9,
+    "lang": "en"
+  }
+},
+{
+  "model": "home.quoteentries",
+  "pk": 19,
+  "fields": {
+    "content": "<h4>Alles Super</h4><p>f\u00fchle mich sicher und gut aufgehoben hier - professionelle seite</p>",
+    "role": "",
+    "changed": "2018-05-22",
+    "quote": 10,
+    "lang": "de"
+  }
+},
+{
+  "model": "home.quoteentries",
+  "pk": 20,
+  "fields": {
+    "content": "<p>everything great</p><p>feel safe and secure here - professional site</p>",
+    "role": "Webdeveloper",
+    "changed": "2018-05-22",
+    "quote": 10,
+    "lang": "en"
+  }
+},
+{
+  "model": "home.document",
+  "pk": 8,
+  "fields": {
+    "icon": "icon-book-open",
+    "changed": "2018-05-19"
+  }
+},
+{
+  "model": "home.document",
+  "pk": 9,
+  "fields": {
+    "icon": "icon-newspaper",
+    "changed": "2018-05-22"
+  }
+},
+{
+  "model": "home.document",
+  "pk": 10,
+  "fields": {
+    "icon": "icon-book-open",
+    "changed": "2018-05-22"
+  }
+},
+{
+  "model": "home.document",
+  "pk": 11,
+  "fields": {
+    "icon": "icon-documents",
+    "changed": "2018-05-22"
+  }
+},
+{
+  "model": "home.documententries",
+  "pk": 15,
+  "fields": {
+    "title": "White papers",
+    "desc": "<p>Hier einige projektrelevante Dokumente</p>",
+    "content": "<p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS P001 Management Review Procedure.pdf\" target=\"_blank\">QAS-P001 Management Review Procedure</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS P002 Corrective Action Procedure.pdf\" target=\"_blank\">QAS-P002 Corrective Action</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS P003 Document Control Procedure.pdf\" target=\"_blank\">QAS-P003 Document Control</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS P006 Quality Records Procedure.pdf\" target=\"_blank\">QAS-P006 Quality Records</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS P007 Internal Quality Audit Procedure.pdf\" target=\"_blank\">QAS-P007 Internal Audit</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS P008 Control of Non-Conforming Processes, Services or Products Procedure.pdf\" target=\"_blank\">QAS P008 Control of Non-conformance</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS P009 Continous Improvement.pdf\" target=\"_blank\">QAS-P009 Continuous Improvement </a></p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS W001 Revising, Adding, or Deleting a Document Work Instruction.pdf\" target=\"_blank\">QAS- W001 Revising, Adding / Deleting a Document </a></p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS W002 Internal QAS Audit Work Instruction.pdf\" target=\"_blank\">QAS-W002 Internal QAS Audit Work Instructions </a></p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS W003 Auditing Activity Before, During and After QAS Audit Work Instruction.pdf\" target=\"_blank\">QAS-W003 Auditing Activity before, during, after the Audit</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F003 Document Control Form.doc\" target=\"_blank\">QAS-F003 Document Control Form</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F004 MRT Meeting minutes Form.doc\" target=\"_blank\">QAS-F004 MRT (Minutes) Meeting Form</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F006 Corrective Action Request Log.xls\" target=\"_blank\">QAS-F006 Corrective Action Log</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F007 Preventive Action Request Log.xls\" target=\"_blank\">QAS-F007 Preventive Action Log</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F008 Document Control Log.xls\" target=\"_blank\">QAS-F008 Document Control Log</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F010 INTERNAL AUDIT CHECKLIST.doc\" target=\"_blank\">QAS-F010 Internal Audit Checklist</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F011 INTERNAL AUDIT REPORT.doc\" target=\"_blank\">QAS-F011 Internal Audit Report </a></p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F012 Internal Audit Planning Document.doc\" target=\"_blank\">QAS-F012 Internal Audit Planning Document </a></p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F013 Internal Audit Notification.doc\" target=\"_blank\">QAS-F013 Internal Audit Notification</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F014 Audit Feedback Survey Letter.doc\" target=\"_blank\">QAS-F014 Internal Audit Feedback Survey Letter</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F015 Internal Audit Schedule.doc\" target=\"_blank\">QAS-F015 Internal Audit Schedule </a></p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F016 Audit Summary Form.doc\" target=\"_blank\">QAS-F016 Internal Audit Summary</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/PMO-F017 Project Resources Assessment Worksheet.doc\" target=\"_blank\">PMO-F017 Project Resources Assessment Worksheet</a></p>",
+    "lang": "de",
+    "doc": 8,
+    "changed": "2018-05-19"
+  }
+},
+{
+  "model": "home.documententries",
+  "pk": 16,
+  "fields": {
+    "title": "White papers",
+    "desc": "<p>Here some interesting papers</p>",
+    "content": "<p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS P001 Management Review Procedure.pdf\" target=\"_blank\">QAS-P001 Management Review Procedure</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS P002 Corrective Action Procedure.pdf\" target=\"_blank\">QAS-P002 Corrective Action</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS P003 Document Control Procedure.pdf\" target=\"_blank\">QAS-P003 Document Control</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS P006 Quality Records Procedure.pdf\" target=\"_blank\">QAS-P006 Quality Records</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS P007 Internal Quality Audit Procedure.pdf\" target=\"_blank\">QAS-P007 Internal Audit</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS P008 Control of Non-Conforming Processes, Services or Products Procedure.pdf\" target=\"_blank\">QAS P008 Control of Non-conformance</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS P009 Continous Improvement.pdf\" target=\"_blank\">QAS-P009 Continuous Improvement </a></p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS W001 Revising, Adding, or Deleting a Document Work Instruction.pdf\" target=\"_blank\">QAS- W001 Revising, Adding / Deleting a Document </a></p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS W002 Internal QAS Audit Work Instruction.pdf\" target=\"_blank\">QAS-W002 Internal QAS Audit Work Instructions </a></p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS W003 Auditing Activity Before, During and After QAS Audit Work Instruction.pdf\" target=\"_blank\">QAS-W003 Auditing Activity before, during, after the Audit</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F003 Document Control Form.doc\" target=\"_blank\">QAS-F003 Document Control Form</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F004 MRT Meeting minutes Form.doc\" target=\"_blank\">QAS-F004 MRT (Minutes) Meeting Form</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F006 Corrective Action Request Log.xls\" target=\"_blank\">QAS-F006 Corrective Action Log</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F007 Preventive Action Request Log.xls\" target=\"_blank\">QAS-F007 Preventive Action Log</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F008 Document Control Log.xls\" target=\"_blank\">QAS-F008 Document Control Log</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F010 INTERNAL AUDIT CHECKLIST.doc\" target=\"_blank\">QAS-F010 Internal Audit Checklist</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F011 INTERNAL AUDIT REPORT.doc\" target=\"_blank\">QAS-F011 Internal Audit Report </a></p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F012 Internal Audit Planning Document.doc\" target=\"_blank\">QAS-F012 Internal Audit Planning Document </a></p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F013 Internal Audit Notification.doc\" target=\"_blank\">QAS-F013 Internal Audit Notification</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F014 Audit Feedback Survey Letter.doc\" target=\"_blank\">QAS-F014 Internal Audit Feedback Survey Letter</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F015 Internal Audit Schedule.doc\" target=\"_blank\">QAS-F015 Internal Audit Schedule </a></p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/QAS F016 Audit Summary Form.doc\" target=\"_blank\">QAS-F016 Internal Audit Summary</a> </p><p><a href=\"https://www.slps.org/cms/lib/MO01001157/Centricity/Domain/7/qas_master_general/PMO-F017 Project Resources Assessment Worksheet.doc\" target=\"_blank\">PMO-F017 Project Resources Assessment Worksheet</a></p>",
+    "lang": "en",
+    "doc": 8,
+    "changed": "2018-05-19"
+  }
+},
+{
+  "model": "home.documententries",
+  "pk": 17,
+  "fields": {
+    "title": "Zeitschriftenartikel",
+    "desc": "<p>Hier einige Zeitschriftenartikel</p>",
+    "content": "<p>A. Fronh\u00f6fer and E. M\u00fchlbauer, \u2018Archivnutzung ohne Limit. Digitalisierung, Onlinestellung und das Projekt READ f\u00fcr barrierefreies Forschen, <em>Der Archivar, Zeitschrift f\u00fcr Archivwesen</em> 70 (2017), pp. 422-427</p><p>A. Giotis, G. Sfikas, B. Gatos and C. Nikou, \u2018<a href=\"http://dl.acm.org/citation.cfm?id=3085731&amp;CFID=936823066&amp;CFTOKEN=81669468\" target=\"_blank\">A survey of document image word spotting techniques</a>\u2018, <em>Pattern Recognition,</em>&nbsp;vol. 68<em> </em>(2017), pp. 310\u2013332 (DOI: 10.1016/j.patcog.2017.02.023)</p><p>J. Puigcerver, A. H. Toselli and E.&nbsp;Vidal, \u2018<a href=\"http://link.springer.com/article/10.1007/s00521-016-2197-8\" target=\"_blank\">Querying out-of-vocabulary words in lexicon-based keyword spotting</a>\u2018,&nbsp;&nbsp;<em>Neural Computing and Applications,</em>&nbsp;28 (9)<em> </em>(2017), 2373-2382 (DOI: 10.1007/s00521-016-2197-8)</p><p>J. A. S\u00e1nchez, M. A. Rocha, V. Romero, M. Villegas, \u2018On the Derivational Entropy of Left-to-Right Probabilistic Finite-State Automata and Hidden Markov Models\u2019, <em>Computational Linguistics</em>, 2017 (forthcoming).</p><p>A. H. Toselli, L. A. Leiva, I. Bordes-Cabrera, C. Hern\u00e1ndez-Tornero, V. Bosch, E. Vidal, \u2018<a href=\"https://academic.oup.com/dsh/advance-article/doi/10.1093/llc/fqw064/3063715\" target=\"_blank\">Transcribing a 17th-century botanical manuscript: Longitudinal evaluation of document layout detection and interactive transcription</a>\u2018, <em>Digital Scholarship in the Humanities (</em>2017) (DOI: <a href=\"https://doi.org/10.1093/llc/fqw064\" target=\"_blank\">https://doi.org/10.1093/llc/fqw064</a>)</p><p>A. H. Toselli, E. Vidal, V. Romero and V. Frinken, \u2018<a href=\"http://dx.doi.org/10.1016/j.ins.2016.07.063\" target=\"_blank\">HMM word graph based keyword spotting in handwritten document images</a>\u2018, <em>Information Sciences</em>, vols. 370-371 (2016), pp. 497-518&nbsp;(DOI:10.1016/j.ins.2016.07.063)</p><p>A. H. Toselli, V. Romero and E. Vidal, \u2018<a href=\"http://link.springer.com/article/10.1007/s00521-016-2336-2\" target=\"_blank\">Word graphs size impact on the performance of handwriting document applications.</a>\u2018&nbsp;<em>Neural Computing and Applications,</em>&nbsp;28 (9)<em> </em>(2017), 2477-2487 (DOI: 10.1007/s00521-016-2336-2)</p><p>K. Zagoris, I. Pratikakis and B. Gatos, \u2018<a href=\"http://ieeexplore.ieee.org/document/7918622/\" target=\"_blank\">Unsupervised Word Spotting in Historical Handwritten Document Images Using Document-Oriented Local Features</a>\u2018, IEEE Trans. Image Processing, 26, 8 (2017), 4032-4041 (DOI:&nbsp;10.1109/TIP.2017.2700721)</p>",
+    "lang": "de",
+    "doc": 9,
+    "changed": "2018-05-22"
+  }
+},
+{
+  "model": "home.documententries",
+  "pk": 18,
+  "fields": {
+    "title": "Journal Articles",
+    "desc": "<p>Here are some Journal articles</p>",
+    "content": "<p>A. Fronh\u00f6fer and E. M\u00fchlbauer, \u2018Archivnutzung ohne Limit. Digitalisierung, Onlinestellung und das Projekt READ f\u00fcr barrierefreies Forschen, <em>Der Archivar, Zeitschrift f\u00fcr Archivwesen</em> 70 (2017), pp. 422-427</p><p>A. Giotis, G. Sfikas, B. Gatos and C. Nikou, \u2018<a href=\"http://dl.acm.org/citation.cfm?id=3085731&amp;CFID=936823066&amp;CFTOKEN=81669468\" target=\"_blank\">A survey of document image word spotting techniques</a>\u2018, <em>Pattern Recognition,</em>&nbsp;vol. 68<em> </em>(2017), pp. 310\u2013332 (DOI: 10.1016/j.patcog.2017.02.023)</p><p>J. Puigcerver, A. H. Toselli and E.&nbsp;Vidal, \u2018<a href=\"http://link.springer.com/article/10.1007/s00521-016-2197-8\" target=\"_blank\">Querying out-of-vocabulary words in lexicon-based keyword spotting</a>\u2018,&nbsp;&nbsp;<em>Neural Computing and Applications,</em>&nbsp;28 (9)<em> </em>(2017), 2373-2382 (DOI: 10.1007/s00521-016-2197-8)</p><p>J. A. S\u00e1nchez, M. A. Rocha, V. Romero, M. Villegas, \u2018On the Derivational Entropy of Left-to-Right Probabilistic Finite-State Automata and Hidden Markov Models\u2019, <em>Computational Linguistics</em>, 2017 (forthcoming).</p><p>A. H. Toselli, L. A. Leiva, I. Bordes-Cabrera, C. Hern\u00e1ndez-Tornero, V. Bosch, E. Vidal, \u2018<a href=\"https://academic.oup.com/dsh/advance-article/doi/10.1093/llc/fqw064/3063715\" target=\"_blank\">Transcribing a 17th-century botanical manuscript: Longitudinal evaluation of document layout detection and interactive transcription</a>\u2018, <em>Digital Scholarship in the Humanities (</em>2017) (DOI: <a href=\"https://doi.org/10.1093/llc/fqw064\" target=\"_blank\">https://doi.org/10.1093/llc/fqw064</a>)</p><p>A. H. Toselli, E. Vidal, V. Romero and V. Frinken, \u2018<a href=\"http://dx.doi.org/10.1016/j.ins.2016.07.063\" target=\"_blank\">HMM word graph based keyword spotting in handwritten document images</a>\u2018, <em>Information Sciences</em>, vols. 370-371 (2016), pp. 497-518&nbsp;(DOI:10.1016/j.ins.2016.07.063)</p><p>A. H. Toselli, V. Romero and E. Vidal, \u2018<a href=\"http://link.springer.com/article/10.1007/s00521-016-2336-2\" target=\"_blank\">Word graphs size impact on the performance of handwriting document applications.</a>\u2018&nbsp;<em>Neural Computing and Applications,</em>&nbsp;28 (9)<em> </em>(2017), 2477-2487 (DOI: 10.1007/s00521-016-2336-2)</p><p>K. Zagoris, I. Pratikakis and B. Gatos, \u2018<a href=\"http://ieeexplore.ieee.org/document/7918622/\" target=\"_blank\">Unsupervised Word Spotting in Historical Handwritten Document Images Using Document-Oriented Local Features</a>\u2018, IEEE Trans. Image Processing, 26, 8 (2017), 4032-4041 (DOI:&nbsp;10.1109/TIP.2017.2700721)</p>",
+    "lang": "en",
+    "doc": 9,
+    "changed": "2018-05-22"
+  }
+},
+{
+  "model": "home.documententries",
+  "pk": 19,
+  "fields": {
+    "title": "Buchkapitel",
+    "desc": "<p>Hier sind einige Buchkapitel</p>",
+    "content": "<p>B. Gatos, G. Louloudis, N. Stamatopoulos and G. Sfikas, \u2018Historical Document Processing\u2019, in&nbsp;<a href=\"https://www.novapublishers.com/catalog/product_info.php?products_id=61909&amp;osCsid=cfaadd3cfd1ecccad25dafe20d00d4ff\" target=\"_blank\"><em>Handwriting: Recognition, Development and Analysis</em></a><em>,&nbsp;</em>eds. B. L. Dantas Bezerra,&nbsp;C. Zanchetti, A. H. Toselli, and G. Pirlo (Nova Science Publishers, 2017), ISBN:<strong>&nbsp;</strong>978-1-53611-937-4</p><p>E. Granell, V. Romero and C. D. Mart\u00ednez Hinarejos, \u2018Using Speech and Handwriting in an Interactive Approach for Transcribing Historical Documents\u2019, in&nbsp;<a href=\"https://www.novapublishers.com/catalog/product_info.php?products_id=61909&amp;osCsid=cfaadd3cfd1ecccad25dafe20d00d4ff\" target=\"_blank\"><em>Handwriting: Recognition, Development and Analysis</em></a><em>,&nbsp;</em>eds. B. L. Dantas Bezerra,&nbsp;C. Zanchetti, A. H. Toselli, and G. Pirlo (Nova Science Publishers, 2017),&nbsp;pp. 277-295, ISBN:<strong>&nbsp;</strong>978-1-53611-937-4</p><p>G. Barlas, K. Zagoris and I. Pratikakis, \u2018Handwritten keyword spotting \u2013 The Query by Example (QbE) case\u2019, in&nbsp;<a href=\"https://www.novapublishers.com/catalog/product_info.php?products_id=61909&amp;osCsid=cfaadd3cfd1ecccad25dafe20d00d4ff\" target=\"_blank\"><em>Handwriting: Recognition, Development and Analysis</em></a><em>,&nbsp;</em>eds. B. L. Dantas Bezerra,&nbsp;C. Zanchetti, A. H. Toselli, and G. Pirlo (Nova Science Publishers, 2017),&nbsp;ISBN:<strong>&nbsp;</strong>978-1-53611-937-4</p><p>G. Louloudis, N. Stamatopoulos and B. Gatos, \u2018Writer Identification\u2019, in <a href=\"http://www.worldscientific.com/worldscibooks/10.1142/10689\" target=\"_blank\"><em>Document Analysis and Text Recognition: Benchmarking State-of-the-Art Systems</em></a><em> (</em>World Scientific Publishing Co., 2017), ISBN: 978-981-3229-26-6</p><p>N. Stamatopoulos, G. Louloudis and B. Gatos, \u2018Handwriting Segmentation\u2019, in&nbsp;<a href=\"http://www.worldscientific.com/worldscibooks/10.1142/10689\" target=\"_blank\"><em>Document Analysis and Text Recognition: Benchmarking State-of-the-Art Systems</em></a><em>&nbsp;(</em>World Scientific Publishing Co., 2017), ISBN: 978-981-3229-26-6</p><p>E. Vidal, \u2018Advances in Handwritten Keyword Indexing and Search Technologies\u2019, in Kodikologie und Pal\u00e4ographie im Digitalen Zeitalter 4 \u2013 Codicology and Palaeography in the Digital Age 4. Schriften des Instituts f\u00fcr Dokumentologie und Editorik, 11 (Books on Demand, Norderstedt, 2017)). pp. 103-119, ISBN: 978-3-7448-3877-1</p><p>J. A. S\u00e1nchez, V. Romero, A. H. Toselli and E. Vidal,&nbsp;\u2018Handwritten Text Recognition Competitions with the tranScriptorium Dataset.\u2019 <em>(forthcoming)</em></p>",
+    "lang": "de",
+    "doc": 10,
+    "changed": "2018-05-22"
+  }
+},
+{
+  "model": "home.documententries",
+  "pk": 20,
+  "fields": {
+    "title": "Book Chapters",
+    "desc": "<p>Here are some book chapters</p>",
+    "content": "<p>B. Gatos, G. Louloudis, N. Stamatopoulos and G. Sfikas, \u2018Historical Document Processing\u2019, in&nbsp;<a href=\"https://www.novapublishers.com/catalog/product_info.php?products_id=61909&amp;osCsid=cfaadd3cfd1ecccad25dafe20d00d4ff\" target=\"_blank\"><em>Handwriting: Recognition, Development and Analysis</em></a><em>,&nbsp;</em>eds. B. L. Dantas Bezerra,&nbsp;C. Zanchetti, A. H. Toselli, and G. Pirlo (Nova Science Publishers, 2017), ISBN:<strong>&nbsp;</strong>978-1-53611-937-4</p><p>E. Granell, V. Romero and C. D. Mart\u00ednez Hinarejos, \u2018Using Speech and Handwriting in an Interactive Approach for Transcribing Historical Documents\u2019, in&nbsp;<a href=\"https://www.novapublishers.com/catalog/product_info.php?products_id=61909&amp;osCsid=cfaadd3cfd1ecccad25dafe20d00d4ff\" target=\"_blank\"><em>Handwriting: Recognition, Development and Analysis</em></a><em>,&nbsp;</em>eds. B. L. Dantas Bezerra,&nbsp;C. Zanchetti, A. H. Toselli, and G. Pirlo (Nova Science Publishers, 2017),&nbsp;pp. 277-295, ISBN:<strong>&nbsp;</strong>978-1-53611-937-4</p><p>G. Barlas, K. Zagoris and I. Pratikakis, \u2018Handwritten keyword spotting \u2013 The Query by Example (QbE) case\u2019, in&nbsp;<a href=\"https://www.novapublishers.com/catalog/product_info.php?products_id=61909&amp;osCsid=cfaadd3cfd1ecccad25dafe20d00d4ff\" target=\"_blank\"><em>Handwriting: Recognition, Development and Analysis</em></a><em>,&nbsp;</em>eds. B. L. Dantas Bezerra,&nbsp;C. Zanchetti, A. H. Toselli, and G. Pirlo (Nova Science Publishers, 2017),&nbsp;ISBN:<strong>&nbsp;</strong>978-1-53611-937-4</p><p>G. Louloudis, N. Stamatopoulos and B. Gatos, \u2018Writer Identification\u2019, in <a href=\"http://www.worldscientific.com/worldscibooks/10.1142/10689\" target=\"_blank\"><em>Document Analysis and Text Recognition: Benchmarking State-of-the-Art Systems</em></a><em> (</em>World Scientific Publishing Co., 2017), ISBN: 978-981-3229-26-6</p><p>N. Stamatopoulos, G. Louloudis and B. Gatos, \u2018Handwriting Segmentation\u2019, in&nbsp;<a href=\"http://www.worldscientific.com/worldscibooks/10.1142/10689\" target=\"_blank\"><em>Document Analysis and Text Recognition: Benchmarking State-of-the-Art Systems</em></a><em>&nbsp;(</em>World Scientific Publishing Co., 2017), ISBN: 978-981-3229-26-6</p><p>E. Vidal, \u2018Advances in Handwritten Keyword Indexing and Search Technologies\u2019, in Kodikologie und Pal\u00e4ographie im Digitalen Zeitalter 4 \u2013 Codicology and Palaeography in the Digital Age 4. Schriften des Instituts f\u00fcr Dokumentologie und Editorik, 11 (Books on Demand, Norderstedt, 2017)). pp. 103-119, ISBN: 978-3-7448-3877-1</p><p>J. A. S\u00e1nchez, V. Romero, A. H. Toselli and E. Vidal,&nbsp;\u2018Handwritten Text Recognition Competitions with the tranScriptorium Dataset.\u2019 <em>(forthcoming)</em></p>",
+    "lang": "en",
+    "doc": 10,
+    "changed": "2018-05-22"
+  }
+},
+{
+  "model": "home.documententries",
+  "pk": 21,
+  "fields": {
+    "title": "Tagungsberichte",
+    "desc": "<p>Hier sind einige Tagungsberichte</p>",
+    "content": "<p><strong>2017</strong></p><p><a href=\"http://cap2017.imag.fr/\" target=\"_blank\"><strong>Conference sur l\u2019Apprentissage Automatique (CAp)</strong></a></p><p>J.-L. Meunier, \u2018Joint Structured Learning and Predictions under Logical Constraints in Conditional Random Fields\u2019</p><p><a href=\"https://doceng.org/index\" target=\"_blank\"><strong>DocEng</strong></a></p><p>A. Fawzi, M. Pastor, C.D. Mart\u00ednez-Hinarejos,\u2019Baseline Detection on Arabic Handwritten Documents\u2019, Proceedings of the 2017 ACM Symposium on Document Engineering, pp. 193\u2013196, 2017</p><p><a href=\"http://www.ibpria.org/2017/\" target=\"_blank\"><strong>IbRPIA</strong></a></p><p>E. Noya-Garc\u00eda, A. H. Toselli, E. Vidal, \u2018Simple and Effective Multi-word Query Spotting in Handwritten Text Images\u2019, Iberian Conference on Pattern Recognition and Image Analysis, 76-84, 2017</p><p>L. Quir\u00f3s, C. D. Mart\u00ednez-Hinarejos, A. H. Toselli, E. Vidal. \u2018Interactive Layout Detection\u2019, Iberian Conference on Pattern Recognition and Image Analysis, 161-168, 2017</p><p>V. Romero, A. Forn\u00e9s, E. Vidal, J.A. S\u00e1nchez, \u201cInformation Extraction in Handwritten Marriage Licenses Books Using the MGGI Methodology\u201d, Iberian Conference on Pattern Recognition and Image Analysis, 287-294, 2017</p><p>V. Romero, V. Bosch, C. Hern\u00e1ndez, E. Vidal, J.A. S\u00e1nchez, \u2018A Historical Document Handwriting Transcription End-to-end System\u2019, Iberian Conference on Pattern Recognition and Image Analysis, 149-157, 2017</p><p><a href=\"https://sites.google.com/view/ost2017\" target=\"_blank\"><strong>International Conference on Document Analysis (ICDAR)-OST workshop</strong></a></p><p>J.-L. Meunier and Herv\u00e9&nbsp;D\u00e9jean, \u2018Transkribus Python Toolkit\u2019</p><p>J.-L. Meunier, \u2018PyStruct Extension for Typed CRF Graphs\u2019</p><p>P. Kahle, S. Colutto, G. Hackl and G. M\u00fchlberger, \u2018Transkribus \u2013 a Platform for Transcription, Recognition and Retrieval of Document Images\u2019</p>",
+    "lang": "de",
+    "doc": 11,
+    "changed": "2018-05-22"
+  }
+},
+{
+  "model": "home.documententries",
+  "pk": 22,
+  "fields": {
+    "title": "Conference Proceedings",
+    "desc": "<p>Here are some conference Proceedings</p>",
+    "content": "<p><strong>2017</strong></p><p><a href=\"http://cap2017.imag.fr/\" target=\"_blank\"><strong>Conference sur l\u2019Apprentissage Automatique (CAp)</strong></a></p><p>J.-L. Meunier, \u2018Joint Structured Learning and Predictions under Logical Constraints in Conditional Random Fields\u2019</p><p><a href=\"https://doceng.org/index\" target=\"_blank\"><strong>DocEng</strong></a></p><p>A. Fawzi, M. Pastor, C.D. Mart\u00ednez-Hinarejos,\u2019Baseline Detection on Arabic Handwritten Documents\u2019, Proceedings of the 2017 ACM Symposium on Document Engineering, pp. 193\u2013196, 2017</p><p><a href=\"http://www.ibpria.org/2017/\" target=\"_blank\"><strong>IbRPIA</strong></a></p><p>E. Noya-Garc\u00eda, A. H. Toselli, E. Vidal, \u2018Simple and Effective Multi-word Query Spotting in Handwritten Text Images\u2019, Iberian Conference on Pattern Recognition and Image Analysis, 76-84, 2017</p><p>L. Quir\u00f3s, C. D. Mart\u00ednez-Hinarejos, A. H. Toselli, E. Vidal. \u2018Interactive Layout Detection\u2019, Iberian Conference on Pattern Recognition and Image Analysis, 161-168, 2017</p><p>V. Romero, A. Forn\u00e9s, E. Vidal, J.A. S\u00e1nchez, \u201cInformation Extraction in Handwritten Marriage Licenses Books Using the MGGI Methodology\u201d, Iberian Conference on Pattern Recognition and Image Analysis, 287-294, 2017</p><p>V. Romero, V. Bosch, C. Hern\u00e1ndez, E. Vidal, J.A. S\u00e1nchez, \u2018A Historical Document Handwriting Transcription End-to-end System\u2019, Iberian Conference on Pattern Recognition and Image Analysis, 149-157, 2017</p><p><a href=\"https://sites.google.com/view/ost2017\" target=\"_blank\"><strong>International Conference on Document Analysis (ICDAR)-OST workshop</strong></a></p><p>J.-L. Meunier and Herv\u00e9&nbsp;D\u00e9jean, \u2018Transkribus Python Toolkit\u2019</p><p>J.-L. Meunier, \u2018PyStruct Extension for Typed CRF Graphs\u2019</p><p>P. Kahle, S. Colutto, G. Hackl and G. M\u00fchlberger, \u2018Transkribus \u2013 a Platform for Transcription, Recognition and Retrieval of Document Images\u2019</p>",
+    "lang": "en",
+    "doc": 11,
+    "changed": "2018-05-22"
+  }
+},
+{
+  "model": "home.video",
+  "pk": 2,
+  "fields": {
+    "vid": "_7V8iXFzx_E",
+    "changed": "2018-04-26"
+  }
+},
+{
+  "model": "home.video",
+  "pk": 3,
+  "fields": {
+    "vid": "qnY3i6d4lHw",
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.video",
+  "pk": 4,
+  "fields": {
+    "vid": "GjChcDExshU",
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.video",
+  "pk": 5,
+  "fields": {
+    "vid": "MBqjis7Uano",
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.videodesc",
+  "pk": 3,
+  "fields": {
+    "title": "der status quo und Zukunftspl\u00e4ne",
+    "desc": "<p>Transkribus. Where we are, where we would like to be and how we will approach it. Some considerations on the status quo and future plans. (<span class=\"ql-size-huge\">DE</span>)</p>",
+    "lang": "de",
+    "video": 2,
+    "changed": "2018-04-26"
+  }
+},
+{
+  "model": "home.videodesc",
+  "pk": 4,
+  "fields": {
+    "title": " the status quo and future plans",
+    "desc": "<p>Transkribus. Where we are, where we would like to be and how we will approach it. Some considerations on the status quo and future plans.</p>",
+    "lang": "en",
+    "video": 2,
+    "changed": "2018-04-26"
+  }
+},
+{
+  "model": "home.videodesc",
+  "pk": 5,
+  "fields": {
+    "title": "Transkribus in der Praxis. Berichte von Benutzern",
+    "desc": "<p><br></p>",
+    "lang": "de",
+    "video": 3,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.videodesc",
+  "pk": 6,
+  "fields": {
+    "title": "Transcribus in practice. Reports from users",
+    "desc": "<p><br></p>",
+    "lang": "en",
+    "video": 3,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.videodesc",
+  "pk": 7,
+  "fields": {
+    "title": "Wie benutzt man Transkribus in 10 Schritten?",
+    "desc": "<p><br></p>",
+    "lang": "de",
+    "video": 4,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.videodesc",
+  "pk": 8,
+  "fields": {
+    "title": "How to use Transkribus in 10 steps",
+    "desc": "<p><br></p>",
+    "lang": "en",
+    "video": 4,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.videodesc",
+  "pk": 9,
+  "fields": {
+    "title": "Transkribus: Texterkennung, Transkription und Informationsextraktion | G\u00fcnter M\u00fchlberger",
+    "desc": "<p>10.10.2016 | Tagessitzung | Was sollte in Ihrer digitalen Toolbox sein? Die Linnean Society of London ist die \u00e4lteste aktive biologische Gesellschaft der Welt. Die 1788 gegr\u00fcndete Gesellschaft hat ihren Namen vom schwedischen Naturforscher Carl Linnaeus (1707-1778).</p>",
+    "lang": "de",
+    "video": 5,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.videodesc",
+  "pk": 10,
+  "fields": {
+    "title": "Transkribus: Text Recognition, Transcription and Information Extraction | G\u00fcnter M\u00fchlberger",
+    "desc": "<p>10/10/2016 | Day Meeting | What should be in your Digital Toolbox? The Linnean Society of London is the world\u2019s oldest active biological society. Founded in 1788, the Society takes its name from the Swedish naturalist Carl Linnaeus (1707\u20131778).</p>",
+    "lang": "en",
+    "video": 5,
+    "changed": "2018-05-21"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 1,
+  "fields": {
+    "name": "adjustments",
+    "css_class": "icon-adjustments"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 2,
+  "fields": {
+    "name": "alarmclock",
+    "css_class": "icon-alarmclock"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 3,
+  "fields": {
+    "name": "anchor",
+    "css_class": "icon-anchor"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 4,
+  "fields": {
+    "name": "aperture",
+    "css_class": "icon-aperture"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 5,
+  "fields": {
+    "name": "attachment",
+    "css_class": "icon-attachment"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 6,
+  "fields": {
+    "name": "bargraph",
+    "css_class": "icon-bargraph"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 7,
+  "fields": {
+    "name": "basket",
+    "css_class": "icon-basket"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 8,
+  "fields": {
+    "name": "beaker",
+    "css_class": "icon-beaker"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 9,
+  "fields": {
+    "name": "bike",
+    "css_class": "icon-bike"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 10,
+  "fields": {
+    "name": "book-open",
+    "css_class": "icon-book-open"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 11,
+  "fields": {
+    "name": "briefcase",
+    "css_class": "icon-briefcase"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 12,
+  "fields": {
+    "name": "browser",
+    "css_class": "icon-browser"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 13,
+  "fields": {
+    "name": "calendar",
+    "css_class": "icon-calendar"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 14,
+  "fields": {
+    "name": "camera",
+    "css_class": "icon-camera"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 15,
+  "fields": {
+    "name": "caution",
+    "css_class": "icon-caution"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 16,
+  "fields": {
+    "name": "chat",
+    "css_class": "icon-chat"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 17,
+  "fields": {
+    "name": "circle-compass",
+    "css_class": "icon-circle-compass"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 18,
+  "fields": {
+    "name": "clipboard",
+    "css_class": "icon-clipboard"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 19,
+  "fields": {
+    "name": "clock",
+    "css_class": "icon-clock"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 20,
+  "fields": {
+    "name": "cloud",
+    "css_class": "icon-cloud"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 21,
+  "fields": {
+    "name": "compass",
+    "css_class": "icon-compass"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 22,
+  "fields": {
+    "name": "desktop",
+    "css_class": "icon-desktop"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 23,
+  "fields": {
+    "name": "dial",
+    "css_class": "icon-dial"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 24,
+  "fields": {
+    "name": "document",
+    "css_class": "icon-document"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 25,
+  "fields": {
+    "name": "documents",
+    "css_class": "icon-documents"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 26,
+  "fields": {
+    "name": "download",
+    "css_class": "icon-download"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 27,
+  "fields": {
+    "name": "dribbble",
+    "css_class": "icon-dribbble"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 28,
+  "fields": {
+    "name": "edit",
+    "css_class": "icon-edit"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 29,
+  "fields": {
+    "name": "envelope",
+    "css_class": "icon-envelope"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 30,
+  "fields": {
+    "name": "expand",
+    "css_class": "icon-expand"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 31,
+  "fields": {
+    "name": "facebook",
+    "css_class": "icon-facebook"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 32,
+  "fields": {
+    "name": "flag",
+    "css_class": "icon-flag"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 33,
+  "fields": {
+    "name": "focus",
+    "css_class": "icon-focus"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 34,
+  "fields": {
+    "name": "gears",
+    "css_class": "icon-gears"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 35,
+  "fields": {
+    "name": "genius",
+    "css_class": "icon-genius"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 36,
+  "fields": {
+    "name": "gift",
+    "css_class": "icon-gift"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 37,
+  "fields": {
+    "name": "global",
+    "css_class": "icon-global"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 38,
+  "fields": {
+    "name": "globe",
+    "css_class": "icon-globe"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 39,
+  "fields": {
+    "name": "googleplus",
+    "css_class": "icon-googleplus"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 40,
+  "fields": {
+    "name": "grid",
+    "css_class": "icon-grid"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 41,
+  "fields": {
+    "name": "happy",
+    "css_class": "icon-happy"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 42,
+  "fields": {
+    "name": "hazardous",
+    "css_class": "icon-hazardous"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 43,
+  "fields": {
+    "name": "heart",
+    "css_class": "icon-heart"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 44,
+  "fields": {
+    "name": "hotairballoon",
+    "css_class": "icon-hotairballoon"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 45,
+  "fields": {
+    "name": "hourglass",
+    "css_class": "icon-hourglass"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 46,
+  "fields": {
+    "name": "key",
+    "css_class": "icon-key"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 47,
+  "fields": {
+    "name": "laptop",
+    "css_class": "icon-laptop"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 48,
+  "fields": {
+    "name": "layers",
+    "css_class": "icon-layers"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 49,
+  "fields": {
+    "name": "lifesaver",
+    "css_class": "icon-lifesaver"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 50,
+  "fields": {
+    "name": "lightbulb",
+    "css_class": "icon-lightbulb"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 51,
+  "fields": {
+    "name": "linegraph",
+    "css_class": "icon-linegraph"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 52,
+  "fields": {
+    "name": "linkedin",
+    "css_class": "icon-linkedin"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 53,
+  "fields": {
+    "name": "lock",
+    "css_class": "icon-lock"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 54,
+  "fields": {
+    "name": "magnifying-glass",
+    "css_class": "icon-magnifying-glass"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 55,
+  "fields": {
+    "name": "map",
+    "css_class": "icon-map"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 56,
+  "fields": {
+    "name": "map-pin",
+    "css_class": "icon-map-pin"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 57,
+  "fields": {
+    "name": "megaphone",
+    "css_class": "icon-megaphone"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 58,
+  "fields": {
+    "name": "mic",
+    "css_class": "icon-mic"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 59,
+  "fields": {
+    "name": "mobile",
+    "css_class": "icon-mobile"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 60,
+  "fields": {
+    "name": "newspaper",
+    "css_class": "icon-newspaper"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 61,
+  "fields": {
+    "name": "notebook",
+    "css_class": "icon-notebook"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 62,
+  "fields": {
+    "name": "paintbrush",
+    "css_class": "icon-paintbrush"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 63,
+  "fields": {
+    "name": "paperclip",
+    "css_class": "icon-paperclip"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 64,
+  "fields": {
+    "name": "pencil",
+    "css_class": "icon-pencil"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 65,
+  "fields": {
+    "name": "phone",
+    "css_class": "icon-phone"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 66,
+  "fields": {
+    "name": "picture",
+    "css_class": "icon-picture"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 67,
+  "fields": {
+    "name": "pictures",
+    "css_class": "icon-pictures"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 68,
+  "fields": {
+    "name": "piechart",
+    "css_class": "icon-piechart"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 69,
+  "fields": {
+    "name": "presentation",
+    "css_class": "icon-presentation"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 70,
+  "fields": {
+    "name": "pricetags",
+    "css_class": "icon-pricetags"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 71,
+  "fields": {
+    "name": "printer",
+    "css_class": "icon-printer"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 72,
+  "fields": {
+    "name": "profile-female",
+    "css_class": "icon-profile-female"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 73,
+  "fields": {
+    "name": "profile-male",
+    "css_class": "icon-profile-male"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 74,
+  "fields": {
+    "name": "puzzle",
+    "css_class": "icon-puzzle"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 75,
+  "fields": {
+    "name": "quote",
+    "css_class": "icon-quote"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 76,
+  "fields": {
+    "name": "recycle",
+    "css_class": "icon-recycle"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 77,
+  "fields": {
+    "name": "refresh",
+    "css_class": "icon-refresh"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 78,
+  "fields": {
+    "name": "ribbon",
+    "css_class": "icon-ribbon"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 79,
+  "fields": {
+    "name": "rss",
+    "css_class": "icon-rss"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 80,
+  "fields": {
+    "name": "sad",
+    "css_class": "icon-sad"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 81,
+  "fields": {
+    "name": "scissors",
+    "css_class": "icon-scissors"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 82,
+  "fields": {
+    "name": "scope",
+    "css_class": "icon-scope"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 83,
+  "fields": {
+    "name": "search",
+    "css_class": "icon-search"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 84,
+  "fields": {
+    "name": "shield",
+    "css_class": "icon-shield"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 85,
+  "fields": {
+    "name": "speedometer",
+    "css_class": "icon-speedometer"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 86,
+  "fields": {
+    "name": "strategy",
+    "css_class": "icon-strategy"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 87,
+  "fields": {
+    "name": "streetsign",
+    "css_class": "icon-streetsign"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 88,
+  "fields": {
+    "name": "tablet",
+    "css_class": "icon-tablet"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 89,
+  "fields": {
+    "name": "target",
+    "css_class": "icon-target"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 90,
+  "fields": {
+    "name": "telescope",
+    "css_class": "icon-telescope"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 91,
+  "fields": {
+    "name": "toolbox",
+    "css_class": "icon-toolbox"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 92,
+  "fields": {
+    "name": "tools",
+    "css_class": "icon-tools"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 93,
+  "fields": {
+    "name": "tools-2",
+    "css_class": "icon-tools-2"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 94,
+  "fields": {
+    "name": "trophy",
+    "css_class": "icon-trophy"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 95,
+  "fields": {
+    "name": "tumblr",
+    "css_class": "icon-tumblr"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 96,
+  "fields": {
+    "name": "twitter",
+    "css_class": "icon-twitter"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 97,
+  "fields": {
+    "name": "upload",
+    "css_class": "icon-upload"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 98,
+  "fields": {
+    "name": "video",
+    "css_class": "icon-video"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 99,
+  "fields": {
+    "name": "wallet",
+    "css_class": "icon-wallet"
+  }
+},
+{
+  "model": "home.supportedicons",
+  "pk": 100,
+  "fields": {
+    "name": "wine",
+    "css_class": "icon-wine"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 1,
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": 1,
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 2,
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": 1,
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 3,
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": 1,
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 4,
+  "fields": {
+    "name": "Can add user",
+    "content_type": 2,
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 5,
+  "fields": {
+    "name": "Can change user",
+    "content_type": 2,
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 6,
+  "fields": {
+    "name": "Can delete user",
+    "content_type": 2,
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 7,
+  "fields": {
+    "name": "Can add group",
+    "content_type": 3,
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 8,
+  "fields": {
+    "name": "Can change group",
+    "content_type": 3,
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 9,
+  "fields": {
+    "name": "Can delete group",
+    "content_type": 3,
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 10,
+  "fields": {
+    "name": "Can add permission",
+    "content_type": 4,
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 11,
+  "fields": {
+    "name": "Can change permission",
+    "content_type": 4,
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 12,
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": 4,
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 13,
+  "fields": {
+    "name": "Can add content type",
+    "content_type": 5,
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 14,
+  "fields": {
+    "name": "Can change content type",
+    "content_type": 5,
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 15,
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": 5,
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 16,
+  "fields": {
+    "name": "Can add session",
+    "content_type": 6,
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 17,
+  "fields": {
+    "name": "Can change session",
+    "content_type": 6,
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 18,
+  "fields": {
+    "name": "Can delete session",
+    "content_type": 6,
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 19,
+  "fields": {
+    "name": "Can add ts data",
+    "content_type": 7,
+    "codename": "add_tsdata"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 20,
+  "fields": {
+    "name": "Can change ts data",
+    "content_type": 7,
+    "codename": "change_tsdata"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 21,
+  "fields": {
+    "name": "Can delete ts data",
+    "content_type": 7,
+    "codename": "delete_tsdata"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 22,
+  "fields": {
+    "name": "Can add quote entries",
+    "content_type": 8,
+    "codename": "add_quoteentries"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 23,
+  "fields": {
+    "name": "Can change quote entries",
+    "content_type": 8,
+    "codename": "change_quoteentries"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 24,
+  "fields": {
+    "name": "Can delete quote entries",
+    "content_type": 8,
+    "codename": "delete_quoteentries"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 25,
+  "fields": {
+    "name": "Can add institution project",
+    "content_type": 9,
+    "codename": "add_institutionproject"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 26,
+  "fields": {
+    "name": "Can change institution project",
+    "content_type": 9,
+    "codename": "change_institutionproject"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 27,
+  "fields": {
+    "name": "Can delete institution project",
+    "content_type": 9,
+    "codename": "delete_institutionproject"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 28,
+  "fields": {
+    "name": "Can add blog entry",
+    "content_type": 10,
+    "codename": "add_blogentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 29,
+  "fields": {
+    "name": "Can change blog entry",
+    "content_type": 10,
+    "codename": "change_blogentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 30,
+  "fields": {
+    "name": "Can delete blog entry",
+    "content_type": 10,
+    "codename": "delete_blogentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 31,
+  "fields": {
+    "name": "Can add institution project entries",
+    "content_type": 11,
+    "codename": "add_institutionprojectentries"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 32,
+  "fields": {
+    "name": "Can change institution project entries",
+    "content_type": 11,
+    "codename": "change_institutionprojectentries"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 33,
+  "fields": {
+    "name": "Can delete institution project entries",
+    "content_type": 11,
+    "codename": "delete_institutionprojectentries"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 34,
+  "fields": {
+    "name": "Can add service",
+    "content_type": 12,
+    "codename": "add_service"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 35,
+  "fields": {
+    "name": "Can change service",
+    "content_type": 12,
+    "codename": "change_service"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 36,
+  "fields": {
+    "name": "Can delete service",
+    "content_type": 12,
+    "codename": "delete_service"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 37,
+  "fields": {
+    "name": "Can add service entries",
+    "content_type": 13,
+    "codename": "add_serviceentries"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 38,
+  "fields": {
+    "name": "Can change service entries",
+    "content_type": 13,
+    "codename": "change_serviceentries"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 39,
+  "fields": {
+    "name": "Can delete service entries",
+    "content_type": 13,
+    "codename": "delete_serviceentries"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 40,
+  "fields": {
+    "name": "Can add institution",
+    "content_type": 14,
+    "codename": "add_institution"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 41,
+  "fields": {
+    "name": "Can change institution",
+    "content_type": 14,
+    "codename": "change_institution"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 42,
+  "fields": {
+    "name": "Can delete institution",
+    "content_type": 14,
+    "codename": "delete_institution"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 43,
+  "fields": {
+    "name": "Can add document entries",
+    "content_type": 15,
+    "codename": "add_documententries"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 44,
+  "fields": {
+    "name": "Can change document entries",
+    "content_type": 15,
+    "codename": "change_documententries"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 45,
+  "fields": {
+    "name": "Can delete document entries",
+    "content_type": 15,
+    "codename": "delete_documententries"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 46,
+  "fields": {
+    "name": "Can add institution description",
+    "content_type": 16,
+    "codename": "add_institutiondescription"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 47,
+  "fields": {
+    "name": "Can change institution description",
+    "content_type": 16,
+    "codename": "change_institutiondescription"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 48,
+  "fields": {
+    "name": "Can delete institution description",
+    "content_type": 16,
+    "codename": "delete_institutiondescription"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 49,
+  "fields": {
+    "name": "Can add video",
+    "content_type": 17,
+    "codename": "add_video"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 50,
+  "fields": {
+    "name": "Can change video",
+    "content_type": 17,
+    "codename": "change_video"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 51,
+  "fields": {
+    "name": "Can delete video",
+    "content_type": 17,
+    "codename": "delete_video"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 52,
+  "fields": {
+    "name": "Can add document",
+    "content_type": 18,
+    "codename": "add_document"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 53,
+  "fields": {
+    "name": "Can change document",
+    "content_type": 18,
+    "codename": "change_document"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 54,
+  "fields": {
+    "name": "Can delete document",
+    "content_type": 18,
+    "codename": "delete_document"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 55,
+  "fields": {
+    "name": "Can add quote",
+    "content_type": 19,
+    "codename": "add_quote"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 56,
+  "fields": {
+    "name": "Can change quote",
+    "content_type": 19,
+    "codename": "change_quote"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 57,
+  "fields": {
+    "name": "Can delete quote",
+    "content_type": 19,
+    "codename": "delete_quote"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 58,
+  "fields": {
+    "name": "Can add blog",
+    "content_type": 20,
+    "codename": "add_blog"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 59,
+  "fields": {
+    "name": "Can change blog",
+    "content_type": 20,
+    "codename": "change_blog"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 60,
+  "fields": {
+    "name": "Can delete blog",
+    "content_type": 20,
+    "codename": "delete_blog"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 61,
+  "fields": {
+    "name": "Can add video desc",
+    "content_type": 21,
+    "codename": "add_videodesc"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 62,
+  "fields": {
+    "name": "Can change video desc",
+    "content_type": 21,
+    "codename": "change_videodesc"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 63,
+  "fields": {
+    "name": "Can delete video desc",
+    "content_type": 21,
+    "codename": "delete_videodesc"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 64,
+  "fields": {
+    "name": "Can add home article",
+    "content_type": 22,
+    "codename": "add_homearticle"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 65,
+  "fields": {
+    "name": "Can change home article",
+    "content_type": 22,
+    "codename": "change_homearticle"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 66,
+  "fields": {
+    "name": "Can delete home article",
+    "content_type": 22,
+    "codename": "delete_homearticle"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 67,
+  "fields": {
+    "name": "Can add home article entry",
+    "content_type": 23,
+    "codename": "add_homearticleentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 68,
+  "fields": {
+    "name": "Can change home article entry",
+    "content_type": 23,
+    "codename": "change_homearticleentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 69,
+  "fields": {
+    "name": "Can delete home article entry",
+    "content_type": 23,
+    "codename": "delete_homearticleentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 70,
+  "fields": {
+    "name": "Can add supported icons",
+    "content_type": 24,
+    "codename": "add_supportedicons"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 71,
+  "fields": {
+    "name": "Can change supported icons",
+    "content_type": 24,
+    "codename": "change_supportedicons"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 72,
+  "fields": {
+    "name": "Can delete supported icons",
+    "content_type": 24,
+    "codename": "delete_supportedicons"
+  }
+},
+{
+  "model": "transkribus.user",
+  "pk": 14,
+  "fields": {
+    "password": "pbkdf2_sha256$36000$p85mCXynVVjE$1wwJHrEbMjgXR4VVTZC+xLVzVkPbpMZiqLT0Z6ztvWA=",
+    "last_login": "2018-05-22T11:30:01.674Z",
+    "is_superuser": true,
+    "username": "albert.greinocker@gmail.com",
+    "first_name": "Albert",
+    "last_name": "Grein\u00f6cker",
+    "email": "albert.greinocker@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2018-05-22T11:30:01.611Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

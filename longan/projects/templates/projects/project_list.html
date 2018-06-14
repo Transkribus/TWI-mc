@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Projects - Transkribus{% endblock %}
+{% block styles %}
+<link href="{% static 'projects/css/base.css' %}" rel="stylesheet">
+<style>
+ body {}
+
+ .collections p {
+   font-size: 0.875em;
+ }
+
+ .collection .card-header {
+   padding: 1em 0;
+   text-align: center;
+ }
+
+</style>
+{% endblock styles %}
+{% block content %}
+  <h1>Projects</h1>
+  <div class="card-list">
+    {% for collection in collections %}
+    <div class="card-list-item card bg-light">
+      <div class="card-list-item-header card-header">
+        <img class="thumbnail card-img-top" src="{{ collection.thumb_url }}" alt="{{ collection.name }}">
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ collection.name }}</h5>
+        <p class="card-text">{{ collection.description }}</p>
+      </div>
+      <div class="card-footer">
+        <a href="{% url 'projects:project-detail' collection.id %}" class="btn btn-secondary w-100">Contribute</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% if is_paginated %}
+  {% include 'library/includes/pagination.html' %}
+  {% endif %}
+{% endblock content %}

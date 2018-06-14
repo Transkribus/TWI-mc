@@ -16,24 +16,26 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
+from django.views.generic import RedirectView
 
-from transkribus.views import LoginWithCookie
+from transkribus.views import LoginWithCookieView
 
 urlpatterns = [
 
-    url(r'^', include('home.urls', namespace='home')),
-    # url(r'^home/', include('home.urls', namespace='home')),
-    url(r'^sandbox/', include('sandbox.urls', namespace='sandbox')),
 
-    url(r'^library/', include('library.urls', namespace='library')),
+    url(r'^$', RedirectView.as_view(pattern_name='projects:project-list', query_string=True, permanent=True)),
+
     url(r'^projects/', include('projects.urls', namespace='projects')),
-    url(r'^admin/', admin.site.urls),
-
+    url(r'^home/', include('home.urls', namespace='home')),
+    url(r'^sandbox/', include('sandbox.urls', namespace='sandbox')),
+    url(r'^library/', include('library.urls', namespace='library')),
     url(r'^edit/', include('edit.urls', namespace='edit')),
 
     # accounts
     url('logout/', LogoutView.as_view(), name='logout'),
-    url('^login/$', LoginWithCookie.as_view(template_name='registration/login-with-cookie.html'), name='login'),
+    url('^login/$', LoginWithCookieView.as_view(template_name='registration/login-with-cookie.html'), name='login'),
+
+    url(r'^admin/', admin.site.urls),
 
     # url(r'^search/', include('search.urls', app_name='search', namespace='search')),
     # url(r'^view/', include('edit.urls', app_name='edit', namespace='edit')),
