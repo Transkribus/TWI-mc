@@ -1,6 +1,3 @@
-[submodule "apps/search"]
-	path = longan/search
-	url = https://github.com/Transkribus/TWI-search.git
 [submodule "apps/sandbox"]
 	path = longan/sandbox
 	url = https://bitbucket.org/bejohu/twi-sandbox.git
