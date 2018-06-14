@@ -1,9 +1,6 @@
 [submodule "apps/querystring_parser"]
 	path = apps/querystring_parser
 	url = https://github.com/bernii/querystring-parser.git
-[submodule "apps/utils"]
-	path = apps/utils
-	url = https://github.com/Transkribus/TWI-utils.git
 [submodule "apps/sandbox"]
 	path = apps/sandbox
 	url = https://bitbucket.org/bejohu/twi-sandbox.git
