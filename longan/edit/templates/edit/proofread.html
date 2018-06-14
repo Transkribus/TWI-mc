@@ -1,0 +1,64 @@
+{% load i18n %}
+<div>
+	<div class="radio" style="text-align: center;">
+	  <label>
+	    <input type="radio" name="version" value="original">
+	    	{% trans "Original version" %}
+	  </label>
+	  <label>
+	    <input type="radio" name="version" value="your" checked>
+	    	{% trans "Your version" %}
+	  </label>
+	</div>
+	<div class="col-xs-12 line-list-div collapse version" id="original">
+		<ol class="original-line-list" id="originalVersion">
+		</ol>
+    </div>
+	<div class="col-xs-12 line-list-div version"id="your">
+		<ol class="line-list" contenteditable="true" id="yourVersion">
+		</ol>
+    </div>
+</div>
+<script>
+	$("input[name$='version']").click(function(event) {
+		$(".version").hide();
+		$("#" + event.target.value).show();
+		console.log("switching to:" + event.target.value);
+		/*if (event.target.value == "your") {
+			$("#yourVersion").html("");
+			refreshYourVersion();
+		}*/
+	});
+    $("#yourVersion").on("keydown", function(e) {
+        if ( window.location.href.indexOf("edit") >= 0 )
+            keydown(e);
+        else
+            e.preventDefault();
+    });
+    $("#yourVersion").on("keyup", function(e) {
+        if ( window.location.href.indexOf("edit") >= 0 ) {
+            keyup(e);
+            refreshYourVersion();
+        } else
+            e.preventDefault();
+    });
+    $("#yourVersion").on("paste", function(e) {
+        if ( window.location.href.indexOf("edit") >= 0 )
+            paste(e);
+        else
+            e.preventDefault();
+    });
+    $("#yourVersion").on("drop", function(e) {
+        if ( window.location.href.indexOf("edit") >= 0 )
+            drop(e);
+        else
+            e.preventDefault();
+    });
+    $("#yourVersion").on("cut", function(e) {
+        if ( window.location.href.indexOf("edit") >= 0 )
+            cut(e);
+        else
+            e.preventDefault();
+    });
+</script>
+

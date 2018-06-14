@@ -1,0 +1,109 @@
+{% load i18n %}
+<div id="correctModal" style="display: none; z-index: 1999; overflow: hidden;"
+	title=' {# We (ab)use the Gijgo Dialog like this to get a custom header with more buttons. #}
+		{% trans "Edit line" %}
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+		<span id="dockButton"></span>{# The fabulous JavaScript manages the button here. #}
+	'>
+	<div data-role="body">
+		<div class="row tool-row">
+			<div class="col-xs-12">
+				<span class="editbutton-group">
+					<div class="btn-group dialogbutton-group">
+			    		<button type="button" class="add-line btn btn-default btn-sm" title="{% trans "Add line" %}">
+			    			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+						</button>
+			    		<button type="button" class="remove-line btn btn-default btn-sm" title="{% trans "Remove line" %}">
+			    			<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+						</button>
+				    </div>
+				</span>
+				<span class="editbutton-group">
+				    <div class="btn-group dialogbutton-group">
+			    		<button type="button" class="typewriter-previous btn btn-default btn-sm" title="{% trans "Previous line" %}">
+			    			<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+						</button>
+			    		<button type="button" class="typewriter-next btn btn-default btn-sm"  title="{% trans "Next line" %}">
+			    			<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+						</button>
+			    	</div>
+			    </span>
+				<span class="editbutton-group">
+				    <div class="btn-group dialogbutton-group">
+			    		<button type="button" class="enlarge-text btn btn-default btn-sm" title="{% trans "Enlarge text" %}">
+			    			<span class="glyphicon glyphicon-font" aria-hidden="true"></span>
+						</button>
+			    		<button type="button" class="shrink-text btn btn-default btn-sm" title="{% trans "Shrink text" %}">
+			    			<span class="glyphicon glyphicon-font" aria-hidden="true" style="font-size: xx-small; width: 12px;"></span>
+						</button>
+					</div>
+				</span>
+				<span class="editbutton-group">
+		            <div class="btn-group dialogbutton-group">
+		                <button type="button" class="bold-text btn btn-default btn-sm" title="{% trans "Bold" %}">
+		                    <span class="glyphicon glyphicon-bold" aria-hidden="true"></span>
+		                </button>
+		                <button type="button" class="italic-text btn btn-default btn-sm" title="{% trans "Italic" %}">
+		                    <span class="glyphicon glyphicon-italic" aria-hidden="true"></span>
+		                </button>
+		                <button type="button" class="subscript-text btn btn-default btn-sm" title="{% trans "Subscript" %}">
+		                    <span class="glyphicon glyphicon-subscript" aria-hidden="true"></span>
+		                </button>
+		                <button type="button" class="superscript-text btn btn-default btn-sm" title="{% trans "Superscript" %}">
+		                    <span class="glyphicon glyphicon-superscript" aria-hidden="true"></span>
+		                </button>
+		                <button type="button" class="underline-text btn btn-default btn-sm" title="{% trans "Underline" %}">
+		                    <span aria-hidden="true" style="text-decoration: underline; font-weight: bold;">U</span>
+		                </button>
+		                <button type="button" class="strikethrough-text btn btn-default btn-sm" title="{% trans "Strikethrough" %}">
+		                    <span aria-hidden="true" style="text-decoration: line-through; font-weight: bold;">S</span>
+		                </button>
+		            </div>
+		        </span>
+				<span class="editbutton-group">
+				    <div class="btn-group dialogbutton-group">
+						<a href="#" class="btn btn-primary btn-sm" data-target="#saveChanges">{% trans "Save changes" %}</a>
+					</div>
+				</span>
+		    </div>
+		</div>
+		<div class="row content-row">
+			<div class="col-xs-12 line-list-div">
+				<ol class="line-list" contenteditable="true" id="lineList"  style="margin-top: 3px;">
+				</ol>
+	        </div>
+	    </div>
+	</div>
+</div>
+<script>
+	$("#correctModal").on("mouseenter", function(e) {
+		$("#correctModal").removeAttr("title"); {# Prevent the (awful?) title hack above from being shown as a tooltip. #}
+	});
+	{# TODO Refactor and move this elsewhere: #}
+	var checkForComposite = false;
+	var ctrlMeta;
+	$("#correctModal").on("keyup", function(e) {
+		keyup(e);
+	});
+	$("#correctModal").on("keydown", function(e) {
+		keydown(e);
+	});
+	$("#capture").on("keyup", function(e) { // the normal situation with composite characters
+		if (checkForComposite) {
+			inputChar($(this).val());
+			$(this).val("");
+			checkForComposite = false;
+		} else
+			e.preventDefault();
+		restoreSelection();
+	});
+	$("#capture").on("keydown", function(e) { // a character is being held down and the first should be a composite
+		if (checkForComposite) {
+			inputChar($(this).val());
+			$(this).val("");
+			checkForComposite = false;
+		} else
+			e.preventDefault();
+		restoreSelection();
+	});
+</script>
