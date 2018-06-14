@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <style>
+   .todo {
+     background-color: rgba(0, 0, 0, 0.1);
+   }
+  </style>
+  <header class="todo">
+    TODO sort by ...
+  </header>
+  <main class="pages">
+    <style>
+     {# TODO: merge with collection-list styles #}
+     .pages {
+       font-size: 0.875em;
+       display: flex;
+       flex-flow: row wrap;
+     }
+
+     .pages .page {
+       max-width: 200px;
+     }
+
+     .pages .page .img {
+       min-width: 80px;
+       width: auto;
+       height: 120px;
+       background-color: rgba(0, 0, 0, 0.25);
+     }
+    </style>
+    {% for item in items %}
+    <div class="page card">
+      <div class="card-header bg-transparent">
+        <img class="img" src="{{ item.thumb_url }}">
+      </div>
+      <div class="card-body">
+        <p class="card-text todo">
+          Page: {{ item.page_nr }}<br>
+          Status: {{ item.status }}<br>
+          Tool: {{ item.toolname }}<br>
+          Last changed {{ item.username }}
+          <a href="{% url 'edit:correct' col_id doc_id item.page_nr %}">Interface A</a>&nbsp;
+          <a href="{% url 'sandbox:transcribe' %}?test=0&colId={{ col_id }}&docId={{ doc_id }}&pageId={{ item.page_nr }}">Interface B</a>
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+  </main>
+  <footer class="todo">
+    {# TODO: re-use footer from collection-list, document-list #}
+    <div class="row">
+      <div class="col-md-2">
+        TODO footer
+      </div>
+      {% if is_paginated %}
+      <div class="col-md-10 text-right">
+        {% include 'library/includes/pagination.html' %}
+      </div>
+      {% endif %}
+    </div>
+  </footer>
+</div>
+{% endblock content %}
+
+{% block footer %}
+{% endblock footer %}
