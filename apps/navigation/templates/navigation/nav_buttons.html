@@ -1,0 +1,21 @@
+{% load i18n %}
+
+{% if nav_up %}
+<li><a href="{{nav_up}}"><span class="glyphicon glyphicon-chevron-up" data-toggle="popover" data-trigger="hover" title="{%trans "Up"%}" data-content="{{nav_up_content}}"></span></a></li>
+{% endif %}
+{% if nav_prev %}
+{% ifequal appname "edit" %}
+    <li><a href="{% url 'edit:correct' collId nav_prev 1%}"><span class="glyphicon glyphicon-chevron-left" data-toggle="popover" data-trigger="hover" title="{%trans "Previous"%}" data-content="{{nav_prev_content}}"></span></a></li>
+{% else %}
+    <li><a href="{{nav_prev}}"><span class="glyphicon glyphicon-chevron-left" data-toggle="popover" data-trigger="hover" title="{%trans "Previous"%}"  data-content="{{nav_prev_content}}"></span></a></li>
+{% endifequal %}
+
+{% endif %}
+{% if nav_next %}
+{% ifequal appname "edit" %}
+    <li><a href="{% url 'edit:correct' collId nav_next 1%}"><span class="glyphicon glyphicon-chevron-right" data-toggle="popover" data-trigger="hover" title="{%trans "Next"%}" data-content="{{nav_next_content}}"></span></a></li>
+{% else %}
+    <li><a href="{{nav_next}}"><span class="glyphicon glyphicon-chevron-right" data-toggle="popover" data-trigger="hover" title="{%trans "Next"%}" data-content="{{nav_next_content}}"></span></a></li>
+{% endifequal %}
+{% endif %}
+
