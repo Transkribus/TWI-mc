@@ -1,0 +1,134 @@
+{% extends "navi_base.html" %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="active">{% trans "Dashboard" %}</li>
+{% endblock %}
+
+{% block content %}
+
+<div class="read-container container">
+
+	<h1>{{collection.colName}}</h1>
+
+	<h2>{% trans 'My recent document accesses' %}</h2>
+
+	 <table class="table table-striped display" id="last_access_table">
+	   <thead>
+		<tr>
+			<th>{% trans "Collection" %}</th>
+			<th>{% trans "Document" %}</th>
+{%comment%}			<th>{% trans "Page number" %}</th> {%endcomment%}
+			<th>{% trans "Access time" %}</th>
+		</tr>
+	   </thead>
+	   <tbody>
+		{% for last_action in last_actions %}
+		<tr class="clickable" data-colid="{{last_action.colId}}" data-docid="{{last_action.docId}}">
+			<td>{{last_action.colName}}</td>
+			<td>{{last_action.docName}}</td>
+{%comment%}			<td>{%if last_action.pageNr%}{{last_action.pageNr}}{%else%}{%trans 'n/a'%}{%endif%}</td> {%endcomment%}
+			<td>{{last_action.time}}</td>
+		</tr>
+		{%endfor%}
+	   </tbody>
+	</table>
+
+	<div class="read-container container">
+	<h2>{% trans 'My activities' %}</h2>
+
+	   {% include "dashboard/date_input.html" %}
+	</div>
+
+	<div class="read-container container">
+
+		<div class="panel">
+
+		  <!-- Nav tabs -->
+		  <ul class="nav nav-tabs" role="tablist">
+		    <li role="presentation" class="active"><a href="#a_table" aria-controls="a_table" role="tab" data-toggle="tab">{% trans 'My activities' %}</a></li>
+		    <li role="presentation"><a href="#a_chart" aria-controls="a_chart" role="tab" data-toggle="tab">{% trans 'My activities chart' %}</a></li>
+		    <li role="presentation"><a href="#top_coll" aria-controls="top_coll" role="tab" data-toggle="tab">{% trans 'My most active collections' %}</a></li>
+		  </ul>
+
+		  <!-- Tab panes -->
+		  <div class="tab-content">
+		    <div role="tabpanel" class="tab-pane active" id="a_table">
+			   {% include "dashboard/actions_table.html" with action_types=action_types%}
+		    </div>
+		    <div role="tabpanel" class="tab-pane" id="a_chart">
+			   <canvas id="actions_line" class="chart_canvas" width="400" height="200"></canvas>
+		    </div>
+		    <div role="tabpanel" class="tab-pane" id="top_coll">
+			   <canvas id="top_collections" class="chart_canvas" width="400" height="200"></canvas>
+		    </div>
+		  </div>
+
+		  {% for at in action_types %}
+			<button class="btn btn-default table_filter" id="filter_{{at.type}}" value="{{at.type}}">{{at.type}}</button>
+		  {% endfor %}
+		  <button class="btn btn-default table_filter" id="filter_clear" value="">X</button>
+
+		</div>
+	</div>
+	<div class="read-container container">
+
+		<h1>{% trans 'My Collections' %}</h1>
+
+		{% include "dashboard/collections_table.html" %}
+
+	</div>
+</div>
+<!--
+<div class="container">
+	<div class="row">
+		<div class="col-md-12" id="actions_chart">
+		<h3>{% trans 'My overall activity' %}</h3>
+		<canvas id="actions_line" class="chart_canvas" width="400" height="200"></canvas>
+		</div>
+		<div class="col-md-8">
+		<h3>{% trans 'User activity' %}</h3>
+		<canvas id="_bar" class="chart_canvas" width="400" height="200"></canvas>
+		</div>
+		<div class="col-md-4">
+		<h3>{% trans 'Status' %}</h3>
+		<canvas id="status_pie" class="chart_canvas" width="200" height="200"></canvas>
+		</div>
+	</div>
+</div>
+<script>
+var ctx = document.getElementById("status_pie");
+var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ["New", "In progress", "Complete", "Published"],
+        datasets: [{
+            label: 'Status',
+            data: [12, 19, 3, 5],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+	 title: {
+		    display: true,
+		    text: 'Document statuses'
+		}
+    }
+});
+</script>
+-->
+<!--<button>Nbre of Jobs by type / ingesting</button>-->
+
+{% endblock %}
