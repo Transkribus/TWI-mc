@@ -110,7 +110,7 @@
                          <li>
                             <a class="nav-link " data-toggle="modal" data-target="{{base_path}}#modifyAccountModal" href="{{base_path}}#">{% trans 'Modify Account' %}</a>
                         </li>
-                        <li><a href="logout">{% trans 'Logout' %}</a></li>
+			<li><a href="{% url 'logout' %}?next={% url 'home:index' %}">{% trans 'Logout' %}</a></li>
                         
                      </ul>
                      {% else %}
