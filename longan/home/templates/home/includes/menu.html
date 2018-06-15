@@ -91,18 +91,19 @@
                 <li class="nav-item">
                     <a class="nav-link " href="{{base_path}}#contact">{% trans 'Contact us' %}</a>
                 </li>
+		{% with user=request.user %}
                 <li class="nav-item">
                     <a class="nav-link">{% trans 'Account' %}</a>
-                    {% if request.session.user %}
+                    {% if user.is_authenticated %}
                      <ul class="sub_menu">
                         <li>
                             <a href="#">
-                            {{request.session.user.first_name}} {{request.session.user.last_name}}
-                                ({{request.session.user.username}})
+                            {{ user.first_name }} {{ user.last_name }}
+                                ({{ user.username }})
                             </a>
                         </li>
                         
-                         {% if request.session.user.is_superuser   %} 
+                         {% if user.is_superuser   %} 
                             <li><a href="start_admin">{% trans 'Administrator' %}</a></li>
                         {% endif %}
                         
@@ -125,7 +126,7 @@
                     </ul>
                      {% endif %}
                 </li>
-                
+                {% endwith %} 
                 <li class="nav-item">
                     <a class="nav-link" href="#">{{LANGUAGE_CODE}} </a>
                     <ul class="sub_menu">

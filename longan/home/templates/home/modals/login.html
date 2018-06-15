@@ -12,12 +12,11 @@
       <p>{% trans "Your username and password didn't match. Please try again." %}</p>
       {% endif %}
       <hr>
-      <form method="post" action="{% url 'login' %}">
+      <form method="post" action="{% url 'login' %}?next={% url 'home:index' %}">
 	{% csrf_token %}
 	{% bootstrap_form auth_form %}
         <hr>
 	<button type="submit" class="btn btn-default btn-block"/>{% trans 'Login'%}</button>
-	<input type="hidden" name="next" value="{{ next }}" />
       </form>
       {# login before change #}
       {% comment %}
