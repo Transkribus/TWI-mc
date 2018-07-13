@@ -839,7 +839,7 @@
 		naturalWidth = $('#transcriptImage').get(0).naturalWidth;
         $("#canvas_text").width(window.innerWidth - 50);
 		initialScale = initialWidth / naturalWidth;
-		pathWithoutPage = "{% url 'edit:correct' collId docId %}/";
+		pathWithoutPage = "{% url 'edit:correct' collId docId %}";
 		pageNo = {{pageNo}};
 		var search = window.location.search + 'tco=0';// just to avoid NaN below
 		thumbCountOffset = parseInt(search.substring(search.indexOf('tco=') + 4)); // "tco=".length = 4
